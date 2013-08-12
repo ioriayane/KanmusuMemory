@@ -1,3 +1,18 @@
+/*
+ * Copyright 2013 IoriAYANE
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #include "tweetdialog.h"
 #include "ui_tweetdialog.h"
 
@@ -199,6 +214,15 @@ void TweetDialog::stateChanged(OAuth::State state)
     default:
         break;
     }
+
+    //認証してないと使えないエディット・ボタン
+    if(state == OAuth::Authorized){
+        ui->tweetButton->setEnabled(true);
+        ui->reauthButton->setEnabled(true);
+    }else{
+        ui->tweetButton->setEnabled(false);
+        ui->reauthButton->setEnabled(false);
+    }
 }
 
 //認証チェックなど
@@ -207,22 +231,17 @@ void TweetDialog::authorize(bool force)
     //認証済みか確認
     if(user_id().length() == 0 || force){
         //未認証
-//        ui->userIdLabel->setText(tr("Tweet : ") + tr("unauthrise"));
-
-        if(QMessageBox::information(this
+        QMessageBox::information(this
                                  , tr("Information")
-                                 , tr("Are you sure you want to authenticate to Twitter?"))
-                == QMessageBox::Ok){
-            //認証開始
-            m_oauth.unauthorize();
-            m_oauth.request_token("");
-        }
+                                 , tr("Do the authentication of Twitter."));
+        //認証開始
+        m_oauth.unauthorize();
+        m_oauth.request_token("");
     }
 }
 
 //再認証ボタン
-void TweetDialog::on_closeButton_2_clicked()
+void TweetDialog::on_reauthButton_clicked()
 {
     authorize(true);
 }
-

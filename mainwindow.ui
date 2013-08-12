@@ -70,7 +70,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
@@ -113,7 +113,7 @@
   </action>
   <action name="actionFlash_C">
    <property name="text">
-    <string>Search Kankore position(&amp;S)</string>
+    <string>Search KanColle position(&amp;S)</string>
    </property>
   </action>
   <action name="action_L">
@@ -126,7 +126,7 @@
   </action>
   <action name="actionPreferences">
    <property name="text">
-    <string>Preferences ...</string>
+    <string>Preferences ...(&amp;P)</string>
    </property>
   </action>
  </widget>
