@@ -1,0 +1,7 @@
+#ifndef TWITTERINFO_H
+#define TWITTERINFO_H
+
+#define TWITTER_CONSUMER_KEY    "hoge"
+#define TWITTER_CONSUMER_SECRET "hoge"
+
+#endif // TWITTERINFO_H
