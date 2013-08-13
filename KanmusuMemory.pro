@@ -7,13 +7,15 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     tweetdialog.cpp \
     inputoauthpindialog.cpp \
-    settingsdialog.cpp
+    settingsdialog.cpp \
+    cookiejar.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
     inputoauthpindialog.h \
     twitterinfo.h \
-    settingsdialog.h
+    settingsdialog.h \
+    cookiejar.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \

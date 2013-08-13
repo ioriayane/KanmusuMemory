@@ -17,6 +17,7 @@
 #include "ui_mainwindow.h"
 #include "tweetdialog.h"
 #include "settingsdialog.h"
+#include "cookiejar.h"
 
 #include <QtCore/QDate>
 #include <QtCore/QTime>
@@ -68,7 +69,7 @@ MainWindow::Private::Private(MainWindow *parent)
     , finishCalibrated(settings.value("finishCalibrated", false).toBool())
 {
     ui.setupUi(q);
-
+    ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
     connect(ui.capture, &QAction::triggered, q, &MainWindow::captureGame);
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
