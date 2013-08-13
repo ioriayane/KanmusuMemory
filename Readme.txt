@@ -29,7 +29,13 @@
 
 【セットアップ】
 　・任意のフォルダにアーカイブを解凍してください。
-　　Windowsでは以下の再配布パッケージをインストールしてください。
+　・Flash Playerをインストールしてください。
+　　別のブラウザを使用してください。
+　　　別のバージョンのAdobe Flash Playerをインストール
+　　　　http://get2.adobe.com/jp/flashplayer/otherversions/
+　　　　手順１　あなたのOSを選択
+　　　　手順２　Flash Player 11 for Other Browsersを選択
+　・Windowsでは以下の再配布パッケージをインストールしてください。
 　　（msvcr100.dllが必要なため）
 　　Microsoft Visual C++ 2010 再頒布可能パッケージ(x86)
 　　http://www.microsoft.com/ja-jp/download/details.aspx?id=5555
