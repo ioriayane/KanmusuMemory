@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Kanmusu Memory</string>
+   <string>Kan Memo -KanMusu Memory-</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -92,8 +92,15 @@
     <addaction name="separator"/>
     <addaction name="actionFlash_C"/>
    </widget>
+   <widget class="QMenu" name="menuHelp_H">
+    <property name="title">
+     <string>Help(&amp;H)</string>
+    </property>
+    <addaction name="actionAbout_A"/>
+   </widget>
    <addaction name="menu_F"/>
    <addaction name="menu_A"/>
+   <addaction name="menuHelp_H"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_E">
@@ -127,6 +134,11 @@
   <action name="actionPreferences">
    <property name="text">
     <string>Preferences ...(&amp;P)</string>
+   </property>
+  </action>
+  <action name="actionAbout_A">
+   <property name="text">
+    <string>About(&amp;A)</string>
    </property>
   </action>
  </widget>

@@ -45,6 +45,8 @@ private slots:
 
     void on_actionPreferences_triggered();
 
+    void on_actionAbout_A_triggered();
+
 public slots:
     //WebViewの読込み状況
     void loadFinished(bool ok);

@@ -29,3 +29,11 @@ FORMS    += mainwindow.ui \
     tweetdialog.ui \
     inputoauthpindialog.ui \
     settingsdialog.ui
+
+# icon
+win32{
+    RC_FILE = KanmusuMemory.rc
+}
+mac{
+#    ICON = KanmusuMemory.icns
+}

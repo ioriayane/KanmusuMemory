@@ -17,12 +17,11 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.ui" line="+20"/>
         <source>Kanmusu Memory</source>
-        <translation>艦メモ ～艦娘メモリーズ～</translation>
+        <translation type="obsolete">艦メモ ～艦娘メモリーズ～</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location filename="../mainwindow.ui" line="+38"/>
         <source>Capture</source>
         <translation>思い出を残す</translation>
     </message>
@@ -31,7 +30,12 @@
         <translation type="obsolete">思い出を残す(F9)</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="-18"/>
+        <source>Kan Memo -KanMusu Memory-</source>
+        <translation>艦メモ　～艦娘メモリーズ～</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>View memories</source>
         <translation>思い出を表示</translation>
     </message>
@@ -46,7 +50,12 @@
         <translation>ブラウザ(&amp;B)</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+8"/>
+        <source>Help(&amp;H)</source>
+        <translation>ヘルプ(&amp;H)</translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Exit(&amp;E)</source>
         <translation>終了(&amp;E)</translation>
     </message>
@@ -71,6 +80,11 @@
         <translation>設定 ...(&amp;P)</translation>
     </message>
     <message>
+        <location line="+5"/>
+        <source>About(&amp;A)</source>
+        <translation>艦メモについて(&amp;A)</translation>
+    </message>
+    <message>
         <source>Search Kankore position(&amp;S)</source>
         <translation type="obsolete">艦これの位置を調べる(&amp;S)</translation>
     </message>
@@ -83,12 +97,12 @@
         <translation type="obsolete">艦これの位置を調べる(&amp;S)</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-10"/>
         <source>View memories(&amp;V)</source>
         <translation>思い出を表示(&amp;V)</translation>
     </message>
     <message>
-        <location line="-65"/>
+        <location line="-72"/>
         <source>about:blank</source>
         <translation>about:blank</translation>
     </message>
@@ -107,16 +121,16 @@
     </message>
     <message>
         <location line="-112"/>
+        <location line="+258"/>
         <source>Kan Memo</source>
         <translation>艦メモ　～艦娘メモリーズ～</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Please select a folder to save the image of Kanmusu.</source>
-        <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
+        <translation type="obsolete">艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="-204"/>
         <source>cancel</source>
         <translation>思い出を保存しませんでした。</translation>
     </message>
@@ -148,7 +162,12 @@ Please be performed in the state that it seems the whole of KanColle.</source>
         <translation type="obsolete">艦これの位置を調べます。</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="-112"/>
+        <source>Please select a folder to save the image of KanMusu.</source>
+        <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
+    </message>
+    <message>
+        <location line="+164"/>
         <source>success calibration</source>
         <translation>艦これの位置を特定しました。</translation>
     </message>
@@ -171,6 +190,15 @@ Please be performed in the state that it seems the whole of KanColle.</source>
         <location line="+5"/>
         <source>loading...%1%</source>
         <translation>ページを読込中・・・%1%</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Kan Memo -KanMusu Memory-
+
+Copyright 2013 IoriAYANE</source>
+        <translation>艦メモ　～艦娘メモリーズ～
+
+Copyright 2013 IoriAYANE</translation>
     </message>
 </context>
 <context>
@@ -215,9 +243,13 @@ Please be performed in the state that it seems the whole of KanColle.</source>
         <translation>つぶやく</translation>
     </message>
     <message>
-        <location line="-29"/>
         <source>Do you tweet an emotion about Kanmusu?</source>
-        <translation>艦娘との思い出をつぶやきますか？</translation>
+        <translation type="obsolete">艦娘との思い出をつぶやきますか？</translation>
+    </message>
+    <message>
+        <location line="-29"/>
+        <source>Do you tweet an emotion about KanMusu?</source>
+        <translation>艦娘との思い出をつぶやきましょう！</translation>
     </message>
     <message>
         <location line="+13"/>

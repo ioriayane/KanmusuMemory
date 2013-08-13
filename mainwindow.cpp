@@ -62,7 +62,7 @@ MainWindow::MainWindow(QWidget *parent) :
         //設定を促す
         QMessageBox::information(this
                                  , tr("Kan Memo")
-                                 , tr("Please select a folder to save the image of Kanmusu."));
+                                 , tr("Please select a folder to save the image of KanMusu."));
         m_savePath = SettingsDialog::selectSavePath(this, QDir::homePath());
     }
 
@@ -315,4 +315,9 @@ void MainWindow::on_actionPreferences_triggered()
         //設定更新
         m_savePath = dlg.savePath();
     }
+}
+//アバウト
+void MainWindow::on_actionAbout_A_triggered()
+{
+    QMessageBox::about(this, tr("Kan Memo"), tr("Kan Memo -KanMusu Memory-\n\nCopyright 2013 IoriAYANE"));
 }
