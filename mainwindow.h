@@ -17,7 +17,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QNetworkAccessManager>
 #include <QSettings>
 
 
