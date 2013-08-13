@@ -1,15 +1,7 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2013-08-10T23:06:07
-#
-#-------------------------------------------------
-
-QT       += core gui network webkitwidgets twitterapi
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-TARGET = KanmusuMemory
 TEMPLATE = app
+TARGET = KanmusuMemory
+QT       += core gui network webkitwidgets twitterapi
+CONFIG += c++11
 
 SOURCES += main.cpp\
         mainwindow.cpp \
