@@ -70,12 +70,12 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_F">
     <property name="title">
-     <string>File(&amp;F)</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="action_M"/>
     <addaction name="action_L"/>
@@ -86,7 +86,7 @@
    </widget>
    <widget class="QMenu" name="menu_A">
     <property name="title">
-     <string>Browser(&amp;B)</string>
+     <string>&amp;Browser</string>
     </property>
     <addaction name="action_R"/>
     <addaction name="separator"/>
@@ -94,7 +94,7 @@
    </widget>
    <widget class="QMenu" name="menuHelp_H">
     <property name="title">
-     <string>Help(&amp;H)</string>
+     <string>&amp;Help</string>
     </property>
     <addaction name="actionAbout_A"/>
    </widget>
@@ -105,22 +105,22 @@
   <widget class="QStatusBar" name="statusBar"/>
   <action name="action_E">
    <property name="text">
-    <string>Exit(&amp;E)</string>
+    <string>&amp;Exit</string>
    </property>
   </action>
   <action name="action_M">
    <property name="text">
-    <string>Capture(&amp;C)</string>
+    <string>&amp;Capture</string>
    </property>
   </action>
   <action name="action_R">
    <property name="text">
-    <string>Reload(&amp;R)</string>
+    <string>&amp;Reload</string>
    </property>
   </action>
   <action name="actionFlash_C">
    <property name="text">
-    <string>Search KanColle position(&amp;S)</string>
+    <string>&amp;Search KanColle position</string>
    </property>
   </action>
   <action name="action_L">
@@ -128,17 +128,17 @@
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>View memories(&amp;V)</string>
+    <string>&amp;View memories</string>
    </property>
   </action>
   <action name="actionPreferences">
    <property name="text">
-    <string>Preferences ...(&amp;P)</string>
+    <string>&amp;Preferences ...</string>
    </property>
   </action>
   <action name="actionAbout_A">
    <property name="text">
-    <string>About(&amp;A)</string>
+    <string>&amp;About</string>
    </property>
   </action>
  </widget>
