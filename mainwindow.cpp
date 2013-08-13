@@ -156,30 +156,18 @@ void MainWindow::captureGame()
 
     int x = d->flashPos.x() + d->scroolPos.x();// int((d->ui.webView->size().width()-16) / 2) - int(800 / 2);
     int y = d->flashPos.y() + d->scroolPos.y();
-    QImage img(d->ui.webView->size(), QImage::Format_ARGB32);
-    QImage img2(KANCOLLE_WIDTH, KANCOLLE_HEIGHT, QImage::Format_ARGB32);
+
+    QImage img(KANCOLLE_WIDTH, KANCOLLE_HEIGHT, QImage::Format_ARGB32);
     QPainter painter(&img);
-    QPainter painter2(&img2);
     //全体を描画
-    d->ui.webView->page()->view()->render(&painter);
-    //2つ目へ必要な分だけコピー
-    painter2.drawImage(QPoint(0,0), img, QRect(x, y, KANCOLLE_WIDTH, KANCOLLE_HEIGHT));
-    QDate date(QDate::currentDate());
-    QTime time(QTime::currentTime());
-    QString path = d->savePath + "/kanmusu";
-    path.append(QString("_%1-%2-%3_%4-%5-%6-%7")
-                .arg(date.year()).arg(date.month()).arg(date.day())
-                .arg(time.hour()).arg(time.minute()).arg(time.second()).arg(time.msec())
-                );
-    path.append(".png");
-    //    path.append(".jpg");
+    d->ui.webView->page()->view()->render(&painter, QPoint(0,0), QRegion(x, y, KANCOLLE_WIDTH, KANCOLLE_HEIGHT));
+
+    QString path = QStringLiteral("%1/kanmusu_%2.png").arg(d->savePath).arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")));
     qDebug() << "path:" << path;
 
     //保存する
-    if(img2.save(path)){
-        d->ui.statusBar->showMessage(tr("saving to %1...").arg(path), STATUS_BAR_MSG_TIME);
-
-
+    d->ui.statusBar->showMessage(tr("saving to %1...").arg(path), STATUS_BAR_MSG_TIME);
+    if(img.save(path)){
         //つぶやくダイアログ
         TweetDialog dlg(this);
         dlg.setImagePath(path);
