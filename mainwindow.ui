@@ -79,8 +79,6 @@
      <string>&amp;Browser</string>
     </property>
     <addaction name="reload"/>
-    <addaction name="separator"/>
-    <addaction name="adjust"/>
    </widget>
    <widget class="QMenu" name="help">
     <property name="title">

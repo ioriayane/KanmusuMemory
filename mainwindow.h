@@ -31,11 +31,6 @@ private:
 
 private slots:
     void captureGame();         //保存する
-    void calibration();         //flashの位置を調べる
-
-public slots:
-    //スクロール状況
-    void scrollRequested(int dx, int dy, const QRect &rectToScroll);
 };
 
 #endif // MAINWINDOW_H

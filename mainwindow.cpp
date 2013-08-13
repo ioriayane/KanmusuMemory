@@ -24,16 +24,13 @@
 #include <QtCore/QString>
 #include <QtCore/QDir>
 #include <QtCore/QSettings>
-#include <QtGui/QRgb>
 #include <QtWidgets/QMessageBox>
-
+#include <QtWebKitWidgets/QWebFrame>
+#include <QtWebKit/QWebElement>
 
 #include <QtCore/QDebug>
 
 #define URL_KANCOLLE "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
-#define FLASH_POS_SEARCH_START_Y    40      //Flashの位置を探すときにY方向の開始座標（つまりDMMのヘッダを飛ばす）
-#define KANCOLLE_WIDTH   800
-#define KANCOLLE_HEIGHT  480
 
 #define SETTING_FILE_NAME       "settings.ini"
 #define SETTING_FILE_FORMAT     QSettings::IniFormat
@@ -54,26 +51,18 @@ public:
     QSettings settings;       //設定管理
     //設定保存データ
     QString savePath;         //保存パス
-    QPoint flashPos;          //座標
-
-    //一時データ
-    QPoint scroolPos;         //スクロール量
-    bool finishCalibrated;    //キャリブレーション済み
 };
 
 MainWindow::Private::Private(MainWindow *parent)
     : q(parent)
     , settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT)
     , savePath(settings.value("path", "").toString())
-    , flashPos(settings.value("flashPos", QPoint(0, 0)).toPoint())
-    , finishCalibrated(settings.value("finishCalibrated", false).toBool())
 {
     ui.setupUi(q);
     ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
     connect(ui.capture, &QAction::triggered, q, &MainWindow::captureGame);
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
-    connect(ui.adjust, &QAction::triggered, q, &MainWindow::calibration);
 
     //設定ダイアログ表示
     connect(ui.preferences, &QAction::triggered, [this]() {
@@ -105,16 +94,12 @@ MainWindow::Private::Private(MainWindow *parent)
 
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
-
-    connect(ui.webView->page(), SIGNAL(scrollRequested(int,int,QRect)), q, SLOT(scrollRequested(int,int,QRect)));
 }
 
 MainWindow::Private::~Private()
 {
     //設定保存
     settings.setValue("path", savePath);
-    settings.setValue("flashPos", flashPos);
-    settings.setValue("finishCalibrated", finishCalibrated);
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -143,24 +128,33 @@ void MainWindow::captureGame()
 {
     qDebug() << "captureGame";
 
-    if(!d->finishCalibrated){
-        //キャリブレーションされてないので確認して実行
-        calibration();
-    }
+    QPoint currentPos = d->ui.webView->page()->mainFrame()->scrollPosition();
+    d->ui.webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
 
-    //キャリブレーションしてなければ実行しない
-    if(!d->finishCalibrated){
-        d->ui.statusBar->showMessage(QString(tr("cancel")), STATUS_BAR_MSG_TIME);
+    QWebFrame *frame = d->ui.webView->page()->mainFrame();
+    if (frame->childFrames().isEmpty()) {
+        d->ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+        d->ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
         return;
     }
 
-    int x = d->flashPos.x() + d->scroolPos.x();// int((d->ui.webView->size().width()-16) / 2) - int(800 / 2);
-    int y = d->flashPos.y() + d->scroolPos.y();
+    frame = frame->childFrames().first();
+    QWebElement element = frame->findFirstElement(QStringLiteral("#worldselectswf"));
+    if (element.isNull()) {
+        d->ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+        d->ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+    QRect geometry = element.geometry();
+    geometry.moveTopLeft(geometry.topLeft() + frame->geometry().topLeft());
+    qDebug() << geometry;
 
-    QImage img(KANCOLLE_WIDTH, KANCOLLE_HEIGHT, QImage::Format_ARGB32);
+    QImage img(geometry.size(), QImage::Format_ARGB32);
     QPainter painter(&img);
     //全体を描画
-    d->ui.webView->page()->view()->render(&painter, QPoint(0,0), QRegion(x, y, KANCOLLE_WIDTH, KANCOLLE_HEIGHT));
+    d->ui.webView->render(&painter, QPoint(0,0), geometry);
+
+    d->ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
 
     QString path = QStringLiteral("%1/kanmusu_%2.png").arg(d->savePath).arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")));
     qDebug() << "path:" << path;
@@ -185,87 +179,4 @@ void MainWindow::captureGame()
     }else{
         d->ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
     }
-
-}
-//キャリブレーション
-void MainWindow::calibration()
-{
-    qDebug() << "calibration";
-
-//    QMessageBox::information(this
-//                             , tr("Information")
-//                             , tr("Calibrate Kankore position."));
-    QMessageBox msgdlg(this);
-    msgdlg.setWindowTitle(tr("Information"));
-    msgdlg.setText(tr("Search Kankore position.\nPlease be performed in the state that it seems the whole of KanColle."));
-    msgdlg.setStandardButtons(QMessageBox::Yes);
-    msgdlg.addButton("No", QMessageBox::RejectRole);
-    msgdlg.exec();
-    qDebug() << "calib:" << msgdlg.result();
-    if(msgdlg.result() != QMessageBox::Yes)
-        return;
-
-    int set_count = 0;
-    QImage img(d->ui.webView->size(), QImage::Format_ARGB32);
-    QPainter painter(&img);
-    int w = d->ui.webView->size().width();
-    int h = d->ui.webView->size().height();
-    QRgb rgb;
-
-    //全体を描画
-    d->ui.webView->page()->view()->render(&painter);
-
-    //横方向にはじっこを調べる
-    for(int i=0; i<(w/2); i++){
-        rgb = img.pixel(i, h/2);
-        if(qGray(rgb) < 250){
-            qDebug() << "found X:" << i << "," << (h/2) << "/" << qGray(rgb)
-                     << "/" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb);
-            d->flashPos.setX(i);
-            set_count++;
-            break;
-        }
-    }
-    //縦方向に端っこを調べる
-    //    for(int i=h-1; i>=(h/2); i--){
-    //        rgb = img.pixel(w/2, i);
-    //        if(qGray(rgb) < 250){
-    //            qDebug() << "found Y:" << (w/2) << "," << (i-KANKORE_HEIGHT) << "/" << qGray(rgb)
-    //                     << "/" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb);
-    //            d->flashPos.setY(i - KANKORE_HEIGHT + 1 - d->scroolPos.y());
-    //            set_count++;
-    //            break;
-    //        }
-    //    }
-    for(int i=FLASH_POS_SEARCH_START_Y; i<h; i++){
-        rgb = img.pixel(w/2, i);
-        if(qGray(rgb) < 250){
-            qDebug() << "found Y:" << (w/2) << "," << i << "/" << qGray(rgb)
-                     << "/" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb);
-            d->flashPos.setY(i - d->scroolPos.y());
-            set_count++;
-            break;
-        }
-    }
-    //キャリブレーション済み
-    if(set_count == 2){
-        d->ui.statusBar->showMessage(tr("calibration succeded"), STATUS_BAR_MSG_TIME);
-        d->finishCalibrated = true;
-    }else{
-        d->ui.statusBar->showMessage(tr("calibration failed"), STATUS_BAR_MSG_TIME);
-        d->finishCalibrated = false;
-    }
-}
-
-//スクロール状態
-void MainWindow::scrollRequested(int dx, int dy, const QRect &rectToScroll)
-{
-    Q_UNUSED(dx)
-    Q_UNUSED(rectToScroll)
-    //    qDebug() << "scroll:" << dx << "," << dy << "/" << rectToScroll;
-    d->scroolPos.setY(d->scroolPos.y() + dy);
-    //    if(d->scroolPos.y() < 0)
-    //        d->scroolPos.setY(0);
-
-    qDebug() << "scroll:" << d->scroolPos.y();
 }
