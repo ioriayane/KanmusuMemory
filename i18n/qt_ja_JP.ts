@@ -249,7 +249,7 @@ Copyright 2013 IoriAYANE</translation>
     <message>
         <location line="-29"/>
         <source>Do you tweet an emotion about KanMusu?</source>
-        <translation>艦娘との思い出をつぶやきましょう！</translation>
+        <translation>艦娘さんとの思い出をつぶやきましょう！</translation>
     </message>
     <message>
         <location line="+13"/>
