@@ -41,7 +41,6 @@ class MainWindow::Private
 {
 public:
     Private(MainWindow *parent);
-    ~Private();
     void captureGame();         //保存する
 
 private:
@@ -50,14 +49,11 @@ private:
 public:
     Ui::MainWindow ui;
     QSettings settings;       //設定管理
-    //設定保存データ
-    QString savePath;         //保存パス
 };
 
 MainWindow::Private::Private(MainWindow *parent)
     : q(parent)
     , settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT)
-    , savePath(settings.value("path", "").toString())
 {
     ui.setupUi(q);
     ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
@@ -68,10 +64,10 @@ MainWindow::Private::Private(MainWindow *parent)
     //設定ダイアログ表示
     connect(ui.preferences, &QAction::triggered, [this]() {
         SettingsDialog dlg(q);
-        dlg.setSavePath(savePath);
+        dlg.setSavePath(settings.value(QStringLiteral("path")).toString());
         if (dlg.exec()) {
             //設定更新
-            savePath = dlg.savePath();
+            settings.setValue(QStringLiteral("path"), dlg.savePath());
         }
     });
 
@@ -97,16 +93,23 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
 }
 
-MainWindow::Private::~Private()
-{
-    //設定保存
-    settings.setValue("path", savePath);
-}
-
 //思い出を残す
 void MainWindow::Private::captureGame()
 {
     qDebug() << "captureGame";
+
+    if(!settings.contains(QStringLiteral("path"))){
+        //設定を促す
+        QMessageBox::information(q
+                                 , tr("Kan Memo")
+                                 , tr("Please select a folder to save the image of KanMusu."));
+        QString savePath = SettingsDialog::selectSavePath(q, QDir::homePath());
+        if (savePath.isEmpty()) {
+            ui.statusBar->showMessage(tr("canceled"), STATUS_BAR_MSG_TIME);
+            return;
+        }
+        settings.setValue(QStringLiteral("path"), savePath);
+    }
 
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
     ui.webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
@@ -136,7 +139,7 @@ void MainWindow::Private::captureGame()
 
     ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
 
-    QString path = QStringLiteral("%1/kanmusu_%2.png").arg(savePath).arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")));
+    QString path = QStringLiteral("%1/kanmusu_%2.png").arg(settings.value(QStringLiteral("path")).toString()).arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")));
     qDebug() << "path:" << path;
 
     //保存する
@@ -165,14 +168,6 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , d(new Private(this))
 {
-    if(d->savePath.length() == 0){
-        //設定を促す
-        QMessageBox::information(this
-                                 , tr("Kan Memo")
-                                 , tr("Please select a folder to save the image of KanMusu."));
-        d->savePath = SettingsDialog::selectSavePath(this, QDir::homePath());
-    }
-
     //設定
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
     QWebSettings::globalSettings()->setAttribute(QWebSettings::JavascriptEnabled, true);
