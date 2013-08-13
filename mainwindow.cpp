@@ -47,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
     m_settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT, this)
 {
     ui->setupUi(this);
+    centralWidget()->deleteLater();
+    setCentralWidget(ui->webView);
 
     connect(ui->webView, SIGNAL(loadFinished(bool)), this, SLOT(loadFinished(bool)));
     connect(ui->webView, SIGNAL(loadProgress(int)), this, SLOT(loadProgress(int)));
@@ -99,7 +101,7 @@ void MainWindow::keyPressEvent(QKeyEvent *ev)
 }
 
 //思い出を残す（ボタン）
-void MainWindow::on_captureButton_clicked()
+void MainWindow::on_capture_triggered()
 {
     captureGame();
 }
@@ -252,31 +254,20 @@ void MainWindow::saveSettings()
     qDebug() << "save settings";
 }
 
-//思い出を残す（メニュー）
-void MainWindow::on_action_M_triggered()
-{
-    captureGame();
-}
-//思い出を表示
-void MainWindow::on_action_L_triggered()
-{
-
-}
-
 //再読み込み
-void MainWindow::on_action_R_triggered()
+void MainWindow::on_reload_triggered()
 {
     qDebug() << "reload";
     ui->webView->load(QUrl(URL_KANCOLLE));
 }
 //終了
-void MainWindow::on_action_E_triggered()
+void MainWindow::on_exit_triggered()
 {
     qDebug() << "exit";
     close();
 }
 //Flashの位置を探す
-void MainWindow::on_actionFlash_C_triggered()
+void MainWindow::on_adjust_triggered()
 {
     calibration();
 }
@@ -306,7 +297,7 @@ void MainWindow::scrollRequested(int dx, int dy, const QRect &rectToScroll)
 }
 
 //設定ダイアログ表示
-void MainWindow::on_actionPreferences_triggered()
+void MainWindow::on_preferences_triggered()
 {
     SettingsDialog dlg(this);
     dlg.setSavePath(m_savePath);
@@ -317,7 +308,7 @@ void MainWindow::on_actionPreferences_triggered()
     }
 }
 //アバウト
-void MainWindow::on_actionAbout_A_triggered()
+void MainWindow::on_about_triggered()
 {
     QMessageBox::about(this, tr("Kan Memo"), tr("Kan Memo -KanMusu Memory-\n\nCopyright 2013 IoriAYANE"));
 }

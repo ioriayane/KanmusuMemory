@@ -36,16 +36,12 @@ public:
     virtual void resizeEvent(QResizeEvent *);
     virtual void keyPressEvent(QKeyEvent * ev);
 private slots:
-    void on_captureButton_clicked();
-    void on_action_M_triggered();
-    void on_action_R_triggered();
-    void on_action_E_triggered();
-    void on_actionFlash_C_triggered();
-    void on_action_L_triggered();
-
-    void on_actionPreferences_triggered();
-
-    void on_actionAbout_A_triggered();
+    void on_capture_triggered();
+    void on_reload_triggered();
+    void on_exit_triggered();
+    void on_adjust_triggered();
+    void on_preferences_triggered();
+    void on_about_triggered();
 
 public slots:
     //WebViewの読込み状況
