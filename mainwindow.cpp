@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2013 IoriAYANE
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,6 +42,7 @@ class MainWindow::Private
 public:
     Private(MainWindow *parent);
     ~Private();
+    void captureGame();         //保存する
 
 private:
     MainWindow *q;
@@ -60,7 +61,7 @@ MainWindow::Private::Private(MainWindow *parent)
 {
     ui.setupUi(q);
     ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
-    connect(ui.capture, &QAction::triggered, q, &MainWindow::captureGame);
+    connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
 
@@ -102,6 +103,64 @@ MainWindow::Private::~Private()
     settings.setValue("path", savePath);
 }
 
+//思い出を残す
+void MainWindow::Private::captureGame()
+{
+    qDebug() << "captureGame";
+
+    QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
+    ui.webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
+
+    QWebFrame *frame = ui.webView->page()->mainFrame();
+    if (frame->childFrames().isEmpty()) {
+        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+        ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+
+    frame = frame->childFrames().first();
+    QWebElement element = frame->findFirstElement(QStringLiteral("#worldselectswf"));
+    if (element.isNull()) {
+        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+        ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+    QRect geometry = element.geometry();
+    geometry.moveTopLeft(geometry.topLeft() + frame->geometry().topLeft());
+    qDebug() << geometry;
+
+    QImage img(geometry.size(), QImage::Format_ARGB32);
+    QPainter painter(&img);
+    //全体を描画
+    ui.webView->render(&painter, QPoint(0,0), geometry);
+
+    ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+
+    QString path = QStringLiteral("%1/kanmusu_%2.png").arg(savePath).arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")));
+    qDebug() << "path:" << path;
+
+    //保存する
+    ui.statusBar->showMessage(tr("saving to %1...").arg(path), STATUS_BAR_MSG_TIME);
+    if(img.save(path)){
+        //つぶやくダイアログ
+        TweetDialog dlg(q);
+        dlg.setImagePath(path);
+        dlg.setToken(settings.value("token", "").toString());
+        dlg.setTokenSecret(settings.value("tokenSecret", "").toString());
+        dlg.user_id(settings.value("user_id", "").toString());
+        dlg.screen_name(settings.value("screen_name", "").toString());
+        dlg.exec();
+        settings.setValue("token", dlg.token());
+        settings.setValue("tokenSecret", dlg.tokenSecret());
+        settings.setValue("user_id", dlg.user_id());
+        settings.setValue("screen_name", dlg.screen_name());
+        //        settings.sync();
+
+    }else{
+        ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
+    }
+}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , d(new Private(this))
@@ -121,62 +180,4 @@ MainWindow::MainWindow(QWidget *parent)
     d->ui.webView->load(QUrl(URL_KANCOLLE));
 
     connect(this, &MainWindow::destroyed, [this]() {delete d;});
-}
-
-//思い出を残す
-void MainWindow::captureGame()
-{
-    qDebug() << "captureGame";
-
-    QPoint currentPos = d->ui.webView->page()->mainFrame()->scrollPosition();
-    d->ui.webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
-
-    QWebFrame *frame = d->ui.webView->page()->mainFrame();
-    if (frame->childFrames().isEmpty()) {
-        d->ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
-        d->ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
-        return;
-    }
-
-    frame = frame->childFrames().first();
-    QWebElement element = frame->findFirstElement(QStringLiteral("#worldselectswf"));
-    if (element.isNull()) {
-        d->ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
-        d->ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
-        return;
-    }
-    QRect geometry = element.geometry();
-    geometry.moveTopLeft(geometry.topLeft() + frame->geometry().topLeft());
-    qDebug() << geometry;
-
-    QImage img(geometry.size(), QImage::Format_ARGB32);
-    QPainter painter(&img);
-    //全体を描画
-    d->ui.webView->render(&painter, QPoint(0,0), geometry);
-
-    d->ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
-
-    QString path = QStringLiteral("%1/kanmusu_%2.png").arg(d->savePath).arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")));
-    qDebug() << "path:" << path;
-
-    //保存する
-    d->ui.statusBar->showMessage(tr("saving to %1...").arg(path), STATUS_BAR_MSG_TIME);
-    if(img.save(path)){
-        //つぶやくダイアログ
-        TweetDialog dlg(this);
-        dlg.setImagePath(path);
-        dlg.setToken(d->settings.value("token", "").toString());
-        dlg.setTokenSecret(d->settings.value("tokenSecret", "").toString());
-        dlg.user_id(d->settings.value("user_id", "").toString());
-        dlg.screen_name(d->settings.value("screen_name", "").toString());
-        dlg.exec();
-        d->settings.setValue("token", dlg.token());
-        d->settings.setValue("tokenSecret", dlg.tokenSecret());
-        d->settings.setValue("user_id", dlg.user_id());
-        d->settings.setValue("screen_name", dlg.screen_name());
-        //        d->settings.sync();
-
-    }else{
-        d->ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
-    }
 }

@@ -28,9 +28,6 @@ private:
     Q_DISABLE_COPY(MainWindow)
     class Private;
     Private *d;
-
-private slots:
-    void captureGame();         //保存する
 };
 
 #endif // MAINWINDOW_H
