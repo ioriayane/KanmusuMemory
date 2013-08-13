@@ -135,7 +135,7 @@ void TweetDialog::on_tweetButton_clicked()
     QByteArray imagedata(in.device()->readAll());
     file.close();
 
-    qDebug() << "image:" << imagedata.length() << "," << imagePath();
+//    qDebug() << "image:" << imagedata.length() << "," << imagePath();
 
     //つぶやく
     QVariantMap map;
@@ -184,9 +184,9 @@ void TweetDialog::stateChanged(OAuth::State state)
     switch(state){
     case OAuth::RequestTokenReceived:
     {
-        qDebug() << "RequestTokenReceived:";
-        qDebug() << "   token:" << m_oauth.token();
-        qDebug() << "   tokenSecret:" << m_oauth.tokenSecret();
+//        qDebug() << "RequestTokenReceived:";
+//        qDebug() << "   token:" << m_oauth.token();
+//        qDebug() << "   tokenSecret:" << m_oauth.tokenSecret();
 
         //PINを取得しにブラウザを開く
         m_oauth.authorize();
@@ -201,11 +201,11 @@ void TweetDialog::stateChanged(OAuth::State state)
         break;
     }
     case OAuth::Authorized:
-        qDebug() << "Authorized";
-        qDebug() << "   token:" << m_oauth.token();
-        qDebug() << "   tokenSecret:" << m_oauth.tokenSecret();
-        qDebug() << "   user_id:" << m_oauth.user_id();
-        qDebug() << "   screen_name:" << m_oauth.screen_name();
+//        qDebug() << "Authorized";
+//        qDebug() << "   token:" << m_oauth.token();
+//        qDebug() << "   tokenSecret:" << m_oauth.tokenSecret();
+//        qDebug() << "   user_id:" << m_oauth.user_id();
+//        qDebug() << "   screen_name:" << m_oauth.screen_name();
 
         //本当はあまり意味ないけど表示の更新
         screen_name(m_oauth.screen_name());

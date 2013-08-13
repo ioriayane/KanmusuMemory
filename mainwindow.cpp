@@ -106,8 +106,6 @@ void MainWindow::on_captureButton_clicked()
 //思い出を残す
 void MainWindow::captureGame()
 {
-    qDebug() << "captureGame";
-
     if(!m_finishCalibrated){
         //キャリブレーションされてないので確認して実行
         calibration();
@@ -138,7 +136,6 @@ void MainWindow::captureGame()
                 );
     path.append(".png");
     //    path.append(".jpg");
-    qDebug() << "path:" << path;
 
     //保存する
     if(img2.save(path)){
@@ -167,7 +164,6 @@ void MainWindow::captureGame()
 //キャリブレーション
 void MainWindow::calibration()
 {
-    qDebug() << "calibration";
 
 //    QMessageBox::information(this
 //                             , tr("Information")
@@ -178,7 +174,7 @@ void MainWindow::calibration()
     msgdlg.setStandardButtons(QMessageBox::Yes);
     msgdlg.addButton("No", QMessageBox::RejectRole);
     msgdlg.exec();
-    qDebug() << "calib:" << msgdlg.result();
+
     if(msgdlg.result() != QMessageBox::Yes)
         return;
 
@@ -248,8 +244,6 @@ void MainWindow::saveSettings()
     m_settings.setValue("path", m_savePath);
     m_settings.setValue("flashPos", m_flashPos);
     m_settings.setValue("finishCalibrated", m_finishCalibrated);
-    //    m_settings.sync();
-    qDebug() << "save settings";
 }
 
 //思い出を残す（メニュー）
@@ -266,13 +260,11 @@ void MainWindow::on_action_L_triggered()
 //再読み込み
 void MainWindow::on_action_R_triggered()
 {
-    qDebug() << "reload";
     ui->webView->load(QUrl(URL_KANCOLLE));
 }
 //終了
 void MainWindow::on_action_E_triggered()
 {
-    qDebug() << "exit";
     close();
 }
 //Flashの位置を探す
@@ -297,12 +289,9 @@ void MainWindow::loadProgress(int progress)
 //スクロール状態
 void MainWindow::scrollRequested(int dx, int dy, const QRect &rectToScroll)
 {
-    //    qDebug() << "scroll:" << dx << "," << dy << "/" << rectToScroll;
     m_scroolPos.setY(m_scroolPos.y() + dy);
     //    if(m_scroolPos.y() < 0)
     //        m_scroolPos.setY(0);
-
-    qDebug() << "scroll:" << m_scroolPos.y();
 }
 
 //設定ダイアログ表示

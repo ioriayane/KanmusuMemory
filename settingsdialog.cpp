@@ -74,8 +74,6 @@ void SettingsDialog::on_selectPathButton_clicked()
 {
     QString path = selectSavePath(this, ui->savePathEdit->text());
 
-    qDebug() << path;
-
     if(QFile::exists(path))
         setSavePath(path);
 }
