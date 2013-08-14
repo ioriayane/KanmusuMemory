@@ -24,6 +24,8 @@
 #include <QtCore/QString>
 #include <QtCore/QDir>
 #include <QtCore/QSettings>
+#include <QtCore/QStandardPaths>
+#include <QtNetwork/QNetworkDiskCache>
 #include <QtWidgets/QMessageBox>
 #include <QtWebKitWidgets/QWebFrame>
 #include <QtWebKit/QWebElement>
@@ -57,6 +59,10 @@ MainWindow::Private::Private(MainWindow *parent)
 {
     ui.setupUi(q);
     ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
+    QNetworkDiskCache *cache = new QNetworkDiskCache(q);
+    cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    ui.webView->page()->networkAccessManager()->setCache(cache);
+
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
@@ -122,12 +128,19 @@ void MainWindow::Private::captureGame()
     }
 
     frame = frame->childFrames().first();
-    QWebElement element = frame->findFirstElement(QStringLiteral("#externalswf"));
+    QWebElement element = frame->findFirstElement(QStringLiteral("#flashWrap"));
     if (element.isNull()) {
         ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
         ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
         return;
     }
+    element = element.findFirst(QStringLiteral("embed"));
+    if (element.isNull()) {
+        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+        ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+
     QRect geometry = element.geometry();
     geometry.moveTopLeft(geometry.topLeft() + frame->geometry().topLeft());
     qDebug() << geometry;
