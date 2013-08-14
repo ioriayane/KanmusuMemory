@@ -29,5 +29,5 @@ win32{
     RC_FILE = KanmusuMemory.rc
 }
 mac{
-#    ICON = KanmusuMemory.icns
+    ICON = KanmusuMemory.icns
 }

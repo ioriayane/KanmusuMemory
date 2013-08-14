@@ -245,3 +245,4 @@ void TweetDialog::on_reauthButton_clicked()
 {
     authorize(true);
 }
+

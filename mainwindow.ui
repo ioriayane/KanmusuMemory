@@ -60,7 +60,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="file">
@@ -114,18 +114,18 @@
   </action>
   <action name="capture">
    <property name="text">
-    <string>&amp;Capture</string>
+    <string>Capture</string>
+   </property>
+   <property name="toolTip">
+    <string>Capture(F5)</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+S</string>
+    <string>F5</string>
    </property>
   </action>
   <action name="reload">
    <property name="text">
     <string>&amp;Reload</string>
-   </property>
-   <property name="shortcut">
-    <string>F5</string>
    </property>
   </action>
   <action name="adjust">

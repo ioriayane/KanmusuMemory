@@ -32,6 +32,8 @@
 
 #include <QtCore/QDebug>
 
+#define KANMEMO_VERSION 0.2
+
 #define URL_KANCOLLE "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
 
 #define SETTING_FILE_NAME       "settings.ini"
@@ -79,7 +81,8 @@ MainWindow::Private::Private(MainWindow *parent)
 
     //アバウト
     connect(ui.about, &QAction::triggered, [this]() {
-        QMessageBox::about(q, MainWindow::tr("Kan Memo"), MainWindow::tr("Kan Memo -KanMusu Memory-\n\nCopyright 2013 IoriAYANE"));
+        QMessageBox::about(q, MainWindow::tr("Kan Memo")
+                           , MainWindow::tr("Kan Memo -KanMusu Memory-\nVersion %1\n\nCopyright 2013 IoriAYANE").arg(KANMEMO_VERSION));
     });
 
     connect(ui.webView, &QWebView::loadStarted, [this](){
@@ -117,30 +120,31 @@ void MainWindow::Private::captureGame()
         settings.setValue(QStringLiteral("path"), savePath);
     }
 
+    //表示位置を一番上へ強制移動
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
     ui.webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
-
+    //フレームを取得
     QWebFrame *frame = ui.webView->page()->mainFrame();
     if (frame->childFrames().isEmpty()) {
         ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
-        ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
+        ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
         return;
     }
-
+    //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
     frame = frame->childFrames().first();
     QWebElement element = frame->findFirstElement(QStringLiteral("#flashWrap"));
     if (element.isNull()) {
         ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
-        ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
+        ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
         return;
     }
     element = element.findFirst(QStringLiteral("embed"));
     if (element.isNull()) {
         ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
-        ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
+        ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
         return;
     }
-
+    //見つけたタグの座標を取得
     QRect geometry = element.geometry();
     geometry.moveTopLeft(geometry.topLeft() + frame->geometry().topLeft());
     qDebug() << geometry;
@@ -150,6 +154,7 @@ void MainWindow::Private::captureGame()
     //全体を描画
     ui.webView->render(&painter, QPoint(0,0), geometry);
 
+    //スクロールの位置を戻す
     ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
 
     QString path = QStringLiteral("%1/kanmusu_%2.png").arg(settings.value(QStringLiteral("path")).toString()).arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")));
@@ -173,7 +178,7 @@ void MainWindow::Private::captureGame()
         //        settings.sync();
 
     }else{
-        ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
+        ui.statusBar->showMessage(tr("failed save image"), STATUS_BAR_MSG_TIME);
     }
 }
 

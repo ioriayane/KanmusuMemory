@@ -16,9 +16,9 @@
    version="1.1"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="icon.svg"
-   inkscape:export-filename="D:\QtProjects\KanmusuMemory\resources\KanmusuMemory96.png"
-   inkscape:export-xdpi="29.7199"
-   inkscape:export-ydpi="29.7199">
+   inkscape:export-filename="D:\QtProjects\KanmusuMemory\resources\KanmusuMemory512.png"
+   inkscape:export-xdpi="158.50613"
+   inkscape:export-ydpi="158.50613">
   <defs
      id="defs4">
     <linearGradient
@@ -51,10 +51,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.3909524"
-     inkscape:cx="372.04724"
+     inkscape:cx="275.3509"
      inkscape:cy="571.26914"
      inkscape:document-units="px"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="g2992"
      showgrid="true"
      inkscape:window-width="1500"
      inkscape:window-height="976"
@@ -84,7 +84,8 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="背景">
+     inkscape:label="背景"
+     sodipodi:insensitive="true">
     <rect
        style="fill:url(#linearGradient3780);fill-opacity:1;stroke:none"
        id="rect3760"
@@ -97,7 +98,9 @@
   <g
      inkscape:label="耳"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     sodipodi:insensitive="true"
+     style="display:none">
     <g
        id="g3782"
        transform="translate(-6.048919,0.3185104)">
@@ -114,5 +117,22 @@
          d="m 301.9967,575.1952 c 0,0 -4.2403,-62.88682 2.87516,-99.95866 7.11545,-37.07183 22.29186,-79.39189 43.43365,-118.80033 17.04505,-31.77209 61.12526,-38.25836 61.12526,-38.25836 0,0 -11.14593,39.69594 -32.57524,89.10024 -21.42931,49.4043 -41.06214,48.66252 -52.27946,78.52935 -11.21731,29.86683 -22.57937,89.38776 -22.57937,89.38776 z"
          style="fill:#ffffff;fill-opacity:1;stroke:none" />
     </g>
+  </g>
+  <g
+     id="g2992"
+     inkscape:groupmode="layer"
+     inkscape:label="耳 コピー">
+    <path
+       sodipodi:nodetypes="cssszczzc"
+       inkscape:connector-curvature="0"
+       id="path2996"
+       d="m 294.39024,572.52633 c 0,0 -18.9902,-30.90695 -24.39024,-50.16415 -21.31101,-75.99766 -10,-60 -20,-80 -16.12452,-32.24903 -40,-59.99999 -40,-80 0,-10 0,0 20,10 20,10 31.00954,20.76034 31.00954,20.76034 0,0 17.21536,11.24115 23.07922,34.16649 5.86387,22.92535 0.86507,31.61094 1.73013,63.22189 0.86506,31.61094 8.57135,82.01543 8.57135,82.01543 z"
+       style="fill:#ffffff;fill-opacity:1;stroke:none" />
+    <path
+       sodipodi:nodetypes="czsczzc"
+       inkscape:connector-curvature="0"
+       id="path2998"
+       d="m 295.34374,572.52633 c 0,0 -1.96758,-62.9989 6.48138,-99.78974 8.44896,-36.79083 25.14306,-78.53551 47.69356,-117.15514 18.18078,-31.13612 62.46639,-36.02705 62.46639,-36.02705 0,0 -12.57152,39.26775 -35.77016,87.86634 -23.19864,48.5986 -42.7919,47.14863 -55.07998,76.5911 -12.28807,29.44247 -25.79119,88.51449 -25.79119,88.51449 z"
+       style="fill:#ffffff;fill-opacity:1;stroke:none" />
   </g>
 </svg>

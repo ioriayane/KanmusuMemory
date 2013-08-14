@@ -56,6 +56,7 @@ private slots:
     void on_tweetTextEdit_textChanged();
     void on_reauthButton_clicked();
 
+
 public slots:
     virtual int exec();
     void stateChanged(OAuth::State state);
