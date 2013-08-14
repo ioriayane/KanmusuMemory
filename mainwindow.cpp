@@ -128,12 +128,20 @@ void MainWindow::Private::captureGame()
     }
 
     frame = frame->childFrames().first();
-    QWebElement element = frame->findFirstElement(QStringLiteral("#worldselectswf"));
+
+    QWebElement element = frame->findFirstElement(QStringLiteral("#adFlashWrap"));
     if (element.isNull()) {
         ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
         ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
         return;
     }
+    element = element.findFirst(QStringLiteral("embed"));
+    if (element.isNull()) {
+        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+        ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+
     QRect geometry = element.geometry();
     geometry.moveTopLeft(geometry.topLeft() + frame->geometry().topLeft());
     qDebug() << geometry;
