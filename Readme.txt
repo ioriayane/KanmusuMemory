@@ -27,24 +27,47 @@
 　　その他、中断されて困るようなことをしているときは必ず終わらせてからにしてください。
 
 
-【セットアップ】
-　・任意のフォルダにアーカイブを解凍してください。
-　・Flash Playerをインストールしてください。
-　　別のブラウザを使用してください。
-　　　別のバージョンのAdobe Flash Playerをインストール
-　　　　http://get2.adobe.com/jp/flashplayer/otherversions/
-　　　　手順１　あなたのOSを選択
-　　　　手順２　Flash Player 11 for Other Browsersを選択
-　・Windowsでは以下の再配布パッケージをインストールしてください。
-　　（msvcr100.dllが必要なため）
-　　Microsoft Visual C++ 2010 再頒布可能パッケージ(x86)
-　　http://www.microsoft.com/ja-jp/download/details.aspx?id=5555
+【セットアップ～実行】
+　- Windowsの場合
+　　１．任意のフォルダにアーカイブを解凍してください。
+　　２．Flash Playerをインストールしてください。（普段使用しているブラウザを使用してください。）
+　　　　　別のバージョンのAdobe Flash Playerをインストール
+　　　　　　http://get2.adobe.com/jp/flashplayer/otherversions/
+　　　　　　手順１　あなたのOSを選択
+　　　　　　手順２　Flash Player 11 for Other Browsersを選択
+　　３．以下の再配布パッケージをインストールしてください。
+　　　　（msvcr100.dllが必要なため）
+　　　　Microsoft Visual C++ 2010 再頒布可能パッケージ(x86)
+　　　　　http://www.microsoft.com/ja-jp/download/details.aspx?id=5555
+　　４．KanmusuMemory.exeを実行してください。
+
+　- Ubuntuの場合
+　　１．任意のフォルダにアーカイブを解凍してください。
+　　２．Flash Playerをインストールしてください。
+　　　　UbuntuソフトウェアセンターでMoizilla用を選んでください。
+　　３．KanmusuMemory.shを実行してください。
+
+　- Macの場合
+　　１．任意のフォルダにアーカイブを解凍してください。
+　　２．Flash Playerをインストールしてください。（普段使用しているブラウザを使用してください。）
+　　　　　別のバージョンのAdobe Flash Playerをインストール
+　　　　　　http://get2.adobe.com/jp/flashplayer/otherversions/
+　　　　　　手順１　Mac OS X 10.6 - 10.9
+　　　　　　手順２　Flash Player 11 for Mac OS X 10.6 - 10.9
+　　３．KanmusuMemoryを実行してください。
+
+
+【動作確認環境】
+　・Windows 7(32/64bit)/8(64bit)
+　・Ubuntu 12.10(32/64bit)
+　・Mac OS X 10.8
 
 
 【使用上の注意・既知の問題など】
-　・現在、cookieに対応していません。IDとパスワードは毎回入力をお願いします。（近日対応）
 　・ネットワークのキャシュが効いていません。艦娘の画像表示が遅いですがご容赦を。（近日対応）
 　・つぶやきが正常に行われたかが分かりません。
+　・Visual Studio 2012を導入している環境で再配布パッケージをインストールできず起動できない報告を受けてます。
+　　対処方法は検討中です。
 
 
 【今後の予定など】
@@ -53,6 +76,7 @@
 　・任意の範囲をスクリーンショット
 　・提督名を消す
 　・Ctrl+Enterでつぶやく
+　・タイマーで遠征終わったかもとか自分にメンション？
 
 
 【開発について】

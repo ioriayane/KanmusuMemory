@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2013 IoriAYANE
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,296 +17,162 @@
 #include "ui_mainwindow.h"
 #include "tweetdialog.h"
 #include "settingsdialog.h"
+#include "cookiejar.h"
 
-#include <QDate>
-#include <QTime>
-#include <QString>
-#include <QDir>
-#include <QRgb>
-#include <QMessageBox>
+#include <QtCore/QDate>
+#include <QtCore/QTime>
+#include <QtCore/QString>
+#include <QtCore/QDir>
+#include <QtCore/QSettings>
+#include <QtWidgets/QMessageBox>
+#include <QtWebKitWidgets/QWebFrame>
+#include <QtWebKit/QWebElement>
 
-
-#include <QDebug>
+#include <QtCore/QDebug>
 
 #define URL_KANCOLLE "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
-#define FLASH_POS_SEARCH_START_Y    40      //Flashの位置を探すときにY方向の開始座標（つまりDMMのヘッダを飛ばす）
-#define KANCOLLE_WIDTH   800
-#define KANCOLLE_HEIGHT  480
 
 #define SETTING_FILE_NAME       "settings.ini"
 #define SETTING_FILE_FORMAT     QSettings::IniFormat
 
 #define STATUS_BAR_MSG_TIME     5000
 
-
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    m_savePath(""),
-    m_finishCalibrated(false),
-    m_settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT, this)
+class MainWindow::Private
 {
-    ui->setupUi(this);
+public:
+    Private(MainWindow *parent);
+    void captureGame();         //保存する
 
-    connect(ui->webView, SIGNAL(loadFinished(bool)), this, SLOT(loadFinished(bool)));
-    connect(ui->webView, SIGNAL(loadProgress(int)), this, SLOT(loadProgress(int)));
-    connect(ui->webView->page(), SIGNAL(scrollRequested(int,int,QRect)), this, SLOT(scrollRequested(int,int,QRect)));
+private:
+    MainWindow *q;
 
-    connect(this, SIGNAL(showMessage(QString)), ui->statusBar, SLOT(showMessage(QString)));
-    connect(this, SIGNAL(showMessage(QString, int)), ui->statusBar, SLOT(showMessage(QString, int)));
+public:
+    Ui::MainWindow ui;
+    QSettings settings;       //設定管理
+};
 
-    //設定読込み
-    loadSettings();
+MainWindow::Private::Private(MainWindow *parent)
+    : q(parent)
+    , settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT)
+{
+    ui.setupUi(q);
+    ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
+    connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
+    connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
+    connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
 
-    if(m_savePath.length() == 0){
+    //設定ダイアログ表示
+    connect(ui.preferences, &QAction::triggered, [this]() {
+        SettingsDialog dlg(q);
+        dlg.setSavePath(settings.value(QStringLiteral("path")).toString());
+        if (dlg.exec()) {
+            //設定更新
+            settings.setValue(QStringLiteral("path"), dlg.savePath());
+        }
+    });
+
+    //アバウト
+    connect(ui.about, &QAction::triggered, [this]() {
+        QMessageBox::about(q, MainWindow::tr("Kan Memo"), MainWindow::tr("Kan Memo -KanMusu Memory-\n\nCopyright 2013 IoriAYANE"));
+    });
+
+    connect(ui.webView, &QWebView::loadStarted, [this](){
+       ui.progressBar->show();
+    });
+    //WebViewの読込み完了
+    connect(ui.webView, &QWebView::loadFinished, [this](bool ok) {
+        if (ok) {
+            ui.statusBar->showMessage(MainWindow::tr("complete"), STATUS_BAR_MSG_TIME);
+        } else {
+            ui.statusBar->showMessage(MainWindow::tr("error"), STATUS_BAR_MSG_TIME);
+        }
+        ui.progressBar->hide();
+    });
+
+    //WebViewの読込み状態
+    connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
+}
+
+//思い出を残す
+void MainWindow::Private::captureGame()
+{
+    qDebug() << "captureGame";
+
+    if(!settings.contains(QStringLiteral("path"))){
         //設定を促す
-        QMessageBox::information(this
+        QMessageBox::information(q
                                  , tr("Kan Memo")
                                  , tr("Please select a folder to save the image of KanMusu."));
-        m_savePath = SettingsDialog::selectSavePath(this, QDir::homePath());
+        QString savePath = SettingsDialog::selectSavePath(q, QDir::homePath());
+        if (savePath.isEmpty()) {
+            ui.statusBar->showMessage(tr("canceled"), STATUS_BAR_MSG_TIME);
+            return;
+        }
+        settings.setValue(QStringLiteral("path"), savePath);
     }
 
+    QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
+    ui.webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
+
+    QWebFrame *frame = ui.webView->page()->mainFrame();
+    if (frame->childFrames().isEmpty()) {
+        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+        ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+
+    frame = frame->childFrames().first();
+    QWebElement element = frame->findFirstElement(QStringLiteral("#externalswf"));
+    if (element.isNull()) {
+        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+        ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+    QRect geometry = element.geometry();
+    geometry.moveTopLeft(geometry.topLeft() + frame->geometry().topLeft());
+    qDebug() << geometry;
+
+    QImage img(geometry.size(), QImage::Format_ARGB32);
+    QPainter painter(&img);
+    //全体を描画
+    ui.webView->render(&painter, QPoint(0,0), geometry);
+
+    ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+
+    QString path = QStringLiteral("%1/kanmusu_%2.png").arg(settings.value(QStringLiteral("path")).toString()).arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")));
+    qDebug() << "path:" << path;
+
+    //保存する
+    ui.statusBar->showMessage(tr("saving to %1...").arg(path), STATUS_BAR_MSG_TIME);
+    if(img.save(path)){
+        //つぶやくダイアログ
+        TweetDialog dlg(q);
+        dlg.setImagePath(path);
+        dlg.setToken(settings.value("token", "").toString());
+        dlg.setTokenSecret(settings.value("tokenSecret", "").toString());
+        dlg.user_id(settings.value("user_id", "").toString());
+        dlg.screen_name(settings.value("screen_name", "").toString());
+        dlg.exec();
+        settings.setValue("token", dlg.token());
+        settings.setValue("tokenSecret", dlg.tokenSecret());
+        settings.setValue("user_id", dlg.user_id());
+        settings.setValue("screen_name", dlg.screen_name());
+        //        settings.sync();
+
+    }else{
+        ui.statusBar->showMessage(tr("failed"), STATUS_BAR_MSG_TIME);
+    }
+}
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , d(new Private(this))
+{
     //設定
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
     QWebSettings::globalSettings()->setAttribute(QWebSettings::JavascriptEnabled, true);
     //艦これ読込み
-    ui->webView->load(QUrl(URL_KANCOLLE));
+    d->ui.webView->load(QUrl(URL_KANCOLLE));
 
-}
-
-MainWindow::~MainWindow()
-{
-    //設定保存
-    saveSettings();
-
-    delete ui;
-}
-
-
-
-void MainWindow::resizeEvent(QResizeEvent *)
-{
-    //#error "これが起きてキャリブレーション済みの設定が消える.からまぁなしで"
-    //サイズが変わったらキャリブレーション解除
-    //    m_finishCalibrated = false;
-}
-
-void MainWindow::keyPressEvent(QKeyEvent *ev)
-{
-    //F9押したらキャプチャ
-    if(ev->key() == Qt::Key_F9)
-        captureGame();
-}
-
-//思い出を残す（ボタン）
-void MainWindow::on_captureButton_clicked()
-{
-    captureGame();
-}
-//思い出を残す
-void MainWindow::captureGame()
-{
-    if(!m_finishCalibrated){
-        //キャリブレーションされてないので確認して実行
-        calibration();
-    }
-
-    //キャリブレーションしてなければ実行しない
-    if(!m_finishCalibrated){
-        emit showMessage(QString(tr("cancel")), STATUS_BAR_MSG_TIME);
-        return;
-    }
-
-    int x = m_flashPos.x() + m_scroolPos.x();// int((ui->webView->size().width()-16) / 2) - int(800 / 2);
-    int y = m_flashPos.y() + m_scroolPos.y();
-    QImage img(ui->webView->size(), QImage::Format_ARGB32);
-    QImage img2(KANCOLLE_WIDTH, KANCOLLE_HEIGHT, QImage::Format_ARGB32);
-    QPainter painter(&img);
-    QPainter painter2(&img2);
-    //全体を描画
-    ui->webView->page()->view()->render(&painter);
-    //2つ目へ必要な分だけコピー
-    painter2.drawImage(QPoint(0,0), img, QRect(x, y, KANCOLLE_WIDTH, KANCOLLE_HEIGHT));
-    QDate date(QDate::currentDate());
-    QTime time(QTime::currentTime());
-    QString path = m_savePath + "/kanmusu";
-    path.append(QString("_%1-%2-%3_%4-%5-%6-%7")
-                .arg(date.year()).arg(date.month()).arg(date.day())
-                .arg(time.hour()).arg(time.minute()).arg(time.second()).arg(time.msec())
-                );
-    path.append(".png");
-    //    path.append(".jpg");
-
-    //保存する
-    if(img2.save(path)){
-        emit showMessage(QString(tr("save...")) + path, STATUS_BAR_MSG_TIME);
-
-
-        //つぶやくダイアログ
-        TweetDialog dlg(this);
-        dlg.setImagePath(path);
-        dlg.setToken(m_settings.value("token", "").toString());
-        dlg.setTokenSecret(m_settings.value("tokenSecret", "").toString());
-        dlg.user_id(m_settings.value("user_id", "").toString());
-        dlg.screen_name(m_settings.value("screen_name", "").toString());
-        dlg.exec();
-        m_settings.setValue("token", dlg.token());
-        m_settings.setValue("tokenSecret", dlg.tokenSecret());
-        m_settings.setValue("user_id", dlg.user_id());
-        m_settings.setValue("screen_name", dlg.screen_name());
-        //        m_settings.sync();
-
-    }else{
-        emit showMessage(QString(tr("fail")), STATUS_BAR_MSG_TIME);
-    }
-
-}
-//キャリブレーション
-void MainWindow::calibration()
-{
-
-//    QMessageBox::information(this
-//                             , tr("Information")
-//                             , tr("Calibrate Kankore position."));
-    QMessageBox msgdlg(this);
-    msgdlg.setWindowTitle(tr("Information"));
-    msgdlg.setText(tr("Search Kankore position.\nPlease be performed in the state that it seems the whole of KanColle."));
-    msgdlg.setStandardButtons(QMessageBox::Yes);
-    msgdlg.addButton("No", QMessageBox::RejectRole);
-    msgdlg.exec();
-
-    if(msgdlg.result() != QMessageBox::Yes)
-        return;
-
-    int set_count = 0;
-    QImage img(ui->webView->size(), QImage::Format_ARGB32);
-    QPainter painter(&img);
-    int w = ui->webView->size().width();
-    int h = ui->webView->size().height();
-    QRgb rgb;
-
-    //全体を描画
-    ui->webView->page()->view()->render(&painter);
-
-    //横方向にはじっこを調べる
-    for(int i=0; i<(w/2); i++){
-        rgb = img.pixel(i, h/2);
-        if(qGray(rgb) < 250){
-            qDebug() << "found X:" << i << "," << (h/2) << "/" << qGray(rgb)
-                     << "/" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb);
-            m_flashPos.setX(i);
-            set_count++;
-            break;
-        }
-    }
-    //縦方向に端っこを調べる
-    //    for(int i=h-1; i>=(h/2); i--){
-    //        rgb = img.pixel(w/2, i);
-    //        if(qGray(rgb) < 250){
-    //            qDebug() << "found Y:" << (w/2) << "," << (i-KANKORE_HEIGHT) << "/" << qGray(rgb)
-    //                     << "/" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb);
-    //            m_flashPos.setY(i - KANKORE_HEIGHT + 1 - m_scroolPos.y());
-    //            set_count++;
-    //            break;
-    //        }
-    //    }
-    for(int i=FLASH_POS_SEARCH_START_Y; i<h; i++){
-        rgb = img.pixel(w/2, i);
-        if(qGray(rgb) < 250){
-            qDebug() << "found Y:" << (w/2) << "," << i << "/" << qGray(rgb)
-                     << "/" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb);
-            m_flashPos.setY(i - m_scroolPos.y());
-            set_count++;
-            break;
-        }
-    }
-    //キャリブレーション済み
-    if(set_count == 2){
-        emit showMessage(QString(tr("success calibration")), STATUS_BAR_MSG_TIME);
-        m_finishCalibrated = true;
-    }else{
-        emit showMessage(QString(tr("fail calibration")), STATUS_BAR_MSG_TIME);
-        m_finishCalibrated = false;
-    }
-}
-
-//設定を読込み
-void MainWindow::loadSettings()
-{
-    m_savePath = m_settings.value("path", "").toString();
-    m_flashPos = m_settings.value("flashPos", QPoint(0, 0)).toPoint();
-    m_finishCalibrated = m_settings.value("finishCalibrated", false).toBool();
-
-}
-//設定を保存
-void MainWindow::saveSettings()
-{
-    m_settings.setValue("path", m_savePath);
-    m_settings.setValue("flashPos", m_flashPos);
-    m_settings.setValue("finishCalibrated", m_finishCalibrated);
-}
-
-//思い出を残す（メニュー）
-void MainWindow::on_action_M_triggered()
-{
-    captureGame();
-}
-//思い出を表示
-void MainWindow::on_action_L_triggered()
-{
-
-}
-
-//再読み込み
-void MainWindow::on_action_R_triggered()
-{
-    ui->webView->load(QUrl(URL_KANCOLLE));
-}
-//終了
-void MainWindow::on_action_E_triggered()
-{
-    close();
-}
-//Flashの位置を探す
-void MainWindow::on_actionFlash_C_triggered()
-{
-    calibration();
-}
-
-//WebViewの読込み完了
-void MainWindow::loadFinished(bool ok)
-{
-    if(ok)
-        emit showMessage(QString(tr("complete")));
-    else
-        emit showMessage(QString(tr("error")));
-}
-//WebViewの読込み状態
-void MainWindow::loadProgress(int progress)
-{
-    emit showMessage(QString(tr("loading...%1%")).arg(progress));
-}
-//スクロール状態
-void MainWindow::scrollRequested(int dx, int dy, const QRect &rectToScroll)
-{
-    m_scroolPos.setY(m_scroolPos.y() + dy);
-    //    if(m_scroolPos.y() < 0)
-    //        m_scroolPos.setY(0);
-}
-
-//設定ダイアログ表示
-void MainWindow::on_actionPreferences_triggered()
-{
-    SettingsDialog dlg(this);
-    dlg.setSavePath(m_savePath);
-    dlg.exec();
-    if(dlg.result() != 0){
-        //設定更新
-        m_savePath = dlg.savePath();
-    }
-}
-//アバウト
-void MainWindow::on_actionAbout_A_triggered()
-{
-    QMessageBox::about(this, tr("Kan Memo"), tr("Kan Memo -KanMusu Memory-\n\nCopyright 2013 IoriAYANE"));
+    connect(this, &MainWindow::destroyed, [this]() {delete d;});
 }

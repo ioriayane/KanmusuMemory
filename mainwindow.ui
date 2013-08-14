@@ -20,46 +20,36 @@
    <string>Kan Memo -KanMusu Memory-</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
-     <widget class="QSplitter" name="splitter_2">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
+     <widget class="QWebView" name="webView">
+      <property name="url">
+       <url>
+        <string>about:blank</string>
+       </url>
       </property>
-      <widget class="QSplitter" name="splitter">
-       <property name="lineWidth">
-        <number>1</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <widget class="QPushButton" name="captureButton">
-        <property name="text">
-         <string>Capture</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>250</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>View memories</string>
-        </property>
-       </widget>
-      </widget>
-      <widget class="QWebView" name="webView">
-       <property name="url">
-        <url>
-         <string>about:blank</string>
-        </url>
-       </property>
-      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="progressBar">
+      <property name="value">
+       <number>24</number>
+      </property>
      </widget>
     </item>
    </layout>
@@ -70,75 +60,98 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu_F">
+   <widget class="QMenu" name="file">
     <property name="title">
-     <string>File(&amp;F)</string>
+     <string>&amp;File</string>
     </property>
-    <addaction name="action_M"/>
-    <addaction name="action_L"/>
+    <addaction name="capture"/>
+    <addaction name="viewMemory"/>
     <addaction name="separator"/>
-    <addaction name="actionPreferences"/>
+    <addaction name="preferences"/>
     <addaction name="separator"/>
-    <addaction name="action_E"/>
+    <addaction name="exit"/>
    </widget>
-   <widget class="QMenu" name="menu_A">
+   <widget class="QMenu" name="browser">
     <property name="title">
-     <string>Browser(&amp;B)</string>
+     <string>&amp;Browser</string>
     </property>
-    <addaction name="action_R"/>
-    <addaction name="separator"/>
-    <addaction name="actionFlash_C"/>
+    <addaction name="reload"/>
    </widget>
-   <widget class="QMenu" name="menuHelp_H">
+   <widget class="QMenu" name="help">
     <property name="title">
-     <string>Help(&amp;H)</string>
+     <string>&amp;Help</string>
     </property>
-    <addaction name="actionAbout_A"/>
+    <addaction name="about"/>
    </widget>
-   <addaction name="menu_F"/>
-   <addaction name="menu_A"/>
-   <addaction name="menuHelp_H"/>
+   <addaction name="file"/>
+   <addaction name="browser"/>
+   <addaction name="help"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="action_E">
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="capture"/>
+   <addaction name="viewMemory"/>
+  </widget>
+  <action name="exit">
    <property name="text">
-    <string>Exit(&amp;E)</string>
+    <string>&amp;Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="action_M">
+  <action name="capture">
    <property name="text">
-    <string>Capture(&amp;C)</string>
+    <string>&amp;Capture</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
-  <action name="action_R">
+  <action name="reload">
    <property name="text">
-    <string>Reload(&amp;R)</string>
+    <string>&amp;Reload</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
    </property>
   </action>
-  <action name="actionFlash_C">
+  <action name="adjust">
    <property name="text">
-    <string>Search KanColle position(&amp;S)</string>
+    <string>&amp;Adjust KanColle position</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
    </property>
   </action>
-  <action name="action_L">
+  <action name="viewMemory">
    <property name="enabled">
     <bool>false</bool>
    </property>
    <property name="text">
-    <string>View memories(&amp;V)</string>
+    <string>&amp;View memories</string>
    </property>
   </action>
-  <action name="actionPreferences">
+  <action name="preferences">
    <property name="text">
-    <string>Preferences ...(&amp;P)</string>
+    <string>&amp;Preferences ...</string>
    </property>
   </action>
-  <action name="actionAbout_A">
+  <action name="about">
    <property name="text">
-    <string>About(&amp;A)</string>
+    <string>&amp;About</string>
    </property>
   </action>
  </widget>
