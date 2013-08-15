@@ -13,33 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef INPUTOAUTHPINDIALOG_H
-#define INPUTOAUTHPINDIALOG_H
+#ifndef ABOUTDIALOG_H
+#define ABOUTDIALOG_H
 
 #include <QDialog>
+#include <QLabel>
+#include <QPixmap>
 
 namespace Ui {
-class InputOAuthPinDialog;
+class AboutDialog;
 }
 
-class InputOAuthPinDialog : public QDialog
+class AboutDialog : public QDialog
 {
     Q_OBJECT
     
 public:
-    explicit InputOAuthPinDialog(QWidget *parent = 0);
-    ~InputOAuthPinDialog();
+    explicit AboutDialog(QWidget *parent = 0);
+    ~AboutDialog();
     
-    QString pin() const;
-    void setPin(const QString &pin);
+    QString version() const;
+    void setVersion(const QString &version);
 
-private slots:
-    void on_buttonBox_accepted();
+    QStringList developers() const;
+    void setDevelopers(const QStringList &developers);
 
 private:
-    Ui::InputOAuthPinDialog *ui;
+    Ui::AboutDialog *ui;
 
-    QString m_pin;
+    QString m_version;
+    QStringList m_developers;
+
+    QLabel m_iconLabel;
+    QPixmap m_iconPixmap;
+
 };
 
-#endif // INPUTOAUTHPINDIALOG_H
+#endif // ABOUTDIALOG_H

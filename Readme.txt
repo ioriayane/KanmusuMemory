@@ -4,7 +4,7 @@
 　　http://relog.xii.jp/
 　　https://github.com/ioriayane/KanmusuMemory
 
-　Copyright 2013 IoriAYANE
+　Copyright 2013 KanMemo Project.
 ------------------------------------------------------------------------
 
 
@@ -102,3 +102,8 @@
 　　http://qt-project.org/　
 　・twitter4qml
 　　http://qtquick.me/
+
+
+【開発者】
+　@IoriAYANE
+　@task_jp

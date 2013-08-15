@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2013 IoriAYANE
+ * Copyright 2013 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@
 #include "tweetdialog.h"
 #include "settingsdialog.h"
 #include "cookiejar.h"
+#include "aboutdialog.h"
 
 #include <QtCore/QDate>
 #include <QtCore/QTime>
@@ -32,7 +33,11 @@
 
 #include <QtCore/QDebug>
 
-#define KANMEMO_VERSION 0.2
+#define KANMEMO_VERSION "0.2"
+#define KANMEMO_DEVELOPERS (QStringList() \
+    << "@IoriAYANE"\
+    << "@task_jp"\
+    )
 
 #define URL_KANCOLLE "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
 
@@ -81,8 +86,10 @@ MainWindow::Private::Private(MainWindow *parent)
 
     //アバウト
     connect(ui.about, &QAction::triggered, [this]() {
-        QMessageBox::about(q, MainWindow::tr("Kan Memo")
-                           , MainWindow::tr("Kan Memo -KanMusu Memory-\nVersion %1\n\nCopyright 2013 IoriAYANE").arg(KANMEMO_VERSION));
+        AboutDialog dlg(q);
+        dlg.setVersion(KANMEMO_VERSION);
+        dlg.setDevelopers(KANMEMO_DEVELOPERS);
+        dlg.exec();
     });
 
     connect(ui.webView, &QWebView::loadStarted, [this](){

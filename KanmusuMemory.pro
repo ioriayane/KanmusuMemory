@@ -10,19 +10,22 @@ SOURCES += main.cpp\
     tweetdialog.cpp \
     inputoauthpindialog.cpp \
     settingsdialog.cpp \
-    cookiejar.cpp
+    cookiejar.cpp \
+    aboutdialog.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
     inputoauthpindialog.h \
     twitterinfo.h \
     settingsdialog.h \
-    cookiejar.h
+    cookiejar.h \
+    aboutdialog.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \
     inputoauthpindialog.ui \
-    settingsdialog.ui
+    settingsdialog.ui \
+    aboutdialog.ui
 
 # icon
 win32{
@@ -31,3 +34,6 @@ win32{
 mac{
     ICON = KanmusuMemory.icns
 }
+
+RESOURCES += \
+    KanmusuMemory.qrc
