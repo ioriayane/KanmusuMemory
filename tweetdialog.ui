@@ -113,6 +113,14 @@
     <string>Reauthize</string>
    </property>
   </widget>
+  <action name="actionTweet">
+   <property name="text">
+    <string>tweet</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Return</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

@@ -31,12 +31,14 @@ TweetDialog::TweetDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    //Ctrl+Enterで送信
+    ui->tweetTextEdit->addAction(ui->actionTweet);
+    connect(ui->actionTweet, &QAction::triggered, ui->tweetButton, &QPushButton::clicked);
+    //キャプチャ画像表示
     m_imageLabel.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-//    m_imageLabel.setObjectName(QStringLiteral("lineEdit"));
     m_imageLabel.setGeometry(QRect(70, 20, 250, 150));
-
+    //oAuth
     connect(&m_oauth, SIGNAL(stateChanged(OAuth::State)), this, SLOT(stateChanged(OAuth::State)));
-
     m_oauth.setConsumerKey(QString(TWITTER_CONSUMER_KEY));
     m_oauth.setConsumerSecret(QString(TWITTER_CONSUMER_SECRET));
 }
