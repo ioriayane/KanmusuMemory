@@ -19,6 +19,7 @@
 #include "settingsdialog.h"
 #include "cookiejar.h"
 #include "aboutdialog.h"
+#include "memorydialog.h"
 
 #include <QtCore/QDate>
 #include <QtCore/QTime>
@@ -51,9 +52,12 @@ class MainWindow::Private
 public:
     Private(MainWindow *parent);
     void captureGame();         //保存する
+    void checkSavePath();       //保存場所の確認
+    void openTweetDialog(const QString &path);     //ツイートダイアログを開く
 
 private:
     MainWindow *q;
+    QtQuick2ApplicationViewer *m_viewer;
 
 public:
     Ui::MainWindow ui;
@@ -73,6 +77,16 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
+    //画像リスト
+    connect(ui.viewMemory, &QAction::triggered, [this]() {
+        checkSavePath();
+        MemoryDialog dlg(q);
+        dlg.setMemoryPath(settings.value(QStringLiteral("path")).toString());
+        dlg.setQmlSource(QUrl("qrc:///qml/KanmusuMemory/memoryDialog.qml"));
+        dlg.exec();
+        if(QFile::exists(dlg.imagePath()))
+            openTweetDialog(dlg.imagePath());
+    });
 
     //設定ダイアログ表示
     connect(ui.preferences, &QAction::triggered, [this]() {
@@ -91,7 +105,7 @@ MainWindow::Private::Private(MainWindow *parent)
         dlg.setDevelopers(KANMEMO_DEVELOPERS);
         dlg.exec();
     });
-
+    //WebViewの読込み開始
     connect(ui.webView, &QWebView::loadStarted, [this](){
        ui.progressBar->show();
     });
@@ -104,7 +118,6 @@ MainWindow::Private::Private(MainWindow *parent)
         }
         ui.progressBar->hide();
     });
-
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
 }
@@ -114,18 +127,8 @@ void MainWindow::Private::captureGame()
 {
     qDebug() << "captureGame";
 
-    if(!settings.contains(QStringLiteral("path"))){
-        //設定を促す
-        QMessageBox::information(q
-                                 , tr("Kan Memo")
-                                 , tr("Please select a folder to save the image of KanMusu."));
-        QString savePath = SettingsDialog::selectSavePath(q, QDir::homePath());
-        if (savePath.isEmpty()) {
-            ui.statusBar->showMessage(tr("canceled"), STATUS_BAR_MSG_TIME);
-            return;
-        }
-        settings.setValue(QStringLiteral("path"), savePath);
-    }
+    //設定確認
+    checkSavePath();
 
     //表示位置を一番上へ強制移動
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
@@ -171,22 +174,43 @@ void MainWindow::Private::captureGame()
     ui.statusBar->showMessage(tr("saving to %1...").arg(path), STATUS_BAR_MSG_TIME);
     if(img.save(path)){
         //つぶやくダイアログ
-        TweetDialog dlg(q);
-        dlg.setImagePath(path);
-        dlg.setToken(settings.value("token", "").toString());
-        dlg.setTokenSecret(settings.value("tokenSecret", "").toString());
-        dlg.user_id(settings.value("user_id", "").toString());
-        dlg.screen_name(settings.value("screen_name", "").toString());
-        dlg.exec();
-        settings.setValue("token", dlg.token());
-        settings.setValue("tokenSecret", dlg.tokenSecret());
-        settings.setValue("user_id", dlg.user_id());
-        settings.setValue("screen_name", dlg.screen_name());
-        //        settings.sync();
-
+        openTweetDialog(path);
     }else{
         ui.statusBar->showMessage(tr("failed save image"), STATUS_BAR_MSG_TIME);
     }
+}
+
+//保存場所の確認
+void MainWindow::Private::checkSavePath()
+{
+    if(!settings.contains(QStringLiteral("path"))){
+        //設定を促す
+        QMessageBox::information(q
+                                 , tr("Kan Memo")
+                                 , tr("Please select a folder to save the image of KanMusu."));
+        QString savePath = SettingsDialog::selectSavePath(q, QDir::homePath());
+        if (savePath.isEmpty()) {
+            ui.statusBar->showMessage(tr("canceled"), STATUS_BAR_MSG_TIME);
+            return;
+        }
+        settings.setValue(QStringLiteral("path"), savePath);
+    }
+}
+
+//ツイートダイアログを開く
+void MainWindow::Private::openTweetDialog(const QString &path)
+{
+    TweetDialog dlg(q);
+    dlg.setImagePath(path);
+    dlg.setToken(settings.value("token", "").toString());
+    dlg.setTokenSecret(settings.value("tokenSecret", "").toString());
+    dlg.user_id(settings.value("user_id", "").toString());
+    dlg.screen_name(settings.value("screen_name", "").toString());
+    dlg.exec();
+    settings.setValue("token", dlg.token());
+    settings.setValue("tokenSecret", dlg.tokenSecret());
+    settings.setValue("user_id", dlg.user_id());
+    settings.setValue("screen_name", dlg.screen_name());
 }
 
 MainWindow::MainWindow(QWidget *parent)

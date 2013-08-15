@@ -17,6 +17,9 @@
 #include <QApplication>
 #include <QtCore/QTranslator>
 #include <QtCore/QLocale>
+#include <QQmlEngine>
+
+#include "operatingsystem.h"
 
 #include <QDebug>
 
@@ -37,6 +40,9 @@ int main(int argc, char *argv[])
     translator.load(QString("qt_%1" ).arg(QLocale::system().name()), dir);
     //言語データを登録する
     a.installTranslator(&translator);
+
+    qmlRegisterType<OperatingSystem>("jp.relog.plugin.operatingsystem"
+                                     , 1, 0, "OperatingSystem");
 
     MainWindow w;
     w.show();

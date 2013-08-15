@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>resources/KanmusuMemory80.png</file>
+        <file>qml/KanmusuMemory/memoryDialog.qml</file>
+        <file>qml/KanmusuMemory/images/spinner.png</file>
     </qresource>
 </RCC>

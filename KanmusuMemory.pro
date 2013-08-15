@@ -11,7 +11,8 @@ SOURCES += main.cpp\
     inputoauthpindialog.cpp \
     settingsdialog.cpp \
     cookiejar.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    memorydialog.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -19,13 +20,20 @@ HEADERS  += mainwindow.h \
     twitterinfo.h \
     settingsdialog.h \
     cookiejar.h \
-    aboutdialog.h
+    aboutdialog.h \
+    memorydialog.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \
     inputoauthpindialog.ui \
     settingsdialog.ui \
-    aboutdialog.ui
+    aboutdialog.ui \
+    memorydialog.ui
+
+
+include(qtquick/qtquick.pri)
+#qtcAddDeployment()
+
 
 # icon
 win32{
