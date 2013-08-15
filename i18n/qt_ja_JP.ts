@@ -2,6 +2,46 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ja_JP">
 <context>
+    <name>AboutDialog</name>
+    <message>
+        <location filename="../aboutdialog.ui" line="+14"/>
+        <source>Kan Memo</source>
+        <translation>艦メモ　～艦娘メモリーズ～</translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>KanMemo -Kanmusu Memory-</source>
+        <translation>艦メモ ～艦娘メモリーズ～</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Version : </source>
+        <translation>Version : </translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Copyright 2013 KanMemo Project.</source>
+        <translation>Copyright 2013 KanMemo Project.</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Developers : </source>
+        <translation>開発者 : </translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>1
+2</source>
+        <translation>1
+2</translation>
+    </message>
+    <message>
+        <location filename="../aboutdialog.cpp" line="+46"/>
+        <source>Version : %1</source>
+        <translation>Version : %1</translation>
+    </message>
+</context>
+<context>
     <name>InputOAuthPinDialog</name>
     <message>
         <location filename="../inputoauthpindialog.ui" line="+14"/>
@@ -190,8 +230,7 @@
         <translation type="obsolete">思い出（スクリーンショット）を保存するフォルダを選択してください。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="+84"/>
-        <location line="+29"/>
+        <location filename="../mainwindow.cpp" line="+189"/>
         <source>Kan Memo</source>
         <translation>艦メモ　～艦娘メモリーズ～</translation>
     </message>
@@ -241,18 +280,17 @@ Please be performed in the state that it seems the whole of KanColle.</source>
         <translation type="obsolete">艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="-29"/>
         <source>Kan Memo -KanMusu Memory-
 Version %1
 
 Copyright 2013 IoriAYANE</source>
-        <translation>艦メモ　～艦娘メモリーズ～
+        <translation type="obsolete">艦メモ　～艦娘メモリーズ～
 Version %1
 
 Copyright 2013 IoriAYANE</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="-75"/>
         <source>complete</source>
         <translation>ページの読込み完了</translation>
     </message>
@@ -262,24 +300,24 @@ Copyright 2013 IoriAYANE</translation>
         <translation>ページの読込みに失敗</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+76"/>
         <source>canceled</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-53"/>
         <location line="+8"/>
         <location line="+6"/>
         <source>failed find target</source>
         <translation>艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+25"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-17"/>
+        <location line="-5"/>
         <source>saving to %1...</source>
         <translation>%1を保存します。</translation>
     </message>
@@ -294,6 +332,14 @@ Copyright 2013 IoriAYANE</source>
         <translation type="obsolete">艦メモ　～艦娘メモリーズ～
 
 Copyright 2013 IoriAYANE</translation>
+    </message>
+</context>
+<context>
+    <name>MemoryDialog</name>
+    <message>
+        <location filename="../memorydialog.ui" line="+14"/>
+        <source>Tweet by selecting the memories</source>
+        <translation>思い出を選択してつぶやく</translation>
     </message>
 </context>
 <context>
@@ -372,6 +418,16 @@ Copyright 2013 IoriAYANE</translation>
         <translation>再認証</translation>
     </message>
     <message>
+        <location line="+5"/>
+        <source>tweet</source>
+        <translation>つぶやく</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ctrl+Return</source>
+        <translation>Ctrl+Return</translation>
+    </message>
+    <message>
         <source>Tweet by </source>
         <translation type="obsolete">%1で、つぶやく</translation>
     </message>
@@ -380,7 +436,7 @@ Copyright 2013 IoriAYANE</translation>
         <translation type="obsolete">%1</translation>
     </message>
     <message>
-        <location filename="../tweetdialog.cpp" line="+107"/>
+        <location filename="../tweetdialog.cpp" line="+109"/>
         <location line="+2"/>
         <source>Tweet by %1</source>
         <translation>%1で、つぶやく</translation>
@@ -398,6 +454,19 @@ Copyright 2013 IoriAYANE</translation>
     <message>
         <source>Are you sure you want to authenticate to Twitter?</source>
         <translation type="obsolete">ツイッターの認証をします。</translation>
+    </message>
+</context>
+<context>
+    <name>memoryDialog</name>
+    <message>
+        <location filename="../qml/KanmusuMemory/memoryDialog.qml" line="+29"/>
+        <source>Select</source>
+        <translation>選択</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Cancel</source>
+        <translation>キャンセル</translation>
     </message>
 </context>
 </TS>

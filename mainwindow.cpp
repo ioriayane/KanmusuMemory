@@ -34,7 +34,7 @@
 
 #include <QtCore/QDebug>
 
-#define KANMEMO_VERSION "0.2"
+#define KANMEMO_VERSION "0.3"
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
     << "@task_jp"\
