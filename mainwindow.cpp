@@ -218,6 +218,7 @@ MainWindow::MainWindow(QWidget *parent)
     , d(new Private(this))
 {
     //設定
+    QNetworkProxyFactory::setUseSystemConfiguration(true);
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
     QWebSettings::globalSettings()->setAttribute(QWebSettings::JavascriptEnabled, true);
     //艦これ読込み
