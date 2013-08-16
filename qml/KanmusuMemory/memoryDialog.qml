@@ -42,18 +42,19 @@ Rectangle {
                 Qt.quit()
             }
         }
-//        Button {
-//            width: 81
-//            height: 31
-//            text: qsTr("Delete")
-//            enabled: grid.currentIndex >= 0
-//            onClicked: {
+        //        Button {
+        //            width: 81
+        //            height: 31
+        //            text: qsTr("Delete")
+        //            enabled: grid.currentIndex >= 0
+        //            onClicked: {
 
-//            }
-//        }
+        //            }
+        //        }
     }
 
     ScrollView {
+        id: scroll
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
@@ -69,17 +70,10 @@ Rectangle {
             model: FolderListModel {
                 id: folderlist
                 folder: os.pathPrefix + memoryData.memoryPath
-                showDirs: false
-                //フィルタ作成（関数の中も評価してくれる）
-                nameFilters: "kanmusu_*.png"
-            }
-            //選択アイテムのハイライト用レイアウト
-            highlight: Rectangle {
-                color: "#78aee5"
-                border.color: "#78aee5"
-                border.width: 1
-                radius: 2
-                antialiasing: true
+                showDirs: false                                 //ディレクトリは非表示
+                sortField: FolderListModel.Name                 //ファイル名でソート
+                sortReversed: true                              //新しいモノが上
+                nameFilters: "kanmusu_*.png"                    //フィルタ
             }
             //個々のレイアウト
             delegate: MouseArea {
@@ -131,10 +125,58 @@ Rectangle {
                 onClicked: {
                     grid.currentIndex = index
                     root.imagePath = model.filePath
+                    viewImage.source = os.pathPrefix + model.filePath
+                    view.xScale = 1
                 }
                 onDoubleClicked: {
                     memoryData.imagePath = model.filePath
                     Qt.quit()
+                }
+            }
+        }
+    }
+    Rectangle {
+        id: view
+        anchors.fill: scroll
+        color: "#aa000000"
+        clip: true
+        visible: xScale > 0
+        property real xScale: 0
+        Text {
+            anchors.bottom: parent.bottom
+            anchors.right: parent.right
+            anchors.margins: 5
+            text: qsTr("close with right click")
+            color: "white"
+            font.pointSize: 10
+        }
+        MouseArea {
+            anchors.fill: parent
+            acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
+            onWheel: wheel.accepted = true
+            onClicked: {
+                if(mouse.button == Qt.RightButton)
+                    view.xScale = 0
+            }
+            onDoubleClicked: {
+                memoryData.imagePath = root.imagePath
+                Qt.quit()
+            }
+        }
+        Image {
+            id: viewImage
+            anchors.centerIn: parent
+            width: view.width * 0.9
+            height: view.height * 0.9
+            fillMode: Image.PreserveAspectFit
+            source: ""
+            transform: Scale {
+                origin.x: viewImage.width / 2
+                origin.y: viewImage.height / 2
+                xScale: view.xScale
+
+                Behavior on xScale {
+                    NumberAnimation { duration: 200 }
                 }
             }
         }

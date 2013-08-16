@@ -468,5 +468,10 @@ Copyright 2013 IoriAYANE</translation>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
+    <message>
+        <location line="+110"/>
+        <source>close with right click</source>
+        <translation>右クリックで戻る</translation>
+    </message>
 </context>
 </TS>

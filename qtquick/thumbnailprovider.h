@@ -23,7 +23,7 @@ public:
 
         QImage image(id);
         if (!image.isNull())
-            image = image.scaled(width, height, Qt::KeepAspectRatio);
+            image = image.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 
         return image;
     }
