@@ -70,6 +70,8 @@
     <addaction name="capture"/>
     <addaction name="viewMemory"/>
     <addaction name="separator"/>
+    <addaction name="notificationTimer"/>
+    <addaction name="separator"/>
     <addaction name="preferences"/>
     <addaction name="separator"/>
     <addaction name="exit"/>
@@ -103,6 +105,7 @@
    </attribute>
    <addaction name="capture"/>
    <addaction name="viewMemory"/>
+   <addaction name="notificationTimer"/>
   </widget>
   <action name="exit">
    <property name="text">
@@ -143,6 +146,12 @@
    <property name="text">
     <string>&amp;View memories</string>
    </property>
+   <property name="toolTip">
+    <string>View memories(F6)</string>
+   </property>
+   <property name="shortcut">
+    <string>F6</string>
+   </property>
   </action>
   <action name="preferences">
    <property name="text">
@@ -152,6 +161,17 @@
   <action name="about">
    <property name="text">
     <string>&amp;About</string>
+   </property>
+  </action>
+  <action name="notificationTimer">
+   <property name="text">
+    <string>&amp;Timer</string>
+   </property>
+   <property name="toolTip">
+    <string>Timer(F7)</string>
+   </property>
+   <property name="shortcut">
+    <string>F7</string>
    </property>
   </action>
  </widget>

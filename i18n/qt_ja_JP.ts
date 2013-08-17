@@ -61,7 +61,7 @@
         <translation type="obsolete">艦メモ ～艦娘メモリーズ～</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="+117"/>
+        <location filename="../mainwindow.ui" line="+120"/>
         <source>Capture</source>
         <translation>思い出を残す(F5)</translation>
     </message>
@@ -70,7 +70,7 @@
         <translation type="obsolete">思い出を残す(F9)</translation>
     </message>
     <message>
-        <location line="-97"/>
+        <location line="-100"/>
         <source>Kan Memo -KanMusu Memory-</source>
         <translation>艦メモ　～艦娘メモリーズ～</translation>
     </message>
@@ -80,7 +80,7 @@
         <translation>ファイル(&amp;F)</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+13"/>
         <source>&amp;Browser</source>
         <translation>ブラウザ(&amp;B)</translation>
     </message>
@@ -95,7 +95,7 @@
         <translation>ツールバー</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>&amp;Exit</source>
         <translation>終了(&amp;E)</translation>
     </message>
@@ -110,6 +110,21 @@
         <translation>思い出を残す(F5)</translation>
     </message>
     <message>
+        <location line="+45"/>
+        <source>&amp;Timer</source>
+        <translation>お知らせタイマー(F7)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Timer(F7)</source>
+        <translation>お知らせタイマー(F7)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>F7</source>
+        <translation>F7</translation>
+    </message>
+    <message>
         <source>&amp;Capture</source>
         <translation type="obsolete">思い出を残す(&amp;C)</translation>
     </message>
@@ -118,7 +133,7 @@
         <translation type="obsolete">Ctrl+S</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-43"/>
         <source>&amp;Reload</source>
         <translation>再読み込み</translation>
     </message>
@@ -145,6 +160,16 @@
         <location line="+8"/>
         <source>&amp;View memories</source>
         <translation>思い出を表示</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>View memories(F6)</source>
+        <translation>思い出を表示(F6)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>F6</source>
+        <translation>F6</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -213,7 +238,7 @@
         <translation type="obsolete">思い出を表示(&amp;V)</translation>
     </message>
     <message>
-        <location line="-111"/>
+        <location line="-120"/>
         <source>about:blank</source>
         <translation>about:blank</translation>
     </message>
@@ -230,7 +255,7 @@
         <translation type="obsolete">思い出（スクリーンショット）を保存するフォルダを選択してください。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="+189"/>
+        <location filename="../mainwindow.cpp" line="+202"/>
         <source>Kan Memo</source>
         <translation>艦メモ　～艦娘メモリーズ～</translation>
     </message>
@@ -290,7 +315,7 @@ Version %1
 Copyright 2013 IoriAYANE</translation>
     </message>
     <message>
-        <location line="-75"/>
+        <location line="-82"/>
         <source>complete</source>
         <translation>ページの読込み完了</translation>
     </message>
@@ -300,7 +325,7 @@ Copyright 2013 IoriAYANE</translation>
         <translation>ページの読込みに失敗</translation>
     </message>
     <message>
-        <location line="+76"/>
+        <location line="+83"/>
         <source>canceled</source>
         <translation>キャンセル</translation>
     </message>
@@ -373,6 +398,109 @@ Copyright 2013 IoriAYANE</translation>
         <location filename="../settingsdialog.cpp" line="+50"/>
         <source>Select save folder</source>
         <translation>保存フォルダ</translation>
+    </message>
+</context>
+<context>
+    <name>TimerDialog</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="obsolete">ダイアログ</translation>
+    </message>
+    <message>
+        <location filename="../timerdialog.cpp" line="+68"/>
+        <source>1st</source>
+        <translation>第１</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>2nd</source>
+        <translation>第２</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>3rd</source>
+        <translation>第３</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>4th</source>
+        <translation>第４</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>5th</source>
+        <translation>第５</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>6th</source>
+        <translation>第６</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>7th</source>
+        <translation>第７</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>8th</source>
+        <translation>第８</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>It is time that Kanmusu is up from the %1 bath.</source>
+        <translation>%1ドックの艦娘さんがお風呂から上がる頃です。</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>It is time the %1 Fleet is returned.</source>
+        <translation>%1艦隊が遠征から帰る頃です。</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>It is time the Kanmusu of %1 dock is completed.</source>
+        <translation>%1ドックでの建造が終わる頃です。</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>KanMemo</source>
+        <translation>艦メモ</translation>
+    </message>
+    <message>
+        <location filename="../timerdialog.ui" line="+14"/>
+        <source>Timer</source>
+        <translation>お知らせタイマー</translation>
+    </message>
+</context>
+<context>
+    <name>TimerItem</name>
+    <message>
+        <location filename="../qml/KanmusuMemory/TimerItem.qml" line="+99"/>
+        <source>Start</source>
+        <translation>開始</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Stop</source>
+        <translation>停止</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Set</source>
+        <translation>設定</translation>
+    </message>
+</context>
+<context>
+    <name>TimerSetting</name>
+    <message>
+        <location filename="../qml/KanmusuMemory/TimerSetting.qml" line="+78"/>
+        <source>Set</source>
+        <translation>設定</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Cancel</source>
+        <translation>キャンセル</translation>
     </message>
 </context>
 <context>
@@ -472,6 +600,31 @@ Copyright 2013 IoriAYANE</translation>
         <location line="+110"/>
         <source>close with right click</source>
         <translation>右クリックで戻る</translation>
+    </message>
+</context>
+<context>
+    <name>notificationTimerDialog</name>
+    <message>
+        <source>Cancel</source>
+        <translation type="obsolete">キャンセル</translation>
+    </message>
+</context>
+<context>
+    <name>timerDialog</name>
+    <message>
+        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+95"/>
+        <source>Docking</source>
+        <translation>入渠</translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Expedition</source>
+        <translation>遠征</translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <source>Construction</source>
+        <translation>建造</translation>
     </message>
 </context>
 </TS>

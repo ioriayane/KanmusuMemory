@@ -19,7 +19,7 @@
 #include "inputoauthpindialog.h"
 
 #include <QMessageBox>
-#include <QDebug>
+#include <QtCore/QDebug>
 
 
 TweetDialog::TweetDialog(QWidget *parent) :

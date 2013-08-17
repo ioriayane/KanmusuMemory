@@ -13,37 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "memorydata.h"
+#ifndef KANMUSUMEMORY_GLOBAL_H
+#define KANMUSUMEMORY_GLOBAL_H
 
-MemoryData::MemoryData(QObject *parent) :
-    QObject(parent)
-{
-}
+#define KANMEMO_VERSION "0.3"
+#define KANMEMO_DEVELOPERS (QStringList() \
+    << "@IoriAYANE"\
+    << "@task_jp"\
+    )
 
-const QString &MemoryData::memoryPath() const
-{
-    return m_memoryPath;
-}
+#define SETTING_FILE_NAME       "settings.ini"
+#define SETTING_FILE_FORMAT     QSettings::IniFormat
 
-void MemoryData::setMemoryPath(const QString &path)
-{
-    if(m_memoryPath.compare(path) == 0)
-        return;
+#define SETTING_GENERAL_TOKEN       "token"
+#define SETTING_GENERAL_TOKENSECRET "tokenSecret"
+#define SETTING_GENERAL_USER_ID     "user_id"
+#define SETTING_GENERAL_SCREEN_NAME "screen_name"
 
-    m_memoryPath = path;
-    emit memoryPathChanged(m_memoryPath);
-}
 
-const QString &MemoryData::imagePath() const
-{
-    return m_imagePath;
-}
-
-void MemoryData::setImagePath(const QString &path)
-{
-    if(m_imagePath.compare(path) == 0)
-        return;
-
-    m_imagePath = path;
-    emit imagePathChanged(m_imagePath);
-}
+#endif // KANMUSUMEMORY_GLOBAL_H

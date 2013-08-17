@@ -12,7 +12,8 @@ SOURCES += main.cpp\
     settingsdialog.cpp \
     cookiejar.cpp \
     aboutdialog.cpp \
-    memorydialog.cpp
+    memorydialog.cpp \
+    timerdialog.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -21,14 +22,17 @@ HEADERS  += mainwindow.h \
     settingsdialog.h \
     cookiejar.h \
     aboutdialog.h \
-    memorydialog.h
+    memorydialog.h \
+    timerdialog.h \
+    kanmusumemory_global.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \
     inputoauthpindialog.ui \
     settingsdialog.ui \
     aboutdialog.ui \
-    memorydialog.ui
+    memorydialog.ui \
+    timerdialog.ui
 
 
 include(qtquick/qtquick.pri)

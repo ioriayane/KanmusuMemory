@@ -20,6 +20,8 @@
 #include "cookiejar.h"
 #include "aboutdialog.h"
 #include "memorydialog.h"
+#include "timerdialog.h"
+#include "kanmusumemory_global.h"
 
 #include <QtCore/QDate>
 #include <QtCore/QTime>
@@ -31,19 +33,13 @@
 #include <QtWidgets/QMessageBox>
 #include <QtWebKitWidgets/QWebFrame>
 #include <QtWebKit/QWebElement>
+#include <QSystemTrayIcon>
 
 #include <QtCore/QDebug>
 
-#define KANMEMO_VERSION "0.3"
-#define KANMEMO_DEVELOPERS (QStringList() \
-    << "@IoriAYANE"\
-    << "@task_jp"\
-    )
 
 #define URL_KANCOLLE "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
 
-#define SETTING_FILE_NAME       "settings.ini"
-#define SETTING_FILE_FORMAT     QSettings::IniFormat
 
 #define STATUS_BAR_MSG_TIME     5000
 
@@ -51,28 +47,36 @@ class MainWindow::Private
 {
 public:
     Private(MainWindow *parent);
+    ~Private();
     void captureGame();         //保存する
     void checkSavePath();       //保存場所の確認
     void openTweetDialog(const QString &path);     //ツイートダイアログを開く
 
 private:
     MainWindow *q;
-    QtQuick2ApplicationViewer *m_viewer;
+    TimerDialog *m_timerDialog;
 
 public:
     Ui::MainWindow ui;
-    QSettings settings;       //設定管理
+    QSettings settings;         //設定管理
+    QSystemTrayIcon trayIcon;   //トレイアイコン
 };
 
 MainWindow::Private::Private(MainWindow *parent)
     : q(parent)
     , settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT)
+    , trayIcon(QIcon(":/resources/KanmusuMemory32.png"))
 {
     ui.setupUi(q);
     ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
     QNetworkDiskCache *cache = new QNetworkDiskCache(q);
     cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
     ui.webView->page()->networkAccessManager()->setCache(cache);
+
+    //通知タイマーのダイアログ作成
+    m_timerDialog = new TimerDialog(q);
+    m_timerDialog->trayIcon = &trayIcon;
+    m_timerDialog->settings = &settings;
 
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
@@ -82,10 +86,13 @@ MainWindow::Private::Private(MainWindow *parent)
         checkSavePath();
         MemoryDialog dlg(q);
         dlg.setMemoryPath(settings.value(QStringLiteral("path")).toString());
-        dlg.setQmlSource(QUrl("qrc:///qml/KanmusuMemory/memoryDialog.qml"));
         dlg.exec();
         if(QFile::exists(dlg.imagePath()))
             openTweetDialog(dlg.imagePath());
+    });
+    //通知タイマー
+    connect(ui.notificationTimer, &QAction::triggered, [this]() {
+        m_timerDialog->show();
     });
 
     //設定ダイアログ表示
@@ -120,6 +127,13 @@ MainWindow::Private::Private(MainWindow *parent)
     });
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
+    //通知アイコン
+    trayIcon.show();
+}
+
+MainWindow::Private::~Private()
+{
+    delete m_timerDialog;
 }
 
 //思い出を残す
@@ -202,15 +216,15 @@ void MainWindow::Private::openTweetDialog(const QString &path)
 {
     TweetDialog dlg(q);
     dlg.setImagePath(path);
-    dlg.setToken(settings.value("token", "").toString());
-    dlg.setTokenSecret(settings.value("tokenSecret", "").toString());
-    dlg.user_id(settings.value("user_id", "").toString());
-    dlg.screen_name(settings.value("screen_name", "").toString());
+    dlg.setToken(settings.value(SETTING_GENERAL_TOKEN, "").toString());
+    dlg.setTokenSecret(settings.value(SETTING_GENERAL_TOKENSECRET, "").toString());
+    dlg.user_id(settings.value(SETTING_GENERAL_USER_ID, "").toString());
+    dlg.screen_name(settings.value(SETTING_GENERAL_SCREEN_NAME, "").toString());
     dlg.exec();
-    settings.setValue("token", dlg.token());
-    settings.setValue("tokenSecret", dlg.tokenSecret());
-    settings.setValue("user_id", dlg.user_id());
-    settings.setValue("screen_name", dlg.screen_name());
+    settings.setValue(SETTING_GENERAL_TOKEN, dlg.token());
+    settings.setValue(SETTING_GENERAL_TOKENSECRET, dlg.tokenSecret());
+    settings.setValue(SETTING_GENERAL_USER_ID, dlg.user_id());
+    settings.setValue(SETTING_GENERAL_SCREEN_NAME, dlg.screen_name());
 }
 
 MainWindow::MainWindow(QWidget *parent)

@@ -3,5 +3,10 @@
         <file>resources/KanmusuMemory80.png</file>
         <file>qml/KanmusuMemory/memoryDialog.qml</file>
         <file>qml/KanmusuMemory/images/spinner.png</file>
+        <file>resources/KanmusuMemory32.png</file>
+        <file>qml/KanmusuMemory/timerDialog.qml</file>
+        <file>qml/KanmusuMemory/TimerItem.qml</file>
+        <file>qml/KanmusuMemory/TimerSetting.qml</file>
+        <file>qml/KanmusuMemory/test.qml</file>
     </qresource>
 </RCC>
