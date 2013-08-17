@@ -161,7 +161,7 @@ Rectangle {
             anchors.bottom: parent.bottom
             anchors.right: parent.right
             anchors.margins: 5
-            text: qsTr("close with right click")
+            text: qsTr("selected by double-click") + " / " + qsTr("close with right click")
             color: "white"
             font.pointSize: 10
         }
