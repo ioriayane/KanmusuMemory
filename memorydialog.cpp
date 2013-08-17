@@ -61,11 +61,13 @@ void MemoryDialog::showEvent(QShowEvent *event)
         //プラグインを登録
         m_viewer->engine()->addImageProvider(QStringLiteral("thumbnail")
                                           , new ThumbnailProvider);
-        m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/memoryDialog.qml"));
-        m_viewer->show();
-
+        //C++のデータをQML側へ公開
         m_data.setMemoryPath(m_memoryPath);
         m_viewer->rootContext()->setContextProperty("memoryData", &m_data);
+
+        //QML設定して表示
+        m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/memoryDialog.qml"));
+        m_viewer->show();
     }
 }
 

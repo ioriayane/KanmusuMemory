@@ -60,13 +60,15 @@ void TimerDialog::showEvent(QShowEvent *event)
     if(m_viewer == NULL){
         m_viewer = new QtQuick2ApplicationViewer(windowHandle());
         connect(m_viewer->engine(), SIGNAL(quit()), this, SLOT(closeQml()));
-//        m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/test.qml"));
-        m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/timerDialog.qml"));
-        m_viewer->show();
 
         //この辺りで途中状態の読み込み？
 
+        //C++のデータをQML側へ公開
         m_viewer->rootContext()->setContextProperty("timerData", &m_timerdata);
+
+        //QML設定して表示
+        m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/timerDialog.qml"));
+        m_viewer->show();
     }
 }
 
