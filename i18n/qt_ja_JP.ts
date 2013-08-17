@@ -159,7 +159,7 @@
     <message>
         <location line="+8"/>
         <source>&amp;View memories</source>
-        <translation>思い出を表示</translation>
+        <translation>思い出を表示(F6)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -255,7 +255,7 @@
         <translation type="obsolete">思い出（スクリーンショット）を保存するフォルダを選択してください。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="+202"/>
+        <location filename="../mainwindow.cpp" line="+203"/>
         <source>Kan Memo</source>
         <translation>艦メモ　～艦娘メモリーズ～</translation>
     </message>
@@ -407,7 +407,7 @@ Copyright 2013 IoriAYANE</translation>
         <translation type="obsolete">ダイアログ</translation>
     </message>
     <message>
-        <location filename="../timerdialog.cpp" line="+68"/>
+        <location filename="../timerdialog.cpp" line="+85"/>
         <source>1st</source>
         <translation>第１</translation>
     </message>
@@ -467,7 +467,7 @@ Copyright 2013 IoriAYANE</translation>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location filename="../timerdialog.ui" line="+14"/>
+        <location filename="../timerdialog.ui" line="+26"/>
         <source>Timer</source>
         <translation>お知らせタイマー</translation>
     </message>
@@ -475,7 +475,7 @@ Copyright 2013 IoriAYANE</translation>
 <context>
     <name>TimerItem</name>
     <message>
-        <location filename="../qml/KanmusuMemory/TimerItem.qml" line="+99"/>
+        <location filename="../qml/KanmusuMemory/TimerItem.qml" line="+114"/>
         <source>Start</source>
         <translation>開始</translation>
     </message>
@@ -493,12 +493,12 @@ Copyright 2013 IoriAYANE</translation>
 <context>
     <name>TimerSetting</name>
     <message>
-        <location filename="../qml/KanmusuMemory/TimerSetting.qml" line="+78"/>
+        <location filename="../qml/KanmusuMemory/TimerSetting.qml" line="+97"/>
         <source>Set</source>
         <translation>設定</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
@@ -587,7 +587,7 @@ Copyright 2013 IoriAYANE</translation>
 <context>
     <name>memoryDialog</name>
     <message>
-        <location filename="../qml/KanmusuMemory/memoryDialog.qml" line="+29"/>
+        <location filename="../qml/KanmusuMemory/memoryDialog.qml" line="+44"/>
         <source>Select</source>
         <translation>選択</translation>
     </message>
@@ -601,6 +601,11 @@ Copyright 2013 IoriAYANE</translation>
         <source>close with right click</source>
         <translation>右クリックで戻る</translation>
     </message>
+    <message>
+        <location line="+0"/>
+        <source>selected by double-click</source>
+        <translation>ダブルクリックで選択</translation>
+    </message>
 </context>
 <context>
     <name>notificationTimerDialog</name>
@@ -612,17 +617,17 @@ Copyright 2013 IoriAYANE</translation>
 <context>
     <name>timerDialog</name>
     <message>
-        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+95"/>
+        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+110"/>
         <source>Docking</source>
         <translation>入渠</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+36"/>
         <source>Expedition</source>
         <translation>遠征</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+36"/>
         <source>Construction</source>
         <translation>建造</translation>
     </message>

@@ -27,6 +27,7 @@ Rectangle {
     property real startTime: 0      //開始時間
     property real progress: 0       //進捗 0.0-1.0
     property real now: 0
+    property int indexOffset: 0     //表示している番号をずらす
 
     signal started()
     signal stopped()
@@ -76,6 +77,12 @@ Rectangle {
         id: content
         anchors.centerIn: parent
         spacing: 10
+        Text {
+            anchors.verticalCenter: parent.verticalCenter
+            text: "%1 : ".arg(index + 1 + indexOffset)
+            color: "darkGray"
+            font.pointSize: 12
+        }
         Column {
             Row {
                 spacing: 5

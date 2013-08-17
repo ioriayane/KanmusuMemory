@@ -115,26 +115,18 @@ Rectangle {
                 Repeater {
                     id: docking
                     model: timerData.dockingTime.length
-                    delegate: Row {
-                        Text {
-                            anchors.verticalCenter: parent.verticalCenter
-                            text: "%1 : ".arg(index + 1)
-                            color: "darkGray"
-                            font.pointSize: 12
+                    delegate: TimerItem {
+                        setTime: timerData.dockingTime[index]              //指定時間
+                        startTime: timerData.dockingStart[index]          //開始時間
+                        onStarted: {
+                            //                            console.debug("QML:start=" + startTime)
+                            timerData.setStartTime(0, index, startTime)
+                            timerData.setRunning(0, index, true)
                         }
-                        TimerItem {
-                            setTime: timerData.dockingTime[index]              //指定時間
-                            startTime: timerData.dockingStart[index]          //開始時間
-                            onStarted: {
-                                //                            console.debug("QML:start=" + startTime)
-                                timerData.setStartTime(0, index, startTime)
-                                timerData.setRunning(0, index, true)
-                            }
-                            onStopped: timerData.setRunning(0, index, false)
-                            onSetting: root.openSetting(0, index, setTime)
-                            onFinished: {
-                                //                            console.debug("FINISH 0 " + index)
-                            }
+                        onStopped: timerData.setRunning(0, index, false)
+                        onSetting: root.openSetting(0, index, setTime)
+                        onFinished: {
+                            //                            console.debug("FINISH 0 " + index)
                         }
                     }
                 }
@@ -151,26 +143,19 @@ Rectangle {
                 Repeater {
                     id: expedition
                     model: timerData.expeditionTime.length
-                    delegate: Row {
-                        Text {
-                            anchors.verticalCenter: parent.verticalCenter
-                            text: "%1 : ".arg(index + 2)
-                            color: "darkGray"
-                            font.pointSize: 12
-                        }
-                        TimerItem {
-                            setTime: timerData.expeditionTime[index]          //指定時間
-                            startTime: timerData.expeditionStart[index]      //開始時間
+                    delegate: TimerItem {
+                        setTime: timerData.expeditionTime[index]          //指定時間
+                        startTime: timerData.expeditionStart[index]      //開始時間
+                        indexOffset: 1
 
-                            onStarted: {
-                                timerData.setStartTime(1, index, startTime)
-                                timerData.setRunning(1, index, true)
-                            }
-                            onStopped: timerData.setRunning(1, index, false)
-                            onSetting: root.openSetting(1, index, setTime)
-                            onFinished: {
-                                //                            console.debug("FINISH 1 " + index)
-                            }
+                        onStarted: {
+                            timerData.setStartTime(1, index, startTime)
+                            timerData.setRunning(1, index, true)
+                        }
+                        onStopped: timerData.setRunning(1, index, false)
+                        onSetting: root.openSetting(1, index, setTime)
+                        onFinished: {
+                            //                            console.debug("FINISH 1 " + index)
                         }
                     }
                 }
@@ -187,25 +172,17 @@ Rectangle {
                 Repeater {
                     id: construction
                     model: timerData.constructionTime.length
-                    delegate: Row {
-                        Text {
-                            anchors.verticalCenter: parent.verticalCenter
-                            text: "%1 : ".arg(index + 1)
-                            color: "darkGray"
-                            font.pointSize: 12
+                    delegate: TimerItem {
+                        setTime: timerData.constructionTime[index]          //指定時間
+                        startTime: timerData.constructionStart[index]      //開始時間
+                        onStarted: {
+                            timerData.setStartTime(2, index, startTime)
+                            timerData.setRunning(2, index, true)
                         }
-                        TimerItem {
-                            setTime: timerData.constructionTime[index]          //指定時間
-                            startTime: timerData.constructionStart[index]      //開始時間
-                            onStarted: {
-                                timerData.setStartTime(2, index, startTime)
-                                timerData.setRunning(2, index, true)
-                            }
-                            onStopped: timerData.setRunning(2, index, false)
-                            onSetting: root.openSetting(2, index, setTime)
-                            onFinished: {
-                                //                            console.debug("FINISH 2 " + index)
-                            }
+                        onStopped: timerData.setRunning(2, index, false)
+                        onSetting: root.openSetting(2, index, setTime)
+                        onFinished: {
+                            //                            console.debug("FINISH 2 " + index)
                         }
                     }
                 }
