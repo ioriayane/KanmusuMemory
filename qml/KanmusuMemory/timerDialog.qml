@@ -31,25 +31,6 @@ Rectangle {
     property real d3set: 0
     property real d3start: 0
 
-    Component.onCompleted: {
-        var i=0;
-        //開いた時にすでに開始済みのものをスタートする
-        for(i=0; i<docking.count; i++){
-            if(timerData.dockingRunning[i]){
-                docking.itemAt(i).start()
-            }
-        }
-        for(i=0; i<expedition.count; i++){
-            if(timerData.expeditionRunning[i]){
-                expedition.itemAt(i).start()
-            }
-        }
-        for(i=0; i<construction.count; i++){
-            if(timerData.constructionRunning[i]){
-                construction.itemAt(i).start()
-            }
-        }
-    }
 
     Timer {
         id: timer
@@ -128,6 +109,11 @@ Rectangle {
                         onFinished: {
                             //                            console.debug("FINISH 0 " + index)
                         }
+                        Component.onCompleted: {
+                            //開始時に動いてるか
+                            if(timerData.dockingRunning[index])
+                                restart()
+                        }
                     }
                 }
             }
@@ -157,6 +143,11 @@ Rectangle {
                         onFinished: {
                             //                            console.debug("FINISH 1 " + index)
                         }
+                        Component.onCompleted: {
+                            //開始時に動いてるか
+                            if(timerData.expeditionRunning[index])
+                                restart()
+                        }
                     }
                 }
             }
@@ -184,9 +175,22 @@ Rectangle {
                         onFinished: {
                             //                            console.debug("FINISH 2 " + index)
                         }
+                        Component.onCompleted: {
+                            //開始時に動いてるか
+                            if(timerData.constructionRunning[index])
+                                restart()
+                        }
                     }
                 }
             }
+        }
+        Item { width: 5; height: 5 }
+        CheckBox {
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            text: "tweet a time-out"
+            checked: timerData.tweetFinished    //このバインドは初期値をもらうだけ
+            onCheckedChanged: timerData.tweetFinished = checked
         }
     }
     //ダイアログ開く
@@ -271,47 +275,57 @@ Rectangle {
 
     ListModel {
         id: dockingModel
-        //        ListElement { hour: 0; minute: 10; second: 0 }
-        //        ListElement { hour: 0; minute: 20; second: 0 }
+        ListElement { hour: 0; minute: 15; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 0; minute: 30; second: 0; msg1: ""; msg2: "" }
-        //        ListElement { hour: 0; minute: 40; second: 0 }
-        //        ListElement { hour: 0; minute: 50; second: 0 }
+        ListElement { hour: 0; minute: 45; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 1; minute: 0; second: 0; msg1: ""; msg2: "" }
-        //        ListElement { hour: 1; minute: 10; second: 0 }
-        //        ListElement { hour: 1; minute: 20; second: 0 }
+        ListElement { hour: 1; minute: 15; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 1; minute: 30; second: 0; msg1: ""; msg2: "" }
-        //        ListElement { hour: 1; minute: 40; second: 0 }
-        //        ListElement { hour: 1; minute: 50; second: 0 }
+        ListElement { hour: 1; minute: 45; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 2; minute: 0; second: 0; msg1: ""; msg2: "" }
-        //        ListElement { hour: 2; minute: 10; second: 0 }
-        //        ListElement { hour: 2; minute: 20; second: 0 }
+        ListElement { hour: 2; minute: 15; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 2; minute: 30; second: 0; msg1: ""; msg2: "" }
-        //        ListElement { hour: 2; minute: 40; second: 0 }
-        //        ListElement { hour: 2; minute: 50; second: 0 }
+        ListElement { hour: 2; minute: 45; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 3; minute: 0; second: 0; msg1: ""; msg2: "" }
-        //        ListElement { hour: 3; minute: 10; second: 0 }
-        //        ListElement { hour: 3; minute: 20; second: 0 }
+        ListElement { hour: 3; minute: 15; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 3; minute: 30; second: 0; msg1: ""; msg2: "" }
-        //        ListElement { hour: 3; minute: 40; second: 0 }
-        //        ListElement { hour: 3; minute: 50; second: 0 }
+        ListElement { hour: 3; minute: 45; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 4; minute: 0; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 4; minute: 15; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 4; minute: 30; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 4; minute: 45; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 5; minute: 0; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 5; minute: 15; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 5; minute: 30; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 5; minute: 45; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 6; minute: 0; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 6; minute: 15; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 6; minute: 30; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 6; minute: 45; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 7; minute: 0; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 7; minute: 15; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 7; minute: 30; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 7; minute: 45; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 8; minute: 0; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 8; minute: 15; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 8; minute: 30; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 8; minute: 45; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 9; minute: 0; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 9; minute: 15; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 9; minute: 30; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 9; minute: 45; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 10; minute: 0; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 10; minute: 15; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 10; minute: 30; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 10; minute: 45; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 11; minute: 0; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 11; minute: 15; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 11; minute: 30; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 11; minute: 45; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 12; minute: 0; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 12; minute: 15; second: 0; msg1: ""; msg2: "" }
         ListElement { hour: 12; minute: 30; second: 0; msg1: ""; msg2: "" }
+        ListElement { hour: 12; minute: 45; second: 0; msg1: ""; msg2: "" }
     }
     //遠征
     ListModel {

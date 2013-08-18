@@ -31,4 +31,18 @@
 #define SETTING_GENERAL_SCREEN_NAME "screen_name"
 
 
+#define SETTING_TIMER                       "timer"
+#define SETTING_TIMER_DOCKING_TIME          "dockingTime"
+#define SETTING_TIMER_DOCKING_START         "dockingStart"
+#define SETTING_TIMER_DOCKING_RUNNING       "dockingRunning"
+#define SETTING_TIMER_EXPEDITION_TIME       "expeditionTime"
+#define SETTING_TIMER_EXPEDITION_START      "expeditionStart"
+#define SETTING_TIMER_EXPEDITION_RUNNING    "expeditionRunning"
+#define SETTING_TIMER_CONSTRUCTION_TIME     "constructionTime"
+#define SETTING_TIMER_CONSTRUCTION_START    "constructionStart"
+#define SETTING_TIMER_CONSTRUCTION_RUNNING  "constructionRunning"
+#define SETTING_TIMER_TWEETFINISHED         "tweetFinished"
+
+
+
 #endif // KANMUSUMEMORY_GLOBAL_H

@@ -23,29 +23,21 @@ class TimerData : public QObject
 {
     Q_OBJECT
 
-//    property variant dockingSet: [0, 7830000, 0, 0]
-//    property variant dockingStart: [0, 0, 0, 0]
-//    property variant dockingRunning: [false, false, false, false]
-//    //遠征
-//    property variant expeditionSet: [0, 7830000, 0, 0]
-//    property variant expeditionStart: [0, 0, 0, 0]
-//    property variant expeditionRunning: [false, false, false, false]
-//    //建造
-//    property variant constructionSet: [0, 30000, 0, 0]
-//    property variant constructionStart: [0, 0, 0, 0]
-//    property variant constructionRunning: [false, true, false, false]
-
+    //入渠
     Q_PROPERTY(QList<qreal> dockingTime READ dockingTime WRITE setDockingTime NOTIFY dockingTimeChanged)
     Q_PROPERTY(QList<qreal> dockingStart READ dockingStart WRITE setDockingStart NOTIFY dockingStartChanged)
     Q_PROPERTY(QList<bool> dockingRunning READ dockingRunning WRITE setDockingRunning NOTIFY dockingRunningChanged)
-
+    //遠征
     Q_PROPERTY(QList<qreal> expeditionTime READ expeditionTime WRITE setExpeditionTime NOTIFY expeditionTimeChanged)
     Q_PROPERTY(QList<qreal> expeditionStart READ expeditionStart WRITE setExpeditionStart NOTIFY expeditionStartChanged)
     Q_PROPERTY(QList<bool> expeditionRunning READ expeditionRunning WRITE setExpeditionRunning NOTIFY expeditionRunningChanged)
-
+    //建造
     Q_PROPERTY(QList<qreal> constructionTime READ constructionTime WRITE setConstructionTime NOTIFY constructionTimeChanged)
     Q_PROPERTY(QList<qreal> constructionStart READ constructionStart WRITE setConstructionStart NOTIFY constructionStartChanged)
     Q_PROPERTY(QList<bool> constructionRunning READ constructionRunning WRITE setConstructionRunning NOTIFY constructionRunningChanged)
+
+    //設定
+    Q_PROPERTY(bool tweetFinished READ tweetFinished WRITE setTweetFinished NOTIFY tweetFinishedChanged)
 
 public:
     explicit TimerData(QObject *parent = 0);
@@ -75,6 +67,22 @@ public:
     const QList<bool> &constructionRunning() const;
     void setConstructionRunning(const QList<bool> &running);
 
+    const bool &tweetFinished() const;
+    void setTweetFinished(const bool &tweet);
+
+
+    static QList<qreal> toRealList(const QList<QVariant> src);
+    static QList<bool> toBoolList(const QList<QVariant> src);
+    template <class UD, class US>
+    static QList<UD> toList(const QList<US> &src)
+    {
+        QList<UD> dest;
+        foreach (US s, src){
+            dest << s;
+        }
+        return dest;
+    }
+
 signals:
     void dockingTimeChanged(const QList<qreal> &set);
     void dockingStartChanged(const QList<qreal> &start);
@@ -88,6 +96,7 @@ signals:
     void constructionStartChanged(const QList<qreal> &start);
     void constructionRunningChanged(const QList<bool> &running);
 
+    void tweetFinishedChanged();
 public slots:
 
 private:
@@ -103,6 +112,8 @@ private:
     QList<qreal> m_constructionTime;
     QList<qreal> m_constructionStart;
     QList<bool> m_constructionRunning;
+
+    bool m_tweetFinished;
 };
 
 #endif // TIMERDATA_H

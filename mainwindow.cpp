@@ -74,10 +74,9 @@ MainWindow::Private::Private(MainWindow *parent)
     ui.webView->page()->networkAccessManager()->setCache(cache);
 
     //通知タイマーのダイアログ作成
-    m_timerDialog = new TimerDialog(q);
-    m_timerDialog->trayIcon = &trayIcon;
-    m_timerDialog->settings = &settings;
+    m_timerDialog = new TimerDialog(q, &trayIcon, &settings);
 
+    //メニュー
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);

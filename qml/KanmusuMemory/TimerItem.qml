@@ -25,7 +25,7 @@ Rectangle {
     property bool running: false
     property real setTime: 0        //指定時間
     property real startTime: 0      //開始時間
-    property real progress: 0       //進捗 0.0-1.0
+    property alias progress: progressBar.value       //進捗 0.0-1.0
     property real now: 0
     property int indexOffset: 0     //表示している番号をずらす
 
@@ -47,7 +47,7 @@ Rectangle {
                 progress = 0
             if((r - (n - s)) <= 0){
                 //終わり
-                progress = 100
+                progress = 1
                 running = false
                 root.finished()
             }
@@ -60,6 +60,11 @@ Rectangle {
             progress = 0
             running = true
             started()
+        }
+    }
+    function restart(){
+        if(setTime > 0){
+            running = true
         }
     }
     function stop(){
@@ -107,10 +112,10 @@ Rectangle {
             }
             //進捗
             ProgressBar {
+                id: progressBar
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: 100
                 height: 8
-                value: root.progress
             }
         }
         Row {

@@ -34,11 +34,11 @@ class TimerDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit TimerDialog(QWidget *parent = 0);
+    explicit TimerDialog(QWidget *parent = 0
+                         , QSystemTrayIcon *trayIcon = NULL
+                         , QSettings *settings = NULL);
     ~TimerDialog();
     
-    QSystemTrayIcon *trayIcon;
-    QSettings *settings;
 
 protected:
     virtual void resizeEvent(QResizeEvent *event);
@@ -54,13 +54,19 @@ private:
     QtQuick2ApplicationViewer *m_viewer;
     TimerData m_timerdata;
     QTimer m_timer;
+    QSystemTrayIcon *m_trayIcon;
+    QSettings *m_settings;
 
     //ツイッター関連
     OAuth m_oauth;
     Status m_status;
 
     bool checkKanmemoTimerTimeout(qint64 settime, qint64 starttime);
-    void tweetTimerMessage(const QStringList &message);
+    void showTimerMessage(const QStringList &messages);
+    void tweetTimerMessage(const QStringList &messages);
+
+    void loadSettings();
+    void saveSettings();
 };
 
 #endif // TIMERDIALOG_H

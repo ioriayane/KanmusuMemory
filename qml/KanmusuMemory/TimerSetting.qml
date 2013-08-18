@@ -72,7 +72,7 @@ Rectangle {
                 height: 30
                 maximumValue: 59
                 minimumValue: 0
-                stepSize: 10
+                stepSize: 5
                 font.pointSize: 14
                 Keys.onEscapePressed: root.close()
             }
@@ -87,7 +87,7 @@ Rectangle {
                 height: 30
                 maximumValue: 59
                 minimumValue: 0
-                stepSize: 10
+                stepSize: 5
                 font.pointSize: 14
                 Keys.onEscapePressed: root.close()
             }

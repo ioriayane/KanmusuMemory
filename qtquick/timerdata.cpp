@@ -31,11 +31,13 @@ TimerData::TimerData(QObject *parent) :
     m_constructionTime << 0 << 0 << 0 << 0;
     m_constructionStart << 0 << 0 << 0 << 0;
     m_constructionRunning << 0 << 0 << 0 << 0;
+
+    m_tweetFinished = false;
 }
 
 void TimerData::setTime(const int &kind, const int &index, const qreal &time)
 {
-    qDebug() << "setTime:" << kind << "," << index << "," << time;
+//    qDebug() << "setTime:" << kind << "," << index << "," << time;
     switch(kind){
     case 0:
         //入渠
@@ -68,7 +70,7 @@ void TimerData::setTime(const int &kind, const int &index, const qreal &time)
 
 void TimerData::setStartTime(const int &kind, const int &index, const qreal &starttime)
 {
-    qDebug() << "setStartTime:" << kind << "," << index << "," << (long long)starttime;
+//    qDebug() << "setStartTime:" << kind << "," << index << "," << (long long)starttime;
     switch(kind){
     case 0:
         //入渠
@@ -101,7 +103,7 @@ void TimerData::setStartTime(const int &kind, const int &index, const qreal &sta
 
 void TimerData::setRunning(const int &kind, const int &index, const bool &running)
 {
-    qDebug() << "setRunning:" << kind << "," << index << "," << running;
+//    qDebug() << "setRunning:" << kind << "," << index << "," << running;
     switch(kind){
     case 0:
         //入渠
@@ -139,7 +141,6 @@ const QList<qreal> &TimerData::dockingTime() const
 
 void TimerData::setDockingTime(const QList<qreal> &time)
 {
-    qDebug() << "dock time:" << time;
     if(m_dockingTime == time)
         return;
 
@@ -257,3 +258,36 @@ void TimerData::setConstructionRunning(const QList<bool> &running)
     m_constructionRunning = running;
     emit constructionRunningChanged(m_constructionRunning);
 }
+
+//つぶやくか
+const bool &TimerData::tweetFinished() const
+{
+    return m_tweetFinished;
+}
+
+void TimerData::setTweetFinished(const bool &tweet)
+{
+    if(m_tweetFinished == tweet)
+        return;
+
+    m_tweetFinished = tweet;
+    emit tweetFinishedChanged();
+}
+
+QList<qreal> TimerData::toRealList(const QList<QVariant> src)
+{
+    QList<qreal> d;
+    foreach (QVariant v, src){
+        d << v.toReal();
+    }
+    return d;
+}
+QList<bool> TimerData::toBoolList(const QList<QVariant> src)
+{
+    QList<bool> d;
+    foreach (QVariant v, src){
+        d << v.toBool();
+    }
+    return d;
+}
+
