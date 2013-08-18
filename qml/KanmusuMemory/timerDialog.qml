@@ -188,7 +188,7 @@ Rectangle {
         CheckBox {
             anchors.left: parent.left
             anchors.leftMargin: 10
-            text: "tweet a time-out"
+            text: qsTr("tweet a time-out")
             checked: timerData.tweetFinished    //このバインドは初期値をもらうだけ
             onCheckedChanged: timerData.tweetFinished = checked
         }

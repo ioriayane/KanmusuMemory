@@ -255,7 +255,7 @@
         <translation type="obsolete">思い出（スクリーンショット）を保存するフォルダを選択してください。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="+203"/>
+        <location filename="../mainwindow.cpp" line="+202"/>
         <source>Kan Memo</source>
         <translation>艦メモ　～艦娘メモリーズ～</translation>
     </message>
@@ -407,7 +407,7 @@ Copyright 2013 IoriAYANE</translation>
         <translation type="obsolete">ダイアログ</translation>
     </message>
     <message>
-        <location filename="../timerdialog.cpp" line="+85"/>
+        <location filename="../timerdialog.cpp" line="+90"/>
         <source>1st</source>
         <translation>第１</translation>
     </message>
@@ -462,7 +462,7 @@ Copyright 2013 IoriAYANE</translation>
         <translation>%1ドックでの建造が終わる頃です。</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+37"/>
         <source>KanMemo</source>
         <translation>艦メモ</translation>
     </message>
@@ -475,7 +475,7 @@ Copyright 2013 IoriAYANE</translation>
 <context>
     <name>TimerItem</name>
     <message>
-        <location filename="../qml/KanmusuMemory/TimerItem.qml" line="+114"/>
+        <location filename="../qml/KanmusuMemory/TimerItem.qml" line="+126"/>
         <source>Start</source>
         <translation>開始</translation>
     </message>
@@ -617,19 +617,24 @@ Copyright 2013 IoriAYANE</translation>
 <context>
     <name>timerDialog</name>
     <message>
-        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+110"/>
+        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+91"/>
         <source>Docking</source>
         <translation>入渠</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+33"/>
         <source>Expedition</source>
         <translation>遠征</translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+34"/>
         <source>Construction</source>
         <translation>建造</translation>
+    </message>
+    <message>
+        <location line="+33"/>
+        <source>tweet a time-out</source>
+        <translation>時間になったらツイッターでお知らせする</translation>
     </message>
 </context>
 </TS>
