@@ -127,7 +127,9 @@ MainWindow::Private::Private(MainWindow *parent)
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
     //通知アイコン
+#ifdef Q_OS_WIN
     trayIcon.show();
+#endif
 }
 
 MainWindow::Private::~Private()

@@ -161,6 +161,9 @@ void TimerDialog::showTimerMessage(const QStringList &messages)
     if(m_trayIcon == NULL)
         return;
 
+    if(!m_trayIcon->isVisible())
+        return;
+
     QString msg;
     for(int i=0; i<messages.length(); i++){
         msg.append(messages[i] + "\n");
@@ -235,7 +238,7 @@ void TimerDialog::loadSettings()
     m_timerdata.setConstructionRunning(TimerData::toBoolList(m_settings->value(QStringLiteral(SETTING_TIMER_CONSTRUCTION_RUNNING), QList<QVariant>() << 0 << 0 << 0 << 0).toList()));
 
     //つぶやくか
-    m_timerdata.setTweetFinished(m_settings->value(QStringLiteral(SETTING_TIMER_TWEETFINISHED), false).toBool());
+    m_timerdata.setTweetFinished(m_settings->value(QStringLiteral(SETTING_TIMER_TWEETFINISHED), true).toBool());
     m_settings->endGroup();
 }
 
