@@ -229,9 +229,9 @@ void TimerDialog::loadSettings()
     m_timerdata.setDockingStart(TimerData::toRealList(m_settings->value(QStringLiteral(SETTING_TIMER_DOCKING_START), QList<QVariant>() << 0 << 0 << 0 << 0).toList()));
     m_timerdata.setDockingRunning(TimerData::toBoolList(m_settings->value(QStringLiteral(SETTING_TIMER_DOCKING_RUNNING), QList<QVariant>() << 0 << 0 << 0 << 0).toList()));
     //遠征
-    m_timerdata.setExpeditionTime(TimerData::toRealList(m_settings->value(QStringLiteral(SETTING_TIMER_EXPEDITION_TIME), QList<QVariant>() << 0 << 0 << 0 << 0).toList()));
-    m_timerdata.setExpeditionStart(TimerData::toRealList(m_settings->value(QStringLiteral(SETTING_TIMER_EXPEDITION_START), QList<QVariant>() << 0 << 0 << 0 << 0).toList()));
-    m_timerdata.setExpeditionRunning(TimerData::toBoolList(m_settings->value(QStringLiteral(SETTING_TIMER_EXPEDITION_RUNNING), QList<QVariant>() << 0 << 0 << 0 << 0).toList()));
+    m_timerdata.setExpeditionTime(TimerData::toRealList(m_settings->value(QStringLiteral(SETTING_TIMER_EXPEDITION_TIME), QList<QVariant>() << 0 << 0 << 0).toList()));
+    m_timerdata.setExpeditionStart(TimerData::toRealList(m_settings->value(QStringLiteral(SETTING_TIMER_EXPEDITION_START), QList<QVariant>() << 0 << 0 << 0).toList()));
+    m_timerdata.setExpeditionRunning(TimerData::toBoolList(m_settings->value(QStringLiteral(SETTING_TIMER_EXPEDITION_RUNNING), QList<QVariant>() << 0 << 0 << 0).toList()));
     //建造
     m_timerdata.setConstructionTime(TimerData::toRealList(m_settings->value(QStringLiteral(SETTING_TIMER_CONSTRUCTION_TIME), QList<QVariant>() << 0 << 0 << 0 << 0).toList()));
     m_timerdata.setConstructionStart(TimerData::toRealList(m_settings->value(QStringLiteral(SETTING_TIMER_CONSTRUCTION_START), QList<QVariant>() << 0 << 0 << 0 << 0).toList()));
