@@ -255,7 +255,7 @@
         <translation type="obsolete">思い出（スクリーンショット）を保存するフォルダを選択してください。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="+202"/>
+        <location filename="../mainwindow.cpp" line="+204"/>
         <source>Kan Memo</source>
         <translation>艦メモ　～艦娘メモリーズ～</translation>
     </message>
@@ -315,7 +315,7 @@ Version %1
 Copyright 2013 IoriAYANE</translation>
     </message>
     <message>
-        <location line="-82"/>
+        <location line="-84"/>
         <source>complete</source>
         <translation>ページの読込み完了</translation>
     </message>
@@ -325,7 +325,7 @@ Copyright 2013 IoriAYANE</translation>
         <translation>ページの読込みに失敗</translation>
     </message>
     <message>
-        <location line="+83"/>
+        <location line="+85"/>
         <source>canceled</source>
         <translation>キャンセル</translation>
     </message>
@@ -462,7 +462,7 @@ Copyright 2013 IoriAYANE</translation>
         <translation>%1ドックでの建造が終わる頃です。</translation>
     </message>
     <message>
-        <location line="+37"/>
+        <location line="+40"/>
         <source>KanMemo</source>
         <translation>艦メモ</translation>
     </message>
@@ -635,6 +635,343 @@ Copyright 2013 IoriAYANE</translation>
         <location line="+33"/>
         <source>tweet a time-out</source>
         <translation>時間になったらツイッターでお知らせする</translation>
+    </message>
+    <message>
+        <location line="+87"/>
+        <source></source>
+        <translation></translation>
+    </message>
+    <message>
+        <location line="+55"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Guardian Office waters</source>
+        <translation>鎮守府海域</translation>
+    </message>
+    <message>
+        <location line="-7"/>
+        <source>1 Practice voyage</source>
+        <translation>1 練習航海</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>2 Long-distance voyage practice</source>
+        <translation>2 長距離練習航海</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>3 Security mission</source>
+        <translation>3 警備任務</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>4 Antisubmarine security mission</source>
+        <translation>4 対潜警戒任務</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>5 Marine escort mission</source>
+        <translation>5 海上護衛任務</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>6 Air defense target practice</source>
+        <translation>6 防空射撃演習</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>7 Naval review rehearsal</source>
+        <translation>7 観艦式予行</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>8 Naval review</source>
+        <translation>8 観艦式</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Nansei Islands waters</source>
+        <translation>南西諸島海域</translation>
+    </message>
+    <message>
+        <location line="-7"/>
+        <source>9 Tanker escort mission</source>
+        <translation>9 タンカー護衛任務</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>10 Reconnaissance in force mission</source>
+        <translation>10 強行偵察任務</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>11 Bauxite transport mission</source>
+        <translation>11 ボーキサイト輸送任務</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>12 Resource transport mission</source>
+        <translation>12 資源輸送任務</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>13 Rat transport creating</source>
+        <translation>13 鼠輸送作成</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>14 Siege naval brigade withdrawal strategy</source>
+        <translation>14 包囲陸戦隊撤収作戦</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>15 Decoy task force support operations</source>
+        <translation>15 囮機動部隊支援作戦</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>16 Decisive battle fleet assistance strategy</source>
+        <translation>16 艦隊決戦援護作戦</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Northern waters</source>
+        <translation>北方海域</translation>
+    </message>
+    <message>
+        <location line="-3"/>
+        <source>17 Enemy territory reconnaissance operations</source>
+        <translation>17 敵地偵察作戦</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>18 Air transport operations</source>
+        <translation>18 航空機輸送作戦</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>19 Northern issue strategy</source>
+        <translation>19 北号作戦</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>20 Submarine patrol</source>
+        <translation>20 潜水艦哨戒任務</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Western waters</source>
+        <translation>西方海域</translation>
+    </message>
+    <message>
+        <location line="-2"/>
+        <source>21 Trade destruction strategy</source>
+        <translation>21 通商破壊作戦</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>22 Enemy air raid home port strategy</source>
+        <translation>22 敵母港空襲作戦</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>23 Submarine destruction trade strategy</source>
+        <translation>23 潜水艦通商破壊作戦</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Destroyer</source>
+        <translation>駆逐艦</translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>Mutsuki</source>
+        <translation>睦月型</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Fubuki Ayanami Akatsuki Hatsuharu</source>
+        <translation>吹雪型 綾波型 暁型 初春型</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Siratsuyu Asashio</source>
+        <translation>白露型 朝潮型</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Kagero Yukikaze</source>
+        <translation>陽炎型 雪風</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Simakaze</source>
+        <translation>島風</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>Light cruiser</source>
+        <translation>軽巡洋艦</translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>Tenryu Kuma Nagara Sendai</source>
+        <translation>天龍型 球磨型 長良型 川内型</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+1"/>
+        <source>Heavy cruiser</source>
+        <translation>重巡洋艦</translation>
+    </message>
+    <message>
+        <location line="-5"/>
+        <source>Kodaka Aoba</source>
+        <translation>古鷹型 青葉型</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Kinu Abukuma</source>
+        <translation>鬼怒 阿武隈</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Myoko</source>
+        <translation>妙高型</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Yubari</source>
+        <translation>夕張</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Takao</source>
+        <translation>高雄型</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Mogami Tone</source>
+        <translation>最上型 利根型</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+2"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Light aircraft carrier</source>
+        <translation>軽空母</translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>Hosyo</source>
+        <translation>鳳翔</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Seaplane carrier</source>
+        <translation>水上機母艦</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Chitose Chiyoda</source>
+        <translation>千歳 千代田</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Syoho Zuiho</source>
+        <translation>祥鳳 瑞鳳</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ryujo</source>
+        <translation>龍驤</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Hiyo Junyo</source>
+        <translation>飛鷹 隼鷹</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>Battleship</source>
+        <translation>戦艦</translation>
+    </message>
+    <message>
+        <location line="-6"/>
+        <source>Kongo Hie Haruna Kirishima</source>
+        <translation>金剛 比叡 榛名 霧島</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>Regular aircraft carrier</source>
+        <translation>正規空母</translation>
+    </message>
+    <message>
+        <location line="-6"/>
+        <source>Soryu Hiryu</source>
+        <translation>蒼龍 飛龍</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Fuso Yamashiro</source>
+        <translation>扶桑 山城</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Kaga</source>
+        <translation>加賀</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ise Hyuga</source>
+        <translation>伊勢 日向</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Akagi</source>
+        <translation>赤城</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Nagato Mutsu</source>
+        <translation>赤城</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Syokaku Zuikaku</source>
+        <translation>翔鶴 瑞鶴</translation>
     </message>
 </context>
 </TS>
