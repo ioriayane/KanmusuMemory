@@ -28,6 +28,9 @@ private:
     Q_DISABLE_COPY(MainWindow)
     class Private;
     Private *d;
+
+protected:
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // MAINWINDOW_H

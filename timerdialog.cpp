@@ -47,8 +47,6 @@ TimerDialog::TimerDialog(QWidget *parent
 
 TimerDialog::~TimerDialog()
 {
-    saveSettings();
-
     if(m_viewer != NULL)
         delete m_viewer;
     delete ui;
@@ -240,6 +238,12 @@ void TimerDialog::loadSettings()
     //つぶやくか
     m_timerdata.setTweetFinished(m_settings->value(QStringLiteral(SETTING_TIMER_TWEETFINISHED), true).toBool());
     m_settings->endGroup();
+
+
+    //ウインドウの位置を復元
+    m_settings->beginGroup(QStringLiteral(SETTING_TIMERDIALOG));
+    restoreGeometry(m_settings->value(QStringLiteral(SETTING_WINDOW_GEO)).toByteArray());
+    m_settings->endGroup();
 }
 
 void TimerDialog::saveSettings()
@@ -264,6 +268,19 @@ void TimerDialog::saveSettings()
     //つぶやくか
     m_settings->setValue(QStringLiteral(SETTING_TIMER_TWEETFINISHED), m_timerdata.tweetFinished());
     m_settings->endGroup();
+
+    //ウインドウの位置を保存
+    m_settings->beginGroup(QStringLiteral(SETTING_TIMERDIALOG));
+    m_settings->setValue(QStringLiteral(SETTING_WINDOW_GEO), saveGeometry());
+    m_settings->endGroup();
+}
+
+void TimerDialog::closeEvent(QCloseEvent *event)
+{
+    //設定保存
+    saveSettings();
+
+    QDialog::closeEvent(event);
 }
 
 

@@ -67,6 +67,9 @@ private:
 
     void loadSettings();
     void saveSettings();
+
+protected:
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // TIMERDIALOG_H

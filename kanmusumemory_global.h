@@ -30,6 +30,10 @@
 #define SETTING_GENERAL_USER_ID     "user_id"
 #define SETTING_GENERAL_SCREEN_NAME "screen_name"
 
+#define SETTING_MAINWINDOW          "mainwindow"
+#define SETTING_TIMERDIALOG         "timerdialog"
+#define SETTING_WINDOW_GEO          "geometry"
+#define SETTING_WINDOW_STATE        "windowState"
 
 #define SETTING_TIMER                       "timer"
 #define SETTING_TIMER_DOCKING_TIME          "dockingTime"

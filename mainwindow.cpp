@@ -232,6 +232,13 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , d(new Private(this))
 {
+    //ウインドウの位置を復元
+    QSettings settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT);
+    settings.beginGroup(QStringLiteral(SETTING_MAINWINDOW));
+    restoreGeometry(settings.value(QStringLiteral(SETTING_WINDOW_GEO)).toByteArray());
+    restoreState(settings.value(QStringLiteral(SETTING_WINDOW_STATE)).toByteArray());
+    settings.endGroup();
+
     //設定
     QNetworkProxyFactory::setUseSystemConfiguration(true);
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
@@ -240,4 +247,16 @@ MainWindow::MainWindow(QWidget *parent)
     d->ui.webView->load(QUrl(URL_KANCOLLE));
 
     connect(this, &MainWindow::destroyed, [this]() {delete d;});
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    //ウインドウの位置を保存
+    QSettings settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT);
+    settings.beginGroup(QStringLiteral(SETTING_MAINWINDOW));
+    settings.setValue(QStringLiteral(SETTING_WINDOW_GEO), saveGeometry());
+    settings.setValue(QStringLiteral(SETTING_WINDOW_STATE), saveState());
+    settings.endGroup();
+
+    QMainWindow::closeEvent(event);
 }
