@@ -140,13 +140,43 @@ Rectangle {
                         Column {
                             spacing: 1
                             Text {
+                                id: msg1
                                 text: model.msg1
                             }
                             Text {
+                                id: msg2
                                 text: model.msg2
                             }
                         }
                     }
+
+                    states: [
+                        State {
+                            //遠征
+                            when: root.kind == 1
+                            PropertyChanges {
+                                target: msg1
+                                color: "#444444"
+                            }
+                            PropertyChanges {
+                                target: msg2
+                                font.pointSize: 11
+                            }
+                        }
+                        , State {
+                            //建造
+                            when: root.kind == 2
+                            PropertyChanges {
+                                target: msg1
+                                font.pointSize: 11
+                            }
+                            PropertyChanges {
+                                target: msg2
+                                color: "#444444"
+                            }
+                        }
+
+                    ]
 
                     onClicked: {
                         spinHour.value = model.hour

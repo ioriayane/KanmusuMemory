@@ -15,6 +15,7 @@
  */
 import QtQuick 2.0
 import QtQuick.Controls 1.0
+import QtQuick.Controls.Styles 1.0
 
 Rectangle {
     id: root
@@ -33,6 +34,9 @@ Rectangle {
     signal stopped()
     signal setting()
     signal finished()
+
+    //時間設定したらプログレスは0
+    onSetTimeChanged: progress = 0
 
     function update(){
         if(running){
@@ -116,6 +120,29 @@ Rectangle {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: 100
                 height: 8
+                style: ProgressBarStyle {
+                    background: Rectangle {
+                        radius: 2
+                        color: "lightgray"
+                        border.color: "gray"
+                        border.width: 1
+                    }
+                    progress: Rectangle {
+                        id: progressRect
+                        color: "LightSkyBlue"
+                        border.color: "steelblue"
+                        states: [
+                            State {
+                                when: progressBar.value === 1
+                                PropertyChanges {
+                                    target: progressRect
+                                    color: "LightCoral"
+                                    border.color: "DarkRed"
+                                }
+                            }
+                        ]
+                    }
+                }
             }
         }
         Row {

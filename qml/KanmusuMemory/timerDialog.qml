@@ -329,32 +329,32 @@ Rectangle {
     }
     //遠征
     property list<QtObject> expeditionModel: [
-        QtObject { property int hour: 0; property int minute: 15; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("1 Practice voyage") }
-        , QtObject { property int hour: 0; property int minute: 30; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("2 Long-distance voyage practice") }
-        , QtObject { property int hour: 0; property int minute: 20; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("3 Security mission") }
-        , QtObject { property int hour: 0; property int minute: 50; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("4 Antisubmarine security mission") }
-        , QtObject { property int hour: 1; property int minute: 30; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("5 Marine escort mission") }
-        , QtObject { property int hour: 0; property int minute: 40; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("6 Air defense target practice") }
-        , QtObject { property int hour: 1; property int minute: 0; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("7 Naval review rehearsal") }
-        , QtObject { property int hour: 3; property int minute: 0; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("8 Naval review") }
+        QtObject { property int hour: 0; property int minute: 15; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("1 Practice voyage"); property int page: 0 }
+        , QtObject { property int hour: 0; property int minute: 30; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("2 Long-distance voyage practice"); property int page: 0 }
+        , QtObject { property int hour: 0; property int minute: 20; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("3 Security mission"); property int page: 0 }
+        , QtObject { property int hour: 0; property int minute: 50; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("4 Antisubmarine security mission"); property int page: 0 }
+        , QtObject { property int hour: 1; property int minute: 30; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("5 Marine escort mission"); property int page: 0 }
+        , QtObject { property int hour: 0; property int minute: 40; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("6 Air defense target practice"); property int page: 0 }
+        , QtObject { property int hour: 1; property int minute: 0; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("7 Naval review rehearsal"); property int page: 0 }
+        , QtObject { property int hour: 3; property int minute: 0; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("8 Naval review"); property int page: 0 }
 
-        , QtObject { property int hour: 4; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("9 Tanker escort mission") }
-        , QtObject { property int hour: 1; property int minute: 30; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("10 Reconnaissance in force mission") }
-        , QtObject { property int hour: 5; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("11 Bauxite transport mission") }
-        , QtObject { property int hour: 8; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("12 Resource transport mission") }
-        , QtObject { property int hour: 4; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("13 Rat transport creating") }
-        , QtObject { property int hour: 6; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("14 Siege naval brigade withdrawal strategy") }
-        , QtObject { property int hour: 12; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("15 Decoy task force support operations") }
-        , QtObject { property int hour: 15; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("16 Decisive battle fleet assistance strategy") }
+        , QtObject { property int hour: 4; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("9 Tanker escort mission"); property int page: 1 }
+        , QtObject { property int hour: 1; property int minute: 30; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("10 Reconnaissance in force mission"); property int page: 1 }
+        , QtObject { property int hour: 5; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("11 Bauxite transport mission"); property int page: 1 }
+        , QtObject { property int hour: 8; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("12 Resource transport mission"); property int page: 1 }
+        , QtObject { property int hour: 4; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("13 Rat transport creating"); property int page: 1 }
+        , QtObject { property int hour: 6; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("14 Siege naval brigade withdrawal strategy"); property int page: 1 }
+        , QtObject { property int hour: 12; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("15 Decoy task force support operations"); property int page: 1 }
+        , QtObject { property int hour: 15; property int minute: 0; property int second: 0; property string msg1: qsTr("Nansei Islands waters"); property string msg2: qsTr("16 Decisive battle fleet assistance strategy"); property int page: 1 }
 
-        , QtObject { property int hour: 0; property int minute: 45; property int second: 0; property string msg1: qsTr("Northern waters"); property string msg2: qsTr("17 Enemy territory reconnaissance operations") }
-        , QtObject { property int hour: 5; property int minute: 0; property int second: 0; property string msg1: qsTr("Northern waters"); property string msg2: qsTr("18 Air transport operations") }
-        , QtObject { property int hour: 6; property int minute: 0; property int second: 0; property string msg1: qsTr("Northern waters"); property string msg2: qsTr("19 Northern issue strategy") }
-        , QtObject { property int hour: 2; property int minute: 0; property int second: 0; property string msg1: qsTr("Northern waters"); property string msg2: qsTr("20 Submarine patrol") }
+        , QtObject { property int hour: 0; property int minute: 45; property int second: 0; property string msg1: qsTr("Northern waters"); property string msg2: qsTr("17 Enemy territory reconnaissance operations"); property int page: 2 }
+        , QtObject { property int hour: 5; property int minute: 0; property int second: 0; property string msg1: qsTr("Northern waters"); property string msg2: qsTr("18 Air transport operations"); property int page: 2 }
+        , QtObject { property int hour: 6; property int minute: 0; property int second: 0; property string msg1: qsTr("Northern waters"); property string msg2: qsTr("19 Northern issue strategy"); property int page: 2 }
+        , QtObject { property int hour: 2; property int minute: 0; property int second: 0; property string msg1: qsTr("Northern waters"); property string msg2: qsTr("20 Submarine patrol"); property int page: 2 }
 
-        , QtObject { property int hour: 40; property int minute: 0; property int second: 0; property string msg1: qsTr("Western waters"); property string msg2: qsTr("21 Trade destruction strategy") }
-        , QtObject { property int hour: 80; property int minute: 0; property int second: 0; property string msg1: qsTr("Western waters"); property string msg2: qsTr("22 Enemy air raid home port strategy") }
-        , QtObject { property int hour: 20; property int minute: 0; property int second: 0; property string msg1: qsTr("Western waters"); property string msg2: qsTr("23 Submarine destruction trade strategy") }
+        , QtObject { property int hour: 40; property int minute: 0; property int second: 0; property string msg1: qsTr("Western waters"); property string msg2: qsTr("21 Trade destruction strategy"); property int page: 3 }
+        , QtObject { property int hour: 80; property int minute: 0; property int second: 0; property string msg1: qsTr("Western waters"); property string msg2: qsTr("22 Enemy air raid home port strategy"); property int page: 3 }
+        , QtObject { property int hour: 20; property int minute: 0; property int second: 0; property string msg1: qsTr("Western waters"); property string msg2: qsTr("23 Submarine destruction trade strategy"); property int page: 3 }
     ]
 //    ListModel {
 //        id: expeditionModel
