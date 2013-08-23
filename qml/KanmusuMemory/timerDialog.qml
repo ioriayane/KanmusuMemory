@@ -232,14 +232,17 @@ Rectangle {
         case 0: //入渠
             docking.itemAt(index).stop()
             timerData.setTime(kind, index, settime)
+            docking.itemAt(index).start()
             break;
         case 1: //遠征
             expedition.itemAt(index).stop()
             timerData.setTime(kind, index, settime)
+            expedition.itemAt(index).start()
             break;
         case 2: //建造
             construction.itemAt(index).stop()
             timerData.setTime(kind, index, settime)
+            construction.itemAt(index).start()
             break;
         default:
             break;
