@@ -15,6 +15,7 @@
  */
 import QtQuick 2.0
 import QtQuick.Controls 1.0
+import QtMultimedia 5.0
 
 Rectangle {
     id: root
@@ -31,6 +32,11 @@ Rectangle {
     property real d3set: 0
     property real d3start: 0
 
+    Audio {
+        id: sound
+        volume: timerData.alarmSoundVolume
+        source: timerData.alarmSoundPath
+    }
 
     Timer {
         id: timer
@@ -106,9 +112,7 @@ Rectangle {
                         }
                         onStopped: timerData.setRunning(0, index, false)
                         onSetting: root.openSetting(0, index, setTime)
-                        onFinished: {
-                            //                            console.debug("FINISH 0 " + index)
-                        }
+                        onFinished: sound.play()
                         Component.onCompleted: {
                             //開始時に動いてるか
                             if(timerData.dockingRunning[index])
@@ -140,9 +144,7 @@ Rectangle {
                         }
                         onStopped: timerData.setRunning(1, index, false)
                         onSetting: root.openSetting(1, index, setTime)
-                        onFinished: {
-                            //                            console.debug("FINISH 1 " + index)
-                        }
+                        onFinished: sound.play()
                         Component.onCompleted: {
                             //開始時に動いてるか
                             if(timerData.expeditionRunning[index])
@@ -172,9 +174,7 @@ Rectangle {
                         }
                         onStopped: timerData.setRunning(2, index, false)
                         onSetting: root.openSetting(2, index, setTime)
-                        onFinished: {
-                            //                            console.debug("FINISH 2 " + index)
-                        }
+                        onFinished: sound.play()
                         Component.onCompleted: {
                             //開始時に動いてるか
                             if(timerData.constructionRunning[index])

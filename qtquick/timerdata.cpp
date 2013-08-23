@@ -274,6 +274,33 @@ void TimerData::setTweetFinished(const bool &tweet)
     emit tweetFinishedChanged();
 }
 
+const QString &TimerData::alarmSoundPath() const
+{
+    return m_alarmSoundPath;
+}
+
+void TimerData::setAlarmSoundPath(const QString &path)
+{
+    if(m_alarmSoundPath.compare(path) == 0)
+        return;
+
+    m_alarmSoundPath = path;
+    emit alarmSoundPathChanged();
+}
+
+const qreal &TimerData::alarmSoundVolume() const
+{
+    return m_alarmSoundVolume;
+}
+void TimerData::setAlarmSoundVolume(const qreal &volume)
+{
+    if(m_alarmSoundVolume == volume)
+        return;
+
+    m_alarmSoundVolume = volume;
+    emit alarmSoundVolumeChanged();
+}
+
 QList<qreal> TimerData::toRealList(const QList<QVariant> src)
 {
     QList<qreal> d;

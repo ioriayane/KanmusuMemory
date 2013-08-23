@@ -38,6 +38,8 @@ class TimerData : public QObject
 
     //設定
     Q_PROPERTY(bool tweetFinished READ tweetFinished WRITE setTweetFinished NOTIFY tweetFinishedChanged)
+    Q_PROPERTY(QString alarmSoundPath READ alarmSoundPath WRITE setAlarmSoundPath NOTIFY alarmSoundPathChanged)
+    Q_PROPERTY(qreal alarmSoundVolume READ alarmSoundVolume WRITE setAlarmSoundVolume NOTIFY alarmSoundVolumeChanged)
 
 public:
     explicit TimerData(QObject *parent = 0);
@@ -69,7 +71,10 @@ public:
 
     const bool &tweetFinished() const;
     void setTweetFinished(const bool &tweet);
-
+    const QString &alarmSoundPath() const;
+    void setAlarmSoundPath(const QString &path);
+    const qreal &alarmSoundVolume() const;
+    void setAlarmSoundVolume(const qreal &volume);
 
     static QList<qreal> toRealList(const QList<QVariant> src);
     static QList<bool> toBoolList(const QList<QVariant> src);
@@ -97,6 +102,8 @@ signals:
     void constructionRunningChanged(const QList<bool> &running);
 
     void tweetFinishedChanged();
+    void alarmSoundPathChanged();
+    void alarmSoundVolumeChanged();
 public slots:
 
 private:
@@ -113,7 +120,9 @@ private:
     QList<qreal> m_constructionStart;
     QList<bool> m_constructionRunning;
 
-    bool m_tweetFinished;
+    bool m_tweetFinished;       //時間になったらつぶやくか
+    QString m_alarmSoundPath;   //アラーム音のパス
+    qreal m_alarmSoundVolume;   //アラーム音量
 };
 
 #endif // TIMERDATA_H

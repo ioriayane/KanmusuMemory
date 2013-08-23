@@ -237,6 +237,9 @@ void TimerDialog::loadSettings()
 
     //つぶやくか
     m_timerdata.setTweetFinished(m_settings->value(QStringLiteral(SETTING_TIMER_TWEETFINISHED), true).toBool());
+    //アラームの設定（暫定で固定）
+    m_timerdata.setAlarmSoundPath(QDir::currentPath() + "/" + QStringLiteral("alarm.mp3"));
+    m_timerdata.setAlarmSoundVolume(0.4);
     m_settings->endGroup();
 
 
