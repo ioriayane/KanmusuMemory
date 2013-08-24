@@ -6,7 +6,7 @@
     <message>
         <location filename="../aboutdialog.ui" line="+14"/>
         <source>Kan Memo</source>
-        <translation>艦メモ　～艦娘メモリーズ～</translation>
+        <translation>艦メモ</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -32,8 +32,7 @@
         <location line="+13"/>
         <source>1
 2</source>
-        <translation>1
-2</translation>
+        <translation>1</translation>
     </message>
     <message>
         <location filename="../aboutdialog.cpp" line="+46"/>
@@ -57,25 +56,67 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <source>Kanmusu Memory</source>
-        <translation type="obsolete">艦メモ ～艦娘メモリーズ～</translation>
+        <location filename="../mainwindow.cpp" line="+121"/>
+        <source>complete</source>
+        <translation>ページの読み込みが完了しました。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="+120"/>
-        <source>Capture</source>
-        <translation>思い出を残す(F5)</translation>
+        <location line="+2"/>
+        <source>error</source>
+        <translation>ページの読み込みが失敗しました。</translation>
     </message>
     <message>
-        <source>Capture(F9)</source>
-        <translation type="obsolete">思い出を残す(F9)</translation>
+        <location line="+32"/>
+        <location line="+8"/>
+        <location line="+6"/>
+        <source>failed find target</source>
+        <translation>艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="-100"/>
+        <location line="+20"/>
+        <source>saving to %1...</source>
+        <translation>%1を保存しました。</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>failed save image</source>
+        <translation>思い出を保存できませんでした。</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Kan Memo</source>
+        <translation>艦メモ</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please select a folder to save the image of KanMusu.</source>
+        <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>canceled</source>
+        <translation>キャンセルしました。</translation>
+    </message>
+    <message>
+        <location line="+62"/>
+        <source>Handle ssl errors.
+Do you want to continue on an understanding of the security risk?
+</source>
+        <translation>SSLに関連するエラーが発生しました。
+以下のエラーが発生しています。アクセスを継続しますか？</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.ui" line="+20"/>
         <source>Kan Memo -KanMusu Memory-</source>
-        <translation>艦メモ　～艦娘メモリーズ～</translation>
+        <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+23"/>
+        <source>about:blank</source>
+        <translation>about:blank</translation>
+    </message>
+    <message>
+        <location line="+25"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
@@ -92,7 +133,7 @@
     <message>
         <location line="+11"/>
         <source>toolBar</source>
-        <translation>ツールバー</translation>
+        <translation>toolBar</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -105,51 +146,29 @@
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+5"/>
+        <source>Capture</source>
+        <translation>思い出を残す(F5)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Capture(F5)</source>
         <translation>思い出を残す(F5)</translation>
     </message>
     <message>
-        <location line="+45"/>
-        <source>&amp;Timer</source>
-        <translation>お知らせタイマー(F7)</translation>
-    </message>
-    <message>
         <location line="+3"/>
-        <source>Timer(F7)</source>
-        <translation>お知らせタイマー(F7)</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>F7</source>
-        <translation>F7</translation>
-    </message>
-    <message>
-        <source>&amp;Capture</source>
-        <translation type="obsolete">思い出を残す(&amp;C)</translation>
-    </message>
-    <message>
-        <source>Ctrl+S</source>
-        <translation type="obsolete">Ctrl+S</translation>
-    </message>
-    <message>
-        <location line="-43"/>
-        <source>&amp;Reload</source>
-        <translation>再読み込み</translation>
-    </message>
-    <message>
-        <location line="-5"/>
         <source>F5</source>
         <translation>F5</translation>
     </message>
     <message>
-        <source>&amp;Capture(F5)</source>
-        <translation type="obsolete">思い出を残す(F5)</translation>
+        <location line="+5"/>
+        <source>&amp;Reload</source>
+        <translation>再読み込み(&amp;R)</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+5"/>
         <source>&amp;Adjust KanColle position</source>
-        <translation>艦これの位置を探す</translation>
+        <translation>艦これの場所を探す(&amp;A)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -182,189 +201,19 @@
         <translation>艦メモについて(&amp;A)</translation>
     </message>
     <message>
-        <source>View memories</source>
-        <translation type="obsolete">思い出を表示</translation>
+        <location line="+5"/>
+        <source>&amp;Timer</source>
+        <translation>お知らせタイマー(F7)</translation>
     </message>
     <message>
-        <source>File(&amp;F)</source>
-        <translation type="obsolete">ファイル(&amp;F)</translation>
+        <location line="+3"/>
+        <source>Timer(F7)</source>
+        <translation>お知らせタイマー(F7)</translation>
     </message>
     <message>
-        <source>Browser(&amp;B)</source>
-        <translation type="obsolete">ブラウザ(&amp;B)</translation>
-    </message>
-    <message>
-        <source>Help(&amp;H)</source>
-        <translation type="obsolete">ヘルプ(&amp;H)</translation>
-    </message>
-    <message>
-        <source>Exit(&amp;E)</source>
-        <translation type="obsolete">終了(&amp;E)</translation>
-    </message>
-    <message>
-        <source>Capture(&amp;C)</source>
-        <translation type="obsolete">思い出を残す(&amp;C)</translation>
-    </message>
-    <message>
-        <source>Reload(&amp;R)</source>
-        <translation type="obsolete">再読み込み(&amp;R)</translation>
-    </message>
-    <message>
-        <source>Search KanColle position(&amp;S)</source>
-        <translation type="obsolete">艦これの位置を探す(&amp;S)</translation>
-    </message>
-    <message>
-        <source>Preferences ...(&amp;P)</source>
-        <translation type="obsolete">設定 ...(&amp;P)</translation>
-    </message>
-    <message>
-        <source>About(&amp;A)</source>
-        <translation type="obsolete">艦メモについて(&amp;A)</translation>
-    </message>
-    <message>
-        <source>Search Kankore position(&amp;S)</source>
-        <translation type="obsolete">艦これの位置を調べる(&amp;S)</translation>
-    </message>
-    <message>
-        <source>Preferences ...</source>
-        <translation type="obsolete">設定 ...</translation>
-    </message>
-    <message>
-        <source>Search Kankore position(&amp;C)</source>
-        <translation type="obsolete">艦これの位置を調べる(&amp;S)</translation>
-    </message>
-    <message>
-        <source>View memories(&amp;V)</source>
-        <translation type="obsolete">思い出を表示(&amp;V)</translation>
-    </message>
-    <message>
-        <location line="-120"/>
-        <source>about:blank</source>
-        <translation>about:blank</translation>
-    </message>
-    <message>
-        <source>Please find Kankore position.</source>
-        <translation type="obsolete">艦これの位置を調べます。</translation>
-    </message>
-    <message>
-        <source>Information</source>
-        <translation type="obsolete">確認</translation>
-    </message>
-    <message>
-        <source>Please select pictures save folder.</source>
-        <translation type="obsolete">思い出（スクリーンショット）を保存するフォルダを選択してください。</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="+204"/>
-        <source>Kan Memo</source>
-        <translation>艦メモ　～艦娘メモリーズ～</translation>
-    </message>
-    <message>
-        <source>Please select a folder to save the image of Kanmusu.</source>
-        <translation type="obsolete">艦娘の画像を保存するフォルダを選択してください。</translation>
-    </message>
-    <message>
-        <source>cancel</source>
-        <translation type="obsolete">思い出を保存しませんでした。</translation>
-    </message>
-    <message>
-        <source>save...</source>
-        <translation type="obsolete">思い出を保存しました。</translation>
-    </message>
-    <message>
-        <source>fail</source>
-        <translation type="obsolete">思い出を残せませんでした。</translation>
-    </message>
-    <message>
-        <source>Search Kankore position.
-Please be performed in the state that it seems the whole of KanColle.</source>
-        <translation type="obsolete">艦これの場所を探します。
-艦これの全体が見える状態で行なってください。
-正しくスクリーンショットが撮れなくなります。</translation>
-    </message>
-    <message>
-        <source>Calibrate Kankore position.
-Please be performed in the state that it seems the whole of KanColle.</source>
-        <translation type="obsolete">艦これの位置を探す。\n艦これの全体が見える状態で行なってください。</translation>
-    </message>
-    <message>
-        <source>Calibrate Kankore position.</source>
-        <translation type="obsolete">艦これの位置を調べます。</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Please select a folder to save the image of KanMusu.</source>
-        <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
-    </message>
-    <message>
-        <source>success calibration</source>
-        <translation type="obsolete">艦これの位置を特定しました。</translation>
-    </message>
-    <message>
-        <source>fail calibration</source>
-        <translation type="obsolete">艦これが見つかりませんでした。</translation>
-    </message>
-    <message>
-        <source>Kan Memo -KanMusu Memory-
-Version %1
-
-Copyright 2013 IoriAYANE</source>
-        <translation type="obsolete">艦メモ　～艦娘メモリーズ～
-Version %1
-
-Copyright 2013 IoriAYANE</translation>
-    </message>
-    <message>
-        <location line="-84"/>
-        <source>complete</source>
-        <translation>ページの読込み完了</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>error</source>
-        <translation>ページの読込みに失敗</translation>
-    </message>
-    <message>
-        <location line="+85"/>
-        <source>canceled</source>
-        <translation>キャンセル</translation>
-    </message>
-    <message>
-        <location line="+62"/>
-        <source>Handle ssl errors.
-Do you want to continue on an understanding of the security risk?
-</source>
-        <translation>SSLに関連するエラーが発生しました。
-以下のエラーが発生しています。アクセスを継続しますか？</translation>
-    </message>
-    <message>
-        <location line="-115"/>
-        <location line="+8"/>
-        <location line="+6"/>
-        <source>failed find target</source>
-        <translation>艦これが見つかりませんでした。</translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>failed save image</source>
-        <translation>思い出を保存できませんでした。</translation>
-    </message>
-    <message>
-        <location line="-5"/>
-        <source>saving to %1...</source>
-        <translation>%1を保存します。</translation>
-    </message>
-    <message>
-        <source>loading...%1%</source>
-        <translation type="obsolete">ページを読込中・・・%1%</translation>
-    </message>
-    <message>
-        <source>Kan Memo -KanMusu Memory-
-
-Copyright 2013 IoriAYANE</source>
-        <translation type="obsolete">艦メモ　～艦娘メモリーズ～
-
-Copyright 2013 IoriAYANE</translation>
+        <location line="+3"/>
+        <source>F7</source>
+        <translation>F7</translation>
     </message>
 </context>
 <context>
@@ -395,7 +244,7 @@ Copyright 2013 IoriAYANE</translation>
     <message>
         <location line="+13"/>
         <source>Pictures path</source>
-        <translation>スクリーンショットの保存先</translation>
+        <translation>思い出の保存先</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -405,7 +254,7 @@ Copyright 2013 IoriAYANE</translation>
     <message>
         <location filename="../settingsdialog.cpp" line="+50"/>
         <source>Select save folder</source>
-        <translation>保存フォルダ</translation>
+        <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
 </context>
 <context>
@@ -536,7 +385,7 @@ Copyright 2013 IoriAYANE</translation>
     <message>
         <location line="+13"/>
         <source>Tweet : </source>
-        <translation>つぶやき : </translation>
+        <translation>つぶやく : </translation>
     </message>
     <message>
         <location line="+32"/>
@@ -564,14 +413,6 @@ Copyright 2013 IoriAYANE</translation>
         <translation>Ctrl+Return</translation>
     </message>
     <message>
-        <source>Tweet by </source>
-        <translation type="obsolete">%1で、つぶやく</translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="obsolete">%1</translation>
-    </message>
-    <message>
         <location filename="../tweetdialog.cpp" line="+109"/>
         <location line="+2"/>
         <source>Tweet by %1</source>
@@ -580,16 +421,12 @@ Copyright 2013 IoriAYANE</translation>
     <message>
         <location line="+126"/>
         <source>Information</source>
-        <translation>確認</translation>
+        <translation>艦メモ</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do the authentication of Twitter.</source>
         <translation>Twitterの認証を開始します。</translation>
-    </message>
-    <message>
-        <source>Are you sure you want to authenticate to Twitter?</source>
-        <translation type="obsolete">ツイッターの認証をします。</translation>
     </message>
 </context>
 <context>
