@@ -26,7 +26,7 @@ Rectangle {
 
     property alias spinHour: spinHour.value
     property alias spinMinute: spinMinute.value
-    property alias spinSecond: spinSecond.value
+    property real spinSecond: 0
 
     property alias model: list.model
 
@@ -76,23 +76,8 @@ Rectangle {
                 font.pointSize: 14
                 Keys.onEscapePressed: root.close()
             }
-            Text {
-                anchors.verticalCenter: parent.verticalCenter
-                text: ":"
-                font.pointSize: 14
-            }
-            SpinBox {
-                id: spinSecond
-                width: 50
-                height: 30
-                maximumValue: 59
-                minimumValue: 0
-                stepSize: 5
-                font.pointSize: 14
-                Keys.onEscapePressed: root.close()
-            }
             Button {
-                width: 60
+                width: 80
                 height: 30
                 text: qsTr("Set")
                 onClicked: {
@@ -103,7 +88,7 @@ Rectangle {
                 Keys.onEscapePressed: root.close()
             }
             Button {
-                width: 60
+                width: 80
                 height: 30
                 text: qsTr("Cancel")
                 onClicked: root.close()
@@ -115,9 +100,11 @@ Rectangle {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.bottom: parent.bottom
+            anchors.margins: 5
             ListView {
                 id: list
                 anchors.fill: parent
+                clip: true
                 delegate: MouseArea {
                     width: parent.width
                     height: 40
@@ -132,20 +119,34 @@ Rectangle {
                         anchors.leftMargin: 10
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: 10
+                        //大きく時間を表示
                         Text {
+                            id: choiceTime1
                             anchors.verticalCenter: parent.verticalCenter
                             text: root.toStringTime(model.hour, model.minute, model.second)
                             font.pointSize: 16
                         }
                         Column {
                             spacing: 1
+                            //メッセージ上段（海域/船種）
                             Text {
                                 id: msg1
                                 text: model.msg1
                             }
-                            Text {
-                                id: msg2
-                                text: model.msg2
+                            //メッセージ下段（遠征名/船名）
+                            Row {
+                                spacing: 5
+                                Text {
+                                    id: msg2
+                                    text: model.msg2
+                                }
+                                //時間の補助表示
+                                Text {
+                                    id: choiceTime2
+                                    anchors.bottom: parent.bottom
+                                    text: "(%1)".arg(choiceTime1.text)
+                                    visible: !choiceTime1.visible
+                                }
                             }
                         }
                     }
@@ -154,6 +155,10 @@ Rectangle {
                         State {
                             //遠征
                             when: root.kind == 1
+                            PropertyChanges {
+                                target: choiceTime1
+                                visible: false
+                            }
                             PropertyChanges {
                                 target: msg1
                                 color: "#444444"
