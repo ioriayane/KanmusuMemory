@@ -16,6 +16,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtMultimedia 5.0
+import jp.relog.plugin.operatingsystem 1.0
 
 Rectangle {
     id: root
@@ -32,10 +33,14 @@ Rectangle {
     property real d3set: 0
     property real d3start: 0
 
+    OperatingSystem {
+        id: os
+    }
+
     Audio {
         id: sound
         volume: timerData.alarmSoundVolume
-        source: timerData.alarmSoundPath
+        source: os.pathPrefix + timerData.alarmSoundPath
     }
 
     Timer {
