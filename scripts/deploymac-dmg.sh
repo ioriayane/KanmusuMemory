@@ -1,7 +1,7 @@
 #!/bin/bash
 
 APPNAME=KanmusuMemory.app/
-QTPATH=/Applications/Qt/Qt5.1.0/5.1.0/clang_64/
+QTPATH=/Users/iori/Qt5.1.0/5.1.0/clang_64/
 
 #clean
 rm -rf KanmusuMemory.app
@@ -30,7 +30,7 @@ cp -R ${QTPATH}qml/${p_name} ${APPNAME}Contents/qml
 done
 
 #sub folder
-mkdir ${APPNAME}/Contents/qml/QtQuick 
+mkdir ${APPNAME}Contents/qml/QtQuick 
 #p_names=("LocalStorage" "Particles.2" "Window.2" "XmlListModel")
 p_names=("Controls" "Layouts")
 for p_name in ${p_names[@]}

@@ -1,20 +1,21 @@
-��ɔz�z�p�b�P�[�W�����X�N���v�g�֘A�̃t�@�C���u����
+主に配布パッケージを作るスクリプト関連のファイル置き場
 
 
-deploymac.sh		Mac��qmake����o���オ���zip�����Ƃ���܂�
-deploymaclibs.txt	*.app�Ɋ܂܂�郉�C�u�����̈ꗗ
-macdeployhelper510.sh	install_name_tool���ȒP�ɂł�����
+deploymac.sh		Macでqmakeから出来上がりのzipを作るところまで
+deploymac-dmg.sh	deploymac.shのdmg作成版。（ちゃんと統合しよう）
+deploymaclibs.txt	*.appに含まれるライブラリの一覧
+macdeployhelper510.sh	install_name_toolを簡単にできるやつ
 
 
-�g����
-�P�D�X�N���v�g�t�@�C���̃p�X�̏C��
-�@�@Qt�̃C���X�g�[���t�H���_���ȉ��̃t�@�C���ɏ����Ă���̂ŏC���B
-�@�@���ɂ���ăp�X�Ⴄ�̂ł������z���ł���悤�ɂ͂ł��ĂȂ��ł��B
-�@�@Qt5.1.0�Ɋ܂܂��o�C�i���̃����N�p�X�����������ăX���b�V�����d�Ȃ��Ă�Ƃ��낪����̂ŕςȊ����ɂȂ��Ă܂��B
+使い方
+１．スクリプトファイルのパスの修正
+　　Qtのインストールフォルダが以下のファイルに書いてあるので修正。
+　　環境によってパス違うのでそこを吸収できるようにはできてないです。
+　　Qt5.1.0に含まれるバイナリのリンクパスがおかしくてスラッシュが重なってるところがあるので変な感じになってます。
 	deplymac.sh
 	macdeployhelper510.sh
-�Q�D�v���W�F�N�g�̃t�H���_�Ŏ��s
-�@�@scripts/deploymac.sh
+２．プロジェクトのフォルダで実行
+　　scripts/deploymac.sh
 
-�I��
+終了
 
