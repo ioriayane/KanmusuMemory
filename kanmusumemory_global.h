@@ -20,6 +20,7 @@
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
     << "@task_jp"\
+    << "@nagakenjs"\
     )
 
 #define SETTING_FILE_NAME       "settings.ini"
