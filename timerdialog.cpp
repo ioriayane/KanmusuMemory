@@ -243,7 +243,7 @@ void TimerDialog::loadSettings()
     //アラームの設定（暫定で固定）
 #ifdef Q_OS_MAC
     m_timerdata.setAlarmSoundPath(QString("%1/../../../alarm.mp3")
-                                  .arg(QCoreApplication::applicationDirPath());
+                                  .arg(QCoreApplication::applicationDirPath()));
 #else
     m_timerdata.setAlarmSoundPath(QString("%1/alarm.mp3")
                                   .arg(QCoreApplication::applicationDirPath()));
