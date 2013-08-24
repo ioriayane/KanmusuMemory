@@ -147,7 +147,7 @@ void TweetDialog::on_tweetButton_clicked()
     slist.append(imagePath());
     map.insert("status", ui->tweetTextEdit->document()->toPlainText());
     map.insert("media", slist);
-    m_status.updateStatuses(map);
+    m_status.statusesUpdate(map);
 
     //消す
     ui->tweetTextEdit->clear();

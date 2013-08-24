@@ -202,7 +202,7 @@ void TimerDialog::tweetTimerMessage(const QStringList &messages)
                 //                qDebug() << message.length() << "," << message;
                 QVariantMap map;
                 map.insert("status", message);
-                m_status.updateStatuses(map);
+                m_status.statusesUpdate(map);
 
                 //消す
                 message = "@" + m_oauth.screen_name() + " ";
@@ -214,7 +214,7 @@ void TimerDialog::tweetTimerMessage(const QStringList &messages)
         //        qDebug() << message.length() << "," << message;
         QVariantMap map;
         map.insert("status", message);
-        m_status.updateStatuses(map);
+        m_status.statusesUpdate(map);
     }
 }
 
