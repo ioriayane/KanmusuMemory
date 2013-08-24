@@ -47,6 +47,9 @@ TimerDialog::TimerDialog(QWidget *parent
 
 TimerDialog::~TimerDialog()
 {
+    //設定保存
+    saveSettings();
+
     if(m_viewer != NULL)
         delete m_viewer;
     delete ui;
@@ -238,7 +241,13 @@ void TimerDialog::loadSettings()
     //つぶやくか
     m_timerdata.setTweetFinished(m_settings->value(QStringLiteral(SETTING_TIMER_TWEETFINISHED), true).toBool());
     //アラームの設定（暫定で固定）
-    m_timerdata.setAlarmSoundPath(QDir::currentPath() + "/" + QStringLiteral("alarm.mp3"));
+#ifdef Q_OS_MAC
+    m_timerdata.setAlarmSoundPath(QString("%1/../../../alarm.mp3")
+                                  .arg(QCoreApplication::applicationDirPath());
+#else
+    m_timerdata.setAlarmSoundPath(QString("%1/alarm.mp3")
+                                  .arg(QCoreApplication::applicationDirPath()));
+#endif
     m_timerdata.setAlarmSoundVolume(0.4);
     m_settings->endGroup();
 

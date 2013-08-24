@@ -106,7 +106,6 @@ Rectangle {
                         setTime: timerData.dockingTime[index]              //指定時間
                         startTime: timerData.dockingStart[index]          //開始時間
                         onStarted: {
-                            //                            console.debug("QML:start=" + startTime)
                             timerData.setStartTime(0, index, startTime)
                             timerData.setRunning(0, index, true)
                         }
