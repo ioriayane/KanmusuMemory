@@ -330,7 +330,15 @@ Copyright 2013 IoriAYANE</translation>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location line="-53"/>
+        <location line="+62"/>
+        <source>Handle ssl errors.
+Do you want to continue on an understanding of the security risk?
+</source>
+        <translation>SSLに関連するエラーが発生しました。
+以下のエラーが発生しています。アクセスを継続しますか？</translation>
+    </message>
+    <message>
+        <location line="-115"/>
         <location line="+8"/>
         <location line="+6"/>
         <source>failed find target</source>
@@ -407,7 +415,7 @@ Copyright 2013 IoriAYANE</translation>
         <translation type="obsolete">ダイアログ</translation>
     </message>
     <message>
-        <location filename="../timerdialog.cpp" line="+90"/>
+        <location filename="../timerdialog.cpp" line="+91"/>
         <source>1st</source>
         <translation>第１</translation>
     </message>
@@ -475,7 +483,7 @@ Copyright 2013 IoriAYANE</translation>
 <context>
     <name>TimerItem</name>
     <message>
-        <location filename="../qml/KanmusuMemory/TimerItem.qml" line="+126"/>
+        <location filename="../qml/KanmusuMemory/TimerItem.qml" line="+153"/>
         <source>Start</source>
         <translation>開始</translation>
     </message>
@@ -493,7 +501,7 @@ Copyright 2013 IoriAYANE</translation>
 <context>
     <name>TimerSetting</name>
     <message>
-        <location filename="../qml/KanmusuMemory/TimerSetting.qml" line="+97"/>
+        <location filename="../qml/KanmusuMemory/TimerSetting.qml" line="+82"/>
         <source>Set</source>
         <translation>設定</translation>
     </message>
@@ -617,32 +625,32 @@ Copyright 2013 IoriAYANE</translation>
 <context>
     <name>timerDialog</name>
     <message>
-        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+91"/>
+        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+102"/>
         <source>Docking</source>
         <translation>入渠</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+30"/>
         <source>Expedition</source>
         <translation>遠征</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+32"/>
         <source>Construction</source>
         <translation>建造</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+31"/>
         <source>tweet a time-out</source>
         <translation>時間になったらツイッターでお知らせする</translation>
     </message>
     <message>
-        <location line="+87"/>
+        <location line="+83"/>
         <source></source>
         <translation></translation>
     </message>
     <message>
-        <location line="+55"/>
+        <location line="+61"/>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>
@@ -796,7 +804,7 @@ Copyright 2013 IoriAYANE</translation>
         <translation>23 潜水艦通商破壊作戦</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+34"/>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>

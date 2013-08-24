@@ -17,6 +17,8 @@
 #define MAINWINDOW_H
 
 #include <QtWidgets/QMainWindow>
+#include <QNetworkReply>
+#include <QSslError>
 
 class MainWindow : public QMainWindow
 {
@@ -31,6 +33,9 @@ private:
 
 protected:
     void closeEvent(QCloseEvent *event);
+
+private slots:
+    void handleSslErrors(QNetworkReply* reply, const QList<QSslError> &errors);
 };
 
 #endif // MAINWINDOW_H

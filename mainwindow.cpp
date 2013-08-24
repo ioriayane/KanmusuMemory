@@ -243,6 +243,10 @@ MainWindow::MainWindow(QWidget *parent)
     QNetworkProxyFactory::setUseSystemConfiguration(true);
     QWebSettings::globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
     QWebSettings::globalSettings()->setAttribute(QWebSettings::JavascriptEnabled, true);
+    //SSLエラー
+    connect(d->ui.webView->page()->networkAccessManager(),
+            SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError> & )),
+            this, SLOT(handleSslErrors(QNetworkReply*,QList<QSslError>)));
     //艦これ読込み
     d->ui.webView->load(QUrl(URL_KANCOLLE));
 
@@ -259,4 +263,17 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.endGroup();
 
     QMainWindow::closeEvent(event);
+}
+
+void MainWindow::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &errors)
+{
+    QString str = tr("Handle ssl errors.\nDo you want to continue on an understanding of the security risk?\n");
+    foreach (QSslError e, errors){
+        str.append("ssl error: " + e.errorString());
+    }
+    qDebug() << str;
+    QMessageBox::StandardButton res = QMessageBox::warning(this, "SSL Error", str
+                                                               , QMessageBox::Yes | QMessageBox::No);
+    if(res == QMessageBox::Yes)
+        reply->ignoreSslErrors();
 }
