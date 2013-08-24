@@ -72,12 +72,12 @@ Rectangle {
                 height: 30
                 maximumValue: 59
                 minimumValue: 0
-                stepSize: 5
+                stepSize: 1
                 font.pointSize: 14
                 Keys.onEscapePressed: root.close()
             }
             Button {
-                width: 80
+                width: cancelButton.width
                 height: 30
                 text: qsTr("Set")
                 onClicked: {
@@ -88,7 +88,7 @@ Rectangle {
                 Keys.onEscapePressed: root.close()
             }
             Button {
-                width: 80
+                id: cancelButton
                 height: 30
                 text: qsTr("Cancel")
                 onClicked: root.close()
