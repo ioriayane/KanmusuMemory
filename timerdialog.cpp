@@ -197,8 +197,9 @@ void TimerDialog::tweetTimerMessage(const QStringList &messages)
         for(int i=0; i<messages.length(); i++){
             QString temp = messages[i];
 
-            if((message.length() + temp.length()) >= 130){
+            if((message.length() + temp.length()) >= 120){
                 //文字数オーバー一旦送信
+                message.append(QStringLiteral("%1").arg(QDateTime::currentDateTime().toString(QStringLiteral("MM/dd hh:mm"))));
                 //                qDebug() << message.length() << "," << message;
                 QVariantMap map;
                 map.insert("status", message);
@@ -211,6 +212,7 @@ void TimerDialog::tweetTimerMessage(const QStringList &messages)
                 message.append(temp + "\n ");
             }
         }
+        message.append(QStringLiteral("%1").arg(QDateTime::currentDateTime().toString(QStringLiteral("MM/dd hh:mm"))));
         //        qDebug() << message.length() << "," << message;
         QVariantMap map;
         map.insert("status", message);
