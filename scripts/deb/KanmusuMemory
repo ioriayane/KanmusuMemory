@@ -1,0 +1,5 @@
+#!/bin/sh
+LD_LIBRARY_PATH=/usr/local/lib/kanmusumemory
+export LD_LIBRARY_PATH
+export QT_IM_MODULE=ibus
+cd /usr/local/bin/kanmusumemory/ && exec /usr/local/bin/kanmusumemory/KanmusuMemory

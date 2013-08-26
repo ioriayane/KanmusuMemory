@@ -1,0 +1,8 @@
+Package: KanmusuMemory
+Version: 0.4
+Section: games
+Architecture: amd64
+Priority: optional
+Maintainer: IoriAYANE <iori.ayane@gmail.com>
+Homepage: http://relog.xii.jp/
+Description: 艦メモ　～艦娘メモリーズ～（艦これ専用ブラウザ）
