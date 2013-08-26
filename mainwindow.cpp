@@ -53,6 +53,9 @@ public:
     void openTweetDialog(const QString &path);     //ツイートダイアログを開く
 
 private:
+    QRect getGameRect();
+    QImage getGameImage(QRect crop = QRect());
+    QString makeFileName(const QString &format) const;
     MainWindow *q;
     TimerDialog *m_timerDialog;
 
@@ -137,42 +140,47 @@ MainWindow::Private::~Private()
     delete m_timerDialog;
 }
 
-//思い出を残す
-void MainWindow::Private::captureGame()
+QRect MainWindow::Private::getGameRect()
 {
-    qDebug() << "captureGame";
-
-    //設定確認
-    checkSavePath();
-
+    //スクロール位置は破壊される
     //表示位置を一番上へ強制移動
-    QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
     ui.webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
     //フレームを取得
     QWebFrame *frame = ui.webView->page()->mainFrame();
     if (frame->childFrames().isEmpty()) {
-        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
         ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-        return;
+        return QRect();
     }
     //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
     frame = frame->childFrames().first();
     QWebElement element = frame->findFirstElement(QStringLiteral("#flashWrap"));
     if (element.isNull()) {
-        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
         ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-        return;
+        return QRect();
     }
     element = element.findFirst(QStringLiteral("embed"));
     if (element.isNull()) {
-        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
         ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-        return;
+        return QRect();
     }
     //見つけたタグの座標を取得
     QRect geometry = element.geometry();
     geometry.moveTopLeft(geometry.topLeft() + frame->geometry().topLeft());
+
+    return geometry;
+}
+
+QImage MainWindow::Private::getGameImage(QRect crop)
+{
+    //スクロール位置の保存
+    QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
+    QRect geometry = getGameRect();
     qDebug() << geometry;
+    if (!geometry.isValid())
+    {
+        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+        return QImage();
+    }
 
     QImage img(geometry.size(), QImage::Format_ARGB32);
     QPainter painter(&img);
@@ -182,12 +190,39 @@ void MainWindow::Private::captureGame()
     //スクロールの位置を戻す
     ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
 
-    QString path = QStringLiteral("%1/kanmusu_%2.png").arg(settings.value(QStringLiteral("path")).toString()).arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")));
+    return img.copy(crop);
+}
+
+QString MainWindow::Private::makeFileName(const QString &format) const
+{
+    return QStringLiteral("%1/kanmusu_%2.%3")
+            .arg(settings.value(QStringLiteral("path")).toString())
+            .arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")))
+            .arg(format.toLower());
+}
+
+//思い出を残す
+void MainWindow::Private::captureGame()
+{
+    qDebug() << "captureGame";
+
+    //設定確認
+    checkSavePath();
+
+    QImage img = getGameImage();
+    if (img.isNull())
+    {
+        ui.statusBar->showMessage(tr("failed capture image"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+
+    char format[] = "png";
+    QString path = makeFileName(QString(format));
     qDebug() << "path:" << path;
 
     //保存する
     ui.statusBar->showMessage(tr("saving to %1...").arg(path), STATUS_BAR_MSG_TIME);
-    if(img.save(path)){
+    if(img.save(path, format)){
         //つぶやくダイアログ
         openTweetDialog(path);
     }else{
