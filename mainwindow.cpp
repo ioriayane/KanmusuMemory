@@ -71,6 +71,7 @@ MainWindow::Private::Private(MainWindow *parent)
     ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
     QNetworkDiskCache *cache = new QNetworkDiskCache(q);
     cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    cache->setMaximumCacheSize(1073741824); //about 1024MB
     ui.webView->page()->networkAccessManager()->setCache(cache);
 
     //通知タイマーのダイアログ作成
