@@ -16,7 +16,7 @@
 #include "timerdialog.h"
 #include "ui_timerdialog.h"
 #include "kanmusumemory_global.h"
-#include "twitterinfo.h"
+#include "../KanmusuMemoryTwitter/twitterinfo.h"
 
 #include <QQmlContext>
 #include <QtQml/QQmlEngine>

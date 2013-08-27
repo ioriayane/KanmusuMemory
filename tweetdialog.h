@@ -21,7 +21,7 @@
 #include <QPixmap>
 #include <QtTwitterAPI>
 
-#include "twitterinfo.h"
+#include "../KanmusuMemoryTwitter/twitterinfo.h"
 
 namespace Ui {
 class TweetDialog;
