@@ -3,8 +3,6 @@ TARGET = KanmusuMemory
 QT       += core gui network webkitwidgets twitterapi
 CONFIG += c++11
 
-INCLUDEPATH += ../KanmusuMemoryTwitter
-
 SOURCES += main.cpp\
         mainwindow.cpp \
     tweetdialog.cpp \
@@ -18,7 +16,7 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     tweetdialog.h \
     inputoauthpindialog.h \
-    twitterinfo.h \
+    ../KanmusuMemoryTwitter/twitterinfo.h \
     settingsdialog.h \
     cookiejar.h \
     aboutdialog.h \
