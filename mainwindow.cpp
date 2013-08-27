@@ -42,6 +42,7 @@
 
 
 #define STATUS_BAR_MSG_TIME     5000
+#define CLICK_EVENT_INTERVAL    1500
 
 class MainWindow::Private
 {
@@ -51,11 +52,14 @@ public:
     void captureGame();         //保存する
     void checkSavePath();       //保存場所の確認
     void openTweetDialog(const QString &path);     //ツイートダイアログを開く
+    void captureCatalog();
 
 private:
     QRect getGameRect();
     QImage getGameImage(QRect crop = QRect());
     QString makeFileName(const QString &format) const;
+    void clickGame(QPoint pos);
+    bool isCatalogScreen();
     MainWindow *q;
     TimerDialog *m_timerDialog;
 
@@ -81,6 +85,7 @@ MainWindow::Private::Private(MainWindow *parent)
 
     //メニュー
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
+    connect(ui.captureCatalog, &QAction::triggered, [this](){ captureCatalog(); });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
     //画像リスト
@@ -261,6 +266,138 @@ void MainWindow::Private::openTweetDialog(const QString &path)
     settings.setValue(SETTING_GENERAL_TOKENSECRET, dlg.tokenSecret());
     settings.setValue(SETTING_GENERAL_USER_ID, dlg.user_id());
     settings.setValue(SETTING_GENERAL_SCREEN_NAME, dlg.screen_name());
+}
+
+void MainWindow::Private::clickGame(QPoint pos)
+{
+    QPointF posf(pos);
+    QMouseEvent eventPress(QEvent::MouseButtonPress
+                            , posf
+                            , Qt::LeftButton, 0, 0);
+    QApplication::sendEvent(ui.webView, &eventPress);
+    QMouseEvent eventRelease(QEvent::MouseButtonRelease
+                              , posf
+                              , Qt::LeftButton, 0, 0);
+    QApplication::sendEvent(ui.webView, &eventRelease);
+    for(int i = 0; i < CLICK_EVENT_INTERVAL; i++)
+    {
+        QApplication::processEvents();
+        usleep(1000);
+    }
+}
+
+bool MainWindow::Private::isCatalogScreen()
+{
+    QImage img = getGameImage().copy(CATALOG_CHECK_RECT);
+    int r = 0;
+    int g = 0;
+    int b = 0;
+    for(int y = 0; y < img.height(); y++)
+        for (int x = 0; x < img.width(); x++)
+        {
+            r += qRed(img.pixel(x, y));
+            g += qGreen(img.pixel(x, y));
+            b += qBlue(img.pixel(x, y));
+        }
+    r /= (img.width() * img.height());
+    g /= (img.width() * img.height());
+    b /= (img.width() * img.height());
+
+    qDebug() << "check:" << r << g << b;
+    QRgb chkRgb = CATALOG_CHECK_COLOR;
+    if (r < qRed(chkRgb) && g < qGreen(chkRgb) && b < qBlue(chkRgb)
+     && qRed(chkRgb) - 10 < r && qGreen(chkRgb) -10 < g && qBlue(chkRgb) -10 < b)
+        return true;
+    else
+        return false;
+}
+
+void MainWindow::Private::captureCatalog()
+{
+    qDebug() << "captureCatalog";
+
+    //設定確認
+    checkSavePath();
+
+    QRect captureRect = CATALOG_RECT_CAPTURE;
+    QList<QRect> shipRectList;
+    {
+        shipRectList << CATALOG_RECT_SHIP1
+                     << CATALOG_RECT_SHIP2
+                     << CATALOG_RECT_SHIP3;
+    }
+    QList<QRect> pageRectList;
+    {
+        pageRectList << CATALOG_RECT_PAGE1
+                     << CATALOG_RECT_PAGE2
+                     << CATALOG_RECT_PAGE3
+                     << CATALOG_RECT_PAGE4
+                     << CATALOG_RECT_PAGE5;
+    }
+
+    QImage tmpImg(captureRect.size(), QImage::Format_ARGB32);
+    QImage resultImg(captureRect.width() * shipRectList.size()
+                     , captureRect.height() * pageRectList.size()
+                     ,QImage::Format_ARGB32);
+    QPainter painter(&resultImg);
+
+    QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
+    QRect geometry = getGameRect();
+
+    if (!isCatalogScreen())
+    {
+        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+        ui.statusBar->showMessage(tr("not in catalog"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+
+    ui.webView->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+    ui.statusBar->showMessage(tr("making catalog"), -1);
+    ui.progressBar->show();
+    ui.progressBar->setValue(0);
+    for (int type = 0; type < shipRectList.size(); type++)
+    {
+        int tx = geometry.x()
+                + (shipRectList.value(type).x() + shipRectList.value(type).width() / 2);
+        int ty = geometry.y()
+                + (shipRectList.value(type).y() + shipRectList.value(type).height() / 2);
+        clickGame(QPoint(tx, ty));
+
+        for (int page = 0; page < pageRectList.size(); page++)
+        {
+            int px = geometry.x()
+                    + (pageRectList.value(page).x() + pageRectList.value(page).width() / 2);
+            int py = geometry.y()
+                    + (pageRectList.value(page).y() + pageRectList.value(page).height() / 2);
+            clickGame(QPoint(px, py));
+
+            tmpImg = getGameImage(captureRect);
+            painter.drawImage(captureRect.width() * type
+                              , captureRect.height() * page
+                              , tmpImg);
+
+            ui.progressBar->setValue((pageRectList.size() * type + (page + 1)) * 100
+                                     / (pageRectList.size() * shipRectList.size()) );
+        }
+    }
+    ui.progressBar->hide();
+    ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+    ui.webView->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+    ui.statusBar->showMessage("", -1);
+
+    char format[] = "jpg";
+    QString path = makeFileName(QString(format));
+    qDebug() << "path:" << path;
+
+    //保存する
+    ui.statusBar->showMessage(tr("saving to %1...").arg(path), STATUS_BAR_MSG_TIME);
+    if(resultImg.save(path, format))
+    {
+        //つぶやくダイアログ
+        openTweetDialog(path);
+    }else{
+        ui.statusBar->showMessage(tr("failed save image"), STATUS_BAR_MSG_TIME);
+    }
 }
 
 MainWindow::MainWindow(QWidget *parent)

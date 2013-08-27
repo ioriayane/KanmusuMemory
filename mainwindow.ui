@@ -60,7 +60,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="file">
@@ -69,6 +69,7 @@
     </property>
     <addaction name="capture"/>
     <addaction name="viewMemory"/>
+    <addaction name="captureCatalog"/>
     <addaction name="separator"/>
     <addaction name="notificationTimer"/>
     <addaction name="separator"/>
@@ -106,6 +107,7 @@
    <addaction name="capture"/>
    <addaction name="viewMemory"/>
    <addaction name="notificationTimer"/>
+   <addaction name="captureCatalog"/>
   </widget>
   <action name="exit">
    <property name="text">
@@ -172,6 +174,14 @@
    </property>
    <property name="shortcut">
     <string>F7</string>
+   </property>
+  </action>
+  <action name="captureCatalog">
+   <property name="text">
+    <string>captureCatalog</string>
+   </property>
+   <property name="toolTip">
+    <string>captureCatalog</string>
    </property>
   </action>
  </widget>
