@@ -111,9 +111,13 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.preferences, &QAction::triggered, [this]() {
         SettingsDialog dlg(q);
         dlg.setSavePath(settings.value(QStringLiteral("path")).toString());
+        dlg.setUnusedTwitter(settings.value(SETTING_GENERAL_UNUSED_TWITTER, false).toBool());
+        dlg.setSavePng(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool());
         if (dlg.exec()) {
             //設定更新
             settings.setValue(QStringLiteral("path"), dlg.savePath());
+            settings.setValue(SETTING_GENERAL_UNUSED_TWITTER, dlg.unusedTwitter());
+            settings.setValue(SETTING_GENERAL_SAVE_PNG, dlg.savePng());
         }
     });
 
@@ -226,7 +230,12 @@ void MainWindow::Private::captureGame()
         return;
     }
 
-    char format[] = "png";
+    char format[4] = {0};
+    if(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool())
+        strcpy_s(format, "png");
+    else
+        strcpy_s(format, "jpg");
+
     QString path = makeFileName(QString(format));
     qDebug() << "path:" << path;
 
@@ -260,17 +269,25 @@ void MainWindow::Private::checkSavePath()
 //ツイートダイアログを開く
 void MainWindow::Private::openTweetDialog(const QString &path)
 {
-    TweetDialog dlg(q);
-    dlg.setImagePath(path);
-    dlg.setToken(settings.value(SETTING_GENERAL_TOKEN, "").toString());
-    dlg.setTokenSecret(settings.value(SETTING_GENERAL_TOKENSECRET, "").toString());
-    dlg.user_id(settings.value(SETTING_GENERAL_USER_ID, "").toString());
-    dlg.screen_name(settings.value(SETTING_GENERAL_SCREEN_NAME, "").toString());
-    dlg.exec();
-    settings.setValue(SETTING_GENERAL_TOKEN, dlg.token());
-    settings.setValue(SETTING_GENERAL_TOKENSECRET, dlg.tokenSecret());
-    settings.setValue(SETTING_GENERAL_USER_ID, dlg.user_id());
-    settings.setValue(SETTING_GENERAL_SCREEN_NAME, dlg.screen_name());
+    //連携を使用しない
+    if(settings.value(SETTING_GENERAL_UNUSED_TWITTER, false).toBool()){
+        QMessageBox::information(q
+                                 , tr("Kan Memo")
+                                 , tr("saving to %1...").arg(path));
+    }else{
+        //ダイアログを開く
+        TweetDialog dlg(q);
+        dlg.setImagePath(path);
+        dlg.setToken(settings.value(SETTING_GENERAL_TOKEN, "").toString());
+        dlg.setTokenSecret(settings.value(SETTING_GENERAL_TOKENSECRET, "").toString());
+        dlg.user_id(settings.value(SETTING_GENERAL_USER_ID, "").toString());
+        dlg.screen_name(settings.value(SETTING_GENERAL_SCREEN_NAME, "").toString());
+        dlg.exec();
+        settings.setValue(SETTING_GENERAL_TOKEN, dlg.token());
+        settings.setValue(SETTING_GENERAL_TOKENSECRET, dlg.tokenSecret());
+        settings.setValue(SETTING_GENERAL_USER_ID, dlg.user_id());
+        settings.setValue(SETTING_GENERAL_SCREEN_NAME, dlg.screen_name());
+    }
 }
 
 void MainWindow::Private::clickGame(QPoint pos, bool wait_little)

@@ -16,11 +16,13 @@
 #ifndef KANMUSUMEMORY_GLOBAL_H
 #define KANMUSUMEMORY_GLOBAL_H
 
-#define KANMEMO_VERSION "0.4"
+#define KANMEMO_VERSION "0.5"
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
     << "@task_jp"\
     << "@nagakenjs"\
+    << "@androidsola"\
+    << "@tkhshmsy"\
     )
 
 #define SETTING_FILE_NAME       "settings.ini"
@@ -30,6 +32,8 @@
 #define SETTING_GENERAL_TOKENSECRET "tokenSecret"
 #define SETTING_GENERAL_USER_ID     "user_id"
 #define SETTING_GENERAL_SCREEN_NAME "screen_name"
+#define SETTING_GENERAL_UNUSED_TWITTER  "unused_twitter"
+#define SETTING_GENERAL_SAVE_PNG    "save_png"
 
 #define SETTING_MAINWINDOW          "mainwindow"
 #define SETTING_TIMERDIALOG         "timerdialog"

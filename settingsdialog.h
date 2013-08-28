@@ -35,6 +35,12 @@ public:
 
     static QString selectSavePath(QWidget *parent, const QString &current_path);
 
+    bool unusedTwitter() const;
+    void setUnusedTwitter(bool unusedTwitter);
+
+    bool savePng() const;
+    void setSavePng(bool savePng);
+
 private slots:
     void on_okButton_clicked();
 
@@ -46,6 +52,8 @@ private:
     Ui::SettingsDialog *ui;
 
     QString m_savePath;
+    bool m_unusedTwitter;
+    bool m_savePng;
 };
 
 #endif // SETTINGSDIALOG_H

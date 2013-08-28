@@ -49,9 +49,31 @@ QString SettingsDialog::selectSavePath(QWidget *parent, const QString &current_p
 {
     return QFileDialog::getExistingDirectory(parent, tr("Select save folder"),
                                              current_path,
-                                            QFileDialog::ShowDirsOnly
-                                            | QFileDialog::DontResolveSymlinks);
+                                             QFileDialog::ShowDirsOnly
+                                             | QFileDialog::DontResolveSymlinks);
 }
+
+bool SettingsDialog::unusedTwitter() const
+{
+    return m_unusedTwitter;
+}
+
+void SettingsDialog::setUnusedTwitter(bool unusedTwitter)
+{
+    m_unusedTwitter = unusedTwitter;
+    ui->unusedTwittercheckBox->setChecked(unusedTwitter);
+}
+
+bool SettingsDialog::savePng() const
+{
+    return m_savePng;
+}
+void SettingsDialog::setSavePng(bool savePng)
+{
+    m_savePng = savePng;
+    ui->savePngCheckBox->setChecked(savePng);
+}
+
 
 void SettingsDialog::on_okButton_clicked()
 {
@@ -59,8 +81,11 @@ void SettingsDialog::on_okButton_clicked()
         QMessageBox::warning(this, "warning", "save path not found.");
         return;
     }
-
+    
     m_savePath = ui->savePathEdit->text();
+    m_unusedTwitter = ui->unusedTwittercheckBox->isChecked();
+    m_savePng = ui->savePngCheckBox->isChecked();
+
     accept();
 }
 
@@ -73,7 +98,7 @@ void SettingsDialog::on_cancelButton_clicked()
 void SettingsDialog::on_selectPathButton_clicked()
 {
     QString path = selectSavePath(this, ui->savePathEdit->text());
-
+    
     if(QFile::exists(path))
         setSavePath(path);
 }
