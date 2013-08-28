@@ -56,7 +56,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+132"/>
+        <location filename="../mainwindow.cpp" line="+138"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -75,29 +75,31 @@
     <message>
         <location line="+52"/>
         <source>failed capture image</source>
-        <translation type="unfinished"></translation>
+        <translation>画像を取り込めませんでした。</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <location line="+164"/>
+        <location line="+14"/>
+        <location line="+33"/>
+        <location line="+144"/>
         <location line="+138"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-297"/>
-        <location line="+165"/>
+        <location line="-310"/>
+        <location line="+178"/>
         <location line="+138"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-293"/>
+        <location line="-306"/>
+        <location line="+17"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-16"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -107,7 +109,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+115"/>
         <source>not in catalog</source>
         <translation>図鑑表示ではありません</translation>
     </message>
@@ -291,6 +293,16 @@ Do you want to continue on an understanding of the security risk?
         <location line="+13"/>
         <source>...</source>
         <translation>...</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Unused Twitter</source>
+        <translation>ツイッター連携を使用しない</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Save in PNG format.</source>
+        <translation>画像をPNG形式で保存する（標準はJPEG）</translation>
     </message>
     <message>
         <location filename="../settingsdialog.cpp" line="+50"/>
