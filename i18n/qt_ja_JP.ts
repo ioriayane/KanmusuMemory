@@ -56,7 +56,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+121"/>
+        <location filename="../mainwindow.cpp" line="+132"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -66,24 +66,33 @@
         <translation>ページの読み込みが失敗しました。</translation>
     </message>
     <message>
-        <location line="+32"/>
-        <location line="+8"/>
-        <location line="+6"/>
+        <location line="+25"/>
+        <location line="+7"/>
+        <location line="+5"/>
         <source>failed find target</source>
         <translation>艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+52"/>
+        <source>failed capture image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <location line="+164"/>
+        <location line="+138"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-297"/>
+        <location line="+165"/>
+        <location line="+138"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="-293"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
@@ -98,7 +107,27 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+102"/>
+        <source>not in catalog</source>
+        <translation>図鑑表示ではありません</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>making catalog</source>
+        <translation>図鑑作成中</translation>
+    </message>
+    <message>
+        <location line="+135"/>
+        <source>not in organization</source>
+        <translation>編成画面ではありません</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>making fleet detail</source>
+        <translation>艦隊詳細作成中</translation>
+    </message>
+    <message>
+        <location line="+85"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -121,7 +150,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>ファイル(&amp;F)</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+15"/>
         <source>&amp;Browser</source>
         <translation>ブラウザ(&amp;B)</translation>
     </message>
@@ -136,7 +165,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>toolBar</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+16"/>
         <source>&amp;Exit</source>
         <translation>終了(&amp;E)</translation>
     </message>
@@ -214,6 +243,18 @@ Do you want to continue on an understanding of the security risk?
         <location line="+3"/>
         <source>F7</source>
         <translation>F7</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location line="+3"/>
+        <source>captureCatalog</source>
+        <translation>図鑑を作成する</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location line="+3"/>
+        <source>captureFleetDetail</source>
+        <translation>艦隊詳細を作成する</translation>
     </message>
 </context>
 <context>

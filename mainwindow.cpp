@@ -42,6 +42,7 @@
 
 
 #define STATUS_BAR_MSG_TIME     5000
+#define CLICK_EVENT_INTERVAL    1500
 
 class MainWindow::Private
 {
@@ -51,8 +52,16 @@ public:
     void captureGame();         //保存する
     void checkSavePath();       //保存場所の確認
     void openTweetDialog(const QString &path);     //ツイートダイアログを開く
+    void captureCatalog();
+    void captureFleetDetail();
 
 private:
+    QRect getGameRect();
+    QImage getGameImage(QRect crop = QRect());
+    QString makeFileName(const QString &format) const;
+    void clickGame(QPoint pos);
+    bool isCatalogScreen();
+    bool isShipExist(QRect rect1, QRect rect2);
     MainWindow *q;
     TimerDialog *m_timerDialog;
 
@@ -79,6 +88,8 @@ MainWindow::Private::Private(MainWindow *parent)
 
     //メニュー
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
+    connect(ui.captureCatalog, &QAction::triggered, [this](){ captureCatalog(); });
+    connect(ui.captureFleetDetail, &QAction::triggered, [this](){ captureFleetDetail(); });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
     //画像リスト
@@ -138,42 +149,47 @@ MainWindow::Private::~Private()
     delete m_timerDialog;
 }
 
-//思い出を残す
-void MainWindow::Private::captureGame()
+QRect MainWindow::Private::getGameRect()
 {
-    qDebug() << "captureGame";
-
-    //設定確認
-    checkSavePath();
-
+    //スクロール位置は破壊される
     //表示位置を一番上へ強制移動
-    QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
     ui.webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
     //フレームを取得
     QWebFrame *frame = ui.webView->page()->mainFrame();
     if (frame->childFrames().isEmpty()) {
-        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
         ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-        return;
+        return QRect();
     }
     //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
     frame = frame->childFrames().first();
     QWebElement element = frame->findFirstElement(QStringLiteral("#flashWrap"));
     if (element.isNull()) {
-        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
         ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-        return;
+        return QRect();
     }
     element = element.findFirst(QStringLiteral("embed"));
     if (element.isNull()) {
-        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
         ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-        return;
+        return QRect();
     }
     //見つけたタグの座標を取得
     QRect geometry = element.geometry();
     geometry.moveTopLeft(geometry.topLeft() + frame->geometry().topLeft());
+
+    return geometry;
+}
+
+QImage MainWindow::Private::getGameImage(QRect crop)
+{
+    //スクロール位置の保存
+    QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
+    QRect geometry = getGameRect();
     qDebug() << geometry;
+    if (!geometry.isValid())
+    {
+        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+        return QImage();
+    }
 
     QImage img(geometry.size(), QImage::Format_ARGB32);
     QPainter painter(&img);
@@ -183,12 +199,39 @@ void MainWindow::Private::captureGame()
     //スクロールの位置を戻す
     ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
 
-    QString path = QStringLiteral("%1/kanmusu_%2.png").arg(settings.value(QStringLiteral("path")).toString()).arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")));
+    return img.copy(crop);
+}
+
+QString MainWindow::Private::makeFileName(const QString &format) const
+{
+    return QStringLiteral("%1/kanmusu_%2.%3")
+            .arg(settings.value(QStringLiteral("path")).toString())
+            .arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")))
+            .arg(format.toLower());
+}
+
+//思い出を残す
+void MainWindow::Private::captureGame()
+{
+    qDebug() << "captureGame";
+
+    //設定確認
+    checkSavePath();
+
+    QImage img = getGameImage();
+    if (img.isNull())
+    {
+        ui.statusBar->showMessage(tr("failed capture image"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+
+    char format[] = "png";
+    QString path = makeFileName(QString(format));
     qDebug() << "path:" << path;
 
     //保存する
     ui.statusBar->showMessage(tr("saving to %1...").arg(path), STATUS_BAR_MSG_TIME);
-    if(img.save(path)){
+    if(img.save(path, format)){
         //つぶやくダイアログ
         openTweetDialog(path);
     }else{
@@ -227,6 +270,276 @@ void MainWindow::Private::openTweetDialog(const QString &path)
     settings.setValue(SETTING_GENERAL_TOKENSECRET, dlg.tokenSecret());
     settings.setValue(SETTING_GENERAL_USER_ID, dlg.user_id());
     settings.setValue(SETTING_GENERAL_SCREEN_NAME, dlg.screen_name());
+}
+
+void MainWindow::Private::clickGame(QPoint pos)
+{
+    QPointF posf(pos);
+    QMouseEvent eventPress(QEvent::MouseButtonPress
+                            , posf
+                            , Qt::LeftButton, 0, 0);
+    QApplication::sendEvent(ui.webView, &eventPress);
+    QMouseEvent eventRelease(QEvent::MouseButtonRelease
+                              , posf
+                              , Qt::LeftButton, 0, 0);
+    QApplication::sendEvent(ui.webView, &eventRelease);
+    for(int i = 0; i < CLICK_EVENT_INTERVAL; i++)
+    {
+        QApplication::processEvents();
+        usleep(1000);
+    }
+}
+
+bool MainWindow::Private::isCatalogScreen()
+{
+    QImage img = getGameImage().copy(CATALOG_CHECK_RECT);
+    int r = 0;
+    int g = 0;
+    int b = 0;
+    for(int y = 0; y < img.height(); y++)
+        for (int x = 0; x < img.width(); x++)
+        {
+            r += qRed(img.pixel(x, y));
+            g += qGreen(img.pixel(x, y));
+            b += qBlue(img.pixel(x, y));
+        }
+    r /= (img.width() * img.height());
+    g /= (img.width() * img.height());
+    b /= (img.width() * img.height());
+
+    qDebug() << "check:" << r << g << b;
+    QRgb chkRgb = CATALOG_CHECK_COLOR;
+    if (r < qRed(chkRgb) && g < qGreen(chkRgb) && b < qBlue(chkRgb)
+     && qRed(chkRgb) - 10 < r && qGreen(chkRgb) -10 < g && qBlue(chkRgb) -10 < b)
+        return true;
+    else
+        return false;
+}
+
+void MainWindow::Private::captureCatalog()
+{
+    qDebug() << "captureCatalog";
+
+    //設定確認
+    checkSavePath();
+
+    QRect captureRect = CATALOG_RECT_CAPTURE;
+    QList<QRect> shipRectList;
+    {
+        shipRectList << CATALOG_RECT_SHIP1
+                     << CATALOG_RECT_SHIP2
+                     << CATALOG_RECT_SHIP3;
+    }
+    QList<QRect> pageRectList;
+    {
+        pageRectList << CATALOG_RECT_PAGE1
+                     << CATALOG_RECT_PAGE2
+                     << CATALOG_RECT_PAGE3
+                     << CATALOG_RECT_PAGE4
+                     << CATALOG_RECT_PAGE5;
+    }
+
+    QImage tmpImg(captureRect.size(), QImage::Format_ARGB32);
+    QImage resultImg(captureRect.width() * shipRectList.size()
+                     , captureRect.height() * pageRectList.size()
+                     ,QImage::Format_ARGB32);
+    QPainter painter(&resultImg);
+
+    QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
+    QRect geometry = getGameRect();
+
+    if (!isCatalogScreen())
+    {
+        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+        ui.statusBar->showMessage(tr("not in catalog"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+
+    ui.webView->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+    ui.statusBar->showMessage(tr("making catalog"), -1);
+    ui.progressBar->show();
+    ui.progressBar->setValue(0);
+    for (int type = 0; type < shipRectList.size(); type++)
+    {
+        int tx = geometry.x()
+                + (shipRectList.value(type).x() + shipRectList.value(type).width() / 2);
+        int ty = geometry.y()
+                + (shipRectList.value(type).y() + shipRectList.value(type).height() / 2);
+        clickGame(QPoint(tx, ty));
+
+        for (int page = 0; page < pageRectList.size(); page++)
+        {
+            int px = geometry.x()
+                    + (pageRectList.value(page).x() + pageRectList.value(page).width() / 2);
+            int py = geometry.y()
+                    + (pageRectList.value(page).y() + pageRectList.value(page).height() / 2);
+            clickGame(QPoint(px, py));
+
+            tmpImg = getGameImage(captureRect);
+            painter.drawImage(captureRect.width() * type
+                              , captureRect.height() * page
+                              , tmpImg);
+
+            ui.progressBar->setValue((pageRectList.size() * type + (page + 1)) * 100
+                                     / (pageRectList.size() * shipRectList.size()) );
+        }
+    }
+    ui.progressBar->hide();
+    ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+    ui.webView->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+    ui.statusBar->showMessage("", -1);
+
+    char format[] = "jpg";
+    QString path = makeFileName(QString(format));
+    qDebug() << "path:" << path;
+
+    //保存する
+    ui.statusBar->showMessage(tr("saving to %1...").arg(path), STATUS_BAR_MSG_TIME);
+    if(resultImg.save(path, format))
+    {
+        //つぶやくダイアログ
+        openTweetDialog(path);
+    }else{
+        ui.statusBar->showMessage(tr("failed save image"), STATUS_BAR_MSG_TIME);
+    }
+}
+
+bool MainWindow::Private::isShipExist(QRect rect1, QRect rect2)
+{
+    QImage img = getGameImage();
+    int yr = 0;
+    int yg = 0;
+    int yb = 0;
+    for(int y = rect1.y(); y < rect1.y() + rect1.height(); y++)
+        for (int x = rect1.x(); x <rect1.x() + rect1.width(); x++)
+        {
+            yr += qRed(img.pixel(x, y));
+            yg += qGreen(img.pixel(x, y));
+            yb += qBlue(img.pixel(x, y));
+        }
+    yr /= (rect1.width() * rect1.height());
+    yg /= (rect1.width() * rect1.height());
+    yb /= (rect1.width() * rect1.height());
+
+    bool result1 = false;
+    QRgb chk1 = DETAIL_CHECK_COLOR1;
+    if (yr < qRed(chk1) && yg < qGreen(chk1) && yb < qBlue(chk1)
+     && qRed(chk1) - 20 < yr && qGreen(chk1) - 20 < yg && qBlue(chk1) - 20 < yb)
+        result1 = true;
+
+    int gr = 0;
+    int gg = 0;
+    int gb = 0;
+    for(int y = rect2.y(); y < rect2.y() + rect2.height(); y++)
+        for (int x = rect2.x(); x <rect2.x() + rect2.width(); x++)
+        {
+            gr += qRed(img.pixel(x, y));
+            gg += qGreen(img.pixel(x, y));
+            gb += qBlue(img.pixel(x, y));
+        }
+    gr /= (rect2.width() * rect2.height());
+    gg /= (rect2.width() * rect2.height());
+    gb /= (rect2.width() * rect2.height());
+
+    qDebug() << "check:" << yr << yg << yb << "|" << gr << gg << gb;
+
+    bool result2 = false;
+    QRgb chk2 = DETAIL_CHECK_COLOR2;
+    if (gr < qRed(chk2) && gg < qGreen(chk2) && gb < qBlue(chk2)
+     && qRed(chk2) - 30 < gr && qGreen(chk2) - 30 < gg && qBlue(chk2) - 30 < gb)
+        result2 = true;
+
+    return result1 & result2;
+}
+
+void MainWindow::Private::captureFleetDetail()
+{
+    qDebug() << "captureFleetDetail";
+
+    //設定確認
+    checkSavePath();
+
+    QRect captureRect = DETAIL_RECT_CAPTURE;
+    QList<QRect> shipRectList;
+    {
+        shipRectList << DETAIL_RECT_SHIP1
+                     << DETAIL_RECT_SHIP2
+                     << DETAIL_RECT_SHIP3
+                     << DETAIL_RECT_SHIP4
+                     << DETAIL_RECT_SHIP5
+                     << DETAIL_RECT_SHIP6;
+    }
+    QList<QRect> checkRectList;
+    {
+        checkRectList << DETAIL_RECT_SHIP1_2
+                     << DETAIL_RECT_SHIP2_2
+                     << DETAIL_RECT_SHIP3_2
+                     << DETAIL_RECT_SHIP4_2
+                     << DETAIL_RECT_SHIP5_2
+                     << DETAIL_RECT_SHIP6_2;
+    }
+
+    QImage tmpImg(captureRect.size(), QImage::Format_ARGB32);
+    QImage resultImg(captureRect.width() * 2
+                     , captureRect.height() * (shipRectList.size() / 2 + (shipRectList.size() % 2 == 1))
+                     ,QImage::Format_ARGB32);
+    QPainter painter(&resultImg);
+
+    QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
+    QRect geometry = getGameRect();
+
+    if (!isShipExist(shipRectList.value(0), checkRectList.value(0)))
+    {
+        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+        ui.statusBar->showMessage(tr("not in organization"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+
+    ui.webView->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+    ui.statusBar->showMessage(tr("making fleet detail"), -1);
+    ui.progressBar->show();
+    ui.progressBar->setValue(0);
+    for (int i = 0; i < shipRectList.size(); i++)
+    {
+        if (!isShipExist(shipRectList.value(i), checkRectList.value(i)))
+        {
+            QRect box = captureRect;
+            box.moveTo(captureRect.width() * (i % 2), captureRect.height() * (i / 2));
+            painter.fillRect(box, Qt::SolidPattern);
+            continue;
+        }
+        int px = geometry.x()
+                + (shipRectList.value(i).x() + shipRectList.value(i).width() / 2);
+        int py = geometry.y()
+                + (shipRectList.value(i).y() + shipRectList.value(i).height() / 2);
+        //open
+        clickGame(QPoint(px, py));
+        tmpImg = getGameImage(captureRect);
+        painter.drawImage(captureRect.width() * (i % 2)
+                          , captureRect.height() * (i / 2)
+                          , tmpImg);
+        ui.progressBar->setValue((i + 1) * 100 / shipRectList.size());
+        //close
+        clickGame(QPoint(px, py));
+    }
+    ui.progressBar->hide();
+    ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
+    ui.webView->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+    ui.statusBar->showMessage("", -1);
+
+    char format[] = "png";
+    QString path = makeFileName(QString(format));
+    qDebug() << "path:" << path;
+
+    //保存する
+    ui.statusBar->showMessage(tr("saving to %1...").arg(path), STATUS_BAR_MSG_TIME);
+    if(resultImg.save(path, format))
+    {
+        //つぶやくダイアログ
+        openTweetDialog(path);
+    }else{
+        ui.statusBar->showMessage(tr("failed save image"), STATUS_BAR_MSG_TIME);
+    }
 }
 
 MainWindow::MainWindow(QWidget *parent)

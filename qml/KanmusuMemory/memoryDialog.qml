@@ -88,7 +88,7 @@ Rectangle {
                 showDirs: false                                 //ディレクトリは非表示
                 sortField: FolderListModel.Name                 //ファイル名でソート
                 sortReversed: true                              //新しいモノが上
-                nameFilters: "kanmusu_*.png"                    //フィルタ
+                nameFilters: ["kanmusu_*.png", "kanmusu_*.jpg"] //フィルタ
             }
             //個々のレイアウト
             delegate: MouseArea {

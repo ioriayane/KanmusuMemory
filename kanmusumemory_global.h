@@ -48,6 +48,32 @@
 #define SETTING_TIMER_CONSTRUCTION_RUNNING  "constructionRunning"
 #define SETTING_TIMER_TWEETFINISHED         "tweetFinished"
 
+#define CATALOG_CHECK_COLOR     (qRgb(45, 43, 43))
+#define CATALOG_CHECK_RECT      (QRect(0, 0, 5, 5))
+#define CATALOG_RECT_CAPTURE    (QRect(150, 60, 610, 380))
+#define CATALOG_RECT_SHIP1      (QRect(0, 90, 105, 25))
+#define CATALOG_RECT_SHIP2      (QRect(0, 130, 105, 25))
+#define CATALOG_RECT_SHIP3      (QRect(0, 170, 105, 25))
+#define CATALOG_RECT_PAGE1      (QRect(140, 18, 120, 20))
+#define CATALOG_RECT_PAGE2      (QRect(268, 18, 120, 20))
+#define CATALOG_RECT_PAGE3      (QRect(396, 18, 120, 20))
+#define CATALOG_RECT_PAGE4      (QRect(524, 18, 120, 20))
+#define CATALOG_RECT_PAGE5      (QRect(652, 18, 120, 20))
 
+#define DETAIL_CHECK_COLOR1     (qRgb(210, 185, 100))
+#define DETAIL_CHECK_COLOR2     (qRgb(135, 185, 130))
+#define DETAIL_RECT_CAPTURE     (QRect(325, 100, 465, 370))
+#define DETAIL_RECT_SHIP1       (QRect(300, 200, 50, 20))
+#define DETAIL_RECT_SHIP1_2     (QRect(380, 200, 50, 20))
+#define DETAIL_RECT_SHIP2       (QRect(640, 200, 50, 20))
+#define DETAIL_RECT_SHIP2_2     (QRect(720, 200, 50, 20))
+#define DETAIL_RECT_SHIP3       (QRect(300, 315, 50, 20))
+#define DETAIL_RECT_SHIP3_2     (QRect(380, 315, 50, 20))
+#define DETAIL_RECT_SHIP4       (QRect(640, 315, 50, 20))
+#define DETAIL_RECT_SHIP4_2     (QRect(720, 315, 50, 20))
+#define DETAIL_RECT_SHIP5       (QRect(300, 430, 50, 20))
+#define DETAIL_RECT_SHIP5_2     (QRect(380, 430, 50, 20))
+#define DETAIL_RECT_SHIP6       (QRect(640, 430, 50, 20))
+#define DETAIL_RECT_SHIP6_2     (QRect(720, 430, 50, 20))
 
 #endif // KANMUSUMEMORY_GLOBAL_H
