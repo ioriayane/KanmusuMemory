@@ -42,7 +42,8 @@
 
 
 #define STATUS_BAR_MSG_TIME     5000
-#define CLICK_EVENT_INTERVAL    1500
+#define CLICK_EVENT_INTERVAL            1500
+#define CLICK_EVENT_INTERVAL_LITTLE     500
 
 class MainWindow::Private
 {
@@ -59,7 +60,7 @@ private:
     QRect getGameRect();
     QImage getGameImage(QRect crop = QRect());
     QString makeFileName(const QString &format) const;
-    void clickGame(QPoint pos);
+    void clickGame(QPoint pos, bool wait_little = false);
     bool isCatalogScreen();
     bool isShipExist(QRect rect1, QRect rect2);
     MainWindow *q;
@@ -272,8 +273,9 @@ void MainWindow::Private::openTweetDialog(const QString &path)
     settings.setValue(SETTING_GENERAL_SCREEN_NAME, dlg.screen_name());
 }
 
-void MainWindow::Private::clickGame(QPoint pos)
+void MainWindow::Private::clickGame(QPoint pos, bool wait_little)
 {
+    int interval = CLICK_EVENT_INTERVAL;
     QPointF posf(pos);
     QMouseEvent eventPress(QEvent::MouseButtonPress
                             , posf
@@ -283,10 +285,14 @@ void MainWindow::Private::clickGame(QPoint pos)
                               , posf
                               , Qt::LeftButton, 0, 0);
     QApplication::sendEvent(ui.webView, &eventRelease);
-    for(int i = 0; i < CLICK_EVENT_INTERVAL; i++)
+
+    if(wait_little)
+        interval = CLICK_EVENT_INTERVAL_LITTLE;
+
+    for(int i = 0; i < interval; i++)
     {
         QApplication::processEvents();
-        usleep(1000);
+        QThread::usleep(1000);
     }
 }
 
@@ -520,7 +526,7 @@ void MainWindow::Private::captureFleetDetail()
                           , tmpImg);
         ui.progressBar->setValue((i + 1) * 100 / shipRectList.size());
         //close
-        clickGame(QPoint(px, py));
+        clickGame(QPoint(geometry.x() + 370, geometry.y() + 120), true);
     }
     ui.progressBar->hide();
     ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
