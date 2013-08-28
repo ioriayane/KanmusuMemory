@@ -74,6 +74,26 @@ void SettingsDialog::setSavePng(bool savePng)
     ui->savePngCheckBox->setChecked(savePng);
 }
 
+bool SettingsDialog::isMaskAdmiralName() const
+{
+    return m_maskAdmiralName;
+}
+void SettingsDialog::setMaskAdmiralName(bool b)
+{
+    m_maskAdmiralName = b;
+    ui->maskAdmiralNameCheckBox->setChecked(b);
+}
+
+bool SettingsDialog::isMaskHqLevel() const
+{
+    return m_maskHqLevel;
+}
+void SettingsDialog::setMaskHqLevel(bool b)
+{
+    m_maskHqLevel = b;
+    ui->maskHqLevelCheckBox->setChecked(b);
+}
+
 
 void SettingsDialog::on_okButton_clicked()
 {
@@ -85,6 +105,8 @@ void SettingsDialog::on_okButton_clicked()
     m_savePath = ui->savePathEdit->text();
     m_unusedTwitter = ui->unusedTwittercheckBox->isChecked();
     m_savePng = ui->savePngCheckBox->isChecked();
+    m_maskAdmiralName = ui->maskAdmiralNameCheckBox->isChecked();
+    m_maskHqLevel = ui->maskHqLevelCheckBox->isChecked();
 
     accept();
 }
