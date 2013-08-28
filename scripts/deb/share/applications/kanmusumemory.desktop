@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=艦メモ　～艦娘メモリーズ～
+GenericName=KanmusuMemory
+Exec=/usr/local/bin/kanmusumemory/Desktop_KanmusuMemory.sh
+Terminal=false
+Icon=KanmusuMemory
+Categories=Simulation;
+StartupNotify=false
