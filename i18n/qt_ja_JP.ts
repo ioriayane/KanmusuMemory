@@ -56,7 +56,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+138"/>
+        <location filename="../mainwindow.cpp" line="+144"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -73,27 +73,27 @@
         <translation>艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+61"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+27"/>
         <location line="+33"/>
-        <location line="+144"/>
+        <location line="+171"/>
         <location line="+138"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-310"/>
-        <location line="+178"/>
+        <location line="-337"/>
+        <location line="+205"/>
         <location line="+138"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-306"/>
+        <location line="-333"/>
         <location line="+17"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
@@ -109,7 +109,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+115"/>
+        <location line="+142"/>
         <source>not in catalog</source>
         <translation>図鑑表示ではありません</translation>
     </message>
@@ -303,6 +303,16 @@ Do you want to continue on an understanding of the security risk?
         <location line="+13"/>
         <source>Save in PNG format.</source>
         <translation>画像をPNG形式で保存する（標準はJPEG）</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Mask Admiral name</source>
+        <translation>提督名を消す（母港画面のヘッダのみ）</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Mask HQ level</source>
+        <translation>艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
         <location filename="../settingsdialog.cpp" line="+50"/>
