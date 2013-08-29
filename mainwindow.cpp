@@ -232,9 +232,9 @@ void MainWindow::Private::captureGame()
 
     char format[4] = {0};
     if(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool())
-        strcpy_s(format, "png");
+        strcpy(format, "png");
     else
-        strcpy_s(format, "jpg");
+        strcpy(format, "jpg");
 
     QString path = makeFileName(QString(format));
     qDebug() << "path:" << path;
