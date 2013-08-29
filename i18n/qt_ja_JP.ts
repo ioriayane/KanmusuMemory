@@ -56,7 +56,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+144"/>
+        <location filename="../mainwindow.cpp" line="+148"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -80,20 +80,20 @@
     <message>
         <location line="+27"/>
         <location line="+33"/>
-        <location line="+171"/>
+        <location line="+149"/>
         <location line="+138"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-337"/>
-        <location line="+205"/>
+        <location line="-315"/>
+        <location line="+183"/>
         <location line="+138"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-333"/>
+        <location line="-311"/>
         <location line="+17"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
@@ -109,7 +109,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+142"/>
+        <location line="+120"/>
         <source>not in catalog</source>
         <translation>図鑑表示ではありません</translation>
     </message>
@@ -157,7 +157,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>ブラウザ(&amp;B)</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>&amp;Help</source>
         <translation>ヘルプ(&amp;H)</translation>
     </message>
@@ -257,6 +257,11 @@ Do you want to continue on an understanding of the security risk?
         <location line="+3"/>
         <source>captureFleetDetail</source>
         <translation>艦隊詳細を作成する</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Return to Kan Colle</source>
+        <translation>艦これへ戻る(&amp;B)</translation>
     </message>
 </context>
 <context>

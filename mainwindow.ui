@@ -60,7 +60,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>19</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="file">
@@ -83,6 +83,7 @@
      <string>&amp;Browser</string>
     </property>
     <addaction name="reload"/>
+    <addaction name="actionReturn_to_Kan_Colle"/>
    </widget>
    <widget class="QMenu" name="help">
     <property name="title">
@@ -192,6 +193,11 @@
    </property>
    <property name="toolTip">
     <string>captureFleetDetail</string>
+   </property>
+  </action>
+  <action name="actionReturn_to_Kan_Colle">
+   <property name="text">
+    <string>Return to Kan Colle</string>
    </property>
   </action>
  </widget>

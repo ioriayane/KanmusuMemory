@@ -95,6 +95,10 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.captureFleetDetail, &QAction::triggered, [this](){ captureFleetDetail(); });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
+    connect(ui.actionReturn_to_Kan_Colle, &QAction::triggered, [this]() {
+        //艦これ読込み
+        ui.webView->load(QUrl(URL_KANCOLLE));
+    });
     //画像リスト
     connect(ui.viewMemory, &QAction::triggered, [this]() {
         checkSavePath();
@@ -370,28 +374,6 @@ bool MainWindow::Private::isDesiredScreen(const QRect &rect, const QRgb &chkRgb)
 bool MainWindow::Private::isCatalogScreen()
 {
     return isDesiredScreen(CATALOG_CHECK_RECT, CATALOG_CHECK_COLOR);
-//    QImage img = getGameImage().copy(CATALOG_CHECK_RECT);
-//    int r = 0;
-//    int g = 0;
-//    int b = 0;
-//    for(int y = 0; y < img.height(); y++)
-//        for (int x = 0; x < img.width(); x++)
-//        {
-//            r += qRed(img.pixel(x, y));
-//            g += qGreen(img.pixel(x, y));
-//            b += qBlue(img.pixel(x, y));
-//        }
-//    r /= (img.width() * img.height());
-//    g /= (img.width() * img.height());
-//    b /= (img.width() * img.height());
-
-//    qDebug() << "check:" << r << g << b;
-//    QRgb chkRgb = CATALOG_CHECK_COLOR;
-//    if (r < qRed(chkRgb) && g < qGreen(chkRgb) && b < qBlue(chkRgb)
-//     && qRed(chkRgb) - 10 < r && qGreen(chkRgb) -10 < g && qBlue(chkRgb) -10 < b)
-//        return true;
-//    else
-//        return false;
 }
 
 void MainWindow::Private::captureCatalog()
