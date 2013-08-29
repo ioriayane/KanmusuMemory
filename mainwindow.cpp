@@ -113,11 +113,15 @@ MainWindow::Private::Private(MainWindow *parent)
         dlg.setSavePath(settings.value(QStringLiteral("path")).toString());
         dlg.setUnusedTwitter(settings.value(SETTING_GENERAL_UNUSED_TWITTER, false).toBool());
         dlg.setSavePng(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool());
+        dlg.setMaskAdmiralName(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool());
+        dlg.setMaskHqLevel(settings.value(SETTING_GENERAL_MASK_HQ_LEVEL, false).toBool());
         if (dlg.exec()) {
             //設定更新
             settings.setValue(QStringLiteral("path"), dlg.savePath());
             settings.setValue(SETTING_GENERAL_UNUSED_TWITTER, dlg.unusedTwitter());
             settings.setValue(SETTING_GENERAL_SAVE_PNG, dlg.savePng());
+            settings.setValue(SETTING_GENERAL_MASK_ADMIRAL_NAME, dlg.isMaskAdmiralName());
+            settings.setValue(SETTING_GENERAL_MASK_HQ_LEVEL, dlg.isMaskHqLevel());
         }
     });
 
@@ -228,6 +232,27 @@ void MainWindow::Private::captureGame()
     {
         ui.statusBar->showMessage(tr("failed capture image"), STATUS_BAR_MSG_TIME);
         return;
+    }
+
+    //提督名をマスク
+    static const QRgb maskPixel = qRgb(0, 0, 32);
+    if(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool())
+    {
+        for(int x=124; x<270; x++){
+            for(int y=8; y<24; y++){
+                img.setPixel(x, y, maskPixel);
+            }
+        }
+    }
+
+    //司令部レベルをマスク
+    if(settings.value(SETTING_GENERAL_MASK_HQ_LEVEL, false).toBool())
+    {
+        for(int x=392; x<480; x++){
+            for(int y=13; y<29; y++){
+                img.setPixel(x, y, maskPixel);
+            }
+        }
     }
 
     char format[4] = {0};

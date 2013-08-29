@@ -41,6 +41,12 @@ public:
     bool savePng() const;
     void setSavePng(bool savePng);
 
+    bool isMaskAdmiralName() const;
+    void setMaskAdmiralName(bool b);
+
+    bool isMaskHqLevel() const;
+    void setMaskHqLevel(bool b);
+
 private slots:
     void on_okButton_clicked();
 
@@ -54,6 +60,8 @@ private:
     QString m_savePath;
     bool m_unusedTwitter;
     bool m_savePng;
+    bool m_maskAdmiralName;
+    bool m_maskHqLevel;
 };
 
 #endif // SETTINGSDIALOG_H

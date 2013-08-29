@@ -34,6 +34,8 @@
 #define SETTING_GENERAL_SCREEN_NAME "screen_name"
 #define SETTING_GENERAL_UNUSED_TWITTER  "unused_twitter"
 #define SETTING_GENERAL_SAVE_PNG    "save_png"
+#define SETTING_GENERAL_MASK_ADMIRAL_NAME   "mask_admiral_name"
+#define SETTING_GENERAL_MASK_HQ_LEVEL       "mask_hq_level"
 
 #define SETTING_MAINWINDOW          "mainwindow"
 #define SETTING_TIMERDIALOG         "timerdialog"
