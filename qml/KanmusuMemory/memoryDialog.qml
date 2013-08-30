@@ -44,7 +44,6 @@ Rectangle {
             text: qsTr("Select")
             enabled: grid.currentIndex >= 0
             onClicked: {
-                memoryData.imagePath = root.imagePath
                 Qt.quit()
             }
         }
@@ -53,7 +52,7 @@ Rectangle {
             height: 31
             text: qsTr("Cancel")
             onClicked: {
-                memoryData.imagePath = ""
+                root.imagePath = ""
                 Qt.quit()
             }
         }
@@ -84,7 +83,7 @@ Rectangle {
             //ファイル一覧をモデルで取得
             model: FolderListModel {
                 id: folderlist
-                folder: os.pathPrefix + memoryData.memoryPath
+                folder: os.pathPrefix + memoryPath
                 showDirs: false                                 //ディレクトリは非表示
                 sortField: FolderListModel.Name                 //ファイル名でソート
                 sortReversed: true                              //新しいモノが上
@@ -144,7 +143,7 @@ Rectangle {
                     view.xScale = 1
                 }
                 onDoubleClicked: {
-                    memoryData.imagePath = model.filePath
+                    root.imagePath = model.filePath
                     Qt.quit()
                 }
             }
@@ -174,7 +173,6 @@ Rectangle {
                     view.xScale = 0
             }
             onDoubleClicked: {
-                memoryData.imagePath = root.imagePath
                 Qt.quit()
             }
         }

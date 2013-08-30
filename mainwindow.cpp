@@ -102,8 +102,7 @@ MainWindow::Private::Private(MainWindow *parent)
     //画像リスト
     connect(ui.viewMemory, &QAction::triggered, [this]() {
         checkSavePath();
-        MemoryDialog dlg(q);
-        dlg.setMemoryPath(settings.value(QStringLiteral("path")).toString());
+        MemoryDialog dlg(settings.value(QStringLiteral("path")).toString(), q);
         dlg.exec();
         if(QFile::exists(dlg.imagePath()))
             openTweetDialog(dlg.imagePath());
