@@ -22,105 +22,129 @@
 
 #include <QDebug>
 
-SettingsDialog::SettingsDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::SettingsDialog)
+class SettingsDialog::Private
 {
-    ui->setupUi(this);
+public:
+    Private(SettingsDialog *parent);
+
+private:
+    SettingsDialog *q;
+    Ui::SettingsDialog ui;
+
+public:
+    QString savePath;
+    bool unusedTwitter;
+    bool savePng;
+    bool maskAdmiralName;
+    bool maskHqLevel;
+};
+
+SettingsDialog::Private::Private(SettingsDialog *parent)
+    : q(parent)
+{
+    ui.setupUi(q);
+
+    connect(ui.buttonBox, &QDialogButtonBox::accepted, [this](){
+        if(!QFile::exists(ui.savePathEdit->text())){
+            QMessageBox::warning(q, "warning", "save path not found.");
+            return;
+        }
+
+        savePath = ui.savePathEdit->text();
+        unusedTwitter = ui.unusedTwittercheckBox->isChecked();
+        savePng = ui.savePngCheckBox->isChecked();
+        maskAdmiralName = ui.maskAdmiralNameCheckBox->isChecked();
+        maskHqLevel = ui.maskHqLevelCheckBox->isChecked();
+        q->accept();
+    });
+    connect(ui.buttonBox, &QDialogButtonBox::rejected, q, &QDialog::reject);
+
+    //保存パスの参照ボタン
+    connect(ui.selectPathButton, &QToolButton::clicked, [this]() {
+        QString path = q->selectSavePath(q, ui.savePathEdit->text());
+
+        if(QFile::exists(path))
+            q->setSavePath(path);
+    });
+
+    connect(q, &SettingsDialog::savePathChanged, ui.savePathEdit, &QLineEdit::setText);
+    connect(q, &SettingsDialog::unusedTwitterChanged, ui.unusedTwittercheckBox, &QCheckBox::setChecked);
+    connect(q, &SettingsDialog::savePngChanged, ui.savePngCheckBox, &QCheckBox::setChecked);
+    connect(q, &SettingsDialog::maskAdmiralNameChanged, ui.maskAdmiralNameCheckBox, &QCheckBox::setChecked);
+    connect(q, &SettingsDialog::maskHqLevelChanged, ui.maskHqLevelCheckBox, &QCheckBox::setChecked);
 }
 
-SettingsDialog::~SettingsDialog()
+SettingsDialog::SettingsDialog(QWidget *parent)
+    : QDialog(parent)
+    , d(new Private(this))
 {
-    delete ui;
+    connect(this, &QObject::destroyed, [this]() { delete d; });
 }
 
 const QString &SettingsDialog::savePath() const
 {
-    return m_savePath;
+    return d->savePath;
 }
 
-void SettingsDialog::setSavePath(const QString &save_path)
+void SettingsDialog::setSavePath(const QString &savePath)
 {
-    m_savePath = save_path;
-    ui->savePathEdit->setText(save_path);
+    if (d->savePath == savePath) return;
+    d->savePath = savePath;
+    emit savePathChanged(savePath);
 }
 
-QString SettingsDialog::selectSavePath(QWidget *parent, const QString &current_path)
+QString SettingsDialog::selectSavePath(QWidget *parent, const QString &currentPath)
 {
     return QFileDialog::getExistingDirectory(parent, tr("Select save folder"),
-                                             current_path,
+                                             currentPath,
                                              QFileDialog::ShowDirsOnly
                                              | QFileDialog::DontResolveSymlinks);
 }
 
 bool SettingsDialog::unusedTwitter() const
 {
-    return m_unusedTwitter;
+    return d->unusedTwitter;
 }
 
 void SettingsDialog::setUnusedTwitter(bool unusedTwitter)
 {
-    m_unusedTwitter = unusedTwitter;
-    ui->unusedTwittercheckBox->setChecked(unusedTwitter);
+    if (d->unusedTwitter == unusedTwitter) return;
+    d->unusedTwitter = unusedTwitter;
+    emit unusedTwitterChanged(unusedTwitter);
 }
 
 bool SettingsDialog::savePng() const
 {
-    return m_savePng;
+    return d->savePng;
 }
+
 void SettingsDialog::setSavePng(bool savePng)
 {
-    m_savePng = savePng;
-    ui->savePngCheckBox->setChecked(savePng);
+    if (d->savePng == savePng) return;
+    d->savePng = savePng;
+    emit savePngChanged(savePng);
 }
 
 bool SettingsDialog::isMaskAdmiralName() const
 {
-    return m_maskAdmiralName;
+    return d->maskAdmiralName;
 }
-void SettingsDialog::setMaskAdmiralName(bool b)
+
+void SettingsDialog::setMaskAdmiralName(bool maskAdmiralName)
 {
-    m_maskAdmiralName = b;
-    ui->maskAdmiralNameCheckBox->setChecked(b);
+    if (d->maskAdmiralName == maskAdmiralName) return;
+    d->maskAdmiralName = maskAdmiralName;
+    emit maskAdmiralNameChanged(maskAdmiralName);
 }
 
 bool SettingsDialog::isMaskHqLevel() const
 {
-    return m_maskHqLevel;
-}
-void SettingsDialog::setMaskHqLevel(bool b)
-{
-    m_maskHqLevel = b;
-    ui->maskHqLevelCheckBox->setChecked(b);
+    return d->maskHqLevel;
 }
 
-
-void SettingsDialog::on_okButton_clicked()
+void SettingsDialog::setMaskHqLevel(bool maskHqLevel)
 {
-    if(!QFile::exists(ui->savePathEdit->text())){
-        QMessageBox::warning(this, "warning", "save path not found.");
-        return;
-    }
-    
-    m_savePath = ui->savePathEdit->text();
-    m_unusedTwitter = ui->unusedTwittercheckBox->isChecked();
-    m_savePng = ui->savePngCheckBox->isChecked();
-    m_maskAdmiralName = ui->maskAdmiralNameCheckBox->isChecked();
-    m_maskHqLevel = ui->maskHqLevelCheckBox->isChecked();
-
-    accept();
-}
-
-void SettingsDialog::on_cancelButton_clicked()
-{
-    reject();
-}
-
-//保存パスの参照ボタン
-void SettingsDialog::on_selectPathButton_clicked()
-{
-    QString path = selectSavePath(this, ui->savePathEdit->text());
-    
-    if(QFile::exists(path))
-        setSavePath(path);
+    if (d->maskHqLevel == maskHqLevel) return;
+    d->maskHqLevel = maskHqLevel;
+    emit maskHqLevelChanged(maskHqLevel);
 }
