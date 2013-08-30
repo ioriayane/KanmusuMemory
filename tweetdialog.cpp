@@ -16,9 +16,8 @@
 #include "tweetdialog.h"
 #include "ui_tweetdialog.h"
 
-#include "inputoauthpindialog.h"
-
 #include <QMessageBox>
+#include <QtWidgets/QInputDialog>
 #include <QtCore/QDebug>
 
 
@@ -194,11 +193,10 @@ void TweetDialog::stateChanged(OAuth::State state)
         m_oauth.authorize();
 
         //PIN入力のダイアログを表示
-        InputOAuthPinDialog dlg(this);
-        dlg.exec();
+        QString pin = QInputDialog::getText(this, tr("Authorization"), tr("Please input pin code."));
         //PINで最終認証
-        if(dlg.pin().length() > 0)
-            m_oauth.access_token(dlg.pin());
+        if(!pin.isEmpty())
+            m_oauth.access_token(pin);
 
         break;
     }
