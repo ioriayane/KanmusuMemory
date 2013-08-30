@@ -16,48 +16,59 @@
 #include "aboutdialog.h"
 #include "ui_aboutdialog.h"
 
-AboutDialog::AboutDialog(QWidget *parent) :
-    QDialog(parent),
-    m_iconLabel(this),
-    ui(new Ui::AboutDialog)
+class AboutDialog::Private
 {
-    ui->setupUi(this);
+public:
+    Private(AboutDialog *parent);
 
-    m_iconLabel.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_iconLabel.setGeometry(QRect(20, 30, 80, 80));
+private:
+    AboutDialog *q;
+    Ui::AboutDialog ui;
 
-    m_iconPixmap.load(":/resources/KanmusuMemory80.png");
-    m_iconLabel.setPixmap(m_iconPixmap);
+public:
+    QString version;
+    QStringList developers;
+};
+
+AboutDialog::Private::Private(AboutDialog *parent)
+    : q(parent)
+{
+    ui.setupUi(q);
+    connect(q, &AboutDialog::versionChanged, [this](const QString &version) {
+        ui.versionLabel->setText(q->tr("Version : %1").arg(version));
+    });
+    connect(q, &AboutDialog::developersChanged, [this](const QStringList &developers) {
+        ui.developerLabel->setText(developers.join("\n"));
+    });
 }
 
-AboutDialog::~AboutDialog()
+AboutDialog::AboutDialog(QWidget *parent)
+    : QDialog(parent)
+    , d(new Private(this))
 {
-    delete ui;
+    connect(this, &QObject::destroyed, [this](){ delete d; });
 }
 
-QString AboutDialog::version() const
+const QString &AboutDialog::version() const
 {
-    return m_version;
+    return d->version;
 }
 
 void AboutDialog::setVersion(const QString &version)
 {
-    m_version = version;
-    ui->versionLabel->setText(tr("Version : %1").arg(m_version));
+    if (d->version == version) return;
+    d->version = version;
+    emit versionChanged(version);
 }
 
-QStringList AboutDialog::developers() const
+const QStringList &AboutDialog::developers() const
 {
-    return m_developers;
+    return d->developers;
 }
 
 void AboutDialog::setDevelopers(const QStringList &developers)
 {
-    m_developers = developers;
-
-    QString dev;
-    foreach (QString developer, developers) {
-        dev.append(developer + "\n");
-    }
-    ui->developerLabel->setText(dev);
+    if (d->developers == developers) return;
+    d->developers = developers;
+    emit developersChanged(developers);
 }
