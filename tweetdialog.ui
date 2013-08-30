@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Tweet</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="KanmusuMemory.qrc">
+    <normaloff>:/resources/KanmusuMemory32.png</normaloff>:/resources/KanmusuMemory32.png</iconset>
+  </property>
   <widget class="QPlainTextEdit" name="tweetTextEdit">
    <property name="geometry">
     <rect>
@@ -122,6 +126,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="KanmusuMemory.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -19,6 +19,10 @@
   <property name="windowTitle">
    <string>Kan Memo -KanMusu Memory-</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="KanmusuMemory.qrc">
+    <normaloff>:/resources/KanmusuMemory32.png</normaloff>:/resources/KanmusuMemory32.png</iconset>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
@@ -60,7 +64,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="file">
@@ -209,6 +213,8 @@
    <header>QtWebKitWidgets/QWebView</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="KanmusuMemory.qrc"/>
+ </resources>
  <connections/>
 </ui>
