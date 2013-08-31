@@ -577,7 +577,7 @@ void MainWindow::Private::captureFleetDetail()
     ui.webView->setAttribute(Qt::WA_TransparentForMouseEvents, false);
     ui.statusBar->showMessage("", -1);
 
-    char format[] = "png";
+    char format[] = "jpg";
     QString path = makeFileName(QString(format));
     qDebug() << "path:" << path;
 
