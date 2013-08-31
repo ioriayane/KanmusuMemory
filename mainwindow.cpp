@@ -315,13 +315,17 @@ void MainWindow::Private::openTweetDialog(const QString &path)
                                  , tr("saving to %1...").arg(path));
     }else{
         //ダイアログを開く
-        TweetDialog dlg(q
+        TweetDialog dlg(q/*
                         , settings.value(SETTING_GENERAL_TOKEN, "").toString()
                         , settings.value(SETTING_GENERAL_TOKENSECRET, "").toString()
                         , settings.value(SETTING_GENERAL_USER_ID, "").toString()
                         , settings.value(SETTING_GENERAL_SCREEN_NAME, "").toString()
-                        );
+                        */);
         dlg.setImagePath(path);
+        dlg.setToken(settings.value(SETTING_GENERAL_TOKEN, "").toString());
+        dlg.setTokenSecret(settings.value(SETTING_GENERAL_TOKENSECRET, "").toString());
+        dlg.user_id(settings.value(SETTING_GENERAL_USER_ID, "").toString());
+        dlg.screen_name(settings.value(SETTING_GENERAL_SCREEN_NAME, "").toString());
         dlg.exec();
         settings.setValue(SETTING_GENERAL_TOKEN, dlg.token());
         settings.setValue(SETTING_GENERAL_TOKENSECRET, dlg.tokenSecret());

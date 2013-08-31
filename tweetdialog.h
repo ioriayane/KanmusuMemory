@@ -22,11 +22,7 @@ class TweetDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit TweetDialog(QWidget *parent = 0
-            , const QString &token = QStringLiteral("")
-            , const QString &tokenSecret = QStringLiteral("")
-            , const QString &user_id = QStringLiteral("")
-            , const QString &screen_name = QStringLiteral(""));
+    explicit TweetDialog(QWidget *parent = 0);
     
     const QString &imagePath() const;
     const QString &token() const;
