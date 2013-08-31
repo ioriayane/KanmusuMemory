@@ -9,33 +9,36 @@
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+34"/>
         <source>KanMemo -Kanmusu Memory-</source>
         <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+27"/>
         <source>Version : </source>
         <translation>Version : </translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+7"/>
+        <source>Copyright &amp;copy; 2013 KanMemo Project.</source>
+        <translation></translation>
+    </message>
+    <message>
         <source>Copyright 2013 KanMemo Project.</source>
-        <translation>Copyright 2013 KanMemo Project.</translation>
+        <translation type="obsolete">Copyright 2013 KanMemo Project.</translation>
     </message>
     <message>
-        <location line="+13"/>
         <source>Developers : </source>
-        <translation>開発者 : </translation>
+        <translation type="obsolete">開発者 : </translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+10"/>
         <source>1
 2</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../aboutdialog.cpp" line="+46"/>
+        <location filename="../aboutdialog.cpp" line="+38"/>
         <source>Version : %1</source>
         <translation>Version : %1</translation>
     </message>
@@ -43,20 +46,18 @@
 <context>
     <name>InputOAuthPinDialog</name>
     <message>
-        <location filename="../inputoauthpindialog.ui" line="+14"/>
         <source>Authorization</source>
-        <translation>Twitter認証</translation>
+        <translation type="obsolete">Twitter認証</translation>
     </message>
     <message>
-        <location line="+38"/>
         <source>Please input pin code.</source>
-        <translation>まもなくブラウザにTwitterの認証画面が表示されます。取得したPinコードを入力してください。</translation>
+        <translation type="obsolete">まもなくブラウザにTwitterの認証画面が表示されます。取得したPinコードを入力してください。</translation>
     </message>
 </context>
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+148"/>
+        <location filename="../mainwindow.cpp" line="+147"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -73,27 +74,27 @@
         <translation>艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+69"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
     <message>
         <location line="+27"/>
         <location line="+33"/>
-        <location line="+149"/>
+        <location line="+132"/>
         <location line="+138"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-315"/>
-        <location line="+183"/>
+        <location line="-298"/>
+        <location line="+166"/>
         <location line="+138"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-311"/>
+        <location line="-294"/>
         <location line="+17"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
@@ -109,7 +110,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+120"/>
+        <location line="+103"/>
         <source>not in catalog</source>
         <translation>図鑑表示ではありません</translation>
     </message>
@@ -142,7 +143,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+27"/>
         <source>about:blank</source>
         <translation>about:blank</translation>
     </message>
@@ -177,7 +178,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>Capture</source>
         <translation>思い出を残す(F5)</translation>
     </message>
@@ -227,12 +228,12 @@ Do you want to continue on an understanding of the security risk?
         <translation>設定...(&amp;P)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>&amp;About</source>
         <translation>艦メモについて(&amp;A)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+8"/>
         <source>&amp;Timer</source>
         <translation>お知らせタイマー(F7)</translation>
     </message>
@@ -280,47 +281,45 @@ Do you want to continue on an understanding of the security risk?
         <translation>設定</translation>
     </message>
     <message>
-        <location line="+22"/>
         <source>OK</source>
-        <translation>OK</translation>
+        <translation type="obsolete">OK</translation>
     </message>
     <message>
-        <location line="+13"/>
         <source>Cancel</source>
-        <translation>キャンセル</translation>
+        <translation type="obsolete">キャンセル</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+12"/>
         <source>Pictures path</source>
         <translation>思い出の保存先</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+15"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+22"/>
         <source>Unused Twitter</source>
         <translation>ツイッター連携を使用しない</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-13"/>
         <source>Save in PNG format.</source>
         <translation>画像をPNG形式で保存する（標準はJPEG）</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+26"/>
         <source>Mask Admiral name</source>
         <translation>提督名を消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+13"/>
         <source>Mask HQ level</source>
         <translation>艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
-        <location filename="../settingsdialog.cpp" line="+50"/>
+        <location filename="../settingsdialog.cpp" line="+98"/>
         <source>Select save folder</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -432,7 +431,7 @@ Do you want to continue on an understanding of the security risk?
     <name>TweetDialog</name>
     <message>
         <location filename="../tweetdialog.ui" line="+14"/>
-        <location line="+54"/>
+        <location line="+124"/>
         <source>Tweet</source>
         <translation>つぶやく</translation>
     </message>
@@ -441,37 +440,43 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">艦娘との思い出をつぶやきますか？</translation>
     </message>
     <message>
-        <location line="-42"/>
         <source> #艦これ</source>
-        <translation> #艦これ</translation>
+        <translation type="obsolete"> #艦これ</translation>
     </message>
     <message>
-        <location line="+13"/>
         <source>Do you tweet an emotion about KanMusu?</source>
-        <translation>艦娘さんとの思い出をつぶやきましょう！</translation>
+        <translation type="obsolete">艦娘さんとの思い出をつぶやきましょう！</translation>
     </message>
     <message>
-        <location line="+13"/>
         <source>Tweet : </source>
-        <translation>つぶやく : </translation>
+        <translation type="obsolete">つぶやく : </translation>
     </message>
     <message>
-        <location line="+32"/>
         <source>Close</source>
-        <translation>閉じる</translation>
+        <translation type="obsolete">閉じる</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-13"/>
         <source>140</source>
         <translation>140</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="-27"/>
         <source>Reauthize</source>
         <translation>再認証</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-29"/>
+        <source>name</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>@screen_name</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location line="+113"/>
         <source>tweet</source>
         <translation>つぶやく</translation>
     </message>
@@ -481,13 +486,26 @@ Do you want to continue on an understanding of the security risk?
         <translation>Ctrl+Return</translation>
     </message>
     <message>
-        <location filename="../tweetdialog.cpp" line="+109"/>
-        <location line="+2"/>
         <source>Tweet by %1</source>
-        <translation>%1で、つぶやく</translation>
+        <translation type="obsolete">%1で、つぶやく</translation>
     </message>
     <message>
-        <location line="+126"/>
+        <location filename="../tweetdialog.cpp" line="+73"/>
+        <source> #kancolle</source>
+        <translation> #艦これ</translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>Authorization</source>
+        <translation>Twitter認証</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Please input pin code.</source>
+        <translation>まもなくブラウザにTwitterの認証画面が表示されます。取得したPinコードを入力してください。</translation>
+    </message>
+    <message>
+        <location line="+56"/>
         <source>Information</source>
         <translation>艦メモ</translation>
     </message>
@@ -505,7 +523,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>選択</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+9"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
