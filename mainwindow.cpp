@@ -269,21 +269,21 @@ void MainWindow::Private::captureGame()
         maskImage(&img, HQ_LEVEL_RECT_HEADER);
     }
 
-    char format[4] = {0};
+    QString format;
     if(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool())
-        strcpy(format, "png");
+        format = QStringLiteral("png");
     else
-        strcpy(format, "jpg");
+        format = QStringLiteral("jpg");
 
-    QString path = makeFileName(QString(format));
+    QString path = makeFileName(format);
 //    qDebug() << "path:" << path;
 
     //保存する
     ui.statusBar->showMessage(tr("saving to %1...").arg(path), STATUS_BAR_MSG_TIME);
-    if(img.save(path, format)){
+    if (img.save(path, format.toUtf8().constData())) {
         //つぶやくダイアログ
         openTweetDialog(path);
-    }else{
+    } else {
         ui.statusBar->showMessage(tr("failed save image"), STATUS_BAR_MSG_TIME);
     }
 }
