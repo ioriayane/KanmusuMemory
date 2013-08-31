@@ -361,7 +361,7 @@ void MainWindow::Private::clickGame(QPoint pos, bool wait_little)
 bool MainWindow::Private::isDesiredScreen(const QImage &image, const QRect &rect, const QRgb &rgb) const
 {
     QRgb pixel = image.copy(rect).scaled(1, 1).pixel(0, 0);
-    return qAbs(qRed(pixel) - qRed(rgb)) < 10 && qAbs(qGreen(pixel) - qGreen(rgb)) < 10 && qAbs(qBlue(pixel) - qBlue(rgb)) < 10;
+    return qAbs(qRed(pixel) - qRed(rgb)) < 0x20 && qAbs(qGreen(pixel) - qGreen(rgb)) < 0x20 && qAbs(qBlue(pixel) - qBlue(rgb)) < 0x20;
 }
 
 //カタログ画面か
