@@ -58,11 +58,11 @@ public:
 
 private:
     QRect getGameRect();
-    QImage getGameImage(QRect crop = QRect());
+    QImage getGameImage(const QRect &crop = QRect());
     void maskImage(QImage *img, const QRect &rect);
     QString makeFileName(const QString &format) const;
     void clickGame(QPoint pos, bool wait_little = false);
-    bool isDesiredScreen(const QRect &rect, const QRgb &chkRgb);
+    bool isDesiredScreen(const QImage &image, const QRect &rect, const QRgb &rgb) const;
     bool isCatalogScreen();
     bool isShipExist(QRect rect1, QRect rect2);
     MainWindow *q;
@@ -193,7 +193,7 @@ QRect MainWindow::Private::getGameRect()
     return geometry;
 }
 //ゲーム画面をキャプチャ
-QImage MainWindow::Private::getGameImage(QRect crop)
+QImage MainWindow::Private::getGameImage(const QRect &crop)
 {
     //スクロール位置の保存
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
@@ -258,13 +258,13 @@ void MainWindow::Private::captureGame()
 
     //提督名をマスク
     if(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool()
-            && isDesiredScreen(HOME_PORT_RECT_CAPTURE, HOME_PORT_CHECK_COLOR))
+            && isDesiredScreen(img, HOME_PORT_RECT_CAPTURE, HOME_PORT_CHECK_COLOR))
     {
         maskImage(&img, ADMIRAL_RECT_HEADER);
     }
     //司令部レベルをマスク
     if(settings.value(SETTING_GENERAL_MASK_HQ_LEVEL, false).toBool()
-            && isDesiredScreen(HOME_PORT_RECT_CAPTURE, HOME_PORT_CHECK_COLOR))
+            && isDesiredScreen(img, HOME_PORT_RECT_CAPTURE, HOME_PORT_CHECK_COLOR))
     {
         maskImage(&img, HQ_LEVEL_RECT_HEADER);
     }
@@ -353,34 +353,16 @@ void MainWindow::Private::clickGame(QPoint pos, bool wait_little)
 }
 
 //目的の画面か含まれる色の成分で調べる
-bool MainWindow::Private::isDesiredScreen(const QRect &rect, const QRgb &chkRgb)
+bool MainWindow::Private::isDesiredScreen(const QImage &image, const QRect &rect, const QRgb &rgb) const
 {
-    QImage img = getGameImage().copy(rect);
-    int r = 0;
-    int g = 0;
-    int b = 0;
-    for(int y = 0; y < img.height(); y++)
-        for (int x = 0; x < img.width(); x++)
-        {
-            r += qRed(img.pixel(x, y));
-            g += qGreen(img.pixel(x, y));
-            b += qBlue(img.pixel(x, y));
-        }
-    r /= (img.width() * img.height());
-    g /= (img.width() * img.height());
-    b /= (img.width() * img.height());
-
-    qDebug() << "check:" << r << g << b;
-    if (r < qRed(chkRgb) && g < qGreen(chkRgb) && b < qBlue(chkRgb)
-     && qRed(chkRgb) - 10 < r && qGreen(chkRgb) -10 < g && qBlue(chkRgb) -10 < b)
-        return true;
-    else
-        return false;
+    QRgb pixel = image.copy(rect).scaled(1, 1).pixel(0, 0);
+    return qAbs(qRed(pixel) - qRed(rgb)) < 10 && qAbs(qGreen(pixel) - qGreen(rgb)) < 10 && qAbs(qBlue(pixel) - qBlue(rgb)) < 10;
 }
+
 //カタログ画面か
 bool MainWindow::Private::isCatalogScreen()
 {
-    return isDesiredScreen(CATALOG_CHECK_RECT, CATALOG_CHECK_COLOR);
+    return isDesiredScreen(getGameImage(), CATALOG_CHECK_RECT, CATALOG_CHECK_COLOR);
 }
 
 void MainWindow::Private::captureCatalog()
