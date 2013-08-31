@@ -414,14 +414,12 @@ Do you want to continue on an understanding of the security risk?
         <translation>設定</translation>
     </message>
     <message>
-        <location line="+90"/>
         <source>Today</source>
-        <translation>今日</translation>
+        <translation type="obsolete">今日</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Yesterday</source>
-        <translation>明日</translation>
+        <translation type="obsolete">明日</translation>
     </message>
 </context>
 <context>
@@ -505,7 +503,12 @@ Do you want to continue on an understanding of the security risk?
         <translation> #艦これ</translation>
     </message>
     <message>
-        <location line="+39"/>
+        <location line="+13"/>
+        <source>Sending</source>
+        <translation>送信中</translation>
+    </message>
+    <message>
+        <location line="+24"/>
         <source>Authorization</source>
         <translation>Twitter認証</translation>
     </message>

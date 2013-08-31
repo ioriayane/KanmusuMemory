@@ -75,6 +75,7 @@ TweetDialog::Private::Private(TweetDialog *parent)
         connect(status, &Status::loadingChanged, [this](bool loading) {
             if (loading) {
                 q->setEnabled(false);
+                ui.tweetButton->setText(tr("Sending"));
             } else {
                 //消す
                 q->accept();
