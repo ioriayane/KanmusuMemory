@@ -97,21 +97,29 @@ Rectangle {
                 spacing: 5
                 //残り時間
                 Text {
+                    anchors.verticalCenter: parent.verticalCenter
                     text: root.toRemainTimeString()
                     color: setTime > 0 ? "black" : "darkGray"
                     font.pointSize: 16
                 }
                 Text {
-                    anchors.bottom: parent.bottom
+                    anchors.verticalCenter: parent.verticalCenter
                     text: "-"
                     font.pointSize: 10
                 }
                 //終了予定時刻
-                Text {
+                Column {
                     anchors.bottom: parent.bottom
-                    color: running ? "black" : "darkGray"
-                    text: root.toEndTimeString()
-                    font.pointSize: 12
+                    Text {
+                        color: running ? "black" : "darkGray"
+                        text: root.toEndDateString()
+                        font.pointSize: 10
+                    }
+                    Text {
+                        color: running ? "black" : "darkGray"
+                        text: root.toEndTimeString()
+                        font.pointSize: 10
+                    }
                 }
             }
             //進捗
@@ -168,6 +176,16 @@ Rectangle {
             }
         }
     }
+    //終わる予定日
+    function toEndDateString(){
+        var r = setTime
+        var n = root.now
+        var s = startTime
+        if(running)
+            return toStringDate(r + s - n)
+        else
+            return ""
+    }
     //終わる予定時間
     function toEndTimeString(){
         var r = setTime
@@ -193,7 +211,8 @@ Rectangle {
     //書式
     function toStringUTCTime(date){
         var d = new Date(date)
-        var hh = d.getUTCHours()
+        var dd = d.getUTCDate() - 1
+        var hh = d.getUTCHours() + dd * 24
         var mm = d.getUTCMinutes()
         var ss = d.getUTCSeconds()
         if(hh < 10)
@@ -228,5 +247,45 @@ Rectangle {
         else
             ss = "" + ss
         return "%1:%2:%3".arg(hh).arg(mm).arg(ss)
+    }
+    function toStringDate(date){
+        var de = new Date(date + root.now)
+        var YYYY = de.getFullYear() - 2000
+        var MM = de.getMonth() + 1
+        var DD = de.getDate()
+        if(MM < 10)
+            MM = "0" + MM
+        if(DD < 10)
+            DD = "0" + DD
+        return ("%1/%2").arg(MM).arg(DD)
+//        var d = new Date(date)
+//        var dd = d.getUTCDate() - 1
+//        var temp2 = new Date(root.now)
+//        if((temp2.getHours() + d.getUTCHours() + 1) >= 24){
+//            //日付超える
+//            dd += 1
+//        }
+//        var ret = ""
+//        switch(dd){
+//        case 0:
+//            ret = qsTr("Today")
+//            break
+//        case 1:
+//            ret = qsTr("Yesterday")
+//            break
+//        default:
+//            var de = new Date(date + root.now)
+//            var YYYY = de.getFullYear() - 2000
+//            var MM = de.getMonth() + 1
+//            var DD = de.getDate()
+//            if(MM < 10)
+//                MM = "0" + MM
+//            if(DD < 10)
+//                DD = "0" + DD
+////            ret = ("%1/%2/%3").arg(YYYY).arg(MM).arg(DD)
+//            ret = ("%1/%2").arg(MM).arg(DD)
+//            break;
+//        }
+//        return ret
     }
 }

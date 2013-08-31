@@ -81,20 +81,20 @@
     <message>
         <location line="+27"/>
         <location line="+33"/>
-        <location line="+132"/>
+        <location line="+136"/>
         <location line="+138"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-298"/>
-        <location line="+166"/>
+        <location line="-302"/>
+        <location line="+170"/>
         <location line="+138"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-294"/>
+        <location line="-298"/>
         <location line="+17"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
@@ -110,7 +110,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+103"/>
+        <location line="+107"/>
         <source>not in catalog</source>
         <translation>図鑑表示ではありません</translation>
     </message>
@@ -399,7 +399,7 @@ Do you want to continue on an understanding of the security risk?
 <context>
     <name>TimerItem</name>
     <message>
-        <location filename="../qml/KanmusuMemory/TimerItem.qml" line="+153"/>
+        <location filename="../qml/KanmusuMemory/TimerItem.qml" line="+161"/>
         <source>Start</source>
         <translation>開始</translation>
     </message>
@@ -412,6 +412,16 @@ Do you want to continue on an understanding of the security risk?
         <location line="+11"/>
         <source>Set</source>
         <translation>設定</translation>
+    </message>
+    <message>
+        <location line="+90"/>
+        <source>Today</source>
+        <translation>今日</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Yesterday</source>
+        <translation>明日</translation>
     </message>
 </context>
 <context>
@@ -490,12 +500,12 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">%1で、つぶやく</translation>
     </message>
     <message>
-        <location filename="../tweetdialog.cpp" line="+73"/>
+        <location filename="../tweetdialog.cpp" line="+65"/>
         <source> #kancolle</source>
         <translation> #艦これ</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+39"/>
         <source>Authorization</source>
         <translation>Twitter認証</translation>
     </message>
@@ -505,7 +515,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>まもなくブラウザにTwitterの認証画面が表示されます。取得したPinコードを入力してください。</translation>
     </message>
     <message>
-        <location line="+56"/>
+        <location line="+45"/>
         <source>Information</source>
         <translation>艦メモ</translation>
     </message>
