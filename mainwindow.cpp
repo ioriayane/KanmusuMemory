@@ -59,7 +59,7 @@ public:
 private:
     QRect getGameRect();
     QImage getGameImage(QRect crop = QRect());
-    void maskImage(QImage &img, const QRect &rect);
+    void maskImage(QImage *img, const QRect &rect);
     QString makeFileName(const QString &format) const;
     void clickGame(QPoint pos, bool wait_little = false);
     bool isDesiredScreen(const QRect &rect, const QRgb &chkRgb);
@@ -215,15 +215,23 @@ QImage MainWindow::Private::getGameImage(QRect crop)
 
     return img.copy(crop);
 }
+
 //指定範囲をマスクする
-void MainWindow::Private::maskImage(QImage &img, const QRect &rect)
+void MainWindow::Private::maskImage(QImage *img, const QRect &rect)
 {
-    for(int h=0; h<rect.height(); h++){
-        for(int w=1; w<rect.width(); w++){
-            img.setPixel(rect.x() + w, rect.y() + h, img.pixel(rect.x(), rect.y() + h));
+    int y0 = rect.y();
+    int x0 = rect.x();
+    int h = rect.height();
+    int w = rect.width();
+    for (int y = 0; y < h; y++) {
+        QRgb *row = reinterpret_cast<QRgb *>(img->scanLine(y0 + y)) + x0;
+        QRgb pixel = row[0];
+        for (int x = 0; x < w; x++) {
+            (*row++) = pixel;
         }
     }
 }
+
 //ファイル名を作成する
 QString MainWindow::Private::makeFileName(const QString &format) const
 {
@@ -252,13 +260,13 @@ void MainWindow::Private::captureGame()
     if(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool()
             && isDesiredScreen(HOME_PORT_RECT_CAPTURE, HOME_PORT_CHECK_COLOR))
     {
-        maskImage(img, ADMIRAL_RECT_HEADER);
+        maskImage(&img, ADMIRAL_RECT_HEADER);
     }
     //司令部レベルをマスク
     if(settings.value(SETTING_GENERAL_MASK_HQ_LEVEL, false).toBool()
             && isDesiredScreen(HOME_PORT_RECT_CAPTURE, HOME_PORT_CHECK_COLOR))
     {
-        maskImage(img, HQ_LEVEL_RECT_HEADER);
+        maskImage(&img, HQ_LEVEL_RECT_HEADER);
     }
 
     char format[4] = {0};

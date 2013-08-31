@@ -89,7 +89,7 @@
 //提督名と司令部レベル
 #define HOME_PORT_CHECK_COLOR   (qRgb(42, 150, 163))
 #define HOME_PORT_RECT_CAPTURE  (QRect(300, 3, 490, 4))
-#define ADMIRAL_RECT_HEADER     (QRect(124, 8, 146, 16))
-#define HQ_LEVEL_RECT_HEADER    (QRect(392, 13, 88, 16))
+#define ADMIRAL_RECT_HEADER     (QRect(124, 8, 146, 18))
+#define HQ_LEVEL_RECT_HEADER    (QRect(392, 13, 88, 18))
 
 #endif // KANMUSUMEMORY_GLOBAL_H
