@@ -16,39 +16,19 @@
 #ifndef MEMORYDIALOG_H
 #define MEMORYDIALOG_H
 
-#include <QDialog>
-#include "qtquick2applicationviewer.h"
-#include "memorydata.h"
-
-namespace Ui {
-class MemoryDialog;
-}
+#include <QtWidgets/QDialog>
 
 class MemoryDialog : public QDialog
 {
     Q_OBJECT
-    
 public:
-    explicit MemoryDialog(QWidget *parent = 0);
-    ~MemoryDialog();
+    explicit MemoryDialog(const QString &memoryPath, QWidget *parent = 0);
     
-    void setMemoryPath(const QString &path);
     const QString &imagePath();
 
-protected:
-    virtual void resizeEvent(QResizeEvent *event);
-    virtual void showEvent(QShowEvent *event);
-
-public slots:
-    void closeQml();
-
 private:
-    Ui::MemoryDialog *ui;
-
-    QtQuick2ApplicationViewer *m_viewer;
-    MemoryData m_data;
-    QString m_memoryPath;   //保存パス
-    QString m_imagePath;    //つぶやく対象の画像
+    class Private;
+    Private *d;
 };
 
 #endif // MEMORYDIALOG_H

@@ -18,50 +18,38 @@
 
 #include <QDialog>
 
-namespace Ui {
-class SettingsDialog;
-}
-
 class SettingsDialog : public QDialog
 {
     Q_OBJECT
     
 public:
     explicit SettingsDialog(QWidget *parent = 0);
-    ~SettingsDialog();
-    
+
     const QString &savePath() const;
-    void setSavePath(const QString &save_path);
-
-    static QString selectSavePath(QWidget *parent, const QString &current_path);
-
     bool unusedTwitter() const;
-    void setUnusedTwitter(bool unusedTwitter);
-
     bool savePng() const;
-    void setSavePng(bool savePng);
-
     bool isMaskAdmiralName() const;
-    void setMaskAdmiralName(bool b);
-
     bool isMaskHqLevel() const;
-    void setMaskHqLevel(bool b);
 
-private slots:
-    void on_okButton_clicked();
+    static QString selectSavePath(QWidget *parent, const QString &currentPath);
 
-    void on_cancelButton_clicked();
+public slots:
+    void setSavePath(const QString &savePath);
+    void setUnusedTwitter(bool unusedTwitter);
+    void setSavePng(bool savePng);
+    void setMaskAdmiralName(bool maskAdmiralName);
+    void setMaskHqLevel(bool maskHqLevel);
 
-    void on_selectPathButton_clicked();
+signals:
+    void savePathChanged(const QString &savePath);
+    void unusedTwitterChanged(bool unusedTwitter);
+    void savePngChanged(bool savePng);
+    void maskAdmiralNameChanged(bool maskAdmiralName);
+    void maskHqLevelChanged(bool maskHqLevel);
 
 private:
-    Ui::SettingsDialog *ui;
-
-    QString m_savePath;
-    bool m_unusedTwitter;
-    bool m_savePng;
-    bool m_maskAdmiralName;
-    bool m_maskHqLevel;
+    class Private;
+    Private *d;
 };
 
 #endif // SETTINGSDIALOG_H

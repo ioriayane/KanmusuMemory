@@ -17,62 +17,53 @@
 #include "ui_memorydialog.h"
 #include "thumbnailprovider.h"
 
-#include <QQmlContext>
+#include <QtCore/QDebug>
+#include <QtQml/QQmlContext>
 #include <QtQml/QQmlEngine>
+#include <QtQuick/QQuickItem>
+#include <QtQuick/QQuickView>
 
-MemoryDialog::MemoryDialog(QWidget *parent) :
-    QDialog(parent),
-    m_viewer(NULL),
-    ui(new Ui::MemoryDialog)
+class MemoryDialog::Private
 {
-    ui->setupUi(this);
+public:
+    Private(const QString &memoryPath, MemoryDialog *parent);
 
+private:
+    MemoryDialog *q;
+    Ui::MemoryDialog ui;
+    QQuickView *view;
+public:
+    QString imagePath;    //つぶやく対象の画像
+};
+
+MemoryDialog::Private::Private(const QString &memoryPath, MemoryDialog *parent)
+    : q(parent)
+    , view(new QQuickView)
+{
+    ui.setupUi(q);
+    connect(view->engine(), &QQmlEngine::quit, [this]() {
+        imagePath = view->rootObject()->property("imagePath").toString();
+        q->accept();
+    });
+    //プラグインを登録
+    view->engine()->addImageProvider(QStringLiteral("thumbnail")
+                                      , new ThumbnailProvider);
+    //C++のデータをQML側へ公開
+    view->rootContext()->setContextProperty("memoryPath", memoryPath);
+
+    //QML設定して表示
+    view->setSource(QUrl("qrc:///qml/KanmusuMemory/memoryDialog.qml"));
+    ui.layout->addWidget(QWidget::createWindowContainer(view, q));
 }
 
-MemoryDialog::~MemoryDialog()
+MemoryDialog::MemoryDialog(const QString &memoryPath, QWidget *parent)
+    : QDialog(parent)
+    , d(new Private(memoryPath, this))
 {
-    if(m_viewer != NULL)
-        delete m_viewer;
-    delete ui;
-}
-
-void MemoryDialog::setMemoryPath(const QString &path)
-{
-    m_memoryPath = path;
+    connect(this, &QObject::destroyed, [this]() { delete d; });
 }
 
 const QString &MemoryDialog::imagePath()
 {
-    return m_imagePath;
-}
-
-void MemoryDialog::resizeEvent(QResizeEvent *event)
-{
-    if(m_viewer != NULL){
-        m_viewer->setGeometry(QRect(0, 0, width(), height()));
-    }
-}
-
-void MemoryDialog::showEvent(QShowEvent *event)
-{
-    if(m_viewer == NULL){
-        m_viewer = new QtQuick2ApplicationViewer(windowHandle());
-        connect(m_viewer->engine(), SIGNAL(quit()), this, SLOT(closeQml()));
-        //プラグインを登録
-        m_viewer->engine()->addImageProvider(QStringLiteral("thumbnail")
-                                          , new ThumbnailProvider);
-        //C++のデータをQML側へ公開
-        m_data.setMemoryPath(m_memoryPath);
-        m_viewer->rootContext()->setContextProperty("memoryData", &m_data);
-
-        //QML設定して表示
-        m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/memoryDialog.qml"));
-        m_viewer->show();
-    }
-}
-
-void MemoryDialog::closeQml()
-{
-    m_imagePath = m_data.imagePath();
-    accept();
+    return d->imagePath;
 }

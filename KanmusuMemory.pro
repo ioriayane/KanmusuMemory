@@ -6,7 +6,6 @@ CONFIG += c++11
 SOURCES += main.cpp\
         mainwindow.cpp \
     tweetdialog.cpp \
-    inputoauthpindialog.cpp \
     settingsdialog.cpp \
     cookiejar.cpp \
     aboutdialog.cpp \
@@ -15,7 +14,6 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
-    inputoauthpindialog.h \
     ../KanmusuMemoryTwitter/twitterinfo.h \
     settingsdialog.h \
     cookiejar.h \
@@ -26,7 +24,6 @@ HEADERS  += mainwindow.h \
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \
-    inputoauthpindialog.ui \
     settingsdialog.ui \
     aboutdialog.ui \
     memorydialog.ui \
