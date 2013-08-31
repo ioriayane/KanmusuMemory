@@ -27,7 +27,11 @@
 class TweetDialog::Private
 {
 public:
-    Private(TweetDialog *parent);
+    Private(TweetDialog *parent
+            , const QString &token = QStringLiteral("")
+            , const QString &tokenSecret = QStringLiteral("")
+            , const QString &user_id = QStringLiteral("")
+            , const QString &screen_name = QStringLiteral(""));
 
 private:
     TweetDialog *q;
@@ -38,7 +42,11 @@ public:
     QString imagePath;
 };
 
-TweetDialog::Private::Private(TweetDialog *parent)
+TweetDialog::Private::Private(TweetDialog *parent
+                              , const QString &token
+                              , const QString &tokenSecret
+                              , const QString &user_id
+                              , const QString &screen_name)
     : q(parent)
 {
     ui.setupUi(q);
@@ -62,7 +70,7 @@ TweetDialog::Private::Private(TweetDialog *parent)
         ui.charCountLabel->setText(QString("%1").arg(117 - len));
         ui.tweetButton->setEnabled(len > 0);
     });
-    ui.tweetTextEdit->setPlainText(QStringLiteral(" #艦これ"));
+    ui.tweetTextEdit->setPlainText(tr(" #kancolle"));
 
     connect(ui.tweetButton, &QPushButton::clicked, [this]() {
         //認証済みか確認
@@ -116,6 +124,10 @@ TweetDialog::Private::Private(TweetDialog *parent)
     connect(&oauth, &OAuth::tokenSecretChanged, q, &TweetDialog::tokenSecretChanged);
     connect(&oauth, &OAuth::user_idChanged, q, &TweetDialog::user_idChanged);
     connect(&oauth, &OAuth::screen_nameChanged, q, &TweetDialog::screen_nameChanged);
+    oauth.setToken(token);
+    oauth.setTokenSecret(tokenSecret);
+    oauth.user_id(user_id);
+    oauth.screen_name(screen_name);
     oauth.setConsumerKey(QStringLiteral(TWITTER_CONSUMER_KEY));
     oauth.setConsumerSecret(QStringLiteral(TWITTER_CONSUMER_SECRET));
 
@@ -131,17 +143,30 @@ TweetDialog::Private::Private(TweetDialog *parent)
     ui.tweetTextEdit->setFocus();
 }
 
-TweetDialog::TweetDialog(QWidget *parent)
+TweetDialog::TweetDialog(QWidget *parent
+                         , const QString &token
+                         , const QString &tokenSecret
+                         , const QString &user_id
+                         , const QString &screen_name
+                         )
     : QDialog(parent)
-    , d(new Private(this))
+    , d(new Private(this, token, tokenSecret, user_id, screen_name))
 {
     connect(this, &QObject::destroyed, [this]() { delete d; });
 }
 
 void TweetDialog::showEvent(QShowEvent *event)
 {
-    if (d->oauth.state() != OAuth::Authorized) {
-        d->oauth.request_token();
+    //stateで見ると内部的な状態変化が間に合ってないのか未認証扱いにされる時があるのでとりあえず。
+//    if (d->oauth.state() != OAuth::Authorized) {
+    if (d->oauth.token().isEmpty()) {
+        //未認証
+        QMessageBox::StandardButton res = QMessageBox::information(this
+                                 , tr("Information")
+                                 , tr("Do the authentication of Twitter.")
+                                 , QMessageBox::Ok | QMessageBox::Cancel);
+        if(res == QMessageBox::Ok)
+            d->oauth.request_token();
     }
     QDialog::showEvent(event);
 }
