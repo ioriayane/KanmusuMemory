@@ -16,235 +16,184 @@
 #include "tweetdialog.h"
 #include "ui_tweetdialog.h"
 
-#include "inputoauthpindialog.h"
-
-#include <QMessageBox>
 #include <QtCore/QDebug>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QInputDialog>
+#include <QtTwitterAPI/oauth.h>
+#include <QtTwitterAPI/status.h>
 
+#include "../KanmusuMemoryTwitter/twitterinfo.h"
 
-TweetDialog::TweetDialog(QWidget *parent) :
-    QDialog(parent),
-    m_imageLabel(this),
-    m_oauth(this),
-    m_status(this),
-    ui(new Ui::TweetDialog)
+class TweetDialog::Private
 {
-    ui->setupUi(this);
+public:
+    Private(TweetDialog *parent);
 
-    //Ctrl+Enterで送信
-    ui->tweetTextEdit->addAction(ui->actionTweet);
-    connect(ui->actionTweet, &QAction::triggered, ui->tweetButton, &QPushButton::clicked);
-    //キャプチャ画像表示
-    m_imageLabel.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    m_imageLabel.setGeometry(QRect(70, 20, 250, 150));
-    //oAuth
-    connect(&m_oauth, SIGNAL(stateChanged(OAuth::State)), this, SLOT(stateChanged(OAuth::State)));
-    m_oauth.setConsumerKey(QString(TWITTER_CONSUMER_KEY));
-    m_oauth.setConsumerSecret(QString(TWITTER_CONSUMER_SECRET));
-}
+private:
+    TweetDialog *q;
+    Ui::TweetDialog ui;
 
-TweetDialog::~TweetDialog()
+public:
+    OAuth oauth;
+    QString imagePath;
+};
+
+TweetDialog::Private::Private(TweetDialog *parent)
+    : q(parent)
 {
-    delete ui;
-}
-
-QString TweetDialog::imagePath() const
-{
-    return m_imagePath;
-}
-void TweetDialog::setImagePath(const QString &imagePath)
-{
-    if(m_imagePath.compare(imagePath) == 0)
-        return;
-
-    m_imagePath = imagePath;
+    ui.setupUi(q);
 
     //表示画像を変更
-    m_imagePixmap.load(imagePath);
-    m_imageLabel.setPixmap(m_imagePixmap.scaled(m_imageLabel.size(),
-                                                Qt::KeepAspectRatio,
-                                                Qt::SmoothTransformation));
+    connect(q, &TweetDialog::imagePathChanged, ui.screenshot, &QLabel::setPixmap);
 
+    //Ctrl+Enterで送信
+    ui.tweetTextEdit->addAction(ui.actionTweet);
+    connect(ui.actionTweet, &QAction::triggered, ui.tweetButton, &QPushButton::animateClick);
+
+    connect(ui.reauthButton, &QPushButton::clicked, [this]() {
+        //認証開始
+        oauth.unauthorize();
+        oauth.request_token();
+    });
+
+    connect(ui.tweetTextEdit, &QPlainTextEdit::textChanged, [this]() {
+        //つぶやきの入力内容が変化した
+        int len = ui.tweetTextEdit->toPlainText().length();
+        ui.charCountLabel->setText(QString("%1").arg(117 - len));
+        ui.tweetButton->setEnabled(len > 0);
+    });
+    ui.tweetTextEdit->setPlainText(QStringLiteral(" #艦これ"));
+
+    connect(ui.tweetButton, &QPushButton::clicked, [this]() {
+        //認証済みか確認
+        if (oauth.state() != OAuth::Authorized) return;
+
+        //画像が指定されてるか
+        if(!QFile::exists(imagePath)) return;
+
+        Status status;
+        connect(&status, &Status::loadingChanged, [this](bool loading) {
+            if (loading) {
+                q->setEnabled(false);
+            } else {
+                //消す
+                q->close();
+            }
+        });
+        QVariantMap map;
+        map.insert("status", ui.tweetTextEdit->toPlainText());
+        map.insert("media", QStringList() << imagePath);
+        status.statusesUpdate(map);
+    });
+
+    //OAuth
+    connect(&oauth, &OAuth::stateChanged, [this](OAuth::State state) {
+        switch (state) {
+        case OAuth::RequestTokenReceived: {
+    //        qDebug() << "RequestTokenReceived:";
+    //        qDebug() << "   token:" << m_oauth.token();
+    //        qDebug() << "   tokenSecret:" << m_oauth.tokenSecret();
+
+            //PINを取得しにブラウザを開く
+            oauth.authorize();
+
+            //PIN入力のダイアログを表示
+            QString pin = QInputDialog::getText(q, tr("Authorization"), tr("Please input pin code."));
+            //PINで最終認証
+            if(pin.isEmpty()) {
+            } else {
+                oauth.access_token(pin);
+            }
+            break; }
+        default:
+            break;
+        }
+
+        ui.tweetButton->setEnabled(state == OAuth::Authorized);
+//        ui.reauthButton->setEnabled(state == OAuth::Authorized || state == OAuth::Unauthorized);
+    });
+    connect(&oauth, &OAuth::tokenChanged, q, &TweetDialog::tokenChanged);
+    connect(&oauth, &OAuth::tokenSecretChanged, q, &TweetDialog::tokenSecretChanged);
+    connect(&oauth, &OAuth::user_idChanged, q, &TweetDialog::user_idChanged);
+    connect(&oauth, &OAuth::screen_nameChanged, q, &TweetDialog::screen_nameChanged);
+    oauth.setConsumerKey(QStringLiteral(TWITTER_CONSUMER_KEY));
+    oauth.setConsumerSecret(QStringLiteral(TWITTER_CONSUMER_SECRET));
+
+    connect(q, &TweetDialog::screen_nameChanged, [this](const QString &screen_name) {
+        ui.screenName->setVisible(!screen_name.isEmpty());
+        ui.screenName->setText(QStringLiteral("@%1").arg(screen_name));
+    });
+    ui.screenName->setVisible(!oauth.screen_name().isEmpty());
+    ui.screenName->setText(QStringLiteral("@%1").arg(oauth.screen_name()));
+
+    ui.name->setVisible(false);
+    ui.avatar->setVisible(false);
+    ui.tweetTextEdit->setFocus();
+}
+
+TweetDialog::TweetDialog(QWidget *parent)
+    : QDialog(parent)
+    , d(new Private(this))
+{
+    connect(this, &QObject::destroyed, [this]() { delete d; });
+}
+
+void TweetDialog::showEvent(QShowEvent *event)
+{
+    if (d->oauth.state() != OAuth::Authorized) {
+        d->oauth.request_token();
+    }
+    QDialog::showEvent(event);
+}
+
+const QString &TweetDialog::imagePath() const
+{
+    return d->imagePath;
+}
+
+void TweetDialog::setImagePath(const QString &imagePath)
+{
+    if (d->imagePath == imagePath) return;
+    d->imagePath = imagePath;
+    emit imagePathChanged(imagePath);
 }
 
 const QString &TweetDialog::token() const
 {
-    return m_oauth.token();
+    return d->oauth.token();
 }
 
 void TweetDialog::setToken(const QString &token)
 {
-    m_oauth.setToken(token);
+    d->oauth.setToken(token);
 }
 
 const QString &TweetDialog::tokenSecret() const
 {
-    return m_oauth.tokenSecret();
+    return d->oauth.tokenSecret();
 }
 
 void TweetDialog::setTokenSecret(const QString &tokenSecret)
 {
-    m_oauth.setTokenSecret(tokenSecret);
+    d->oauth.setTokenSecret(tokenSecret);
 }
 
 const QString &TweetDialog::user_id() const
 {
-    return m_oauth.user_id();
+    return d->oauth.user_id();
 }
 
 void TweetDialog::user_id(const QString &user_id)
 {
-    m_oauth.user_id(user_id);
+    d->oauth.user_id(user_id);
 }
 
 const QString &TweetDialog::screen_name() const
 {
-    return m_oauth.screen_name();
+    return d->oauth.screen_name();
 }
 
 void TweetDialog::screen_name(const QString &screen_name)
 {
-   m_oauth.screen_name(screen_name);
-   if(screen_name.length() > 0)
-       ui->userIdLabel->setText(tr("Tweet by %1").arg(screen_name));
-   else
-       ui->userIdLabel->setText(tr("Tweet by %1").arg("unknown"));
+   d->oauth.screen_name(screen_name);
 }
-
-
-//閉じる
-void TweetDialog::on_closeButton_clicked()
-{
-    close();
-}
-
-//つぶやくボタン
-void TweetDialog::on_tweetButton_clicked()
-{
-    //認証済みか確認
-    if(user_id().length() == 0)
-        return;
-
-    //画像が指定されてるか
-    if(!QFile::exists(imagePath()))
-        return;
-
-    //画像のバイナリデータを読み込む
-    QFile file(imagePath());
-    if(!file.open(QIODevice::ReadOnly))
-        return;
-    QDataStream in(&file);
-    QByteArray imagedata(in.device()->readAll());
-    file.close();
-
-//    qDebug() << "image:" << imagedata.length() << "," << imagePath();
-
-    //つぶやく
-    QVariantMap map;
-    QVariantList list;
-    list.append(imagedata);
-    QStringList slist;
-    slist.append(imagePath());
-    map.insert("status", ui->tweetTextEdit->document()->toPlainText());
-    map.insert("media", slist);
-    m_status.statusesUpdate(map);
-
-    //消す
-    ui->tweetTextEdit->clear();
-    setImagePath("");
-    close();
-}
-
-
-//つぶやきの入力内容が変化した
-void TweetDialog::on_tweetTextEdit_textChanged()
-{
-    int len = ui->tweetTextEdit->document()->toPlainText().length();
-    ui->charCountLabel->setText(QString("%1").arg(140 - len));
-    if(len > 0)
-        ui->tweetButton->setEnabled(true);
-    else
-        ui->tweetButton->setEnabled(false);
-}
-
-//ダイアログの実行開始
-int TweetDialog::exec()
-{
-    //認証済みか確認
-    authorize();
-
-    //ハッシュタグ
-
-
-    return QDialog::exec();
-}
-
-
-//OAuthの状態が変わった
-void TweetDialog::stateChanged(OAuth::State state)
-{
-    switch(state){
-    case OAuth::RequestTokenReceived:
-    {
-//        qDebug() << "RequestTokenReceived:";
-//        qDebug() << "   token:" << m_oauth.token();
-//        qDebug() << "   tokenSecret:" << m_oauth.tokenSecret();
-
-        //PINを取得しにブラウザを開く
-        m_oauth.authorize();
-
-        //PIN入力のダイアログを表示
-        InputOAuthPinDialog dlg(this);
-        dlg.exec();
-        //PINで最終認証
-        if(dlg.pin().length() > 0)
-            m_oauth.access_token(dlg.pin());
-
-        break;
-    }
-    case OAuth::Authorized:
-//        qDebug() << "Authorized";
-//        qDebug() << "   token:" << m_oauth.token();
-//        qDebug() << "   tokenSecret:" << m_oauth.tokenSecret();
-//        qDebug() << "   user_id:" << m_oauth.user_id();
-//        qDebug() << "   screen_name:" << m_oauth.screen_name();
-
-        //本当はあまり意味ないけど表示の更新
-        screen_name(m_oauth.screen_name());
-
-        break;
-    default:
-        break;
-    }
-
-    //認証してないと使えないエディット・ボタン
-    if(state == OAuth::Authorized){
-        ui->tweetButton->setEnabled(true);
-        ui->reauthButton->setEnabled(true);
-    }else{
-        ui->tweetButton->setEnabled(false);
-        ui->reauthButton->setEnabled(false);
-    }
-}
-
-//認証チェックなど
-void TweetDialog::authorize(bool force)
-{
-    //認証済みか確認
-    if(user_id().length() == 0 || force){
-        //未認証
-        QMessageBox::information(this
-                                 , tr("Information")
-                                 , tr("Do the authentication of Twitter."));
-        //認証開始
-        m_oauth.unauthorize();
-        m_oauth.request_token("");
-    }
-}
-
-//再認証ボタン
-void TweetDialog::on_reauthButton_clicked()
-{
-    authorize(true);
-}
-

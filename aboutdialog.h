@@ -17,36 +17,27 @@
 #define ABOUTDIALOG_H
 
 #include <QDialog>
-#include <QLabel>
-#include <QPixmap>
-
-namespace Ui {
-class AboutDialog;
-}
 
 class AboutDialog : public QDialog
 {
-    Q_OBJECT
-    
+    Q_OBJECT    
 public:
     explicit AboutDialog(QWidget *parent = 0);
-    ~AboutDialog();
     
-    QString version() const;
-    void setVersion(const QString &version);
+    const QString &version() const;
+    const QStringList &developers() const;
 
-    QStringList developers() const;
+public slots:
+    void setVersion(const QString &version);
     void setDevelopers(const QStringList &developers);
 
+signals:
+    void versionChanged(const QString &version);
+    void developersChanged(const QStringList &developers);
+
 private:
-    Ui::AboutDialog *ui;
-
-    QString m_version;
-    QStringList m_developers;
-
-    QLabel m_iconLabel;
-    QPixmap m_iconPixmap;
-
+    class Private;
+    Private *d;
 };
 
 #endif // ABOUTDIALOG_H
