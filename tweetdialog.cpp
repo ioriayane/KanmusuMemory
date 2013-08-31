@@ -74,24 +74,28 @@ TweetDialog::Private::Private(TweetDialog *parent
 
     connect(ui.tweetButton, &QPushButton::clicked, [this]() {
         //認証済みか確認
-        if (oauth.state() != OAuth::Authorized) return;
+//        if (oauth.state() != OAuth::Authorized) return;
+        if (oauth.token().isEmpty()) return;
 
         //画像が指定されてるか
         if(!QFile::exists(imagePath)) return;
 
         Status status;
-        connect(&status, &Status::loadingChanged, [this](bool loading) {
-            if (loading) {
-                q->setEnabled(false);
-            } else {
-                //消す
-                q->close();
-            }
-        });
+//        connect(&status, &Status::loadingChanged, [this](bool loading) {
+//            qDebug() << "loadingChanged " << loading;
+//            if (loading) {
+//                q->setEnabled(false);
+//            } else {
+//                //消す
+//                q->close();
+//            }
+//        });
         QVariantMap map;
         map.insert("status", ui.tweetTextEdit->toPlainText());
         map.insert("media", QStringList() << imagePath);
         status.statusesUpdate(map);
+        //消す（仮）
+        q->close();
     });
 
     //OAuth
