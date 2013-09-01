@@ -77,12 +77,19 @@ void WebPageOperation::fullScreen(bool isFull)
             qDebug() << "failed find target";
             return;
         }
+
+        QHash<QString, QString> properties;
+        properties.insert(QStringLiteral("overflow"), QStringLiteral("hidden"));
         if(m_body.isEmpty()){
-            m_body.insert(QStringLiteral("overflow"), element.styleProperty(QStringLiteral("overflow"), QWebElement::InlineStyle));
+            foreach (const QString &key, properties.keys()) {
+                m_body.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
+            }
             qDebug() << element.styleProperty(QStringLiteral("overflow"), QWebElement::InlineStyle);
         }
-        element.setStyleProperty(QStringLiteral("overflow"),QStringLiteral("hidden"));
-
+        foreach (const QString &key, properties.keys()) {
+            element.setStyleProperty(key, properties.value(key));
+        }
+        properties.clear();
 
 
         //フレームを最大化
@@ -92,27 +99,27 @@ void WebPageOperation::fullScreen(bool isFull)
             //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
             return;
         }
+
+        properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
+        properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
+        properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
+        properties.insert(QStringLiteral("width"), QString("%1px").arg(window->width()));
+        properties.insert(QStringLiteral("height"), QString("%1px").arg(window->height()));
+        properties.insert(QStringLiteral("z-index"), QStringLiteral("10"));
         if(m_gameFrame.isEmpty()){
-            m_gameFrame.insert(QStringLiteral("position"), element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle));
-            m_gameFrame.insert(QStringLiteral("top"), element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle));
-            m_gameFrame.insert(QStringLiteral("left"), element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle));
-            m_gameFrame.insert(QStringLiteral("width"), element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle));
-            m_gameFrame.insert(QStringLiteral("height"), element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle));
-            m_gameFrame.insert(QStringLiteral("z-index"), element.styleProperty(QStringLiteral("z-index"), QWebElement::InlineStyle));
+            foreach (const QString &key, properties.keys()) {
+                m_gameFrame.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
+            }
             qDebug() << element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle)
                      << "," << element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle)
                      << "," << element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle)
                      << "," << element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle)
                      << "," << element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle);
         }
-        element.setStyleProperty(QStringLiteral("position"),QStringLiteral("absolute"));
-        element.setStyleProperty(QStringLiteral("top"),QStringLiteral("0px"));
-        element.setStyleProperty(QStringLiteral("left"),QStringLiteral("0px"));
-        element.setStyleProperty(QStringLiteral("width"),QString("%1px").arg(window->width()));
-        element.setStyleProperty(QStringLiteral("height"),QString("%1px").arg(window->height()));
-        element.setStyleProperty(QStringLiteral("z-index"),QStringLiteral("10"));
-
-
+        foreach (const QString &key, properties.keys()) {
+            element.setStyleProperty(key, properties.value(key));
+        }
+        properties.clear();
 
         //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
         frame = frame->childFrames().first();
@@ -122,23 +129,26 @@ void WebPageOperation::fullScreen(bool isFull)
             //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
             return;
         }
+
+        properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
+        properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
+        properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
+        properties.insert(QStringLiteral("width"), QString("%1px").arg(window->width()));
+        properties.insert(QStringLiteral("height"), QString("%1px").arg(window->height()));
         if(m_flashWrap.isEmpty()){
-            m_flashWrap.insert(QStringLiteral("position"), element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle));
-            m_flashWrap.insert(QStringLiteral("top"), element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle));
-            m_flashWrap.insert(QStringLiteral("left"), element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle));
-            m_flashWrap.insert(QStringLiteral("width"), element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle));
-            m_flashWrap.insert(QStringLiteral("height"), element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle));
+            foreach (const QString &key, properties.keys()) {
+                m_flashWrap.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
+            }
             qDebug() << element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle)
                      << "," << element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle)
                      << "," << element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle)
                      << "," << element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle)
                      << "," << element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle);
         }
-        element.setStyleProperty(QStringLiteral("position"),QStringLiteral("absolute"));
-        element.setStyleProperty(QStringLiteral("top"),QStringLiteral("0px"));
-        element.setStyleProperty(QStringLiteral("left"),QStringLiteral("0px"));
-        element.setStyleProperty(QStringLiteral("width"),QString("%1px").arg(window->width()));
-        element.setStyleProperty(QStringLiteral("height"),QString("%1px").arg(window->height()));
+        foreach (const QString &key, properties.keys()) {
+            element.setStyleProperty(key, properties.value(key));
+        }
+        properties.clear();
 
         element = element.findFirst(QStringLiteral("embed"));
         if (element.isNull()) {
@@ -146,15 +156,21 @@ void WebPageOperation::fullScreen(bool isFull)
             //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
             return;
         }
+
+        properties.insert(QStringLiteral("width"), QString::number(window->width()));
+        properties.insert(QStringLiteral("height"), QString::number(window->height()));
         if(m_embed.isEmpty()){
-            m_embed.insert(QStringLiteral("width"), element.attribute(QStringLiteral("width")));
-            m_embed.insert(QStringLiteral("height"), element.attribute(QStringLiteral("height")));
+            foreach (const QString &key, properties.keys()) {
+                m_embed.insert(key, element.attribute(key));
+            }
             qDebug() << element.attribute(QStringLiteral("width"))
                      << "," << element.attribute(QStringLiteral("height"))
                      << "->" << window->width() << "," << window->height();
         }
-        element.evaluateJavaScript(QString("this.width='%1'").arg(window->width()));
-        element.evaluateJavaScript(QString("this.height='%1'").arg(window->height()));
+        foreach (const QString &key, properties.keys()) {
+            element.evaluateJavaScript(QString("this.%1='%2'").arg(key).arg(properties.value(key)));
+        }
+        properties.clear();
 
         //解説とか消す
         element = frame->findFirstElement(QStringLiteral("#sectionWrap"));
@@ -163,10 +179,15 @@ void WebPageOperation::fullScreen(bool isFull)
             //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
             return;
         }
+        properties.insert(QStringLiteral("visibility"), QStringLiteral("hidden"));
         if(m_sectionWrap.isEmpty()){
-            m_sectionWrap.insert(QStringLiteral("visibility"), element.styleProperty(QStringLiteral("visibility"), QWebElement::InlineStyle));
+            foreach (const QString &key, properties.keys()) {
+                m_sectionWrap.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
+            }
         }
-        element.setStyleProperty(QStringLiteral("visibility"),QStringLiteral("hidden"));
+        foreach (const QString &key, properties.keys()) {
+            element.setStyleProperty(key, properties.value(key));
+        }
 
     }else{
         //full -> normal
