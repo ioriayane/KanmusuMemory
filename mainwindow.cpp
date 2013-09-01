@@ -70,7 +70,6 @@ private:
     bool isShipExist(QRect rect1, QRect rect2);
     MainWindow *q;
     TimerDialog *m_timerDialog;
-    WebPageOperation *m_webOpe;
 
 public:
     Ui::MainWindow ui;
@@ -150,7 +149,7 @@ MainWindow::Private::Private(MainWindow *parent)
         if(q->isFullScreen()){
             //フルスクリーン解除
             q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
-        }else if(m_webOpe->gameExists()){
+        }else if(ui.webView->gameExists()){
             //フルスクリーンじゃなくてゲームがある
             q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
         }else{
@@ -176,8 +175,6 @@ MainWindow::Private::Private(MainWindow *parent)
     });
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
-    //WebPageの解析
-    m_webOpe = new WebPageOperation(ui.webView);
 
     //通知アイコン
 #ifdef Q_OS_WIN
@@ -193,14 +190,13 @@ MainWindow::Private::Private(MainWindow *parent)
 MainWindow::Private::~Private()
 {
     delete m_timerDialog;
-    delete m_webOpe;
 }
 //ゲーム画面をキャプチャ
 QImage MainWindow::Private::getGameImage(const QRect &crop)
 {
     //スクロール位置の保存
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = m_webOpe->getGameRect();
+    QRect geometry = ui.webView->getGameRect();
 //    qDebug() << geometry;
     if (!geometry.isValid())
     {
@@ -406,7 +402,7 @@ void MainWindow::Private::captureCatalog()
     QPainter painter(&resultImg);
 
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = m_webOpe->getGameRect();
+    QRect geometry = ui.webView->getGameRect();
 
     if (!isCatalogScreen())
     {
@@ -563,7 +559,7 @@ void MainWindow::Private::captureFleetDetail()
     QPainter painter(&resultImg);
 
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = m_webOpe->getGameRect();
+    QRect geometry = ui.webView->getGameRect();
 
     if (!isShipExist(shipRectList.value(0), checkRectList.value(0)))
     {
@@ -648,7 +644,7 @@ void MainWindow::Private::setFullScreen()
         ui.menuBar->setVisible(false);
         ui.statusBar->setVisible(false);
 
-        m_webOpe->setViewMode(WebPageOperation::FullScreenMode);
+        ui.webView->setViewMode(WebView::FullScreenMode);
 
     }else{
         qDebug() << "resize: full -> normal";
@@ -657,7 +653,7 @@ void MainWindow::Private::setFullScreen()
         ui.menuBar->setVisible(true);
         ui.statusBar->setVisible(true);
 
-        m_webOpe->setViewMode(WebPageOperation::NormalMode);
+        ui.webView->setViewMode(WebView::NormalMode);
     }
 
 }

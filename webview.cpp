@@ -13,33 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "webpageoperation.h"
+#include "webview.h"
 
-#include <QWebView>
-#include <QWebFrame>
-#include <QWebElement>
-#include <QDebug>
+#include <QtCore/QDebug>
+#include <QtWebKitWidgets/QWebFrame>
+#include <QtWebKit/QWebElement>
 
-WebPageOperation::WebPageOperation(QWebView *webView)
-    : webView(webView)
+WebView::WebView(QWidget *parent)
+    : QWebView(parent)
 {
 }
 
-bool WebPageOperation::gameExists() const
+bool WebView::gameExists() const
 {
     return getGameRect().isValid();
 }
 
 //ゲームの領域を調べる
-QRect WebPageOperation::getGameRect() const
+QRect WebView::getGameRect() const
 {
-    if(webView == NULL)   return QRect();
-
     //スクロール位置は破壊される
     //表示位置を一番上へ強制移動
-    webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
+    page()->mainFrame()->setScrollPosition(QPoint(0, 0));
     //フレームを取得
-    QWebFrame *frame = webView->page()->mainFrame();
+    QWebFrame *frame = page()->mainFrame();
     if (frame->childFrames().isEmpty()) {
         return QRect();
     }
@@ -60,7 +57,7 @@ QRect WebPageOperation::getGameRect() const
     return geometry;
 }
 
-void WebPageOperation::setViewMode(ViewMode viewMode)
+void WebView::setViewMode(ViewMode viewMode)
 {
     switch (viewMode) {
     case NormalMode:
@@ -72,11 +69,11 @@ void WebPageOperation::setViewMode(ViewMode viewMode)
     }
 }
 
-void WebPageOperation::showFullScreen()
+void WebView::showFullScreen()
 {
     //normal -> full
 
-    QWebFrame *frame = webView->page()->mainFrame();
+    QWebFrame *frame = page()->mainFrame();
 
     //スクロールバー非表示
     QWebElement element = frame->findFirstElement(QStringLiteral("body"));
@@ -110,8 +107,8 @@ void WebPageOperation::showFullScreen()
     properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
     properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
     properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
-    properties.insert(QStringLiteral("width"), QString("%1px").arg(webView->window()->width()));
-    properties.insert(QStringLiteral("height"), QString("%1px").arg(webView->window()->height()));
+    properties.insert(QStringLiteral("width"), QString("%1px").arg(window()->width()));
+    properties.insert(QStringLiteral("height"), QString("%1px").arg(window()->height()));
     properties.insert(QStringLiteral("z-index"), QStringLiteral("10"));
     if(m_gameFrame.isEmpty()){
         foreach (const QString &key, properties.keys()) {
@@ -140,8 +137,8 @@ void WebPageOperation::showFullScreen()
     properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
     properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
     properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
-    properties.insert(QStringLiteral("width"), QString("%1px").arg(webView->window()->width()));
-    properties.insert(QStringLiteral("height"), QString("%1px").arg(webView->window()->height()));
+    properties.insert(QStringLiteral("width"), QString("%1px").arg(window()->width()));
+    properties.insert(QStringLiteral("height"), QString("%1px").arg(window()->height()));
     if(m_flashWrap.isEmpty()){
         foreach (const QString &key, properties.keys()) {
             m_flashWrap.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
@@ -164,15 +161,15 @@ void WebPageOperation::showFullScreen()
         return;
     }
 
-    properties.insert(QStringLiteral("width"), QString::number(webView->window()->width()));
-    properties.insert(QStringLiteral("height"), QString::number(webView->window()->height()));
+    properties.insert(QStringLiteral("width"), QString::number(window()->width()));
+    properties.insert(QStringLiteral("height"), QString::number(window()->height()));
     if(m_embed.isEmpty()){
         foreach (const QString &key, properties.keys()) {
             m_embed.insert(key, element.attribute(key));
         }
         qDebug() << element.attribute(QStringLiteral("width"))
                  << "," << element.attribute(QStringLiteral("height"))
-                 << "->" << webView->window()->width() << "," << webView->window()->height();
+                 << "->" << window()->width() << "," << window()->height();
     }
     foreach (const QString &key, properties.keys()) {
         element.evaluateJavaScript(QString("this.%1='%2'").arg(key).arg(properties.value(key)));
@@ -197,11 +194,11 @@ void WebPageOperation::showFullScreen()
     }
 }
 
-void WebPageOperation::showNormal()
+void WebView::showNormal()
 {
     //full -> normal
 
-    QWebFrame *frame = webView->page()->mainFrame();
+    QWebFrame *frame = page()->mainFrame();
 
     //スクロールバー表示
     QWebElement element = frame->findFirstElement(QStringLiteral("body"));

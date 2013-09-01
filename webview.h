@@ -13,25 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef WEBPAGEOPERATION_H
-#define WEBPAGEOPERATION_H
+#ifndef WEBVIEW_H
+#define WEBVIEW_H
 
-#include <QHash>
-#include <QRect>
+#include <QtWebKitWidgets/QWebView>
 
-class QWidget;
-class QWebView;
-
-class WebPageOperation
+class WebView : public QWebView
 {
+    Q_OBJECT
 public:
     enum ViewMode {
         NormalMode,
         FullScreenMode
     };
 
-    explicit WebPageOperation(QWebView *webView);
-    
+    explicit WebView(QWidget* parent = 0);
+
     bool gameExists() const;
     QRect getGameRect() const;
     void setViewMode(ViewMode viewMode);
@@ -41,8 +38,6 @@ private:
     void showFullScreen();
 
 private:
-    QWebView *webView;
-
     QHash<QString, QString> m_body;
     QHash<QString, QString> m_gameFrame;
     QHash<QString, QString> m_flashWrap;
@@ -50,4 +45,4 @@ private:
     QHash<QString, QString> m_sectionWrap;
 };
 
-#endif // WEBPAGEOPERATION_H
+#endif // WEBVIEW_H
