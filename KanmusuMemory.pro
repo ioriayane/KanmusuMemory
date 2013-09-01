@@ -11,7 +11,8 @@ SOURCES += main.cpp\
     aboutdialog.cpp \
     memorydialog.cpp \
     timerdialog.cpp \
-    webview.cpp
+    webview.cpp \
+    gamescreen.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -22,7 +23,8 @@ HEADERS  += mainwindow.h \
     memorydialog.h \
     timerdialog.h \
     kanmusumemory_global.h \
-    webview.h
+    webview.h \
+    gamescreen.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \

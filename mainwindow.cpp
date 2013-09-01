@@ -21,6 +21,7 @@
 #include "aboutdialog.h"
 #include "memorydialog.h"
 #include "timerdialog.h"
+#include "gamescreen.h"
 #include "kanmusumemory_global.h"
 
 #include <QtCore/QDate>
@@ -64,8 +65,6 @@ private:
     void maskImage(QImage *img, const QRect &rect);
     QString makeFileName(const QString &format) const;
     void clickGame(QPoint pos, bool wait_little = false);
-    bool isDesiredScreen(const QImage &image, const QRect &rect, const QRgb &rgb) const;
-    bool isCatalogScreen();
     bool isShipExist(QRect rect1, QRect rect2);
     MainWindow *q;
     TimerDialog *m_timerDialog;
@@ -230,17 +229,17 @@ void MainWindow::Private::captureGame()
         return;
     }
 
-    //提督名をマスク
-    if(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool()
-            && isDesiredScreen(img, HOME_PORT_RECT_CAPTURE, HOME_PORT_CHECK_COLOR))
-    {
-        maskImage(&img, ADMIRAL_RECT_HEADER);
-    }
-    //司令部レベルをマスク
-    if(settings.value(SETTING_GENERAL_MASK_HQ_LEVEL, false).toBool()
-            && isDesiredScreen(img, HOME_PORT_RECT_CAPTURE, HOME_PORT_CHECK_COLOR))
-    {
-        maskImage(&img, HQ_LEVEL_RECT_HEADER);
+    GameScreen gameScreen(img);
+
+    if (gameScreen.isVisible(GameScreen::HeaderPart)) {
+        //提督名をマスク
+        if(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool()) {
+            maskImage(&img, ADMIRAL_RECT_HEADER);
+        }
+        //司令部レベルをマスク
+        if(settings.value(SETTING_GENERAL_MASK_HQ_LEVEL, false).toBool()) {
+            maskImage(&img, HQ_LEVEL_RECT_HEADER);
+        }
     }
 
     QString format;
@@ -333,19 +332,6 @@ void MainWindow::Private::clickGame(QPoint pos, bool wait_little)
     }
 }
 
-//目的の画面か含まれる色の成分で調べる
-bool MainWindow::Private::isDesiredScreen(const QImage &image, const QRect &rect, const QRgb &rgb) const
-{
-    QRgb pixel = image.copy(rect).scaled(1, 1).pixel(0, 0);
-    return qAbs(qRed(pixel) - qRed(rgb)) < 0x20 && qAbs(qGreen(pixel) - qGreen(rgb)) < 0x20 && qAbs(qBlue(pixel) - qBlue(rgb)) < 0x20;
-}
-
-//カタログ画面か
-bool MainWindow::Private::isCatalogScreen()
-{
-    return isDesiredScreen(ui.webView->capture(), CATALOG_CHECK_RECT, CATALOG_CHECK_COLOR);
-}
-
 void MainWindow::Private::captureCatalog()
 {
     qDebug() << "captureCatalog";
@@ -378,7 +364,7 @@ void MainWindow::Private::captureCatalog()
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
     QRect geometry = ui.webView->getGameRect();
 
-    if (!isCatalogScreen())
+    if (GameScreen(ui.webView->capture()).screenType() != GameScreen::CatalogScreen)
     {
         ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
         ui.statusBar->showMessage(tr("not in catalog"), STATUS_BAR_MSG_TIME);
