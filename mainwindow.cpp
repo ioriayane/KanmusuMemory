@@ -96,8 +96,10 @@ MainWindow::Private::Private(MainWindow *parent)
 
     //メニュー
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
+#ifndef DISABLE_CATALOG_AND_DETAIL_FLEET
     connect(ui.captureCatalog, &QAction::triggered, [this](){ captureCatalog(); });
     connect(ui.captureFleetDetail, &QAction::triggered, [this](){ captureFleetDetail(); });
+#endif
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
     connect(ui.actionReturn_to_Kan_Colle, &QAction::triggered, [this]() {
@@ -180,6 +182,11 @@ MainWindow::Private::Private(MainWindow *parent)
     //通知アイコン
 #ifdef Q_OS_WIN
     trayIcon.show();
+#endif
+
+#ifdef DISABLE_CATALOG_AND_DETAIL_FLEET
+    ui.captureCatalog->setVisible(false);
+    ui.captureFleetDetail->setVisible(false);
 #endif
 }
 
@@ -407,6 +414,18 @@ void MainWindow::Private::captureCatalog()
         return;
     }
 
+    //開始確認
+    QMessageBox::StandardButton res = QMessageBox::warning(q
+                                                           , tr("Kan Memo")
+                                                           , tr("Capture the catalog.\nPlease wait while a cup of coffee.")
+                                                           , QMessageBox::Yes | QMessageBox::Cancel);
+    if(res == QMessageBox::Cancel)
+        return;
+
+    //メニュー無効
+    ui.menuBar->setEnabled(false);
+    ui.toolBar->setEnabled(false);
+
     ui.webView->setAttribute(Qt::WA_TransparentForMouseEvents, true);
     ui.statusBar->showMessage(tr("making catalog"), -1);
     ui.progressBar->show();
@@ -454,6 +473,10 @@ void MainWindow::Private::captureCatalog()
     }else{
         ui.statusBar->showMessage(tr("failed save image"), STATUS_BAR_MSG_TIME);
     }
+
+    //メニュー復活
+    ui.menuBar->setEnabled(true);
+    ui.toolBar->setEnabled(true);
 }
 
 bool MainWindow::Private::isShipExist(QRect rect1, QRect rect2)
@@ -548,6 +571,18 @@ void MainWindow::Private::captureFleetDetail()
         return;
     }
 
+    //開始確認
+    QMessageBox::StandardButton res = QMessageBox::warning(q
+                                                           , tr("Kan Memo")
+                                                           , tr("Capture the fleet ditail.\nPlease wait while a cup of coffee.")
+                                                           , QMessageBox::Yes | QMessageBox::Cancel);
+    if(res == QMessageBox::Cancel)
+        return;
+
+    //メニュー無効
+    ui.menuBar->setEnabled(false);
+    ui.toolBar->setEnabled(false);
+
     ui.webView->setAttribute(Qt::WA_TransparentForMouseEvents, true);
     ui.statusBar->showMessage(tr("making fleet detail"), -1);
     ui.progressBar->show();
@@ -597,6 +632,10 @@ void MainWindow::Private::captureFleetDetail()
     }else{
         ui.statusBar->showMessage(tr("failed save image"), STATUS_BAR_MSG_TIME);
     }
+
+    //メニュー復活
+    ui.menuBar->setEnabled(true);
+    ui.toolBar->setEnabled(true);
 }
 
 void MainWindow::Private::setFullScreen()

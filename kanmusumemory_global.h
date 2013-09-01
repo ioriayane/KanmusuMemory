@@ -56,6 +56,9 @@
 #define SETTING_TIMER_CONSTRUCTION_RUNNING  "constructionRunning"
 #define SETTING_TIMER_TWEETFINISHED         "tweetFinished"
 
+//カタログと艦隊詳細を無効化
+#define DISABLE_CATALOG_AND_DETAIL_FLEET
+
 //カタログ
 #define CATALOG_CHECK_COLOR     (qRgb(45, 43, 43))
 #define CATALOG_CHECK_RECT      (QRect(0, 0, 5, 5))
