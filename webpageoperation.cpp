@@ -26,13 +26,13 @@ WebPageOperation::WebPageOperation(QWidget *window, QWebView *webView)
 {
 }
 
-bool WebPageOperation::existGame()
+bool WebPageOperation::existGame() const
 {
     return getGameRect().isValid();
 }
 
 //ゲームの領域を調べる
-QRect WebPageOperation::getGameRect()
+QRect WebPageOperation::getGameRect() const
 {
     if(webView == NULL)   return QRect();
 
