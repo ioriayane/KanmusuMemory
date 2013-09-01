@@ -19,12 +19,15 @@
 #include <QtWidgets/QMainWindow>
 #include <QNetworkReply>
 #include <QSslError>
+#include "webpageoperation.h"
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
     explicit MainWindow(QWidget *parent = 0);
+
+    bool isFullScreen() const;
 
 private:
     Q_DISABLE_COPY(MainWindow)
@@ -36,6 +39,7 @@ protected:
 
 private slots:
     void handleSslErrors(QNetworkReply* reply, const QList<QSslError> &errors);
+    virtual void resizeEvent(QResizeEvent * event);
 };
 
 #endif // MAINWINDOW_H

@@ -213,6 +213,14 @@
     <string>Return to Kan Colle</string>
    </property>
   </action>
+  <action name="actionFullScreen">
+   <property name="text">
+    <string>fullScreen</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
