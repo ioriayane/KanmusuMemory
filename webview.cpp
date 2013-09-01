@@ -288,6 +288,32 @@ QRect WebView::getGameRect() const
     return geometry;
 }
 
+//ゲーム画面をキャプチャ
+QImage WebView::capture()
+{
+    QImage ret;
+
+    //スクロール位置の保存
+    QPoint currentPos = page()->mainFrame()->scrollPosition();
+    QRect geometry = getGameRect();
+    if (!geometry.isValid()) {
+        emit error(tr("failed find target"));
+        goto finally;
+    }
+
+    {
+        ret = QImage(geometry.size(), QImage::Format_ARGB32);
+        QPainter painter(&ret);
+        //全体を描画
+        render(&painter, QPoint(0,0), geometry);
+    }
+
+finally:
+    //スクロールの位置を戻す
+    page()->mainFrame()->setScrollPosition(currentPos);
+    return ret;
+}
+
 WebView::ViewMode WebView::viewMode() const
 {
     return d->viewMode;

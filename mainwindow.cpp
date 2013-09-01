@@ -61,7 +61,6 @@ public:
     void setFullScreen();
 
 private:
-    QImage getGameImage(const QRect &crop = QRect());
     void maskImage(QImage *img, const QRect &rect);
     QString makeFileName(const QString &format) const;
     void clickGame(QPoint pos, bool wait_little = false);
@@ -191,31 +190,6 @@ MainWindow::Private::~Private()
 {
     delete m_timerDialog;
 }
-//ゲーム画面をキャプチャ
-QImage MainWindow::Private::getGameImage(const QRect &crop)
-{
-    //スクロール位置の保存
-    QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = ui.webView->getGameRect();
-//    qDebug() << geometry;
-    if (!geometry.isValid())
-    {
-        ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
-        return QImage();
-    }
-
-    QImage img(geometry.size(), QImage::Format_ARGB32);
-    QPainter painter(&img);
-    //全体を描画
-    ui.webView->render(&painter, QPoint(0,0), geometry);
-
-    //スクロールの位置を戻す
-    ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
-
-    return img.copy(crop);
-}
-
 //指定範囲をマスクする
 void MainWindow::Private::maskImage(QImage *img, const QRect &rect)
 {
@@ -249,7 +223,7 @@ void MainWindow::Private::captureGame()
     //設定確認
     checkSavePath();
 
-    QImage img = getGameImage();
+    QImage img = ui.webView->capture();
     if (img.isNull())
     {
         ui.statusBar->showMessage(tr("failed capture image"), STATUS_BAR_MSG_TIME);
@@ -369,7 +343,7 @@ bool MainWindow::Private::isDesiredScreen(const QImage &image, const QRect &rect
 //カタログ画面か
 bool MainWindow::Private::isCatalogScreen()
 {
-    return isDesiredScreen(getGameImage(), CATALOG_CHECK_RECT, CATALOG_CHECK_COLOR);
+    return isDesiredScreen(ui.webView->capture(), CATALOG_CHECK_RECT, CATALOG_CHECK_COLOR);
 }
 
 void MainWindow::Private::captureCatalog()
@@ -443,7 +417,7 @@ void MainWindow::Private::captureCatalog()
                     + (pageRectList.value(page).y() + qrand() % pageRectList.value(page).height());
             clickGame(QPoint(px, py));
 
-            tmpImg = getGameImage(captureRect);
+            tmpImg = ui.webView->capture().copy(captureRect);
             painter.drawImage(captureRect.width() * type
                               , captureRect.height() * page
                               , tmpImg);
@@ -478,7 +452,7 @@ void MainWindow::Private::captureCatalog()
 
 bool MainWindow::Private::isShipExist(QRect rect1, QRect rect2)
 {
-    QImage img = getGameImage();
+    QImage img = ui.webView->capture();
     int yr = 0;
     int yg = 0;
     int yb = 0;
@@ -599,7 +573,7 @@ void MainWindow::Private::captureFleetDetail()
                 + (shipRectList.value(i).y() + qrand() % shipRectList.value(i).height());
         //open
         clickGame(QPoint(px, py));
-        tmpImg = getGameImage(captureRect);
+        tmpImg = ui.webView->capture().copy(captureRect);
         painter.drawImage(captureRect.width() * (i % 2)
                           , captureRect.height() * (i / 2)
                           , tmpImg);

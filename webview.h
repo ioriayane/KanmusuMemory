@@ -33,6 +33,7 @@ public:
 
     bool gameExists() const;
     QRect getGameRect() const;
+    QImage capture();
 
     ViewMode viewMode() const;
 
@@ -41,6 +42,7 @@ public slots:
 
 signals:
     void viewModeChanged(ViewMode viewMode);
+    void error(const QString &message);
 
 private:
     class Private;
