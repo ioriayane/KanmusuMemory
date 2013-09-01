@@ -24,11 +24,17 @@ class WebView::Private
 public:
     Private(WebView *parent);
 
+private:
     void showNormal();
     void showFullScreen();
 
 private:
     WebView *q;
+
+public:
+    ViewMode viewMode;
+
+private:
     QHash<QString, QString> body;
     QHash<QString, QString> gameFrame;
     QHash<QString, QString> flashWrap;
@@ -38,7 +44,18 @@ private:
 
 WebView::Private::Private(WebView *parent)
     : q(parent)
+    , viewMode(NormalMode)
 {
+    connect(q, &WebView::viewModeChanged, [this](ViewMode viewMode) {
+        switch (viewMode) {
+        case NormalMode:
+            showNormal();
+            break;
+        case FullScreenMode:
+            showFullScreen();
+            break;
+        }
+    });
 }
 
 void WebView::Private::showFullScreen()
@@ -271,14 +288,14 @@ QRect WebView::getGameRect() const
     return geometry;
 }
 
+WebView::ViewMode WebView::viewMode() const
+{
+    return d->viewMode;
+}
+
 void WebView::setViewMode(ViewMode viewMode)
 {
-    switch (viewMode) {
-    case NormalMode:
-        d->showNormal();
-        break;
-    case FullScreenMode:
-        d->showFullScreen();
-        break;
-    }
+    if (d->viewMode == viewMode) return;
+    d->viewMode = viewMode;
+    emit viewModeChanged(viewMode);
 }

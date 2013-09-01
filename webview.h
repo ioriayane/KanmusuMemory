@@ -21,6 +21,8 @@
 class WebView : public QWebView
 {
     Q_OBJECT
+    Q_ENUMS(ViewMode)
+    Q_PROPERTY(ViewMode viewMode READ viewMode WRITE setViewMode NOTIFY viewModeChanged)
 public:
     enum ViewMode {
         NormalMode,
@@ -31,7 +33,14 @@ public:
 
     bool gameExists() const;
     QRect getGameRect() const;
+
+    ViewMode viewMode() const;
+
+public slots:
     void setViewMode(ViewMode viewMode);
+
+signals:
+    void viewModeChanged(ViewMode viewMode);
 
 private:
     class Private;
