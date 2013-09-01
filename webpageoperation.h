@@ -27,7 +27,7 @@ class WebPageOperation
 public:
     explicit WebPageOperation(QWidget *window, QWebView *webView);
     
-    bool existGame() const;
+    bool gameExists() const;
     QRect getGameRect() const;
     void fullScreen(bool isFull);
 

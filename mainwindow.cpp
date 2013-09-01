@@ -150,7 +150,7 @@ MainWindow::Private::Private(MainWindow *parent)
         if(q->isFullScreen()){
             //フルスクリーン解除
             q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
-        }else if(m_webOpe->existGame()){
+        }else if(m_webOpe->gameExists()){
             //フルスクリーンじゃなくてゲームがある
             q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
         }else{

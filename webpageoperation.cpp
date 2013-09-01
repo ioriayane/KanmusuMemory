@@ -26,7 +26,7 @@ WebPageOperation::WebPageOperation(QWidget *window, QWebView *webView)
 {
 }
 
-bool WebPageOperation::existGame() const
+bool WebPageOperation::gameExists() const
 {
     return getGameRect().isValid();
 }
