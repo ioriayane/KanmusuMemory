@@ -16,27 +16,24 @@
 #ifndef WEBPAGEOPERATION_H
 #define WEBPAGEOPERATION_H
 
-#include <QtWidgets>
-#include <QWebView>
+#include <QHash>
+#include <QRect>
 
-class WebPageOperation : public QWidget
+class QWidget;
+class QWebView;
+
+class WebPageOperation
 {
-    Q_OBJECT
 public:
-    explicit WebPageOperation(QWidget *parent = 0);
+    explicit WebPageOperation(QWidget *window, QWebView *webView);
     
     bool existGame();
     QRect getGameRect();
     void fullScreen(bool isFull);
-    void setWebView(QWebView *value);
 
-signals:
-    
-public slots:
-    
 private:
-    QWidget *q;
-    QWebView *m_webView;
+    QWidget *window;
+    QWebView *webView;
 
     QHash<QString, QString> m_body;
     QHash<QString, QString> m_gameFrame;

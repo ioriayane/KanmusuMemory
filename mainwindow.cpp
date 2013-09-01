@@ -70,7 +70,7 @@ private:
     bool isShipExist(QRect rect1, QRect rect2);
     MainWindow *q;
     TimerDialog *m_timerDialog;
-    WebPageOperation m_webOpe;
+    WebPageOperation *m_webOpe;
 
 public:
     Ui::MainWindow ui;
@@ -82,7 +82,6 @@ MainWindow::Private::Private(MainWindow *parent)
     : q(parent)
     , settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT)
     , trayIcon(QIcon(":/resources/KanmusuMemory32.png"))
-    , m_webOpe(parent)
 {
     ui.setupUi(q);
     ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
@@ -151,7 +150,7 @@ MainWindow::Private::Private(MainWindow *parent)
         if(q->isFullScreen()){
             //フルスクリーン解除
             q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
-        }else if(m_webOpe.existGame()){
+        }else if(m_webOpe->existGame()){
             //フルスクリーンじゃなくてゲームがある
             q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
         }else{
@@ -178,7 +177,8 @@ MainWindow::Private::Private(MainWindow *parent)
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
     //WebPageの解析
-    m_webOpe.setWebView(ui.webView);
+    m_webOpe = new WebPageOperation(parent, ui.webView);
+
     //通知アイコン
 #ifdef Q_OS_WIN
     trayIcon.show();
@@ -193,13 +193,14 @@ MainWindow::Private::Private(MainWindow *parent)
 MainWindow::Private::~Private()
 {
     delete m_timerDialog;
+    delete m_webOpe;
 }
 //ゲーム画面をキャプチャ
 QImage MainWindow::Private::getGameImage(const QRect &crop)
 {
     //スクロール位置の保存
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = m_webOpe.getGameRect();
+    QRect geometry = m_webOpe->getGameRect();
 //    qDebug() << geometry;
     if (!geometry.isValid())
     {
@@ -405,7 +406,7 @@ void MainWindow::Private::captureCatalog()
     QPainter painter(&resultImg);
 
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = m_webOpe.getGameRect();
+    QRect geometry = m_webOpe->getGameRect();
 
     if (!isCatalogScreen())
     {
@@ -562,7 +563,7 @@ void MainWindow::Private::captureFleetDetail()
     QPainter painter(&resultImg);
 
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = m_webOpe.getGameRect();
+    QRect geometry = m_webOpe->getGameRect();
 
     if (!isShipExist(shipRectList.value(0), checkRectList.value(0)))
     {
@@ -647,7 +648,7 @@ void MainWindow::Private::setFullScreen()
         ui.menuBar->setVisible(false);
         ui.statusBar->setVisible(false);
 
-        m_webOpe.fullScreen(true);
+        m_webOpe->fullScreen(true);
 
     }else{
         qDebug() << "resize: full -> normal";
@@ -656,7 +657,7 @@ void MainWindow::Private::setFullScreen()
         ui.menuBar->setVisible(true);
         ui.statusBar->setVisible(true);
 
-        m_webOpe.fullScreen(false);
+        m_webOpe->fullScreen(false);
     }
 
 }

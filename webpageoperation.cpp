@@ -15,14 +15,14 @@
  */
 #include "webpageoperation.h"
 
+#include <QWebView>
 #include <QWebFrame>
 #include <QWebElement>
 #include <QDebug>
 
-WebPageOperation::WebPageOperation(QWidget *parent) :
-    QWidget(parent)
-  ,m_webView(NULL)
-  ,q(parent)
+WebPageOperation::WebPageOperation(QWidget *window, QWebView *webView)
+    : window(window)
+    , webView(webView)
 {
 }
 
@@ -34,13 +34,13 @@ bool WebPageOperation::existGame()
 //ゲームの領域を調べる
 QRect WebPageOperation::getGameRect()
 {
-    if(m_webView == NULL)   return QRect();
+    if(webView == NULL)   return QRect();
 
     //スクロール位置は破壊される
     //表示位置を一番上へ強制移動
-    m_webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
+    webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
     //フレームを取得
-    QWebFrame *frame = m_webView->page()->mainFrame();
+    QWebFrame *frame = webView->page()->mainFrame();
     if (frame->childFrames().isEmpty()) {
         return QRect();
     }
@@ -63,18 +63,18 @@ QRect WebPageOperation::getGameRect()
 
 void WebPageOperation::fullScreen(bool isFull)
 {
-    if(m_webView == NULL)
+    if(webView == NULL)
         return;
 
     if(isFull){
         //normal -> full
 
-        QWebFrame *frame = m_webView->page()->mainFrame();
+        QWebFrame *frame = webView->page()->mainFrame();
 
         //スクロールバー非表示
         QWebElement element = frame->findFirstElement(QStringLiteral("body"));
         if (element.isNull()) {
-            qDebug() << tr("failed find target");
+            qDebug() << "failed find target";
             return;
         }
         if(m_body.isEmpty()){
@@ -88,7 +88,7 @@ void WebPageOperation::fullScreen(bool isFull)
         //フレームを最大化
         element = frame->findFirstElement(QStringLiteral("#game_frame"));
         if (element.isNull()) {
-            qDebug() << tr("failed find target");
+            qDebug() << "failed find target";
             //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
             return;
         }
@@ -108,8 +108,8 @@ void WebPageOperation::fullScreen(bool isFull)
         element.setStyleProperty(QStringLiteral("position"),QStringLiteral("absolute"));
         element.setStyleProperty(QStringLiteral("top"),QStringLiteral("0px"));
         element.setStyleProperty(QStringLiteral("left"),QStringLiteral("0px"));
-        element.setStyleProperty(QStringLiteral("width"),QString("%1px").arg(q->width()));
-        element.setStyleProperty(QStringLiteral("height"),QString("%1px").arg(q->height()));
+        element.setStyleProperty(QStringLiteral("width"),QString("%1px").arg(window->width()));
+        element.setStyleProperty(QStringLiteral("height"),QString("%1px").arg(window->height()));
         element.setStyleProperty(QStringLiteral("z-index"),QStringLiteral("10"));
 
 
@@ -118,7 +118,7 @@ void WebPageOperation::fullScreen(bool isFull)
         frame = frame->childFrames().first();
         element = frame->findFirstElement(QStringLiteral("#flashWrap"));
         if (element.isNull()) {
-            qDebug() << tr("failed find target");
+            qDebug() << "failed find target";
             //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
             return;
         }
@@ -137,12 +137,12 @@ void WebPageOperation::fullScreen(bool isFull)
         element.setStyleProperty(QStringLiteral("position"),QStringLiteral("absolute"));
         element.setStyleProperty(QStringLiteral("top"),QStringLiteral("0px"));
         element.setStyleProperty(QStringLiteral("left"),QStringLiteral("0px"));
-        element.setStyleProperty(QStringLiteral("width"),QString("%1px").arg(q->width()));
-        element.setStyleProperty(QStringLiteral("height"),QString("%1px").arg(q->height()));
+        element.setStyleProperty(QStringLiteral("width"),QString("%1px").arg(window->width()));
+        element.setStyleProperty(QStringLiteral("height"),QString("%1px").arg(window->height()));
 
         element = element.findFirst(QStringLiteral("embed"));
         if (element.isNull()) {
-            qDebug() << tr("failed find target");
+            qDebug() << "failed find target";
             //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
             return;
         }
@@ -151,15 +151,15 @@ void WebPageOperation::fullScreen(bool isFull)
             m_embed.insert(QStringLiteral("height"), element.attribute(QStringLiteral("height")));
             qDebug() << element.attribute(QStringLiteral("width"))
                      << "," << element.attribute(QStringLiteral("height"))
-                     << "->" << q->width() << "," << q->height();
+                     << "->" << window->width() << "," << window->height();
         }
-        element.evaluateJavaScript(QString("this.width='%1'").arg(q->width()));
-        element.evaluateJavaScript(QString("this.height='%1'").arg(q->height()));
+        element.evaluateJavaScript(QString("this.width='%1'").arg(window->width()));
+        element.evaluateJavaScript(QString("this.height='%1'").arg(window->height()));
 
         //解説とか消す
         element = frame->findFirstElement(QStringLiteral("#sectionWrap"));
         if (element.isNull()) {
-            qDebug() << tr("failed find target");
+            qDebug() << "failed find target";
             //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
             return;
         }
@@ -171,12 +171,12 @@ void WebPageOperation::fullScreen(bool isFull)
     }else{
         //full -> normal
 
-        QWebFrame *frame = m_webView->page()->mainFrame();
+        QWebFrame *frame = webView->page()->mainFrame();
 
         //スクロールバー表示
         QWebElement element = frame->findFirstElement(QStringLiteral("body"));
         if (element.isNull()) {
-            qDebug() << tr("failed find target");
+            qDebug() << "failed find target";
             return;
         }
         //もとに戻す
@@ -186,7 +186,7 @@ void WebPageOperation::fullScreen(bool isFull)
 
         element = frame->findFirstElement(QStringLiteral("#game_frame"));
         if (element.isNull()) {
-            qDebug() << tr("failed find target");
+            qDebug() << "failed find target";
             //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
             return;
         }
@@ -199,7 +199,7 @@ void WebPageOperation::fullScreen(bool isFull)
         frame = frame->childFrames().first();
         element = frame->findFirstElement(QStringLiteral("#flashWrap"));
         if (element.isNull()) {
-            qDebug() << tr("failed find target");
+            qDebug() << "failed find target";
             //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
             return;
         }
@@ -210,7 +210,7 @@ void WebPageOperation::fullScreen(bool isFull)
 
         element = element.findFirst(QStringLiteral("embed"));
         if (element.isNull()) {
-            qDebug() << tr("failed find target");
+            qDebug() << "failed find target";
             //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
             return;
         }
@@ -222,7 +222,7 @@ void WebPageOperation::fullScreen(bool isFull)
         //解説とか消す
         element = frame->findFirstElement(QStringLiteral("#sectionWrap"));
         if (element.isNull()) {
-            qDebug() << tr("failed find target");
+            qDebug() << "failed find target";
             //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
             return;
         }
@@ -231,9 +231,4 @@ void WebPageOperation::fullScreen(bool isFull)
             element.setStyleProperty(key, m_sectionWrap.value(key));
         }
     }
-}
-
-void WebPageOperation::setWebView(QWebView *value)
-{
-    m_webView = value;
 }
