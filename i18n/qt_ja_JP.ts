@@ -57,7 +57,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+166"/>
+        <location filename="../mainwindow.cpp" line="+169"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -67,7 +67,7 @@
         <translation>ページの読み込みが失敗しました。</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+32"/>
         <source>failed find target</source>
         <translation>艦これが見つかりませんでした。</translation>
     </message>
@@ -79,26 +79,28 @@
     <message>
         <location line="+27"/>
         <location line="+33"/>
-        <location line="+136"/>
-        <location line="+139"/>
+        <location line="+150"/>
+        <location line="+159"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-303"/>
-        <location line="+170"/>
-        <location line="+139"/>
+        <location line="-337"/>
+        <location line="+184"/>
+        <location line="+159"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-299"/>
+        <location line="-333"/>
         <location line="+17"/>
+        <location line="+102"/>
+        <location line="+157"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-16"/>
+        <location line="-275"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -108,27 +110,41 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+107"/>
+        <location line="+109"/>
         <source>not in catalog</source>
         <translation>図鑑表示ではありません</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
+        <source>Capture the catalog.
+Please wait while a cup of coffee.</source>
+        <translation>図鑑を作成します。
+のんびりとお待ちください。</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>making catalog</source>
         <translation>図鑑作成中</translation>
     </message>
     <message>
-        <location line="+136"/>
+        <location line="+140"/>
         <source>not in organization</source>
         <translation>編成画面ではありません</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
+        <source>Capture the fleet ditail.
+Please wait while a cup of coffee.</source>
+        <translation>艦隊の詳細情報を作成します。
+のんびりとお待ちください。</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>making fleet detail</source>
         <translation>艦隊詳細作成中</translation>
     </message>
     <message>
-        <location line="+131"/>
+        <location line="+139"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -412,7 +428,7 @@ Do you want to continue on an understanding of the security risk?
 <context>
     <name>TimerItem</name>
     <message>
-        <location filename="../qml/KanmusuMemory/TimerItem.qml" line="+161"/>
+        <location filename="../qml/KanmusuMemory/TimerItem.qml" line="+162"/>
         <source>Start</source>
         <translation>開始</translation>
     </message>
@@ -473,11 +489,12 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">つぶやく : </translation>
     </message>
     <message>
+        <location line="+10"/>
         <source>Close</source>
-        <translation type="obsolete">閉じる</translation>
+        <translation>閉じる</translation>
     </message>
     <message>
-        <location line="-13"/>
+        <location line="-23"/>
         <source>140</source>
         <translation>140</translation>
     </message>
@@ -497,7 +514,7 @@ Do you want to continue on an understanding of the security risk?
         <translation></translation>
     </message>
     <message>
-        <location line="+113"/>
+        <location line="+120"/>
         <source>tweet</source>
         <translation>つぶやく</translation>
     </message>
@@ -591,32 +608,32 @@ Do you want to continue on an understanding of the security risk?
 <context>
     <name>timerDialog</name>
     <message>
-        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+102"/>
+        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+100"/>
         <source>Docking</source>
         <translation>入渠</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+31"/>
         <source>Expedition</source>
         <translation>遠征</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+33"/>
         <source>Construction</source>
         <translation>建造</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+32"/>
         <source>tweet a time-out</source>
         <translation>時間になったらツイッターでお知らせする</translation>
     </message>
     <message>
-        <location line="+83"/>
+        <location line="+82"/>
         <source></source>
         <translation></translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="+62"/>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>

@@ -87,6 +87,10 @@ TweetDialog::Private::Private(TweetDialog *parent)
         status->statusesUpdate(map);
     });
 
+    connect(ui.closeButton, &QPushButton::clicked, [this]() {
+        q->close();
+    });
+
     //OAuth
     connect(&oauth, &OAuth::stateChanged, [this](OAuth::State state) {
         switch (state) {
