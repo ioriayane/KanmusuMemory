@@ -648,7 +648,7 @@ void MainWindow::Private::setFullScreen()
         ui.menuBar->setVisible(false);
         ui.statusBar->setVisible(false);
 
-        m_webOpe->fullScreen(true);
+        m_webOpe->setViewMode(WebPageOperation::FullScreenMode);
 
     }else{
         qDebug() << "resize: full -> normal";
@@ -657,7 +657,7 @@ void MainWindow::Private::setFullScreen()
         ui.menuBar->setVisible(true);
         ui.statusBar->setVisible(true);
 
-        m_webOpe->fullScreen(false);
+        m_webOpe->setViewMode(WebPageOperation::NormalMode);
     }
 
 }

@@ -25,11 +25,20 @@ class QWebView;
 class WebPageOperation
 {
 public:
+    enum ViewMode {
+        NormalMode,
+        FullScreenMode
+    };
+
     explicit WebPageOperation(QWebView *webView);
     
     bool gameExists() const;
     QRect getGameRect() const;
-    void fullScreen(bool isFull);
+    void setViewMode(ViewMode viewMode);
+
+private:
+    void showNormal();
+    void showFullScreen();
 
 private:
     QWebView *webView;

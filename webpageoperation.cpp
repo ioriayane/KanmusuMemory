@@ -60,195 +60,204 @@ QRect WebPageOperation::getGameRect() const
     return geometry;
 }
 
-void WebPageOperation::fullScreen(bool isFull)
+void WebPageOperation::setViewMode(ViewMode viewMode)
 {
-    if(webView == NULL)
+    switch (viewMode) {
+    case NormalMode:
+        showNormal();
+        break;
+    case FullScreenMode:
+        showFullScreen();
+        break;
+    }
+}
+
+void WebPageOperation::showFullScreen()
+{
+    //normal -> full
+
+    QWebFrame *frame = webView->page()->mainFrame();
+
+    //スクロールバー非表示
+    QWebElement element = frame->findFirstElement(QStringLiteral("body"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
         return;
+    }
 
-    if(isFull){
-        //normal -> full
-
-        QWebFrame *frame = webView->page()->mainFrame();
-
-        //スクロールバー非表示
-        QWebElement element = frame->findFirstElement(QStringLiteral("body"));
-        if (element.isNull()) {
-            qDebug() << "failed find target";
-            return;
-        }
-
-        QHash<QString, QString> properties;
-        properties.insert(QStringLiteral("overflow"), QStringLiteral("hidden"));
-        if(m_body.isEmpty()){
-            foreach (const QString &key, properties.keys()) {
-                m_body.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
-            }
-            qDebug() << element.styleProperty(QStringLiteral("overflow"), QWebElement::InlineStyle);
-        }
+    QHash<QString, QString> properties;
+    properties.insert(QStringLiteral("overflow"), QStringLiteral("hidden"));
+    if(m_body.isEmpty()){
         foreach (const QString &key, properties.keys()) {
-            element.setStyleProperty(key, properties.value(key));
+            m_body.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
         }
-        properties.clear();
+        qDebug() << element.styleProperty(QStringLiteral("overflow"), QWebElement::InlineStyle);
+    }
+    foreach (const QString &key, properties.keys()) {
+        element.setStyleProperty(key, properties.value(key));
+    }
+    properties.clear();
 
 
-        //フレームを最大化
-        element = frame->findFirstElement(QStringLiteral("#game_frame"));
-        if (element.isNull()) {
-            qDebug() << "failed find target";
-            //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-            return;
-        }
+    //フレームを最大化
+    element = frame->findFirstElement(QStringLiteral("#game_frame"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
+        return;
+    }
 
-        properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
-        properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
-        properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
-        properties.insert(QStringLiteral("width"), QString("%1px").arg(webView->window()->width()));
-        properties.insert(QStringLiteral("height"), QString("%1px").arg(webView->window()->height()));
-        properties.insert(QStringLiteral("z-index"), QStringLiteral("10"));
-        if(m_gameFrame.isEmpty()){
-            foreach (const QString &key, properties.keys()) {
-                m_gameFrame.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
-            }
-            qDebug() << element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle)
-                     << "," << element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle)
-                     << "," << element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle)
-                     << "," << element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle)
-                     << "," << element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle);
-        }
+    properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
+    properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
+    properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
+    properties.insert(QStringLiteral("width"), QString("%1px").arg(webView->window()->width()));
+    properties.insert(QStringLiteral("height"), QString("%1px").arg(webView->window()->height()));
+    properties.insert(QStringLiteral("z-index"), QStringLiteral("10"));
+    if(m_gameFrame.isEmpty()){
         foreach (const QString &key, properties.keys()) {
-            element.setStyleProperty(key, properties.value(key));
+            m_gameFrame.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
         }
-        properties.clear();
+        qDebug() << element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle)
+                 << "," << element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle)
+                 << "," << element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle)
+                 << "," << element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle)
+                 << "," << element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle);
+    }
+    foreach (const QString &key, properties.keys()) {
+        element.setStyleProperty(key, properties.value(key));
+    }
+    properties.clear();
 
-        //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
-        frame = frame->childFrames().first();
-        element = frame->findFirstElement(QStringLiteral("#flashWrap"));
-        if (element.isNull()) {
-            qDebug() << "failed find target";
-            //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-            return;
-        }
+    //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
+    frame = frame->childFrames().first();
+    element = frame->findFirstElement(QStringLiteral("#flashWrap"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
+        return;
+    }
 
-        properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
-        properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
-        properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
-        properties.insert(QStringLiteral("width"), QString("%1px").arg(webView->window()->width()));
-        properties.insert(QStringLiteral("height"), QString("%1px").arg(webView->window()->height()));
-        if(m_flashWrap.isEmpty()){
-            foreach (const QString &key, properties.keys()) {
-                m_flashWrap.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
-            }
-            qDebug() << element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle)
-                     << "," << element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle)
-                     << "," << element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle)
-                     << "," << element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle)
-                     << "," << element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle);
-        }
+    properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
+    properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
+    properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
+    properties.insert(QStringLiteral("width"), QString("%1px").arg(webView->window()->width()));
+    properties.insert(QStringLiteral("height"), QString("%1px").arg(webView->window()->height()));
+    if(m_flashWrap.isEmpty()){
         foreach (const QString &key, properties.keys()) {
-            element.setStyleProperty(key, properties.value(key));
+            m_flashWrap.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
         }
-        properties.clear();
+        qDebug() << element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle)
+                 << "," << element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle)
+                 << "," << element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle)
+                 << "," << element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle)
+                 << "," << element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle);
+    }
+    foreach (const QString &key, properties.keys()) {
+        element.setStyleProperty(key, properties.value(key));
+    }
+    properties.clear();
 
-        element = element.findFirst(QStringLiteral("embed"));
-        if (element.isNull()) {
-            qDebug() << "failed find target";
-            //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-            return;
-        }
+    element = element.findFirst(QStringLiteral("embed"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
+        return;
+    }
 
-        properties.insert(QStringLiteral("width"), QString::number(webView->window()->width()));
-        properties.insert(QStringLiteral("height"), QString::number(webView->window()->height()));
-        if(m_embed.isEmpty()){
-            foreach (const QString &key, properties.keys()) {
-                m_embed.insert(key, element.attribute(key));
-            }
-            qDebug() << element.attribute(QStringLiteral("width"))
-                     << "," << element.attribute(QStringLiteral("height"))
-                     << "->" << webView->window()->width() << "," << webView->window()->height();
-        }
+    properties.insert(QStringLiteral("width"), QString::number(webView->window()->width()));
+    properties.insert(QStringLiteral("height"), QString::number(webView->window()->height()));
+    if(m_embed.isEmpty()){
         foreach (const QString &key, properties.keys()) {
-            element.evaluateJavaScript(QString("this.%1='%2'").arg(key).arg(properties.value(key)));
+            m_embed.insert(key, element.attribute(key));
         }
-        properties.clear();
+        qDebug() << element.attribute(QStringLiteral("width"))
+                 << "," << element.attribute(QStringLiteral("height"))
+                 << "->" << webView->window()->width() << "," << webView->window()->height();
+    }
+    foreach (const QString &key, properties.keys()) {
+        element.evaluateJavaScript(QString("this.%1='%2'").arg(key).arg(properties.value(key)));
+    }
+    properties.clear();
 
-        //解説とか消す
-        element = frame->findFirstElement(QStringLiteral("#sectionWrap"));
-        if (element.isNull()) {
-            qDebug() << "failed find target";
-            //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-            return;
-        }
-        properties.insert(QStringLiteral("visibility"), QStringLiteral("hidden"));
-        if(m_sectionWrap.isEmpty()){
-            foreach (const QString &key, properties.keys()) {
-                m_sectionWrap.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
-            }
-        }
+    //解説とか消す
+    element = frame->findFirstElement(QStringLiteral("#sectionWrap"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+    properties.insert(QStringLiteral("visibility"), QStringLiteral("hidden"));
+    if(m_sectionWrap.isEmpty()){
         foreach (const QString &key, properties.keys()) {
-            element.setStyleProperty(key, properties.value(key));
+            m_sectionWrap.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
         }
+    }
+    foreach (const QString &key, properties.keys()) {
+        element.setStyleProperty(key, properties.value(key));
+    }
+}
 
-    }else{
-        //full -> normal
+void WebPageOperation::showNormal()
+{
+    //full -> normal
 
-        QWebFrame *frame = webView->page()->mainFrame();
+    QWebFrame *frame = webView->page()->mainFrame();
 
-        //スクロールバー表示
-        QWebElement element = frame->findFirstElement(QStringLiteral("body"));
-        if (element.isNull()) {
-            qDebug() << "failed find target";
-            return;
-        }
-        //もとに戻す
-        foreach (const QString &key, m_body.keys()) {
-            element.setStyleProperty(key, m_body.value(key));
-        }
+    //スクロールバー表示
+    QWebElement element = frame->findFirstElement(QStringLiteral("body"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        return;
+    }
+    //もとに戻す
+    foreach (const QString &key, m_body.keys()) {
+        element.setStyleProperty(key, m_body.value(key));
+    }
 
-        element = frame->findFirstElement(QStringLiteral("#game_frame"));
-        if (element.isNull()) {
-            qDebug() << "failed find target";
-            //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-            return;
-        }
-        //もとに戻す
-        foreach (const QString &key, m_gameFrame.keys()) {
-            element.setStyleProperty(key, m_gameFrame.value(key));
-        }
+    element = frame->findFirstElement(QStringLiteral("#game_frame"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+    //もとに戻す
+    foreach (const QString &key, m_gameFrame.keys()) {
+        element.setStyleProperty(key, m_gameFrame.value(key));
+    }
 
-        //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
-        frame = frame->childFrames().first();
-        element = frame->findFirstElement(QStringLiteral("#flashWrap"));
-        if (element.isNull()) {
-            qDebug() << "failed find target";
-            //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-            return;
-        }
-        //もとに戻す
-        foreach (const QString &key, m_flashWrap.keys()) {
-            element.setStyleProperty(key, m_flashWrap.value(key));
-        }
+    //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
+    frame = frame->childFrames().first();
+    element = frame->findFirstElement(QStringLiteral("#flashWrap"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+    //もとに戻す
+    foreach (const QString &key, m_flashWrap.keys()) {
+        element.setStyleProperty(key, m_flashWrap.value(key));
+    }
 
-        element = element.findFirst(QStringLiteral("embed"));
-        if (element.isNull()) {
-            qDebug() << "failed find target";
-            //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-            return;
-        }
-        //もとに戻す
-        foreach (const QString &key, m_embed.keys()) {
-            element.evaluateJavaScript(QStringLiteral("this.%1='%2'").arg(key).arg(m_embed.value(key)));
-        }
+    element = element.findFirst(QStringLiteral("embed"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+    //もとに戻す
+    foreach (const QString &key, m_embed.keys()) {
+        element.evaluateJavaScript(QStringLiteral("this.%1='%2'").arg(key).arg(m_embed.value(key)));
+    }
 
-        //解説とか消す
-        element = frame->findFirstElement(QStringLiteral("#sectionWrap"));
-        if (element.isNull()) {
-            qDebug() << "failed find target";
-            //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-            return;
-        }
-        //もとに戻す
-        foreach (const QString &key, m_sectionWrap) {
-            element.setStyleProperty(key, m_sectionWrap.value(key));
-        }
+    //解説とか消す
+    element = frame->findFirstElement(QStringLiteral("#sectionWrap"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
+        return;
+    }
+    //もとに戻す
+    foreach (const QString &key, m_sectionWrap) {
+        element.setStyleProperty(key, m_sectionWrap.value(key));
     }
 }
