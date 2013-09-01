@@ -218,7 +218,7 @@
     <string>fullScreen</string>
    </property>
    <property name="shortcut">
-    <string>F11</string>
+    <string>Ctrl+Return</string>
    </property>
   </action>
  </widget>

@@ -60,7 +60,6 @@ public:
     void setFullScreen();
 
 private:
-    QRect getGameRect();
     QImage getGameImage(const QRect &crop = QRect());
     void maskImage(QImage *img, const QRect &rect);
     QString makeFileName(const QString &format) const;
@@ -146,7 +145,15 @@ MainWindow::Private::Private(MainWindow *parent)
     //フルスクリーン
     q->addAction(ui.actionFullScreen);
     connect(ui.actionFullScreen, &QAction::triggered, [this]() {
-        q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
+        if(q->isFullScreen()){
+            //フルスクリーン解除
+            q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
+        }else if(m_webOpe.existGame()){
+            //フルスクリーンじゃなくてゲームがある
+            q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
+        }else{
+            //フルスクリーンでゲームがないときは何もしない
+        }
     });
 
     //WebViewの読込み開始
@@ -167,6 +174,8 @@ MainWindow::Private::Private(MainWindow *parent)
     });
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
+    //WebPageの解析
+    m_webOpe.setWebView(ui.webView);
     //通知アイコン
 #ifdef Q_OS_WIN
     trayIcon.show();
@@ -177,45 +186,16 @@ MainWindow::Private::~Private()
 {
     delete m_timerDialog;
 }
-//ゲームの領域を調べる
-QRect MainWindow::Private::getGameRect()
-{
-    //スクロール位置は破壊される
-    //表示位置を一番上へ強制移動
-    ui.webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
-    //フレームを取得
-    QWebFrame *frame = ui.webView->page()->mainFrame();
-    if (frame->childFrames().isEmpty()) {
-        ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-        return QRect();
-    }
-    //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
-    frame = frame->childFrames().first();
-    QWebElement element = frame->findFirstElement(QStringLiteral("#flashWrap"));
-    if (element.isNull()) {
-        ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-        return QRect();
-    }
-    element = element.findFirst(QStringLiteral("embed"));
-    if (element.isNull()) {
-        ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-        return QRect();
-    }
-    //見つけたタグの座標を取得
-    QRect geometry = element.geometry();
-    geometry.moveTopLeft(geometry.topLeft() + frame->geometry().topLeft());
-
-    return geometry;
-}
 //ゲーム画面をキャプチャ
 QImage MainWindow::Private::getGameImage(const QRect &crop)
 {
     //スクロール位置の保存
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = getGameRect();
+    QRect geometry = m_webOpe.getGameRect();
 //    qDebug() << geometry;
     if (!geometry.isValid())
     {
+        ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
         ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
         return QImage();
     }
@@ -415,7 +395,7 @@ void MainWindow::Private::captureCatalog()
     QPainter painter(&resultImg);
 
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = getGameRect();
+    QRect geometry = m_webOpe.getGameRect();
 
     if (!isCatalogScreen())
     {
@@ -556,7 +536,7 @@ void MainWindow::Private::captureFleetDetail()
     QPainter painter(&resultImg);
 
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = getGameRect();
+    QRect geometry = m_webOpe.getGameRect();
 
     if (!isShipExist(shipRectList.value(0), checkRectList.value(0)))
     {
@@ -621,7 +601,6 @@ void MainWindow::Private::setFullScreen()
         ui.menuBar->setVisible(false);
         ui.statusBar->setVisible(false);
 
-        m_webOpe.setMainFrame(ui.webView->page()->mainFrame());
         m_webOpe.fullScreen(true);
 
     }else{
@@ -631,7 +610,6 @@ void MainWindow::Private::setFullScreen()
         ui.menuBar->setVisible(true);
         ui.statusBar->setVisible(true);
 
-        m_webOpe.setMainFrame(ui.webView->page()->mainFrame());
         m_webOpe.fullScreen(false);
     }
 
@@ -665,17 +643,20 @@ MainWindow::MainWindow(QWidget *parent)
 
 bool MainWindow::isFullScreen() const
 {
+#ifdef Q_OS_MAC
     QDesktopWidget desktop;
-    qDebug() << "num:" << desktop.screenNumber(this);
-    qDebug() << "screen geo:" << desktop.screenGeometry(this);
-    qDebug() << "window geo:" << geometry();
+//    qDebug() << "num:" << desktop.screenNumber(this);
+//    qDebug() << "screen geo:" << desktop.screenGeometry(this);
+//    qDebug() << "window geo:" << geometry();
     if(geometry().width() == desktop.screenGeometry(this).width()
             && geometry().height() == desktop.screenGeometry(this).height()){
         return true;
     }else{
         return false;
     }
-//    return QMainWindow::isFullScreen();
+#else
+    return QMainWindow::isFullScreen();
+#endif
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
