@@ -20,8 +20,6 @@ import jp.relog.plugin.operatingsystem 1.0
 
 Rectangle {
     id: root
-    width: timerArea.width * 1.1
-    height: timerArea.height * 1.1
     color: "#f0f0f0"
 
     property real d0set: 0
@@ -100,7 +98,7 @@ Rectangle {
         //入渠
         Text {
             text: qsTr("Docking")
-            font.pointSize: 18
+            font.pointSize: 16
         }
         GroupBox {
             Column {
@@ -108,6 +106,7 @@ Rectangle {
                     id: docking
                     model: timerData.dockingTime.length
                     delegate: TimerItem {
+                        heightScale: os.type == OperatingSystem.Linux ? 1.1 : 1.3
                         setTime: timerData.dockingTime[index]              //指定時間
                         startTime: timerData.dockingStart[index]          //開始時間
                         onStarted: {
@@ -130,7 +129,7 @@ Rectangle {
         //遠征
         Text {
             text: qsTr("Expedition")
-            font.pointSize: 18
+            font.pointSize: 16
         }
         GroupBox {
             Column {
@@ -138,6 +137,7 @@ Rectangle {
                     id: expedition
                     model: timerData.expeditionTime.length
                     delegate: TimerItem {
+                        heightScale: os.type == OperatingSystem.Linux ? 1.1 : 1.3
                         setTime: timerData.expeditionTime[index]          //指定時間
                         startTime: timerData.expeditionStart[index]      //開始時間
                         indexOffset: 1
@@ -162,7 +162,7 @@ Rectangle {
         //建造
         Text {
             text: qsTr("Construction")
-            font.pointSize: 18
+            font.pointSize: 16
         }
         GroupBox {
             Column {
@@ -170,6 +170,7 @@ Rectangle {
                     id: construction
                     model: timerData.constructionTime.length
                     delegate: TimerItem {
+                        heightScale: os.type == OperatingSystem.Linux ? 1.1 : 1.3
                         setTime: timerData.constructionTime[index]          //指定時間
                         startTime: timerData.constructionStart[index]      //開始時間
                         onStarted: {

@@ -20,9 +20,10 @@ import QtQuick.Controls.Styles 1.0
 Rectangle {
     id: root
     width: content.width * 1.1
-    height: content.height * 1.3
+    height: content.height * heightScale
     color: "#f0f0f0"
 
+    property real heightScale: 1.3
     property bool running: false
     property real setTime: 0        //指定時間
     property real startTime: 0      //開始時間
@@ -113,7 +114,7 @@ Rectangle {
                     Text {
                         color: running ? "black" : "darkGray"
                         text: root.toEndDateString()
-                        font.pointSize: 10
+                        font.pointSize: 8
                     }
                     Text {
                         color: running ? "black" : "darkGray"
@@ -184,7 +185,7 @@ Rectangle {
         if(running)
             return toStringDate(r + s - n)
         else
-            return ""
+            return "00/00"
     }
     //終わる予定時間
     function toEndTimeString(){
