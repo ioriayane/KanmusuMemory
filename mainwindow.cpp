@@ -46,6 +46,7 @@
 #define STATUS_BAR_MSG_TIME     5000
 #define CLICK_EVENT_INTERVAL            1500
 #define CLICK_EVENT_INTERVAL_LITTLE     500
+#define CLICK_EVENT_FLUCTUATION         500
 
 class MainWindow::Private
 {
@@ -345,6 +346,8 @@ void MainWindow::Private::clickGame(QPoint pos, bool wait_little)
     if(wait_little)
         interval = CLICK_EVENT_INTERVAL_LITTLE;
 
+    interval += static_cast<int>(qrand() % CLICK_EVENT_FLUCTUATION);
+
     for(int i = 0; i < interval; i++)
     {
         QApplication::processEvents();
@@ -411,17 +414,17 @@ void MainWindow::Private::captureCatalog()
     for (int type = 0; type < shipRectList.size(); type++)
     {
         int tx = geometry.x()
-                + (shipRectList.value(type).x() + shipRectList.value(type).width() / 2);
+                + (shipRectList.value(type).x() + qrand() % shipRectList.value(type).width());
         int ty = geometry.y()
-                + (shipRectList.value(type).y() + shipRectList.value(type).height() / 2);
+                + (shipRectList.value(type).y() + qrand() % shipRectList.value(type).height());
         clickGame(QPoint(tx, ty));
 
         for (int page = 0; page < pageRectList.size(); page++)
         {
             int px = geometry.x()
-                    + (pageRectList.value(page).x() + pageRectList.value(page).width() / 2);
+                    + (pageRectList.value(page).x() + qrand() % pageRectList.value(page).width());
             int py = geometry.y()
-                    + (pageRectList.value(page).y() + pageRectList.value(page).height() / 2);
+                    + (pageRectList.value(page).y() + qrand() % pageRectList.value(page).height());
             clickGame(QPoint(px, py));
 
             tmpImg = getGameImage(captureRect);
@@ -559,9 +562,9 @@ void MainWindow::Private::captureFleetDetail()
             continue;
         }
         int px = geometry.x()
-                + (shipRectList.value(i).x() + shipRectList.value(i).width() / 2);
+                + (shipRectList.value(i).x() + qrand() % shipRectList.value(i).width());
         int py = geometry.y()
-                + (shipRectList.value(i).y() + shipRectList.value(i).height() / 2);
+                + (shipRectList.value(i).y() + qrand() % shipRectList.value(i).height());
         //open
         clickGame(QPoint(px, py));
         tmpImg = getGameImage(captureRect);
@@ -570,7 +573,11 @@ void MainWindow::Private::captureFleetDetail()
                           , tmpImg);
         ui.progressBar->setValue((i + 1) * 100 / shipRectList.size());
         //close
-        clickGame(QPoint(geometry.x() + 370, geometry.y() + 120), true);
+        px = geometry.x()
+                + (DETAIL_RECT_CLOSE.x() + qrand() % DETAIL_RECT_CLOSE.width());
+        py = geometry.y()
+                + (DETAIL_RECT_CLOSE.y() + qrand() % DETAIL_RECT_CLOSE.height());
+        clickGame(QPoint(px, py), true);
     }
     ui.progressBar->hide();
     ui.webView->page()->mainFrame()->setScrollPosition(currentPos);

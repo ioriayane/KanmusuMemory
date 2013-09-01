@@ -73,10 +73,10 @@
 #define DETAIL_CHECK_COLOR1     (qRgb(210, 185, 100))
 #define DETAIL_CHECK_COLOR2     (qRgb(135, 185, 130))
 #define DETAIL_RECT_CAPTURE     (QRect(325, 100, 465, 370))
-#define DETAIL_RECT_SHIP1       (QRect(300, 200, 50, 20))
-#define DETAIL_RECT_SHIP1_2     (QRect(380, 200, 50, 20))
-#define DETAIL_RECT_SHIP2       (QRect(640, 200, 50, 20))
-#define DETAIL_RECT_SHIP2_2     (QRect(720, 200, 50, 20))
+#define DETAIL_RECT_SHIP1       (QRect(300, 202, 50, 20))
+#define DETAIL_RECT_SHIP1_2     (QRect(380, 202, 50, 20))
+#define DETAIL_RECT_SHIP2       (QRect(640, 202, 50, 20))
+#define DETAIL_RECT_SHIP2_2     (QRect(720, 202, 50, 20))
 #define DETAIL_RECT_SHIP3       (QRect(300, 315, 50, 20))
 #define DETAIL_RECT_SHIP3_2     (QRect(380, 315, 50, 20))
 #define DETAIL_RECT_SHIP4       (QRect(640, 315, 50, 20))
@@ -85,6 +85,7 @@
 #define DETAIL_RECT_SHIP5_2     (QRect(380, 430, 50, 20))
 #define DETAIL_RECT_SHIP6       (QRect(640, 430, 50, 20))
 #define DETAIL_RECT_SHIP6_2     (QRect(720, 430, 50, 20))
+#define DETAIL_RECT_CLOSE       (QRect(320, 170, 24, 280))
 
 //提督名と司令部レベル
 #define HOME_PORT_CHECK_COLOR   (qRgb(42, 150, 163))
