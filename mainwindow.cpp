@@ -21,6 +21,7 @@
 #include "aboutdialog.h"
 #include "memorydialog.h"
 #include "timerdialog.h"
+#include "gamescreen.h"
 #include "kanmusumemory_global.h"
 
 #include <QtCore/QDate>
@@ -61,16 +62,12 @@ public:
     void setFullScreen();
 
 private:
-    QImage getGameImage(const QRect &crop = QRect());
     void maskImage(QImage *img, const QRect &rect);
     QString makeFileName(const QString &format) const;
     void clickGame(QPoint pos, bool wait_little = false);
-    bool isDesiredScreen(const QImage &image, const QRect &rect, const QRgb &rgb) const;
-    bool isCatalogScreen();
     bool isShipExist(QRect rect1, QRect rect2);
     MainWindow *q;
     TimerDialog *m_timerDialog;
-    WebPageOperation m_webOpe;
 
 public:
     Ui::MainWindow ui;
@@ -82,7 +79,6 @@ MainWindow::Private::Private(MainWindow *parent)
     : q(parent)
     , settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT)
     , trayIcon(QIcon(":/resources/KanmusuMemory32.png"))
-    , m_webOpe(parent)
 {
     ui.setupUi(q);
     ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
@@ -151,7 +147,7 @@ MainWindow::Private::Private(MainWindow *parent)
         if(q->isFullScreen()){
             //フルスクリーン解除
             q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
-        }else if(m_webOpe.existGame()){
+        }else if(ui.webView->gameExists()){
             //フルスクリーンじゃなくてゲームがある
             q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
         }else{
@@ -177,8 +173,7 @@ MainWindow::Private::Private(MainWindow *parent)
     });
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
-    //WebPageの解析
-    m_webOpe.setWebView(ui.webView);
+
     //通知アイコン
 #ifdef Q_OS_WIN
     trayIcon.show();
@@ -194,31 +189,6 @@ MainWindow::Private::~Private()
 {
     delete m_timerDialog;
 }
-//ゲーム画面をキャプチャ
-QImage MainWindow::Private::getGameImage(const QRect &crop)
-{
-    //スクロール位置の保存
-    QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = m_webOpe.getGameRect();
-//    qDebug() << geometry;
-    if (!geometry.isValid())
-    {
-        ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
-        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
-        return QImage();
-    }
-
-    QImage img(geometry.size(), QImage::Format_ARGB32);
-    QPainter painter(&img);
-    //全体を描画
-    ui.webView->render(&painter, QPoint(0,0), geometry);
-
-    //スクロールの位置を戻す
-    ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
-
-    return img.copy(crop);
-}
-
 //指定範囲をマスクする
 void MainWindow::Private::maskImage(QImage *img, const QRect &rect)
 {
@@ -252,24 +222,24 @@ void MainWindow::Private::captureGame()
     //設定確認
     checkSavePath();
 
-    QImage img = getGameImage();
+    QImage img = ui.webView->capture();
     if (img.isNull())
     {
         ui.statusBar->showMessage(tr("failed capture image"), STATUS_BAR_MSG_TIME);
         return;
     }
 
-    //提督名をマスク
-    if(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool()
-            && isDesiredScreen(img, HOME_PORT_RECT_CAPTURE, HOME_PORT_CHECK_COLOR))
-    {
-        maskImage(&img, ADMIRAL_RECT_HEADER);
-    }
-    //司令部レベルをマスク
-    if(settings.value(SETTING_GENERAL_MASK_HQ_LEVEL, false).toBool()
-            && isDesiredScreen(img, HOME_PORT_RECT_CAPTURE, HOME_PORT_CHECK_COLOR))
-    {
-        maskImage(&img, HQ_LEVEL_RECT_HEADER);
+    GameScreen gameScreen(img);
+
+    if (gameScreen.isVisible(GameScreen::HeaderPart)) {
+        //提督名をマスク
+        if(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool()) {
+            maskImage(&img, ADMIRAL_RECT_HEADER);
+        }
+        //司令部レベルをマスク
+        if(settings.value(SETTING_GENERAL_MASK_HQ_LEVEL, false).toBool()) {
+            maskImage(&img, HQ_LEVEL_RECT_HEADER);
+        }
     }
 
     QString format;
@@ -362,19 +332,6 @@ void MainWindow::Private::clickGame(QPoint pos, bool wait_little)
     }
 }
 
-//目的の画面か含まれる色の成分で調べる
-bool MainWindow::Private::isDesiredScreen(const QImage &image, const QRect &rect, const QRgb &rgb) const
-{
-    QRgb pixel = image.copy(rect).scaled(1, 1).pixel(0, 0);
-    return qAbs(qRed(pixel) - qRed(rgb)) < 0x20 && qAbs(qGreen(pixel) - qGreen(rgb)) < 0x20 && qAbs(qBlue(pixel) - qBlue(rgb)) < 0x20;
-}
-
-//カタログ画面か
-bool MainWindow::Private::isCatalogScreen()
-{
-    return isDesiredScreen(getGameImage(), CATALOG_CHECK_RECT, CATALOG_CHECK_COLOR);
-}
-
 void MainWindow::Private::captureCatalog()
 {
     qDebug() << "captureCatalog";
@@ -405,9 +362,9 @@ void MainWindow::Private::captureCatalog()
     QPainter painter(&resultImg);
 
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = m_webOpe.getGameRect();
+    QRect geometry = ui.webView->getGameRect();
 
-    if (!isCatalogScreen())
+    if (GameScreen(ui.webView->capture()).screenType() != GameScreen::CatalogScreen)
     {
         ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
         ui.statusBar->showMessage(tr("not in catalog"), STATUS_BAR_MSG_TIME);
@@ -446,7 +403,7 @@ void MainWindow::Private::captureCatalog()
                     + (pageRectList.value(page).y() + qrand() % pageRectList.value(page).height());
             clickGame(QPoint(px, py));
 
-            tmpImg = getGameImage(captureRect);
+            tmpImg = ui.webView->capture().copy(captureRect);
             painter.drawImage(captureRect.width() * type
                               , captureRect.height() * page
                               , tmpImg);
@@ -481,7 +438,7 @@ void MainWindow::Private::captureCatalog()
 
 bool MainWindow::Private::isShipExist(QRect rect1, QRect rect2)
 {
-    QImage img = getGameImage();
+    QImage img = ui.webView->capture();
     int yr = 0;
     int yg = 0;
     int yb = 0;
@@ -562,7 +519,7 @@ void MainWindow::Private::captureFleetDetail()
     QPainter painter(&resultImg);
 
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = m_webOpe.getGameRect();
+    QRect geometry = ui.webView->getGameRect();
 
     if (!isShipExist(shipRectList.value(0), checkRectList.value(0)))
     {
@@ -602,7 +559,7 @@ void MainWindow::Private::captureFleetDetail()
                 + (shipRectList.value(i).y() + qrand() % shipRectList.value(i).height());
         //open
         clickGame(QPoint(px, py));
-        tmpImg = getGameImage(captureRect);
+        tmpImg = ui.webView->capture().copy(captureRect);
         painter.drawImage(captureRect.width() * (i % 2)
                           , captureRect.height() * (i / 2)
                           , tmpImg);
@@ -647,7 +604,7 @@ void MainWindow::Private::setFullScreen()
         ui.menuBar->setVisible(false);
         ui.statusBar->setVisible(false);
 
-        m_webOpe.fullScreen(true);
+        ui.webView->setViewMode(WebView::FullScreenMode);
 
     }else{
         qDebug() << "resize: full -> normal";
@@ -656,7 +613,7 @@ void MainWindow::Private::setFullScreen()
         ui.menuBar->setVisible(true);
         ui.statusBar->setVisible(true);
 
-        m_webOpe.fullScreen(false);
+        ui.webView->setViewMode(WebView::NormalMode);
     }
 
 }

@@ -41,13 +41,7 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="QWebView" name="webView">
-      <property name="url">
-       <url>
-        <string>about:blank</string>
-       </url>
-      </property>
-     </widget>
+     <widget class="WebView" name="webView" native="true"/>
     </item>
     <item>
      <widget class="QProgressBar" name="progressBar">
@@ -64,7 +58,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="file">
@@ -230,9 +224,10 @@
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
-   <class>QWebView</class>
+   <class>WebView</class>
    <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
+   <header>webview.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
