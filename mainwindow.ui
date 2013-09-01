@@ -64,7 +64,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="file">
@@ -88,6 +88,8 @@
     </property>
     <addaction name="reload"/>
     <addaction name="actionReturn_to_Kan_Colle"/>
+    <addaction name="separator"/>
+    <addaction name="actionFullScreen"/>
    </widget>
    <widget class="QMenu" name="help">
     <property name="title">
@@ -215,7 +217,10 @@
   </action>
   <action name="actionFullScreen">
    <property name="text">
-    <string>fullScreen</string>
+    <string>&amp;Full screen</string>
+   </property>
+   <property name="toolTip">
+    <string>Full screen(Ctrl+Enter)</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Return</string>

@@ -57,24 +57,22 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+147"/>
+        <location filename="../mainwindow.cpp" line="+166"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+5"/>
         <source>error</source>
         <translation>ページの読み込みが失敗しました。</translation>
     </message>
     <message>
-        <location line="+25"/>
-        <location line="+7"/>
-        <location line="+5"/>
+        <location line="+27"/>
         <source>failed find target</source>
         <translation>艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+69"/>
+        <location line="+52"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
@@ -82,19 +80,19 @@
         <location line="+27"/>
         <location line="+33"/>
         <location line="+136"/>
-        <location line="+138"/>
+        <location line="+139"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-302"/>
+        <location line="-303"/>
         <location line="+170"/>
-        <location line="+138"/>
+        <location line="+139"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-298"/>
+        <location line="-299"/>
         <location line="+17"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
@@ -120,7 +118,7 @@
         <translation>図鑑作成中</translation>
     </message>
     <message>
-        <location line="+135"/>
+        <location line="+136"/>
         <source>not in organization</source>
         <translation>編成画面ではありません</translation>
     </message>
@@ -130,7 +128,7 @@
         <translation>艦隊詳細作成中</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+131"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -158,7 +156,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>ブラウザ(&amp;B)</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+9"/>
         <source>&amp;Help</source>
         <translation>ヘルプ(&amp;H)</translation>
     </message>
@@ -263,6 +261,21 @@ Do you want to continue on an understanding of the security risk?
         <location line="+5"/>
         <source>Return to Kan Colle</source>
         <translation>艦これへ戻る(&amp;B)</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>&amp;Full screen</source>
+        <translation>フルスクリーン(&amp;F)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Full screen(Ctrl+Enter)</source>
+        <translation>フルスクリーン(Ctrl+Enter)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ctrl+Return</source>
+        <translation>Ctrl+Return</translation>
     </message>
 </context>
 <context>
@@ -526,6 +539,23 @@ Do you want to continue on an understanding of the security risk?
         <location line="+1"/>
         <source>Do the authentication of Twitter.</source>
         <translation>Twitterの認証を開始します。</translation>
+    </message>
+</context>
+<context>
+    <name>WebPageOperation</name>
+    <message>
+        <location filename="../webpageoperation.cpp" line="+82"/>
+        <location line="+14"/>
+        <location line="+30"/>
+        <location line="+24"/>
+        <location line="+17"/>
+        <location line="+17"/>
+        <location line="+10"/>
+        <location line="+13"/>
+        <location line="+11"/>
+        <location line="+12"/>
+        <source>failed find target</source>
+        <translation>艦これが見つかりませんでした。</translation>
     </message>
 </context>
 <context>
