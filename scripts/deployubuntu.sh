@@ -8,8 +8,9 @@ LIBSETPATH=../KanmusuMemoryBin/KanmusuMemory
 #clean
 rm -rf ${APPNAME}
 rm ${APPNAME}-0.0-ubuntu-x86.zip
-#${QTPATH}/bin/qmake -r
-#make clean
+rm -rf kanmusumemory
+${QTPATH}/bin/qmake -r
+make clean
 make
 
 #deploy
@@ -48,5 +49,5 @@ rm kanmusumemory/usr/local/bin/kanmusumemory/KanmusuMemory.sh
 cp -a scripts/deb/Desktop_KanmusuMemory.sh kanmusumemory/usr/local/bin/kanmusumemory/
 du -s kanmusumemory| cut -f 1| xargs echo Installed-Size: >> kanmusumemory/DEBIAN/control
 dpkg-deb -b kanmusumemory
-#rm -rf kanmusumemory
+
 
