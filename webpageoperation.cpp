@@ -23,11 +23,6 @@ WebPageOperation::WebPageOperation(QWidget *parent) :
     QWidget(parent)
   ,m_webView(NULL)
   ,q(parent)
-  ,m_body(parent)
-  ,m_gameFrame(parent)
-  ,m_flashWrap(parent)
-  ,m_embed(parent)
-  ,m_sectionWrap(parent)
 {
 }
 
@@ -83,7 +78,7 @@ void WebPageOperation::fullScreen(bool isFull)
             return;
         }
         if(m_body.isEmpty()){
-            m_body.append(QStringLiteral("overflow"), element.styleProperty(QStringLiteral("overflow"), QWebElement::InlineStyle));
+            m_body.insert(QStringLiteral("overflow"), element.styleProperty(QStringLiteral("overflow"), QWebElement::InlineStyle));
             qDebug() << element.styleProperty(QStringLiteral("overflow"), QWebElement::InlineStyle);
         }
         element.setStyleProperty(QStringLiteral("overflow"),QStringLiteral("hidden"));
@@ -98,12 +93,12 @@ void WebPageOperation::fullScreen(bool isFull)
             return;
         }
         if(m_gameFrame.isEmpty()){
-            m_gameFrame.append(QStringLiteral("position"), element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle));
-            m_gameFrame.append(QStringLiteral("top"), element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle));
-            m_gameFrame.append(QStringLiteral("left"), element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle));
-            m_gameFrame.append(QStringLiteral("width"), element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle));
-            m_gameFrame.append(QStringLiteral("height"), element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle));
-            m_gameFrame.append(QStringLiteral("z-index"), element.styleProperty(QStringLiteral("z-index"), QWebElement::InlineStyle));
+            m_gameFrame.insert(QStringLiteral("position"), element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle));
+            m_gameFrame.insert(QStringLiteral("top"), element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle));
+            m_gameFrame.insert(QStringLiteral("left"), element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle));
+            m_gameFrame.insert(QStringLiteral("width"), element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle));
+            m_gameFrame.insert(QStringLiteral("height"), element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle));
+            m_gameFrame.insert(QStringLiteral("z-index"), element.styleProperty(QStringLiteral("z-index"), QWebElement::InlineStyle));
             qDebug() << element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle)
                      << "," << element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle)
                      << "," << element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle)
@@ -128,11 +123,11 @@ void WebPageOperation::fullScreen(bool isFull)
             return;
         }
         if(m_flashWrap.isEmpty()){
-            m_flashWrap.append(QStringLiteral("position"), element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle));
-            m_flashWrap.append(QStringLiteral("top"), element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle));
-            m_flashWrap.append(QStringLiteral("left"), element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle));
-            m_flashWrap.append(QStringLiteral("width"), element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle));
-            m_flashWrap.append(QStringLiteral("height"), element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle));
+            m_flashWrap.insert(QStringLiteral("position"), element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle));
+            m_flashWrap.insert(QStringLiteral("top"), element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle));
+            m_flashWrap.insert(QStringLiteral("left"), element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle));
+            m_flashWrap.insert(QStringLiteral("width"), element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle));
+            m_flashWrap.insert(QStringLiteral("height"), element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle));
             qDebug() << element.styleProperty(QStringLiteral("position"), QWebElement::InlineStyle)
                      << "," << element.styleProperty(QStringLiteral("top"), QWebElement::InlineStyle)
                      << "," << element.styleProperty(QStringLiteral("left"), QWebElement::InlineStyle)
@@ -152,8 +147,8 @@ void WebPageOperation::fullScreen(bool isFull)
             return;
         }
         if(m_embed.isEmpty()){
-            m_embed.append(QStringLiteral("width"), element.attribute(QStringLiteral("width")));
-            m_embed.append(QStringLiteral("height"), element.attribute(QStringLiteral("height")));
+            m_embed.insert(QStringLiteral("width"), element.attribute(QStringLiteral("width")));
+            m_embed.insert(QStringLiteral("height"), element.attribute(QStringLiteral("height")));
             qDebug() << element.attribute(QStringLiteral("width"))
                      << "," << element.attribute(QStringLiteral("height"))
                      << "->" << q->width() << "," << q->height();
@@ -169,7 +164,7 @@ void WebPageOperation::fullScreen(bool isFull)
             return;
         }
         if(m_sectionWrap.isEmpty()){
-            m_sectionWrap.append(QStringLiteral("visibility"), element.styleProperty(QStringLiteral("visibility"), QWebElement::InlineStyle));
+            m_sectionWrap.insert(QStringLiteral("visibility"), element.styleProperty(QStringLiteral("visibility"), QWebElement::InlineStyle));
         }
         element.setStyleProperty(QStringLiteral("visibility"),QStringLiteral("hidden"));
 
@@ -185,8 +180,8 @@ void WebPageOperation::fullScreen(bool isFull)
             return;
         }
         //もとに戻す
-        for(int i=0; i<m_body.length(); i++){
-            element.setStyleProperty(m_body.name(i),m_body.value(i));
+        foreach (const QString &key, m_body.keys()) {
+            element.setStyleProperty(key, m_body.value(key));
         }
 
         element = frame->findFirstElement(QStringLiteral("#game_frame"));
@@ -196,8 +191,8 @@ void WebPageOperation::fullScreen(bool isFull)
             return;
         }
         //もとに戻す
-        for(int i=0; i<m_gameFrame.length(); i++){
-            element.setStyleProperty(m_gameFrame.name(i),m_gameFrame.value(i));
+        foreach (const QString &key, m_gameFrame.keys()) {
+            element.setStyleProperty(key, m_gameFrame.value(key));
         }
 
         //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
@@ -209,8 +204,8 @@ void WebPageOperation::fullScreen(bool isFull)
             return;
         }
         //もとに戻す
-        for(int i=0; i<m_flashWrap.length(); i++){
-            element.setStyleProperty(m_flashWrap.name(i),m_flashWrap.value(i));
+        foreach (const QString &key, m_flashWrap.keys()) {
+            element.setStyleProperty(key, m_flashWrap.value(key));
         }
 
         element = element.findFirst(QStringLiteral("embed"));
@@ -220,8 +215,8 @@ void WebPageOperation::fullScreen(bool isFull)
             return;
         }
         //もとに戻す
-        for(int i=0; i<m_embed.length(); i++){
-            element.evaluateJavaScript(QString("this.%1='%2'").arg(m_embed.name(i)).arg(m_embed.value(i)));
+        foreach (const QString &key, m_embed.keys()) {
+            element.evaluateJavaScript(QStringLiteral("this.%1='%2'").arg(key).arg(m_embed.value(key)));
         }
 
         //解説とか消す
@@ -232,8 +227,8 @@ void WebPageOperation::fullScreen(bool isFull)
             return;
         }
         //もとに戻す
-        for(int i=0; i<m_sectionWrap.length(); i++){
-            element.setStyleProperty(m_sectionWrap.name(i),m_sectionWrap.value(i));
+        foreach (const QString &key, m_sectionWrap) {
+            element.setStyleProperty(key, m_sectionWrap.value(key));
         }
     }
 }
