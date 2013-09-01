@@ -113,7 +113,7 @@ Rectangle {
                     Text {
                         color: running ? "black" : "darkGray"
                         text: root.toEndDateString()
-                        font.pointSize: 10
+                        font.pointSize: 8
                     }
                     Text {
                         color: running ? "black" : "darkGray"
@@ -184,7 +184,7 @@ Rectangle {
         if(running)
             return toStringDate(r + s - n)
         else
-            return ""
+            return "00/00"
     }
     //終わる予定時間
     function toEndTimeString(){

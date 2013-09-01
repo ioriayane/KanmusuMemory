@@ -20,8 +20,6 @@ import jp.relog.plugin.operatingsystem 1.0
 
 Rectangle {
     id: root
-    width: timerArea.width * 1.1
-    height: timerArea.height * 1.1
     color: "#f0f0f0"
 
     property real d0set: 0
@@ -100,7 +98,7 @@ Rectangle {
         //入渠
         Text {
             text: qsTr("Docking")
-            font.pointSize: 18
+            font.pointSize: 16
         }
         GroupBox {
             Column {
@@ -130,7 +128,7 @@ Rectangle {
         //遠征
         Text {
             text: qsTr("Expedition")
-            font.pointSize: 18
+            font.pointSize: 16
         }
         GroupBox {
             Column {
@@ -162,7 +160,7 @@ Rectangle {
         //建造
         Text {
             text: qsTr("Construction")
-            font.pointSize: 18
+            font.pointSize: 16
         }
         GroupBox {
             Column {
