@@ -34,15 +34,8 @@ public:
     void setViewMode(ViewMode viewMode);
 
 private:
-    void showNormal();
-    void showFullScreen();
-
-private:
-    QHash<QString, QString> m_body;
-    QHash<QString, QString> m_gameFrame;
-    QHash<QString, QString> m_flashWrap;
-    QHash<QString, QString> m_embed;
-    QHash<QString, QString> m_sectionWrap;
+    class Private;
+    Private *d;
 };
 
 #endif // WEBVIEW_H
