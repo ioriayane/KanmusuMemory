@@ -177,7 +177,7 @@ MainWindow::Private::Private(MainWindow *parent)
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
     //WebPageの解析
-    m_webOpe = new WebPageOperation(parent, ui.webView);
+    m_webOpe = new WebPageOperation(ui.webView);
 
     //通知アイコン
 #ifdef Q_OS_WIN

@@ -25,14 +25,13 @@ class QWebView;
 class WebPageOperation
 {
 public:
-    explicit WebPageOperation(QWidget *window, QWebView *webView);
+    explicit WebPageOperation(QWebView *webView);
     
     bool gameExists() const;
     QRect getGameRect() const;
     void fullScreen(bool isFull);
 
 private:
-    QWidget *window;
     QWebView *webView;
 
     QHash<QString, QString> m_body;

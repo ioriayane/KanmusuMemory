@@ -20,9 +20,8 @@
 #include <QWebElement>
 #include <QDebug>
 
-WebPageOperation::WebPageOperation(QWidget *window, QWebView *webView)
-    : window(window)
-    , webView(webView)
+WebPageOperation::WebPageOperation(QWebView *webView)
+    : webView(webView)
 {
 }
 
@@ -103,8 +102,8 @@ void WebPageOperation::fullScreen(bool isFull)
         properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
         properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
         properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
-        properties.insert(QStringLiteral("width"), QString("%1px").arg(window->width()));
-        properties.insert(QStringLiteral("height"), QString("%1px").arg(window->height()));
+        properties.insert(QStringLiteral("width"), QString("%1px").arg(webView->window()->width()));
+        properties.insert(QStringLiteral("height"), QString("%1px").arg(webView->window()->height()));
         properties.insert(QStringLiteral("z-index"), QStringLiteral("10"));
         if(m_gameFrame.isEmpty()){
             foreach (const QString &key, properties.keys()) {
@@ -133,8 +132,8 @@ void WebPageOperation::fullScreen(bool isFull)
         properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
         properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
         properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
-        properties.insert(QStringLiteral("width"), QString("%1px").arg(window->width()));
-        properties.insert(QStringLiteral("height"), QString("%1px").arg(window->height()));
+        properties.insert(QStringLiteral("width"), QString("%1px").arg(webView->window()->width()));
+        properties.insert(QStringLiteral("height"), QString("%1px").arg(webView->window()->height()));
         if(m_flashWrap.isEmpty()){
             foreach (const QString &key, properties.keys()) {
                 m_flashWrap.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
@@ -157,15 +156,15 @@ void WebPageOperation::fullScreen(bool isFull)
             return;
         }
 
-        properties.insert(QStringLiteral("width"), QString::number(window->width()));
-        properties.insert(QStringLiteral("height"), QString::number(window->height()));
+        properties.insert(QStringLiteral("width"), QString::number(webView->window()->width()));
+        properties.insert(QStringLiteral("height"), QString::number(webView->window()->height()));
         if(m_embed.isEmpty()){
             foreach (const QString &key, properties.keys()) {
                 m_embed.insert(key, element.attribute(key));
             }
             qDebug() << element.attribute(QStringLiteral("width"))
                      << "," << element.attribute(QStringLiteral("height"))
-                     << "->" << window->width() << "," << window->height();
+                     << "->" << webView->window()->width() << "," << webView->window()->height();
         }
         foreach (const QString &key, properties.keys()) {
             element.evaluateJavaScript(QString("this.%1='%2'").arg(key).arg(properties.value(key)));
