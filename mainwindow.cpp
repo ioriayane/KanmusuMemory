@@ -45,9 +45,6 @@
 
 
 #define STATUS_BAR_MSG_TIME     5000
-#define CLICK_EVENT_INTERVAL            1500
-#define CLICK_EVENT_INTERVAL_LITTLE     500
-#define CLICK_EVENT_FLUCTUATION         500
 
 class MainWindow::Private
 {
@@ -65,7 +62,6 @@ private:
     void maskImage(QImage *img, const QRect &rect);
     QString makeFileName(const QString &format) const;
     void clickGame(QPoint pos, bool wait_little = false);
-    bool isShipExist(QRect rect1, QRect rect2);
     MainWindow *q;
     TimerDialog *m_timerDialog;
 
@@ -355,7 +351,6 @@ void MainWindow::Private::captureCatalog()
                      << CATALOG_RECT_PAGE5;
     }
 
-    QImage tmpImg(captureRect.size(), QImage::Format_ARGB32);
     QImage resultImg(captureRect.width() * shipRectList.size()
                      , captureRect.height() * pageRectList.size()
                      ,QImage::Format_ARGB32);
@@ -403,10 +398,10 @@ void MainWindow::Private::captureCatalog()
                     + (pageRectList.value(page).y() + qrand() % pageRectList.value(page).height());
             clickGame(QPoint(px, py));
 
-            tmpImg = ui.webView->capture().copy(captureRect);
+            QImage details = ui.webView->capture().copy(captureRect);
             painter.drawImage(captureRect.width() * type
                               , captureRect.height() * page
-                              , tmpImg);
+                              , details);
 
             ui.progressBar->setValue((pageRectList.size() * type + (page + 1)) * 100
                                      / (pageRectList.size() * shipRectList.size()) );
@@ -436,55 +431,6 @@ void MainWindow::Private::captureCatalog()
     ui.toolBar->setEnabled(true);
 }
 
-bool MainWindow::Private::isShipExist(QRect rect1, QRect rect2)
-{
-    QImage img = ui.webView->capture();
-    int yr = 0;
-    int yg = 0;
-    int yb = 0;
-    for(int y = rect1.y(); y < rect1.y() + rect1.height(); y++)
-        for (int x = rect1.x(); x <rect1.x() + rect1.width(); x++)
-        {
-            yr += qRed(img.pixel(x, y));
-            yg += qGreen(img.pixel(x, y));
-            yb += qBlue(img.pixel(x, y));
-        }
-    yr /= (rect1.width() * rect1.height());
-    yg /= (rect1.width() * rect1.height());
-    yb /= (rect1.width() * rect1.height());
-
-    bool result1 = false;
-    QRgb chk1 = DETAIL_CHECK_COLOR1;
-    if (yr < qRed(chk1) && yg < qGreen(chk1) && yb < qBlue(chk1)
-     && qRed(chk1) - 20 < yr && qGreen(chk1) - 20 < yg && qBlue(chk1) - 20 < yb)
-        result1 = true;
-
-    int gr = 0;
-    int gg = 0;
-    int gb = 0;
-    for(int y = rect2.y(); y < rect2.y() + rect2.height(); y++)
-        for (int x = rect2.x(); x <rect2.x() + rect2.width(); x++)
-        {
-            gr += qRed(img.pixel(x, y));
-            gg += qGreen(img.pixel(x, y));
-            gb += qBlue(img.pixel(x, y));
-        }
-    gr /= (rect2.width() * rect2.height());
-    gg /= (rect2.width() * rect2.height());
-    gb /= (rect2.width() * rect2.height());
-
-    qDebug() << "check:" << yr << yg << yb << "|" << gr << gg << gb;
-
-    bool result2 = false;
-    QRgb chk2 = DETAIL_CHECK_COLOR2;
-    if (gr < qRed(chk2) && gg < qGreen(chk2) && gb < qBlue(chk2)
-     && qRed(chk2) - 30 < gr && qGreen(chk2) - 30 < gg && qBlue(chk2) - 30 < gb)
-        result2 = true;
-
-    return result1 & result2;
-}
-
-
 void MainWindow::Private::captureFleetDetail()
 {
     qDebug() << "captureFleetDetail";
@@ -493,37 +439,15 @@ void MainWindow::Private::captureFleetDetail()
     checkSavePath();
 
     QRect captureRect = DETAIL_RECT_CAPTURE;
-    QList<QRect> shipRectList;
-    {
-        shipRectList << DETAIL_RECT_SHIP1
-                     << DETAIL_RECT_SHIP2
-                     << DETAIL_RECT_SHIP3
-                     << DETAIL_RECT_SHIP4
-                     << DETAIL_RECT_SHIP5
-                     << DETAIL_RECT_SHIP6;
-    }
-    QList<QRect> checkRectList;
-    {
-        checkRectList << DETAIL_RECT_SHIP1_2
-                     << DETAIL_RECT_SHIP2_2
-                     << DETAIL_RECT_SHIP3_2
-                     << DETAIL_RECT_SHIP4_2
-                     << DETAIL_RECT_SHIP5_2
-                     << DETAIL_RECT_SHIP6_2;
-    }
-
-    QImage tmpImg(captureRect.size(), QImage::Format_ARGB32);
     QImage resultImg(captureRect.width() * 2
-                     , captureRect.height() * (shipRectList.size() / 2 + (shipRectList.size() % 2 == 1))
+                     , captureRect.height() * 3
                      ,QImage::Format_ARGB32);
+    resultImg.fill(Qt::transparent);
     QPainter painter(&resultImg);
 
-    QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
-    QRect geometry = ui.webView->getGameRect();
-
-    if (!isShipExist(shipRectList.value(0), checkRectList.value(0)))
+    GameScreen gameScreen(ui.webView->capture());
+    if (!gameScreen.isVisible(GameScreen::Ship1Part))
     {
-        ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
         ui.statusBar->showMessage(tr("not in organization"), STATUS_BAR_MSG_TIME);
         return;
     }
@@ -544,37 +468,20 @@ void MainWindow::Private::captureFleetDetail()
     ui.statusBar->showMessage(tr("making fleet detail"), -1);
     ui.progressBar->show();
     ui.progressBar->setValue(0);
-    for (int i = 0; i < shipRectList.size(); i++)
-    {
-        if (!isShipExist(shipRectList.value(i), checkRectList.value(i)))
-        {
-            QRect box = captureRect;
-            box.moveTo(captureRect.width() * (i % 2), captureRect.height() * (i / 2));
-            painter.fillRect(box, Qt::SolidPattern);
-            continue;
-        }
-        int px = geometry.x()
-                + (shipRectList.value(i).x() + qrand() % shipRectList.value(i).width());
-        int py = geometry.y()
-                + (shipRectList.value(i).y() + qrand() % shipRectList.value(i).height());
-        //open
-        clickGame(QPoint(px, py));
-        tmpImg = ui.webView->capture().copy(captureRect);
+    for (int i = 0; i < 6; i++) {
+        if (!gameScreen.isVisible(static_cast<GameScreen::PartType>(GameScreen::Ship1Part + i))) break;
+        gameScreen.click(ui.webView, static_cast<GameScreen::PartType>(GameScreen::Ship1Part + i), GameScreen::WaitLonger);
+
+        QImage tmpImg = ui.webView->capture().copy(captureRect);
         painter.drawImage(captureRect.width() * (i % 2)
                           , captureRect.height() * (i / 2)
                           , tmpImg);
-        ui.progressBar->setValue((i + 1) * 100 / shipRectList.size());
-        //close
-        px = geometry.x()
-                + (DETAIL_RECT_CLOSE.x() + qrand() % DETAIL_RECT_CLOSE.width());
-        py = geometry.y()
-                + (DETAIL_RECT_CLOSE.y() + qrand() % DETAIL_RECT_CLOSE.height());
-        clickGame(QPoint(px, py), true);
+        ui.progressBar->setValue((i + 1) * 100 / 6);
+        gameScreen.click(ui.webView, GameScreen::Ship1Part);
     }
     ui.progressBar->hide();
-    ui.webView->page()->mainFrame()->setScrollPosition(currentPos);
     ui.webView->setAttribute(Qt::WA_TransparentForMouseEvents, false);
-    ui.statusBar->showMessage("", -1);
+    ui.statusBar->clearMessage();
 
     char format[] = "jpg";
     QString path = makeFileName(QString(format));

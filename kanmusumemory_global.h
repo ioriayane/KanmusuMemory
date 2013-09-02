@@ -56,6 +56,10 @@
 #define SETTING_TIMER_CONSTRUCTION_RUNNING  "constructionRunning"
 #define SETTING_TIMER_TWEETFINISHED         "tweetFinished"
 
+#define CLICK_EVENT_INTERVAL            1500
+#define CLICK_EVENT_INTERVAL_LITTLE     500
+#define CLICK_EVENT_FLUCTUATION         500
+
 //カタログと艦隊詳細を無効化
 #define DISABLE_CATALOG_AND_DETAIL_FLEET
 
@@ -73,21 +77,21 @@
 #define CATALOG_RECT_PAGE5      (QRect(652, 18, 120, 20))
 
 //艦隊詳細
-#define DETAIL_CHECK_COLOR1     (qRgb(210, 185, 100))
-#define DETAIL_CHECK_COLOR2     (qRgb(135, 185, 130))
+#define DETAIL_CHECK_COLOR1     qRgb(163, 158, 94)
+#define DETAIL_CHECK_COLOR2     qRgb(102, 154, 112)
 #define DETAIL_RECT_CAPTURE     (QRect(325, 100, 465, 370))
-#define DETAIL_RECT_SHIP1       (QRect(300, 202, 50, 20))
-#define DETAIL_RECT_SHIP1_2     (QRect(380, 202, 50, 20))
-#define DETAIL_RECT_SHIP2       (QRect(640, 202, 50, 20))
-#define DETAIL_RECT_SHIP2_2     (QRect(720, 202, 50, 20))
-#define DETAIL_RECT_SHIP3       (QRect(300, 315, 50, 20))
-#define DETAIL_RECT_SHIP3_2     (QRect(380, 315, 50, 20))
-#define DETAIL_RECT_SHIP4       (QRect(640, 315, 50, 20))
-#define DETAIL_RECT_SHIP4_2     (QRect(720, 315, 50, 20))
-#define DETAIL_RECT_SHIP5       (QRect(300, 430, 50, 20))
-#define DETAIL_RECT_SHIP5_2     (QRect(380, 430, 50, 20))
-#define DETAIL_RECT_SHIP6       (QRect(640, 430, 50, 20))
-#define DETAIL_RECT_SHIP6_2     (QRect(720, 430, 50, 20))
+#define DETAIL_RECT_SHIP1_1     QRect(282, 197, 80, 30)
+#define DETAIL_RECT_SHIP1_2     QRect(365, 197, 80, 30)
+#define DETAIL_RECT_SHIP2_1     QRect(624, 197, 80, 30)
+#define DETAIL_RECT_SHIP2_2     QRect(707, 197, 80, 30)
+#define DETAIL_RECT_SHIP3_1     QRect(282, 310, 80, 30)
+#define DETAIL_RECT_SHIP3_2     QRect(365, 310, 80, 30)
+#define DETAIL_RECT_SHIP4_1     QRect(624, 310, 80, 30)
+#define DETAIL_RECT_SHIP4_2     QRect(707, 310, 80, 30)
+#define DETAIL_RECT_SHIP5_1     QRect(282, 424, 80, 30)
+#define DETAIL_RECT_SHIP5_2     QRect(365, 424, 80, 30)
+#define DETAIL_RECT_SHIP6_1     QRect(624, 424, 80, 30)
+#define DETAIL_RECT_SHIP6_2     QRect(707, 424, 80, 30)
 #define DETAIL_RECT_CLOSE       (QRect(320, 170, 24, 280))
 
 //提督名と司令部レベル
