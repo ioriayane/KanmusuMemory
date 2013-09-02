@@ -19,7 +19,6 @@
 #include <QtWidgets/QMainWindow>
 #include <QNetworkReply>
 #include <QSslError>
-#include "webpageoperation.h"
 
 class MainWindow : public QMainWindow
 {
