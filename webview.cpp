@@ -243,7 +243,7 @@ void WebView::Private::showNormal()
         return;
     }
     //もとに戻す
-    foreach (const QString &key, sectionWrap) {
+    foreach (const QString &key, sectionWrap.keys()) {
         element.setStyleProperty(key, sectionWrap.value(key));
     }
 }
