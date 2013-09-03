@@ -18,6 +18,8 @@
 
 #include <QtCore/QObject>
 
+class WebView;
+
 class GameScreen : public QObject
 {
     Q_OBJECT
@@ -38,12 +40,26 @@ public:
     };
 
     enum PartType {
-        HeaderPart
+        HeaderPart,
+        Ship1Part,
+        Ship2Part,
+        Ship3Part,
+        Ship4Part,
+        Ship5Part,
+        Ship6Part
+    };
+
+    enum WaitInterval {
+        WaitNormal = 500,
+        WaitLonger = 1500
     };
 
     explicit GameScreen(const QImage &image, QObject *parent = 0);
     ScreenType screenType() const;
     bool isVisible(PartType partType) const;
+
+public slots:
+    void click(WebView *webView, PartType partType, WaitInterval waitInterval = WaitNormal);
 
 signals:
     void screenTypeChanged(ScreenType screenType);
