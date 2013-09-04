@@ -40,6 +40,10 @@
 
 #include <QtCore/QDebug>
 
+#ifdef Q_OS_MAC
+#include <QDesktopWidget>
+#endif
+
 
 #define URL_KANCOLLE "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
 
