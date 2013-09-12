@@ -58,7 +58,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>23</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="file">
@@ -84,6 +84,8 @@
     <addaction name="actionReturn_to_Kan_Colle"/>
     <addaction name="separator"/>
     <addaction name="actionFullScreen"/>
+    <addaction name="separator"/>
+    <addaction name="actionClearAccessCache"/>
    </widget>
    <widget class="QMenu" name="help">
     <property name="title">
@@ -218,6 +220,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Return</string>
+   </property>
+  </action>
+  <action name="actionClearAccessCache">
+   <property name="text">
+    <string>Clear Access Cache</string>
    </property>
   </action>
  </widget>

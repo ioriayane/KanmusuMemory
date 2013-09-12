@@ -102,6 +102,10 @@ MainWindow::Private::Private(MainWindow *parent)
         //艦これ読込み
         ui.webView->load(QUrl(URL_KANCOLLE));
     });
+    connect(ui.actionClearAccessCache, &QAction::triggered, [this]() {
+        //キャッシュをクリア
+        ui.webView->page()->networkAccessManager()->cache()->clear();
+    });
     //画像リスト
     connect(ui.viewMemory, &QAction::triggered, [this]() {
         checkSavePath();

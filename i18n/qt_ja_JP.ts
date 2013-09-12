@@ -67,40 +67,39 @@
         <translation>ページの読み込みが失敗しました。</translation>
     </message>
     <message>
-        <location line="+32"/>
         <source>failed find target</source>
-        <translation>艦これが見つかりませんでした。</translation>
+        <translation type="obsolete">艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+58"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
     <message>
         <location line="+27"/>
         <location line="+33"/>
-        <location line="+150"/>
-        <location line="+159"/>
+        <location line="+136"/>
+        <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-337"/>
-        <location line="+184"/>
-        <location line="+159"/>
+        <location line="-235"/>
+        <location line="+170"/>
+        <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-333"/>
+        <location line="-231"/>
         <location line="+17"/>
-        <location line="+102"/>
-        <location line="+157"/>
+        <location line="+88"/>
+        <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-275"/>
+        <location line="-190"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -110,7 +109,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+109"/>
+        <location line="+95"/>
         <source>not in catalog</source>
         <translation>図鑑表示ではありません</translation>
     </message>
@@ -127,7 +126,7 @@ Please wait while a cup of coffee.</source>
         <translation>図鑑作成中</translation>
     </message>
     <message>
-        <location line="+140"/>
+        <location line="+69"/>
         <source>not in organization</source>
         <translation>編成画面ではありません</translation>
     </message>
@@ -144,7 +143,7 @@ Please wait while a cup of coffee.</source>
         <translation>艦隊詳細作成中</translation>
     </message>
     <message>
-        <location line="+139"/>
+        <location line="+122"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -157,12 +156,11 @@ Do you want to continue on an understanding of the security risk?
         <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
     <message>
-        <location line="+27"/>
         <source>about:blank</source>
-        <translation>about:blank</translation>
+        <translation type="obsolete">about:blank</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+46"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
@@ -172,7 +170,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>ブラウザ(&amp;B)</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+11"/>
         <source>&amp;Help</source>
         <translation>ヘルプ(&amp;H)</translation>
     </message>
@@ -292,6 +290,11 @@ Do you want to continue on an understanding of the security risk?
         <location line="+3"/>
         <source>Ctrl+Return</source>
         <translation>Ctrl+Return</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Clear Access Cache</source>
+        <translation>キャッシュをクリア(&amp;C)</translation>
     </message>
 </context>
 <context>
@@ -538,7 +541,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>送信中</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+28"/>
         <source>Authorization</source>
         <translation>Twitter認証</translation>
     </message>
@@ -561,16 +564,14 @@ Do you want to continue on an understanding of the security risk?
 <context>
     <name>WebPageOperation</name>
     <message>
-        <location filename="../webpageoperation.cpp" line="+82"/>
-        <location line="+14"/>
-        <location line="+30"/>
-        <location line="+24"/>
-        <location line="+17"/>
-        <location line="+17"/>
-        <location line="+10"/>
-        <location line="+13"/>
-        <location line="+11"/>
-        <location line="+12"/>
+        <source>failed find target</source>
+        <translation type="obsolete">艦これが見つかりませんでした。</translation>
+    </message>
+</context>
+<context>
+    <name>WebView</name>
+    <message>
+        <location filename="../webview.cpp" line="+300"/>
         <source>failed find target</source>
         <translation>艦これが見つかりませんでした。</translation>
     </message>
@@ -957,7 +958,7 @@ Do you want to continue on an understanding of the security risk?
     <message>
         <location line="+1"/>
         <source>Nagato Mutsu</source>
-        <translation>赤城</translation>
+        <translation>長門 陸奥</translation>
     </message>
     <message>
         <location line="+1"/>
