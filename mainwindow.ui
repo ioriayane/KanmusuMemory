@@ -66,6 +66,7 @@
      <string>&amp;File</string>
     </property>
     <addaction name="capture"/>
+    <addaction name="actionCaptureAndEdit"/>
     <addaction name="viewMemory"/>
     <addaction name="captureCatalog"/>
     <addaction name="captureFleetDetail"/>
@@ -225,6 +226,14 @@
   <action name="actionClearAccessCache">
    <property name="text">
     <string>Clear Access Cache</string>
+   </property>
+  </action>
+  <action name="actionCaptureAndEdit">
+   <property name="text">
+    <string>Capture and Edit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F5</string>
    </property>
   </action>
  </widget>

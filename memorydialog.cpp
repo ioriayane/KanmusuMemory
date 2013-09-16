@@ -34,6 +34,7 @@ private:
     QQuickView *view;
 public:
     QString imagePath;    //つぶやく対象の画像
+    NextOperationType nextOperation;
 };
 
 MemoryDialog::Private::Private(const QString &memoryPath, MemoryDialog *parent)
@@ -43,6 +44,17 @@ MemoryDialog::Private::Private(const QString &memoryPath, MemoryDialog *parent)
     ui.setupUi(q);
     connect(view->engine(), &QQmlEngine::quit, [this]() {
         imagePath = view->rootObject()->property("imagePath").toString();
+        switch(view->rootObject()->property("nextOperation").toInt()){
+        case 0:
+            nextOperation = Tweet;
+            break;
+        case 1:
+            nextOperation = Edit;
+            break;
+        default:
+            nextOperation = None;
+            break;
+        }
         q->accept();
     });
     //プラグインを登録
@@ -66,4 +78,9 @@ MemoryDialog::MemoryDialog(const QString &memoryPath, QWidget *parent)
 const QString &MemoryDialog::imagePath()
 {
     return d->imagePath;
+}
+
+const MemoryDialog::NextOperationType &MemoryDialog::nextOperation()
+{
+    return d->nextOperation;
 }

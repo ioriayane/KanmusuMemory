@@ -22,9 +22,16 @@ class MemoryDialog : public QDialog
 {
     Q_OBJECT
 public:
+    enum NextOperationType {
+        None
+        , Tweet
+        , Edit
+    };
+
     explicit MemoryDialog(const QString &memoryPath, QWidget *parent = 0);
     
     const QString &imagePath();
+    const NextOperationType &nextOperation();
 
 private:
     class Private;

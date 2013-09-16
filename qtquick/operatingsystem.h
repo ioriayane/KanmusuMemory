@@ -25,7 +25,7 @@ class OperatingSystem : public QObject
     //列挙型の公開
     Q_ENUMS(OperatingSystemType)
     //プロパティを公開
-    Q_PROPERTY(OperatingSystemType type READ type)
+    Q_PROPERTY(OperatingSystemType type READ type NOTIFY typeChanged)
     Q_PROPERTY(QString pathPrefix READ pathPrefix NOTIFY pathPrefixChanged)
     Q_PROPERTY(QString homeDirectory READ homeDirectory)
 
@@ -44,6 +44,7 @@ public:
     QString homeDirectory() const;
 
 signals:
+    void typeChanged();
     void pathPrefixChanged();
 
 public slots:

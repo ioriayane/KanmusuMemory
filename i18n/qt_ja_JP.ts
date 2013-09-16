@@ -44,6 +44,37 @@
     </message>
 </context>
 <context>
+    <name>ClipTool</name>
+    <message>
+        <location filename="../qml/KanmusuMemory/ClipTool.qml" line="+35"/>
+        <source>Please drag the crop area.</source>
+        <translation>トリミングするエリアをドラッグしてください。</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Please move the crop area.</source>
+        <translation>トリミングするエリアを調節してください。</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Apply</source>
+        <translation>適用</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Cancel</source>
+        <translation>キャンセル</translation>
+    </message>
+</context>
+<context>
+    <name>ImageEditDialog</name>
+    <message>
+        <location filename="../imageeditdialog.ui" line="+14"/>
+        <source>Image editing</source>
+        <translation>思い出の編集</translation>
+    </message>
+</context>
+<context>
     <name>InputOAuthPinDialog</name>
     <message>
         <source>Authorization</source>
@@ -57,7 +88,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+169"/>
+        <location filename="../mainwindow.cpp" line="+194"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -71,35 +102,37 @@
         <translation type="obsolete">艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+66"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
     <message>
-        <location line="+27"/>
         <location line="+33"/>
-        <location line="+136"/>
+        <location line="+13"/>
+        <location line="+34"/>
+        <location line="+146"/>
         <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-235"/>
-        <location line="+170"/>
+        <location line="-259"/>
+        <location line="+13"/>
+        <location line="+181"/>
         <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-231"/>
+        <location line="-241"/>
         <location line="+17"/>
-        <location line="+88"/>
+        <location line="+98"/>
         <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-190"/>
+        <location line="-200"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -109,7 +142,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+95"/>
+        <location line="+105"/>
         <source>not in catalog</source>
         <translation>図鑑表示ではありません</translation>
     </message>
@@ -165,7 +198,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>ファイル(&amp;F)</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+16"/>
         <source>&amp;Browser</source>
         <translation>ブラウザ(&amp;B)</translation>
     </message>
@@ -295,6 +328,16 @@ Do you want to continue on an understanding of the security risk?
         <location line="+5"/>
         <source>Clear Access Cache</source>
         <translation>キャッシュをクリア(&amp;C)</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Capture and Edit</source>
+        <translation>思い出を編集して残す(Ctrl+F5)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ctrl+F5</source>
+        <translation>Ctrl+F5</translation>
     </message>
 </context>
 <context>
@@ -531,7 +574,7 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">%1で、つぶやく</translation>
     </message>
     <message>
-        <location filename="../tweetdialog.cpp" line="+65"/>
+        <location filename="../tweetdialog.cpp" line="+70"/>
         <source> #kancolle</source>
         <translation> #艦これ</translation>
     </message>
@@ -577,19 +620,47 @@ Do you want to continue on an understanding of the security risk?
     </message>
 </context>
 <context>
+    <name>imageEditDialog</name>
+    <message>
+        <location filename="../qml/KanmusuMemory/imageEditDialog.qml" line="+53"/>
+        <source>Crop</source>
+        <translation>トリミング</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Save and Tweet</source>
+        <translation>保存してつぶやく</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Save</source>
+        <translation>保存</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Cancel</source>
+        <translation>キャンセル</translation>
+    </message>
+</context>
+<context>
     <name>memoryDialog</name>
     <message>
-        <location filename="../qml/KanmusuMemory/memoryDialog.qml" line="+44"/>
+        <location filename="../qml/KanmusuMemory/memoryDialog.qml" line="+45"/>
         <source>Select</source>
         <translation>選択</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
+        <source>Edit</source>
+        <translation>編集</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location line="+110"/>
+        <location line="+112"/>
         <source>close with right click</source>
         <translation>右クリックで戻る</translation>
     </message>

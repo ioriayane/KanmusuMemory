@@ -24,6 +24,7 @@ Rectangle {
     height: 600
     color: "#f0f0f0"
 
+    property int nextOperation: -1   // 0:tweet, 1:edit
     property string imagePath: ""
 
     OperatingSystem {
@@ -44,6 +45,17 @@ Rectangle {
             text: qsTr("Select")
             enabled: grid.currentIndex >= 0
             onClicked: {
+                nextOperation = 0
+                Qt.quit()
+            }
+        }
+        Button {
+            width: 81
+            height: 31
+            text: qsTr("Edit")
+            enabled: grid.currentIndex >= 0
+            onClicked: {
+                nextOperation = 1
                 Qt.quit()
             }
         }
@@ -100,7 +112,8 @@ Rectangle {
                     anchors.centerIn: parent
                     width: 200
                     height: 120
-                    fillMode: Image.PreserveAspectCrop
+                    fillMode: Image.PreserveAspectFit
+//                    fillMode: Image.PreserveAspectCrop
                     source: "image://thumbnail/" + model.filePath
 
                     Text {
@@ -144,6 +157,7 @@ Rectangle {
                 }
                 onDoubleClicked: {
                     root.imagePath = model.filePath
+                    root.nextOperation = 0
                     Qt.quit()
                 }
             }
@@ -173,6 +187,7 @@ Rectangle {
                     view.xScale = 0
             }
             onDoubleClicked: {
+                nextOperation = 0
                 Qt.quit()
             }
         }

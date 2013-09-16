@@ -44,7 +44,12 @@ TweetDialog::Private::Private(TweetDialog *parent)
     ui.setupUi(q);
 
     //表示画像を変更
-    connect(q, &TweetDialog::imagePathChanged, ui.screenshot, &QLabel::setPixmap);
+    connect(q, &TweetDialog::imagePathChanged, [this](const QString &imagePath) {
+        qreal w = ui.screenshot->width();
+        qreal h = ui.screenshot->height();
+        QPixmap pixmap(imagePath);
+        ui.screenshot->setPixmap(pixmap.scaled(w, h, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    });
 
     //Ctrl+Enterで送信
     ui.tweetTextEdit->addAction(ui.actionTweet);

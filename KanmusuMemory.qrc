@@ -8,5 +8,8 @@
         <file>qml/KanmusuMemory/TimerItem.qml</file>
         <file>qml/KanmusuMemory/TimerSetting.qml</file>
         <file>qml/KanmusuMemory/test.qml</file>
+        <file>qml/KanmusuMemory/imageEditDialog.qml</file>
+        <file>qml/KanmusuMemory/ImageEditView.qml</file>
+        <file>qml/KanmusuMemory/ClipTool.qml</file>
     </qresource>
 </RCC>

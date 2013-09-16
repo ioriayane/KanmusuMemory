@@ -181,7 +181,7 @@
         <pixmap resource="KanmusuMemory.qrc">:/resources/KanmusuMemory80.png</pixmap>
        </property>
        <property name="scaledContents">
-        <bool>true</bool>
+        <bool>false</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
