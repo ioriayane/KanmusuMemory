@@ -21,6 +21,7 @@
 
 #include "operatingsystem.h"
 #include "clipcursor.h"
+#include "qmlfile.h"
 
 #include <QDebug>
 
@@ -46,6 +47,7 @@ int main(int argc, char *argv[])
                                      , 1, 0, "OperatingSystem");
     qmlRegisterType<ClipCursor>("jp.relog.plugin.clipcursor"
                                 , 1, 0, "ClipCursor");
+    qmlRegisterType<QMLFile>("jp.relog.plugin.qmlfile", 1, 0, "QMLFile");
 
     MainWindow w;
     w.show();

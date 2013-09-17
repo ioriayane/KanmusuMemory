@@ -9,10 +9,14 @@ QT += qml quick
 SOURCES += $$PWD/qtquick2applicationviewer.cpp \
     qtquick/operatingsystem.cpp \
     qtquick/timerdata.cpp \
-    qtquick/clipcursor.cpp
+    qtquick/clipcursor.cpp \
+    qtquick/qmlfile.cpp \
+    qtquick/qfileasync.cpp
 HEADERS += $$PWD/qtquick2applicationviewer.h \
     qtquick/thumbnailprovider.h \
     qtquick/operatingsystem.h \
     qtquick/timerdata.h \
-    qtquick/clipcursor.h
+    qtquick/clipcursor.h \
+    qtquick/qmlfile.h \
+    qtquick/qfileasync.h
 INCLUDEPATH += $$PWD

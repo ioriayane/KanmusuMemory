@@ -17,6 +17,8 @@ import QtQuick 2.0
 import QtQuick.Controls 1.0
 import QtMultimedia 5.0
 import jp.relog.plugin.operatingsystem 1.0
+import jp.relog.plugin.qmlfile 1.0
+import "js/HttpAccess.js" as Http
 
 Rectangle {
     id: root
@@ -31,8 +33,17 @@ Rectangle {
     property real d3set: 0
     property real d3start: 0
 
+
+    Component.onCompleted: {
+        console.debug("start download timer data")
+        Http.requestHttp("", "GET", "http://relog.xii.jp/download/kancolle/data/timerselectguide.json", true, responseHttp)
+    }
+
     OperatingSystem {
         id: os
+    }
+    QMLFile {
+        id: file
     }
 
     Audio {
@@ -48,6 +59,54 @@ Rectangle {
         repeat: true
         triggeredOnStart: true
         onTriggered: updateAll()
+    }
+
+    function responseHttp(oj){
+        var data = JSON.parse(oj.responseText)
+        var i
+        var local_path = file.getApplicationPath() + "/timerselectguide.json"
+        var local_data = ""
+
+        if(file.exists(local_path)){
+            local_data = JSON.parse(file.readTextFile(local_path))
+
+            if(data.serial > local_data.serial){
+//                console.debug("use new download data")
+                //新しいのをダウンロードしたので保存
+                file.writeTextFile(local_path, oj.responseText)
+
+                //表示用データと入れ替える
+                viewTimerSelectGuide(data)
+            }else{
+//                console.debug("use local data")
+                //ローカルのデータを表示
+                viewTimerSelectGuide(local_data)
+            }
+        }else{
+//            console.debug("use download data")
+            //新しいのをダウンロードしたので保存
+            file.writeTextFile(local_path, oj.responseText)
+            //ダウンロードしたデータを表示
+            viewTimerSelectGuide(data)
+        }
+    }
+
+    //タイマーのガイド情報をモデルに設定する
+    function viewTimerSelectGuide(data){
+        var i
+
+        dockingModel.clear()
+        for(i=0; i<data.docking.length; i++){
+            dockingModel.append(data.docking[i])
+        }
+        expeditionModel.clear()
+        for(i=0; i<data.expedition.length; i++){
+            expeditionModel.append(data.expedition[i])
+        }
+        constructionModel.clear()
+        for(i=0; i<data.construction.length; i++){
+            constructionModel.append(data.construction[i])
+        }
     }
 
     function updateAll(){
@@ -216,10 +275,16 @@ Rectangle {
             setting.model = dockingModel
             break;
         case 1: //遠征
-            setting.model = expeditionModel
+            if(expeditionModel.count > 0)
+                setting.model = expeditionModel
+            else
+                setting.model = expeditionModelTemp
             break;
         case 2: //建造
-            setting.model = constructionModel
+            if(constructionModel.count > 0)
+                setting.model = constructionModel
+            else
+                setting.model = constructionModelTemp
             break;
         default:
             break;
@@ -336,7 +401,10 @@ Rectangle {
         ListElement { hour: 12; minute: 45; second: 0; msg1: ""; msg2: "" }
     }
     //遠征
-    property list<QtObject> expeditionModel: [
+    ListModel {
+        id: expeditionModel
+    }
+    property list<QtObject> expeditionModelTemp: [
         QtObject { property int hour: 0; property int minute: 15; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("1 Practice voyage"); property int page: 0 }
         , QtObject { property int hour: 0; property int minute: 30; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("2 Long-distance voyage practice"); property int page: 0 }
         , QtObject { property int hour: 0; property int minute: 20; property int second: 0; property string msg1: qsTr("Guardian Office waters"); property string msg2: qsTr("3 Security mission"); property int page: 0 }
@@ -395,7 +463,10 @@ Rectangle {
 //    }
 
     //建造
-    property list<QtObject> constructionModel: [
+    ListModel {
+        id: constructionModel
+    }
+    property list<QtObject> constructionModelTemp: [
         QtObject { property int hour: 0; property int minute: 18; property int second: 0; property string msg1: qsTr("Destroyer"); property string msg2: qsTr("Mutsuki") }
         , QtObject { property int hour: 0; property int minute: 20; property int second: 0; property string msg1: qsTr("Destroyer"); property string msg2: qsTr("Fubuki Ayanami Akatsuki Hatsuharu") }
         , QtObject { property int hour: 0; property int minute: 22; property int second: 0; property string msg1: qsTr("Destroyer"); property string msg2: qsTr("Siratsuyu Asashio") }

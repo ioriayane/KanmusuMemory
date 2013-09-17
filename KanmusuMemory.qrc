@@ -11,5 +11,6 @@
         <file>qml/KanmusuMemory/imageEditDialog.qml</file>
         <file>qml/KanmusuMemory/ImageEditView.qml</file>
         <file>qml/KanmusuMemory/ClipTool.qml</file>
+        <file>qml/KanmusuMemory/js/HttpAccess.js</file>
     </qresource>
 </RCC>
