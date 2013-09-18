@@ -1,6 +1,6 @@
 {
 "_comment" : "serialは日付+二桁連番で更新されてるか判断する"
-,"serial" : "2013091700"
+,"serial" : "2013091702"
 ,"docking" : 
 [
   { "hour": 0, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
@@ -83,12 +83,16 @@
 , {"hour": 40, "minute": 0, "second": 0, "msg1": "西方海域", "msg2": "25 通商破壊作戦", "page": 3 }
 , {"hour": 80, "minute": 0, "second": 0, "msg1": "西方海域", "msg2": "26 敵母港空襲作戦", "page": 3 }
 , {"hour": 20, "minute": 0, "second": 0, "msg1": "西方海域", "msg2": "27 潜水艦通商破壊作戦", "page": 3 }
+
+, {"hour": 0, "minute": 15, "second": 0, "msg1": "南方海域", "msg2": "33 前衛支援任務", "page": 4 }
+, {"hour": 0, "minute": 30, "second": 0, "msg1": "南方海域", "msg2": "34 艦隊決戦支援任務", "page": 4 }
 ]
 , "construction" : 
 [
   { "hour": 0, "minute": 18, "second": 0, "msg1": "駆逐艦", "msg2": "睦月型" }
 , { "hour": 0, "minute": 20, "second": 0, "msg1": "駆逐艦", "msg2": "吹雪型 綾波型 暁型 初春型" }
 , { "hour": 0, "minute": 22, "second": 0, "msg1": "駆逐艦", "msg2": "白露型 朝潮型" }
+, { "hour": 0, "minute": 22, "second": 0, "msg1": "駆逐艦", "msg2": "伊58 伊168" }
 , { "hour": 0, "minute": 24, "second": 0, "msg1": "駆逐艦", "msg2": "陽炎型 雪風" }
 , { "hour": 0, "minute": 30, "second": 0, "msg1": "駆逐艦", "msg2": "島風" }
 , { "hour": 1, "minute": 0, "second": 0, "msg1": "軽巡洋艦", "msg2": "天龍型 球磨型 長良型 川内型" }
