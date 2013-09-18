@@ -142,6 +142,7 @@ QString QMLFile::readTextFile(const QString &fileName)
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
     }else{
         QTextStream in(&file);
+        in.setCodec("UTF-8");
         while(!in.atEnd()){
             str.append(in.readLine());
         }

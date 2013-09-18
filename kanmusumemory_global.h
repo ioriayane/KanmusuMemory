@@ -16,7 +16,7 @@
 #ifndef KANMUSUMEMORY_GLOBAL_H
 #define KANMUSUMEMORY_GLOBAL_H
 
-#define KANMEMO_VERSION "0.6"
+#define KANMEMO_VERSION "0.6.1"
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
     << "@task_jp"\

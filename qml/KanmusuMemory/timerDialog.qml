@@ -35,7 +35,7 @@ Rectangle {
 
 
     Component.onCompleted: {
-        console.debug("start download timer data")
+//        console.debug("start download timer data")
         Http.requestHttp("", "GET", "http://relog.xii.jp/download/kancolle/data/timerselectguide.json", true, responseHttp)
     }
 
