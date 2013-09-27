@@ -1,6 +1,6 @@
 {
 "_comment" : "serialは日付+二桁連番で更新されてるか判断する"
-,"serial" : "2013091702"
+,"serial" : "2013092600"
 ,"docking" : 
 [
   { "hour": 0, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
@@ -86,6 +86,8 @@
 
 , {"hour": 0, "minute": 15, "second": 0, "msg1": "南方海域", "msg2": "33 前衛支援任務", "page": 4 }
 , {"hour": 0, "minute": 30, "second": 0, "msg1": "南方海域", "msg2": "34 艦隊決戦支援任務", "page": 4 }
+, {"hour": 7, "minute": 0, "second": 0, "msg1": "南方海域", "msg2": "35 MO作戦", "page": 4 }
+, {"hour": 9, "minute": 0, "second": 0, "msg1": "南方海域", "msg2": "36 水上機基地建設", "page": 4 }
 ]
 , "construction" : 
 [
