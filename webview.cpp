@@ -48,10 +48,10 @@ WebView::Private::Private(WebView *parent)
 {
     connect(q, &WebView::viewModeChanged, [this](ViewMode viewMode) {
         switch (viewMode) {
-        case NormalMode:
+        case WebView::NormalMode:
             showNormal();
             break;
-        case FullScreenMode:
+        case WebView::FullScreenMode:
             showFullScreen();
             break;
         }

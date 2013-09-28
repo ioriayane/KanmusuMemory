@@ -8,7 +8,7 @@
 
 class webPage : public QWebPage {
 public:
-    webPage(){ QWebPage::QWebPage(); }
+    explicit webPage(QObject * parent = 0):QWebPage(parent){  }
 
     QString userAgentForUrl(const QUrl &url ) const {
         return QWebPage::userAgentForUrl(url) + QString("; Android");
@@ -52,7 +52,7 @@ WebPageForm::Private::Private(WebPageForm *parent)
         ui.progressBar->hide();
 
         //タイトル更新
-        setParentTitle(ui.webView->title());
+//        setParentTitle(ui.webView->title());
     });
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);

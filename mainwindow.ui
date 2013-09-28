@@ -60,6 +60,9 @@
        </layout>
       </widget>
       <widget class="QTabWidget" name="tabWidget">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
        <property name="currentIndex">
         <number>-1</number>
        </property>
@@ -74,7 +77,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="file">
@@ -101,7 +104,11 @@
     <addaction name="actionReturn_to_Kan_Colle"/>
     <addaction name="separator"/>
     <addaction name="actionFullScreen"/>
+    <addaction name="separator"/>
     <addaction name="actionSplitWindow"/>
+    <addaction name="actionReloadTab"/>
+    <addaction name="actionAddTab"/>
+    <addaction name="actionRemoveTab"/>
     <addaction name="separator"/>
     <addaction name="actionClearAccessCache"/>
    </widget>
@@ -256,6 +263,21 @@
   <action name="actionSplitWindow">
    <property name="text">
     <string>Split window</string>
+   </property>
+  </action>
+  <action name="actionAddTab">
+   <property name="text">
+    <string>Add tab</string>
+   </property>
+  </action>
+  <action name="actionRemoveTab">
+   <property name="text">
+    <string>Remove tab</string>
+   </property>
+  </action>
+  <action name="actionReloadTab">
+   <property name="text">
+    <string>Reload tab</string>
    </property>
   </action>
  </widget>

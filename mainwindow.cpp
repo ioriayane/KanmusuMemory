@@ -49,6 +49,7 @@
 
 #define URL_KANCOLLE "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
 
+#define SPLIT_WEBPAGE_INDEX     1       //分割ウインドウの通常ブラウザのインデックス
 
 #define STATUS_BAR_MSG_TIME     5000
 
@@ -145,18 +146,6 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.notificationTimer, &QAction::triggered, [this]() {
         m_timerDialog->show();
     });
-    //ウインドウ分割
-    connect(ui.actionSplitWindow, &QAction::triggered, [this]() {
-        WebPageForm *web = new WebPageForm(ui.tabWidget);
-        m_webPageList.append(web);
-        web->setUrl(QUrl("http://www56.atwiki.jp/kancolle/"));
-//        web->setUrl(QUrl("http://www.luft.co.jp/cgi/env.php"));
-        if(ui.tabWidget->count() == 0){
-            ui.tabWidget->addTab(web, QStringLiteral("new"));
-        }
-
-        //            ui.contentSplitter->setOrientation(Qt::Vertical);
-    });
 
     //設定ダイアログ表示
     connect(ui.preferences, &QAction::triggered, [this]() {
@@ -198,6 +187,28 @@ MainWindow::Private::Private(MainWindow *parent)
         }
     });
 
+    //ウインドウ分割
+    connect(ui.actionSplitWindow, &QAction::triggered, [this]() {
+
+        if(ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible()){
+            //→非表示
+        }else{
+            //→表示
+
+            //タブがひとつも無ければ追加
+            if(ui.tabWidget->count() == 0){
+                WebPageForm *web = new WebPageForm(ui.tabWidget);
+                m_webPageList.append(web);
+                web->setUrl(QUrl("http://www56.atwiki.jp/kancolle/"));
+        //        web->setUrl(QUrl("http://www.luft.co.jp/cgi/env.php"));
+                ui.tabWidget->addTab(web, QStringLiteral("new"));
+            }
+        }
+        //表示状態をひっくり返す
+        ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible());
+        //            ui.contentSplitter->setOrientation(Qt::Vertical);
+    });
+
     //WebViewの読込み開始
     connect(ui.webView, &QWebView::loadStarted, [this](){
        ui.progressBar->show();
@@ -216,6 +227,9 @@ MainWindow::Private::Private(MainWindow *parent)
     });
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
+
+    //分割ウインドウを非表示
+    ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(false);
 
     //通知アイコン
 #ifdef Q_OS_WIN
