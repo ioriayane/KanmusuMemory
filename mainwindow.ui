@@ -26,19 +26,19 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <property name="spacing">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="leftMargin">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="topMargin">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="rightMargin">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="bottomMargin">
-     <number>1</number>
+     <number>0</number>
     </property>
     <item>
      <widget class="QSplitter" name="splitter">
@@ -77,7 +77,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>24</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="file">
@@ -138,6 +138,7 @@
    <addaction name="notificationTimer"/>
    <addaction name="captureCatalog"/>
    <addaction name="captureFleetDetail"/>
+   <addaction name="actionSplitWindow"/>
   </widget>
   <action name="exit">
    <property name="text">
@@ -269,15 +270,24 @@
    <property name="text">
     <string>Add tab</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
   </action>
   <action name="actionRemoveTab">
    <property name="text">
     <string>Remove tab</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
   </action>
   <action name="actionReloadTab">
    <property name="text">
     <string>Reload tab</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
  </widget>

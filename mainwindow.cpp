@@ -208,6 +208,31 @@ MainWindow::Private::Private(MainWindow *parent)
         ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible());
         //            ui.contentSplitter->setOrientation(Qt::Vertical);
     });
+    //タブウインドウの再読み込み
+    connect(ui.actionReloadTab, &QAction::triggered, [this]() {
+        if(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible())
+            return;
+
+        WebPageForm *form = (WebPageForm *)ui.tabWidget->currentWidget();
+        form->reload();
+    });
+    //タブウインドウにタブを追加
+    connect(ui.actionAddTab, &QAction::triggered, [this]() {
+        if(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible())
+            return;
+
+        WebPageForm *web = new WebPageForm(ui.tabWidget);
+        m_webPageList.append(web);
+        web->setUrl(QUrl("http://www.google.co.jp"));
+        ui.tabWidget->addTab(web, QStringLiteral("new"));
+    });
+    //タブウインドウでタブを削除
+    connect(ui.actionRemoveTab, &QAction::triggered, [this]() {
+        if(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible())
+            return;
+
+        ui.tabWidget->removeTab(ui.tabWidget->currentIndex());
+    });
 
     //WebViewの読込み開始
     connect(ui.webView, &QWebView::loadStarted, [this](){
