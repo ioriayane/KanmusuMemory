@@ -23,6 +23,7 @@
 #include "imageeditdialog.h"
 #include "timerdialog.h"
 #include "gamescreen.h"
+#include "webpageform.h"
 #include "kanmusumemory_global.h"
 
 #include <QtCore/QDate>
@@ -72,6 +73,7 @@ private:
     MainWindow *q;
     TimerDialog *m_timerDialog;
 
+    QList<WebPageForm *> m_webPageList;
 public:
     Ui::MainWindow ui;
     QSettings settings;         //設定管理
@@ -142,6 +144,18 @@ MainWindow::Private::Private(MainWindow *parent)
     //通知タイマー
     connect(ui.notificationTimer, &QAction::triggered, [this]() {
         m_timerDialog->show();
+    });
+    //ウインドウ分割
+    connect(ui.actionSplitWindow, &QAction::triggered, [this]() {
+        WebPageForm *web = new WebPageForm(ui.tabWidget);
+        m_webPageList.append(web);
+        web->setUrl(QUrl("http://www56.atwiki.jp/kancolle/"));
+//        web->setUrl(QUrl("http://www.luft.co.jp/cgi/env.php"));
+        if(ui.tabWidget->count() == 0){
+            ui.tabWidget->addTab(web, QStringLiteral("new"));
+        }
+
+        //            ui.contentSplitter->setOrientation(Qt::Vertical);
     });
 
     //設定ダイアログ表示
@@ -216,6 +230,10 @@ MainWindow::Private::Private(MainWindow *parent)
 
 MainWindow::Private::~Private()
 {
+    foreach (WebPageForm *web, m_webPageList) {
+        qDebug() << "delete tab:" << web->url();
+        delete web;
+    }
     delete m_timerDialog;
 }
 //指定範囲をマスクする
