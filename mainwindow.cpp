@@ -87,11 +87,16 @@ MainWindow::Private::Private(MainWindow *parent)
     , trayIcon(QIcon(":/resources/KanmusuMemory32.png"))
 {
     ui.setupUi(q);
+
+    //WebViewの設定（クッキー）
     ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
+    //WebViewの設定（キャッシュ）
     QNetworkDiskCache *cache = new QNetworkDiskCache(q);
     cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
     cache->setMaximumCacheSize(1073741824); //about 1024MB
     ui.webView->page()->networkAccessManager()->setCache(cache);
+
+    qDebug() << "font:" << ui.webView->settings()->fontFamily(QWebSettings::StandardFont);
 
     //通知タイマーのダイアログ作成
     m_timerDialog = new TimerDialog(q, &trayIcon, &settings);

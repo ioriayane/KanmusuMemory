@@ -23,10 +23,19 @@
 
 class webPage : public QWebPage {
 public:
-    explicit webPage(QObject * parent = 0):QWebPage(parent){  }
+    explicit webPage(QObject * parent = 0)
+        :QWebPage(parent)
+        , isMobileMode(true)
+    {  }
+
+    bool isMobileMode;
 
     QString userAgentForUrl(const QUrl &url ) const {
-        return QWebPage::userAgentForUrl(url) + QString("; Android");
+        QString ret = QWebPage::userAgentForUrl(url);
+        if(isMobileMode)
+            ret.append(QStringLiteral("; Android"));
+
+        return ret;
 //        return QString("Mozilla/5.0 (Windows NT 6.2; Mobile; WOW64) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
 //        return QString("Mozilla/5.0 (Android; Mobile; WOW64) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
     }
@@ -52,6 +61,8 @@ WebPageForm::Private::Private(WebPageForm *parent)
     , tab(NULL)
 {
     ui.setupUi(q);
+
+    ui.webView->settings()->setFontFamily(QWebSettings::StandardFont, "ＭＳ Ｐゴシック");
 
     //WebViewの読込み開始
     connect(ui.webView, &QWebView::loadStarted, [this](){
@@ -85,6 +96,15 @@ WebPageForm::Private::Private(WebPageForm *parent)
     connect(ui.urlEdit, &QLineEdit::editingFinished, [this]() {
         q->setUrl(ui.urlEdit->text());
     });
+
+
+    //モバイルとPC版の切り換え
+    connect(ui.changeMobileModeButton, &QPushButton::clicked, [this]() {
+        webPage *page = reinterpret_cast<webPage *>(ui.webView->page());
+        page->isMobileMode = !page->isMobileMode;
+        ui.webView->reload();
+    });
+
 }
 
 void WebPageForm::Private::setTab(QTabWidget *tab)

@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>2</number>
+    <number>1</number>
    </property>
    <property name="leftMargin">
     <number>1</number>
@@ -30,7 +30,21 @@
     <number>1</number>
    </property>
    <item>
-    <widget class="QLineEdit" name="urlEdit"/>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <property name="spacing">
+      <number>1</number>
+     </property>
+     <item>
+      <widget class="QLineEdit" name="urlEdit"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="changeMobileModeButton">
+       <property name="text">
+        <string>Mobile</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QWebView" name="webView">
