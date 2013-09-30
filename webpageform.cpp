@@ -62,8 +62,6 @@ WebPageForm::Private::Private(WebPageForm *parent)
 {
     ui.setupUi(q);
 
-    ui.webView->settings()->setFontFamily(QWebSettings::StandardFont, "ＭＳ Ｐゴシック");
-
     //WebViewの読込み開始
     connect(ui.webView, &QWebView::loadStarted, [this](){
         ui.progressBar->show();

@@ -96,7 +96,25 @@ MainWindow::Private::Private(MainWindow *parent)
     cache->setMaximumCacheSize(1073741824); //about 1024MB
     ui.webView->page()->networkAccessManager()->setCache(cache);
 
-    qDebug() << "font:" << ui.webView->settings()->fontFamily(QWebSettings::StandardFont);
+// QStringLiteral("Meiryo UI")
+// "メイリオ"
+// "MS UI Gothic"
+#if defined(Q_OS_WIN32)
+    QWebSettings *websetting = QWebSettings::globalSettings();
+    websetting->setFontFamily(QWebSettings::StandardFont, "MS PGothic");
+    websetting->setFontFamily(QWebSettings::SerifFont, "MS PMincho");
+    websetting->setFontFamily(QWebSettings::SansSerifFont, "MS PGothic");
+    websetting->setFontFamily(QWebSettings::FixedFont, "MS Gothic");
+#elif defined(Q_OS_LINUX)
+#elif defined(Q_OS_MAC)
+    QWebSettings *websetting = QWebSettings::globalSettings();
+    websetting->setFontFamily(QWebSettings::StandardFont, "ヒラギノ角ゴPro");
+    websetting->setFontFamily(QWebSettings::SerifFont, "ヒラギノ明朝Pro");
+    websetting->setFontFamily(QWebSettings::SansSerifFont, "ヒラギノ角ゴPro");
+    websetting->setFontFamily(QWebSettings::FixedFont, "Osaka");
+#else
+#endif
+
 
     //通知タイマーのダイアログ作成
     m_timerDialog = new TimerDialog(q, &trayIcon, &settings);
