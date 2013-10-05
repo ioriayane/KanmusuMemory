@@ -18,6 +18,7 @@
 
 #include <QtWebKitWidgets/QWebView>
 
+
 class WebView : public QWebView
 {
     Q_OBJECT

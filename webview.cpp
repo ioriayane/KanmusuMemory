@@ -19,6 +19,7 @@
 #include <QtWebKitWidgets/QWebFrame>
 #include <QtWebKit/QWebElement>
 
+
 class WebView::Private
 {
 public:

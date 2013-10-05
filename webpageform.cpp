@@ -18,6 +18,7 @@
 
 #include <QWebView>
 #include <QTabWidget>
+#include <QNetworkRequest>
 
 #include <QDebug>
 
@@ -30,6 +31,7 @@ public:
 
     bool isMobileMode;
 
+    //USER AGENTを調節
     QString userAgentForUrl(const QUrl &url ) const {
         QString ret = QWebPage::userAgentForUrl(url);
         if(isMobileMode)
@@ -38,6 +40,20 @@ public:
         return ret;
 //        return QString("Mozilla/5.0 (Windows NT 6.2; Mobile; WOW64) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
 //        return QString("Mozilla/5.0 (Android; Mobile; WOW64) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
+    }
+    //リンクに関連する操作
+    bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type) {
+        qDebug() << "accept navi page:" << request.url() << "/" << type << "/frame=" << frame << "/this=" << this;
+        return QWebPage::acceptNavigationRequest(frame, request, type);
+    }
+    //ウインドウ作成
+    QWebPage* createWindow(WebWindowType type) {
+        qDebug() << "createWindow: " << type;
+        return new webPage();
+    }
+    //リンククリック
+    void linkClicked(const QUrl & url) {
+        qDebug() << "linkClicked:" << url;
     }
 };
 
@@ -82,24 +98,30 @@ WebPageForm::Private::Private(WebPageForm *parent)
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
 
-    //URLが外から変更された
-    connect(q, &WebPageForm::urlChanged, [this]() {
-        webPage *page = new webPage;
-        ui.webView->setPage((QWebPage *)page);
-        ui.webView->setUrl(q->url());
-        ui.urlEdit->setText(q->url().toString());
+    //URLが変更された
+    connect(ui.webView, &QWebView::urlChanged, [this]() {
+        qDebug() << "change url:" << ui.webView->url();
+        ui.urlEdit->setText(ui.webView->url().toString());
     });
 
     //URLの編集完了
     connect(ui.urlEdit, &QLineEdit::editingFinished, [this]() {
-        q->setUrl(ui.urlEdit->text());
+//        q->setUrl(ui.urlEdit->text());
+        webPage *page = new webPage;
+        ui.webView->setPage((QWebPage *)page);
+        ui.webView->setUrl(ui.urlEdit->text());
+//        ui.urlEdit->setText(q->url().toString());
+
     });
+
+    //閉じる要求
 
 
     //モバイルとPC版の切り換え
     connect(ui.changeMobileModeButton, &QPushButton::clicked, [this]() {
         webPage *page = reinterpret_cast<webPage *>(ui.webView->page());
         page->isMobileMode = !page->isMobileMode;
+        qDebug() << "USER_AGENT:" << page->userAgentForUrl(ui.webView->url());
         ui.webView->reload();
     });
 
@@ -144,15 +166,14 @@ WebPageForm::~WebPageForm()
 //URL
 QUrl WebPageForm::url() const
 {
-    return m_url;
+    return d->ui.webView->url();
 }
 void WebPageForm::setUrl(const QUrl &url)
 {
-    if(m_url == url)
-        return;
-
-    m_url = url;
-    emit urlChanged();
+//    d->ui.webView->setUrl(url);
+    //外から設定するときはURLのエディットを修正したことにする
+    d->ui.urlEdit->setText(url.toString());
+    d->ui.urlEdit->editingFinished();
 }
 //表示中のWebページのタイトル
 QString WebPageForm::title() const

@@ -48,7 +48,14 @@
       <widget class="QWidget" name="verticalLayoutWidget">
        <layout class="QVBoxLayout" name="verticalLayout">
         <item>
-         <widget class="WebView" name="webView" native="true"/>
+         <widget class="WebView" name="webView" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>800</width>
+            <height>480</height>
+           </size>
+          </property>
+         </widget>
         </item>
         <item>
          <widget class="QProgressBar" name="progressBar">
@@ -59,12 +66,18 @@
         </item>
        </layout>
       </widget>
-      <widget class="QTabWidget" name="tabWidget">
+      <widget class="TabWidget" name="tabWidget">
        <property name="enabled">
         <bool>true</bool>
        </property>
        <property name="currentIndex">
         <number>-1</number>
+       </property>
+       <property name="tabsClosable">
+        <bool>true</bool>
+       </property>
+       <property name="movable">
+        <bool>true</bool>
        </property>
       </widget>
      </widget>
@@ -297,6 +310,12 @@
    <class>WebView</class>
    <extends>QWidget</extends>
    <header>webview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>tabwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

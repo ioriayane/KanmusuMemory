@@ -47,7 +47,7 @@
     </layout>
    </item>
    <item>
-    <widget class="QWebView" name="webView">
+    <widget class="WebView" name="webView">
      <property name="url">
       <url>
        <string>about:blank</string>
@@ -66,9 +66,10 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QWebView</class>
+   <class>WebView</class>
    <extends>QWidget</extends>
-   <header>QtWebKitWidgets/QWebView</header>
+   <header>webview.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

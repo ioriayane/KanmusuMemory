@@ -14,7 +14,8 @@ SOURCES += main.cpp\
     webview.cpp \
     gamescreen.cpp \
     imageeditdialog.cpp \
-    webpageform.cpp
+    webpageform.cpp \
+    tabwidget.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -28,7 +29,8 @@ HEADERS  += mainwindow.h \
     webview.h \
     gamescreen.h \
     imageeditdialog.h \
-    webpageform.h
+    webpageform.h \
+    tabwidget.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \

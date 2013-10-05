@@ -96,12 +96,15 @@ MainWindow::Private::Private(MainWindow *parent)
     cache->setMaximumCacheSize(1073741824); //about 1024MB
     ui.webView->page()->networkAccessManager()->setCache(cache);
 
-// QStringLiteral("Meiryo UI")
-// "メイリオ"
-// "MS UI Gothic"
-#if defined(Q_OS_WIN32)
     QWebSettings *websetting = QWebSettings::globalSettings();
-    websetting->setFontFamily(QWebSettings::StandardFont, "MS PGothic");
+    //JavaScript関連設定
+    websetting->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
+    websetting->setAttribute(QWebSettings::JavascriptCanCloseWindows, true);
+    //フォント設定
+#if defined(Q_OS_WIN32)
+//    websetting->setFontFamily(QWebSettings::StandardFont, "ＭＳ Ｐゴシック");
+//    websetting->setFontFamily(QWebSettings::StandardFont, "MS PGothic");
+    websetting->setFontFamily(QWebSettings::StandardFont, "Meiryo UI");
     websetting->setFontFamily(QWebSettings::SerifFont, "MS PMincho");
     websetting->setFontFamily(QWebSettings::SansSerifFont, "MS PGothic");
     websetting->setFontFamily(QWebSettings::FixedFont, "MS Gothic");
@@ -253,8 +256,18 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.actionRemoveTab, &QAction::triggered, [this]() {
         if(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible())
             return;
-
-        ui.tabWidget->removeTab(ui.tabWidget->currentIndex());
+        ui.tabWidget->tabCloseRequested(ui.tabWidget->currentIndex());
+    });
+    //タブの閉じる要求
+    connect(ui.tabWidget, &QTabWidget::tabCloseRequested, [this](int index) {
+        WebPageForm *form = reinterpret_cast<WebPageForm *>(ui.tabWidget->widget(index));
+        for(int i=0; i<m_webPageList.length(); i++){
+            if(m_webPageList.at(i) == form){
+                m_webPageList.removeAt(i);
+                delete form;
+                break;
+            }
+        }
     });
 
     //WebViewの読込み開始
@@ -277,7 +290,7 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
 
     //分割ウインドウを非表示
-    ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(false);
+//    ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(false);
 
     //通知アイコン
 #ifdef Q_OS_WIN
@@ -752,6 +765,7 @@ void MainWindow::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &e
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
+    Q_UNUSED(event);
     static bool prev = false;
 
     if(prev != isFullScreen()){

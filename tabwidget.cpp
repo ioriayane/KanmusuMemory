@@ -13,37 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef WEBPAGEFORM_H
-#define WEBPAGEFORM_H
+#include "tabwidget.h"
 
-#include <QWidget>
-#include <QtCore/QUrl>
-
-namespace Ui {
-class WebPageForm;
-}
-
-class WebPageForm : public QWidget
+class TabWidget::Private
 {
-    Q_OBJECT
-    
 public:
-    explicit WebPageForm(QWidget *parent = 0);
-    ~WebPageForm();
-
-    
-    QUrl url() const;
-    void setUrl(const QUrl &url);
-    QString title() const;
-
-    void reload();
-
-signals:
-    void urlChanged();
+    Private(TabWidget *parent);
 
 private:
-    class Private;
-    Private *d;
+    TabWidget *q;
+
 };
 
-#endif // WEBPAGEFORM_H
+TabWidget::Private::Private(TabWidget *parent)
+    : q(parent)
+{
+
+}
+
+TabWidget::TabWidget(QWidget* parent)
+    : QTabWidget(parent)
+    , d(new Private(this))
+{
+    connect(this, &QObject::destroyed, [this]() { delete d; });
+}
