@@ -43,6 +43,8 @@
 #define SETTING_TIMERDIALOG         "timerdialog"
 #define SETTING_WINDOW_GEO          "geometry"
 #define SETTING_WINDOW_STATE        "windowState"
+#define SETTING_SPLITTER_SIZES      "splitterSizes"
+#define SETTING_SPLITTER_ON         "splitterOn"
 //設定：タイマー
 #define SETTING_TIMER                       "timer"
 #define SETTING_TIMER_DOCKING_TIME          "dockingTime"

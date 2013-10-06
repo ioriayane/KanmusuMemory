@@ -318,3 +318,12 @@ QList<bool> TimerData::toBoolList(const QList<QVariant> src)
     return d;
 }
 
+QList<int> TimerData::toIntList(const QList<QVariant> src)
+{
+    QList<int> d;
+    foreach (QVariant v, src){
+        d << v.toInt();
+    }
+    return d;
+}
+

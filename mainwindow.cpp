@@ -66,6 +66,7 @@ public:
     void captureFleetDetail();
     void setFullScreen();
 
+    QList<int> bakSplitterSizes;    //幅のサイズ保存用にとっておく。（非表示だと0になってしまうから）
 private:
     void maskImage(QImage *img, const QRect &rect);
     QString makeFileName(const QString &format) const;
@@ -217,6 +218,7 @@ MainWindow::Private::Private(MainWindow *parent)
 
         if(ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible()){
             //→非表示
+            bakSplitterSizes = ui.splitter->sizes();    //非表示する前に保存しておく
         }else{
             //→表示
 
@@ -228,6 +230,7 @@ MainWindow::Private::Private(MainWindow *parent)
         //表示状態をひっくり返す
         ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible());
         //            ui.contentSplitter->setOrientation(Qt::Vertical);
+        qDebug() << "splitter size:" << ui.splitter->sizes();
     });
     //タブウインドウの再読み込み
     connect(ui.actionReloadTab, &QAction::triggered, [this]() {
@@ -266,9 +269,6 @@ MainWindow::Private::Private(MainWindow *parent)
     });
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
-
-    //分割ウインドウを非表示
-//    ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(false);
 
     //通知アイコン
 #ifdef Q_OS_WIN
@@ -673,6 +673,10 @@ MainWindow::MainWindow(QWidget *parent)
     settings.beginGroup(QStringLiteral(SETTING_MAINWINDOW));
     restoreGeometry(settings.value(QStringLiteral(SETTING_WINDOW_GEO)).toByteArray());
     restoreState(settings.value(QStringLiteral(SETTING_WINDOW_STATE)).toByteArray());
+    //分割ウインドウのサイズ調整
+    d->bakSplitterSizes = TimerData::toIntList(settings.value(QStringLiteral(SETTING_SPLITTER_SIZES), QList<QVariant>() << 900 << 300).toList());
+    d->ui.splitter->setSizes(d->bakSplitterSizes);
+    d->ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(settings.value(QStringLiteral(SETTING_SPLITTER_ON)).toBool());
     settings.endGroup();
 
     //設定
@@ -718,6 +722,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.beginGroup(QStringLiteral(SETTING_MAINWINDOW));
     settings.setValue(QStringLiteral(SETTING_WINDOW_GEO), saveGeometry());
     settings.setValue(QStringLiteral(SETTING_WINDOW_STATE), saveState());
+    settings.setValue(QStringLiteral(SETTING_SPLITTER_ON), d->ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible());
+    if(d->ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible()){
+        settings.setValue(QStringLiteral(SETTING_SPLITTER_SIZES), TimerData::toList<QVariant, int>(d->ui.splitter->sizes()));
+    }else{
+        settings.setValue(QStringLiteral(SETTING_SPLITTER_SIZES), TimerData::toList<QVariant, int>(d->bakSplitterSizes));
+    }
     settings.endGroup();
 
     QMainWindow::closeEvent(event);
