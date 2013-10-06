@@ -18,6 +18,7 @@
 
 #include <QWidget>
 #include <QtCore/QUrl>
+#include <QWebPage>
 
 namespace Ui {
 class WebPageForm;
@@ -34,12 +35,16 @@ public:
     
     QUrl url() const;
     void setUrl(const QUrl &url);
+    void setWebPage(QWebPage *webpage);
     QString title() const;
 
     void reload();
+    void makeNewWebPage(QWebPage *webpage);
 
 signals:
     void urlChanged();
+    void addTabRequested(QWebPage *webpage);
+    void removeTabRequested(WebPageForm *form);
 
 private:
     class Private;

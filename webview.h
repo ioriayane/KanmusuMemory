@@ -45,9 +45,16 @@ signals:
     void viewModeChanged(ViewMode viewMode);
     void error(const QString &message);
 
+protected:
+    void contextMenuEvent(QContextMenuEvent *event);
+
+private slots:
+    void openLinkInNewTab();
+
 private:
     class Private;
     Private *d;
+
 };
 
 #endif // WEBVIEW_H

@@ -40,15 +40,26 @@
      <item>
       <widget class="QPushButton" name="changeMobileModeButton">
        <property name="text">
-        <string>Mobile</string>
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="KanmusuMemory.qrc">
+         <normaloff>:/resources/mobile_icon_off.png</normaloff>
+         <normalon>:/resources/mobile_icon_on.png</normalon>:/resources/mobile_icon_off.png</iconset>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <widget class="WebView" name="webView">
-     <property name="url">
+    <widget class="WebView" name="webView" native="true">
+     <property name="url" stdset="0">
       <url>
        <string>about:blank</string>
       </url>
@@ -58,7 +69,7 @@
    <item>
     <widget class="QProgressBar" name="progressBar">
      <property name="value">
-      <number>24</number>
+      <number>0</number>
      </property>
     </widget>
    </item>
@@ -72,6 +83,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="KanmusuMemory.qrc"/>
+ </resources>
  <connections/>
 </ui>

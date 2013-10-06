@@ -74,7 +74,6 @@ private:
     MainWindow *q;
     TimerDialog *m_timerDialog;
 
-    QList<WebPageForm *> m_webPageList;
 public:
     Ui::MainWindow ui;
     QSettings settings;         //設定管理
@@ -223,11 +222,7 @@ MainWindow::Private::Private(MainWindow *parent)
 
             //タブがひとつも無ければ追加
             if(ui.tabWidget->count() == 0){
-                WebPageForm *web = new WebPageForm(ui.tabWidget);
-                m_webPageList.append(web);
-                web->setUrl(QUrl("http://www56.atwiki.jp/kancolle/"));
-        //        web->setUrl(QUrl("http://www.luft.co.jp/cgi/env.php"));
-                ui.tabWidget->addTab(web, QStringLiteral("new"));
+                ui.tabWidget->newTab(QUrl("http://www56.atwiki.jp/kancolle/"));
             }
         }
         //表示状態をひっくり返す
@@ -238,36 +233,19 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.actionReloadTab, &QAction::triggered, [this]() {
         if(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible())
             return;
-
-        WebPageForm *form = (WebPageForm *)ui.tabWidget->currentWidget();
-        form->reload();
+        ui.tabWidget->reloadTab();
     });
     //タブウインドウにタブを追加
     connect(ui.actionAddTab, &QAction::triggered, [this]() {
         if(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible())
             return;
-
-        WebPageForm *web = new WebPageForm(ui.tabWidget);
-        m_webPageList.append(web);
-        web->setUrl(QUrl("http://www.google.co.jp"));
-        ui.tabWidget->addTab(web, QStringLiteral("new"));
+        ui.tabWidget->newTab(QUrl("http://www.google.co.jp"));
     });
     //タブウインドウでタブを削除
     connect(ui.actionRemoveTab, &QAction::triggered, [this]() {
         if(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible())
             return;
-        ui.tabWidget->tabCloseRequested(ui.tabWidget->currentIndex());
-    });
-    //タブの閉じる要求
-    connect(ui.tabWidget, &QTabWidget::tabCloseRequested, [this](int index) {
-        WebPageForm *form = reinterpret_cast<WebPageForm *>(ui.tabWidget->widget(index));
-        for(int i=0; i<m_webPageList.length(); i++){
-            if(m_webPageList.at(i) == form){
-                m_webPageList.removeAt(i);
-                delete form;
-                break;
-            }
-        }
+        ui.tabWidget->closeTab();
     });
 
     //WebViewの読込み開始
@@ -305,10 +283,6 @@ MainWindow::Private::Private(MainWindow *parent)
 
 MainWindow::Private::~Private()
 {
-    foreach (WebPageForm *web, m_webPageList) {
-        qDebug() << "delete tab:" << web->url();
-        delete web;
-    }
     delete m_timerDialog;
 }
 //指定範囲をマスクする

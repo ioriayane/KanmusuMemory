@@ -16,6 +16,8 @@
 #ifndef TABWIDGET_H
 #define TABWIDGET_H
 
+#include "webpageform.h"
+
 #include <QTabWidget>
 
 class TabWidget : public QTabWidget
@@ -23,6 +25,13 @@ class TabWidget : public QTabWidget
     Q_OBJECT
 public:
     explicit TabWidget(QWidget* parent = 0);
+
+
+    void newTab(const QUrl &url);
+    void closeTab();
+    void closeTab(WebPageForm *form);
+    void closeTabAll();
+    void reloadTab();
 
 
 private:

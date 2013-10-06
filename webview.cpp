@@ -18,7 +18,9 @@
 #include <QtCore/QDebug>
 #include <QtWebKitWidgets/QWebFrame>
 #include <QtWebKit/QWebElement>
-
+#include <QMenu>
+#include <QWebHitTestResult>
+#include <QContextMenuEvent>
 
 class WebView::Private
 {
@@ -325,4 +327,23 @@ void WebView::setViewMode(ViewMode viewMode)
     if (d->viewMode == viewMode) return;
     d->viewMode = viewMode;
     emit viewModeChanged(viewMode);
+}
+//リンクをクリックした時のメニューをつくる
+void WebView::contextMenuEvent(QContextMenuEvent *event)
+{
+    QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
+    if (!r.linkUrl().isEmpty()) {
+        QMenu menu(this);
+        menu.addAction(tr("Open in New Tab"), this, SLOT(openLinkInNewTab()));
+        menu.addSeparator();
+        menu.addAction(pageAction(QWebPage::CopyLinkToClipboard));
+        menu.exec(mapToGlobal(event->pos()));
+        return;
+    }
+    QWebView::contextMenuEvent(event);
+}
+//タブで開くのトリガー
+void WebView::openLinkInNewTab()
+{
+    pageAction(QWebPage::OpenLinkInNewWindow)->trigger();
 }
