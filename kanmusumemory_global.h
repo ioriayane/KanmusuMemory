@@ -57,6 +57,11 @@
 #define SETTING_TIMER_CONSTRUCTION_START    "constructionStart"
 #define SETTING_TIMER_CONSTRUCTION_RUNNING  "constructionRunning"
 #define SETTING_TIMER_TWEETFINISHED         "tweetFinished"
+//設定：タブ関連
+#define SETTING_TAB                         "tab"
+#define SETTING_TAB_OPEN_PAGES              "openPages"
+#define SETTING_TAB_SAVE_OPEN_PAGES         "saveOpenPages"
+#define SETTING_TAB_OPEN_AND_NEWTAB         "openAndNewTab"
 
 #define CLICK_EVENT_INTERVAL            1500
 #define CLICK_EVENT_INTERVAL_LITTLE     500

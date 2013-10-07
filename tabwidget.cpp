@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 #include "tabwidget.h"
+#include "kanmusumemory_global.h"
 
+#include <QSettings>
 #include <QDebug>
 
 class TabWidget::Private
@@ -43,6 +45,7 @@ void TabWidget::Private::newTab(const QUrl &url)
     WebPageForm *web = new WebPageForm(q);
     web->setUrl(url);
     q->addTab(web, QStringLiteral("(untitled)"));
+    q->setCurrentWidget(web);
 
     //タブの追加
     connect(web, &WebPageForm::addTabRequested, [this](QWebPage *webpage){
@@ -61,6 +64,7 @@ void TabWidget::Private::newTab(QWebPage *webpage)
     WebPageForm *web = new WebPageForm(q);
     web->setWebPage(webpage);
     q->addTab(web, QStringLiteral("(untitled)"));
+    q->setCurrentWidget(web);
 
     //タブの追加
     connect(web, &WebPageForm::addTabRequested, [this](QWebPage *webpage){
@@ -76,6 +80,8 @@ void TabWidget::Private::newTab(QWebPage *webpage)
 TabWidget::TabWidget(QWidget* parent)
     : QTabWidget(parent)
     , d(new Private(this))
+    , m_saveOpenPage(true)
+    , m_openAndNewTab(true)
 {
     connect(this, &QObject::destroyed, [this]() { delete d; });
 
@@ -85,6 +91,41 @@ TabWidget::TabWidget(QWidget* parent)
         qDebug() << "close tab(" << index << "):" << form->url();
         delete form;
     });
+
+    //タブ復元
+    load();
+}
+
+//タブの状態を保存する
+bool TabWidget::saveOpenPage() const
+{
+    return m_saveOpenPage;
+}
+void TabWidget::setSaveOpenPage(bool saveOpenPage)
+{
+    m_saveOpenPage = saveOpenPage;
+}
+//新しいURLを開くとき新しいタブ
+bool TabWidget::openAndNewTab() const
+{
+    return m_openAndNewTab;
+}
+void TabWidget::setOpenAndNewTab(bool openAndNewTab)
+{
+    m_openAndNewTab = openAndNewTab;
+}
+
+//リンクを開く
+void TabWidget::openUrl(const QUrl &url)
+{
+    if(openAndNewTab() || count() == 0){
+        //設定が新規タブとタブが無いとき
+        newTab(url);
+    }else{
+        //現在のタブ
+        WebPageForm *form = reinterpret_cast<WebPageForm *>(widget(currentIndex()));
+        form->setUrl(url);
+    }
 }
 //新しいタブ
 void TabWidget::newTab(const QUrl &url)
@@ -120,3 +161,37 @@ void TabWidget::reloadTab()
     WebPageForm *form = reinterpret_cast<WebPageForm *>(currentWidget());
     form->reload();
 }
+//タブとかを読み込む
+void TabWidget::load()
+{
+    QSettings settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT);
+    settings.beginGroup(QStringLiteral(SETTING_TAB));
+    setSaveOpenPage(settings.value(QStringLiteral(SETTING_TAB_SAVE_OPEN_PAGES), true).toBool());
+    setOpenAndNewTab(settings.value(QStringLiteral(SETTING_TAB_OPEN_AND_NEWTAB), true).toBool());
+    if(count() == 0 && saveOpenPage()){   //タブが無いときだけ復元
+        QList<QVariant> pagelist = settings.value(QStringLiteral(SETTING_TAB_OPEN_PAGES), QVariant()).toList();
+        foreach (QVariant page, pagelist) {
+            newTab(page.toString());
+        }
+    }
+    settings.endGroup();
+}
+//タブとか設定を保存する
+void TabWidget::save()
+{
+    QList<QVariant> pagelist;
+    WebPageForm *form;
+    QSettings settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT);
+    settings.beginGroup(QStringLiteral(SETTING_TAB));
+    settings.setValue(QStringLiteral(SETTING_TAB_SAVE_OPEN_PAGES), saveOpenPage());
+    settings.setValue(QStringLiteral(SETTING_TAB_OPEN_AND_NEWTAB), openAndNewTab());
+    if(saveOpenPage()){
+        for(int i=0; i<count(); i++){
+            form = reinterpret_cast<WebPageForm *>(widget(i));
+            pagelist.append(form->url().toString());
+        }
+    }
+    settings.setValue(QStringLiteral(SETTING_TAB_OPEN_PAGES), pagelist);
+    settings.endGroup();
+}
+

@@ -26,17 +26,28 @@ class TabWidget : public QTabWidget
 public:
     explicit TabWidget(QWidget* parent = 0);
 
+    bool saveOpenPage() const;
+    void setSaveOpenPage(bool saveOpenPage);
+    bool openAndNewTab() const;
+    void setOpenAndNewTab(bool openAndNewTab);
 
+    void openUrl(const QUrl &url);
     void newTab(const QUrl &url);
     void closeTab();
     void closeTab(WebPageForm *form);
     void closeTabAll();
     void reloadTab();
 
+    void load();
+    void save();
+
 
 private:
     class Private;
     Private *d;
+
+    bool m_saveOpenPage;
+    bool m_openAndNewTab;
 };
 
 #endif // TABWIDGET_H

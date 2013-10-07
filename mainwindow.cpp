@@ -215,7 +215,6 @@ MainWindow::Private::Private(MainWindow *parent)
 
     //ウインドウ分割
     connect(ui.actionSplitWindow, &QAction::triggered, [this]() {
-
         if(ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible()){
             //→非表示
             bakSplitterSizes = ui.splitter->sizes();    //非表示する前に保存しておく
@@ -722,6 +721,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.beginGroup(QStringLiteral(SETTING_MAINWINDOW));
     settings.setValue(QStringLiteral(SETTING_WINDOW_GEO), saveGeometry());
     settings.setValue(QStringLiteral(SETTING_WINDOW_STATE), saveState());
+    //分割ウインドウのサイズ調整
     settings.setValue(QStringLiteral(SETTING_SPLITTER_ON), d->ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible());
     if(d->ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible()){
         settings.setValue(QStringLiteral(SETTING_SPLITTER_SIZES), TimerData::toList<QVariant, int>(d->ui.splitter->sizes()));
@@ -729,6 +729,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
         settings.setValue(QStringLiteral(SETTING_SPLITTER_SIZES), TimerData::toList<QVariant, int>(d->bakSplitterSizes));
     }
     settings.endGroup();
+    //タブの保存
+    d->ui.tabWidget->save();
 
     QMainWindow::closeEvent(event);
 }
