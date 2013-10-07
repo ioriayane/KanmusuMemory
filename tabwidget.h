@@ -37,6 +37,8 @@ public:
     void closeTab(WebPageForm *form);
     void closeTabAll();
     void reloadTab();
+    void prevTab();
+    void nextTab();
 
     void load();
     void save();

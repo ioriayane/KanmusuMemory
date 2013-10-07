@@ -72,6 +72,10 @@ private:
     QString makeFileName(const QString &format) const;
     QString makeTempFileName(const QString &format) const;
     void clickGame(QPoint pos, bool wait_little = false);
+
+    void setSplitWindowVisiblity(bool visible);
+    bool isSplitWindowVisible();
+
     MainWindow *q;
     TimerDialog *m_timerDialog;
 
@@ -215,39 +219,50 @@ MainWindow::Private::Private(MainWindow *parent)
 
     //ウインドウ分割
     connect(ui.actionSplitWindow, &QAction::triggered, [this]() {
-        if(ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible()){
-            //→非表示
-            bakSplitterSizes = ui.splitter->sizes();    //非表示する前に保存しておく
-        }else{
-            //→表示
-
-            //タブがひとつも無ければ追加
-            if(ui.tabWidget->count() == 0){
-                ui.tabWidget->newTab(QUrl("http://www56.atwiki.jp/kancolle/"));
-            }
-        }
-        //表示状態をひっくり返す
-        ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible());
-        //            ui.contentSplitter->setOrientation(Qt::Vertical);
-        qDebug() << "splitter size:" << ui.splitter->sizes();
+        setSplitWindowVisiblity(!isSplitWindowVisible());
     });
     //タブウインドウの再読み込み
     connect(ui.actionReloadTab, &QAction::triggered, [this]() {
-        if(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible())
+        if(!isSplitWindowVisible())
             return;
         ui.tabWidget->reloadTab();
     });
     //タブウインドウにタブを追加
     connect(ui.actionAddTab, &QAction::triggered, [this]() {
-        if(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible())
+        if(!isSplitWindowVisible())
             return;
         ui.tabWidget->newTab(QUrl("http://www.google.co.jp"));
     });
     //タブウインドウでタブを削除
     connect(ui.actionRemoveTab, &QAction::triggered, [this]() {
-        if(!ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible())
+        if(!isSplitWindowVisible())
             return;
         ui.tabWidget->closeTab();
+    });
+    //タブ移動
+    q->addAction(ui.actionTabSwitchPrev);
+    q->addAction(ui.actionTabSwitchNext);
+    q->addAction(ui.actionTabSwitchPrev2);
+    q->addAction(ui.actionTabSwitchNext2);
+    connect(ui.actionTabSwitchPrev, &QAction::triggered, [this]() {
+        if(!isSplitWindowVisible())
+            return;
+        ui.tabWidget->prevTab();
+    });
+    connect(ui.actionTabSwitchNext, &QAction::triggered, [this]() {
+        if(!isSplitWindowVisible())
+            return;
+        ui.tabWidget->nextTab();
+    });
+    connect(ui.actionTabSwitchPrev2, &QAction::triggered, [this]() {
+        if(!isSplitWindowVisible())
+            return;
+        ui.tabWidget->prevTab();
+    });
+    connect(ui.actionTabSwitchNext2, &QAction::triggered, [this]() {
+        if(!isSplitWindowVisible())
+            return;
+        ui.tabWidget->nextTab();
     });
 
     //WebViewの読込み開始
@@ -463,6 +478,31 @@ void MainWindow::Private::clickGame(QPoint pos, bool wait_little)
         QApplication::processEvents();
         QThread::usleep(1000);
     }
+}
+//分割ウインドウの表示切り替え
+void MainWindow::Private::setSplitWindowVisiblity(bool visible)
+{
+    if(visible){
+        //→表示
+
+        //タブがひとつも無ければ追加
+        if(ui.tabWidget->count() == 0){
+            ui.tabWidget->newTab(QUrl("http://www56.atwiki.jp/kancolle/"));
+        }
+    }else{
+        //→非表示
+        bakSplitterSizes = ui.splitter->sizes();    //非表示する前に保存しておく
+    }
+    //表示状態をひっくり返す
+    ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(visible);
+
+    //            ui.contentSplitter->setOrientation(Qt::Vertical);
+    //    qDebug() << "splitter size:" << ui.splitter->sizes();
+}
+//分割ウインドウの表示状態
+bool MainWindow::Private::isSplitWindowVisible()
+{
+    return ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible();
 }
 
 void MainWindow::Private::captureCatalog()

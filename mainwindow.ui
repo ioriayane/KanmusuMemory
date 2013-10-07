@@ -309,6 +309,38 @@
     <string>Ctrl+R</string>
    </property>
   </action>
+  <action name="actionTabSwitchPrev">
+   <property name="text">
+    <string>Tab Switch Prev</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Tab</string>
+   </property>
+  </action>
+  <action name="actionTabSwitchNext">
+   <property name="text">
+    <string>Tab Switch Next</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Tab</string>
+   </property>
+  </action>
+  <action name="actionTabSwitchPrev2">
+   <property name="text">
+    <string>Tab Switch Prev2</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+PgUp</string>
+   </property>
+  </action>
+  <action name="actionTabSwitchNext2">
+   <property name="text">
+    <string>Tab Switch Next2</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+PgDown</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

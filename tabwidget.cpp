@@ -161,6 +161,25 @@ void TabWidget::reloadTab()
     WebPageForm *form = reinterpret_cast<WebPageForm *>(currentWidget());
     form->reload();
 }
+//前のタブ
+void TabWidget::prevTab()
+{
+    int index = currentIndex() - 1;
+    if(index < 0){
+        index = count() - 1;
+    }
+    setCurrentIndex(index);
+}
+//次のタブ
+void TabWidget::nextTab()
+{
+    int index = currentIndex() + 1;
+    if(index >= count()){
+        index = 0;
+    }
+    setCurrentIndex(index);
+}
+
 //タブとかを読み込む
 void TabWidget::load()
 {
