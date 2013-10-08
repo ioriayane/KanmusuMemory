@@ -25,32 +25,30 @@ class webPage : public QWebPage {
 public:
     explicit webPage(QObject * parent)
         :QWebPage(parent)
-        , isMobileMode(true)
     {
         webpageform = reinterpret_cast<WebPageForm *>(parent);
     }
 
 public:
-    bool isMobileMode;
 
     //USER AGENTを調節
     QString userAgentForUrl(const QUrl &url ) const {
         QString ret = QWebPage::userAgentForUrl(url);
-        if(isMobileMode)
+        if(webpageform->isMobileMode())
             ret.append(QStringLiteral("; Android"));
         return ret;
-//        return QString("Mozilla/5.0 (Windows NT 6.2; Mobile; WOW64) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
-//        return QString("Mozilla/5.0 (Linux; U; Android 4.1.1; ja-jp; Galaxy Nexus Build/JRO03H) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
-//        return QString("Mozilla/5.0 (Android; Mobile; WOW64) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
+        //        return QString("Mozilla/5.0 (Windows NT 6.2; Mobile; WOW64) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
+        //        return QString("Mozilla/5.0 (Linux; U; Android 4.1.1; ja-jp; Galaxy Nexus Build/JRO03H) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
+        //        return QString("Mozilla/5.0 (Android; Mobile; WOW64) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
     }
     //リンクに関連する操作
-//    bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type) {
-//        qDebug() << "accept navi page:" << request.url() << "/" << type << "/frame=" << frame << "/this=" << this;
-//        return QWebPage::acceptNavigationRequest(frame, request, type);
-//    }
+    //    bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type) {
+    //        qDebug() << "accept navi page:" << request.url() << "/" << type << "/frame=" << frame << "/this=" << this;
+    //        return QWebPage::acceptNavigationRequest(frame, request, type);
+    //    }
     //ウインドウ作成
     QWebPage* createWindow(WebWindowType type) {
-//        qDebug() << "createWindow: " << type;
+        //        qDebug() << "createWindow: " << type;
         webPage *webpage = new webPage(webpageform);
         webpageform->makeNewWebPage(webpage);
         return webpage;
@@ -123,8 +121,7 @@ WebPageForm::Private::Private(WebPageForm *parent)
     //モバイルとPC版の切り換え
     connect(ui.changeMobileModeButton, &QPushButton::clicked, [this]() {
         webPage *page = reinterpret_cast<webPage *>(ui.webView->page());
-//        page->isMobileMode = !page->isMobileMode;
-        page->isMobileMode = ui.changeMobileModeButton->isChecked();
+        q->setMobileMode(ui.changeMobileModeButton->isChecked());
         qDebug() << "USER_AGENT:" << page->userAgentForUrl(ui.webView->url());
         ui.webView->reload();
     });
@@ -152,19 +149,20 @@ void WebPageForm::Private::setParentTitle(QString &title)
 
 WebPageForm::WebPageForm(QWidget *parent) :
     QWidget(parent),
-    d(new Private(this))
+    d(new Private(this)),
+    m_mobileMode(true)
 {
     d->setTab(reinterpret_cast<TabWidget *>(parent));
 
     connect(this, &QObject::destroyed, [this]() { delete d; });
 
-//    //親がタブだったら
-//    if(typeid(QTabWidget *) == typeid((QTabWidget *)parent)){
-//        d->setTab((QTabWidget *)parent);
-//        qDebug() << "Tab";
-//    }else{
-//        qDebug() << "not Tab " << typeid(parent).name();
-//    }
+    //    //親がタブだったら
+    //    if(typeid(QTabWidget *) == typeid((QTabWidget *)parent)){
+    //        d->setTab((QTabWidget *)parent);
+    //        qDebug() << "Tab";
+    //    }else{
+    //        qDebug() << "not Tab " << typeid(parent).name();
+    //    }
 }
 
 WebPageForm::~WebPageForm()
@@ -190,6 +188,17 @@ QString WebPageForm::title() const
 {
     return d->ui.webView->title();
 }
+//モバイルモードか
+bool WebPageForm::isMobileMode() const
+{
+    return m_mobileMode;
+}
+void WebPageForm::setMobileMode(bool mobileMode)
+{
+    m_mobileMode = mobileMode;
+    d->ui.changeMobileModeButton->setChecked(mobileMode);
+}
+
 //リロード
 void WebPageForm::reload()
 {

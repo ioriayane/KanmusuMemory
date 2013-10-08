@@ -31,8 +31,8 @@ public:
     bool openAndNewTab() const;
     void setOpenAndNewTab(bool openAndNewTab);
 
-    void openUrl(const QUrl &url);
-    void newTab(const QUrl &url);
+    void openUrl(const QUrl &url, bool mobilemode = true);
+    void newTab(const QUrl &url, bool mobilemode = true);
     void closeTab();
     void closeTab(WebPageForm *form);
     void closeTabAll();

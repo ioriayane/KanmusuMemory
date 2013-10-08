@@ -24,8 +24,8 @@ class TabWidget::Private
 public:
     Private(TabWidget *parent);
 
-    void newTab(const QUrl &url);
-    void newTab(QWebPage *webpage);
+    void newTab(const QUrl &url, bool mobilemode = true);
+    void newTab(QWebPage *webpage, bool mobilemode = true);
 
 private:
     TabWidget *q;
@@ -38,11 +38,12 @@ TabWidget::Private::Private(TabWidget *parent)
 
 }
 //新しいタブ
-void TabWidget::Private::newTab(const QUrl &url)
+void TabWidget::Private::newTab(const QUrl &url, bool mobilemode)
 {
-    qDebug() << "newTab:" << url;
+    qDebug() << "newTab:" << url << " : mobile=" << mobilemode;
 
     WebPageForm *web = new WebPageForm(q);
+    web->setMobileMode(mobilemode);
     web->setUrl(url);
     q->addTab(web, QStringLiteral("(untitled)"));
     q->setCurrentWidget(web);
@@ -57,11 +58,12 @@ void TabWidget::Private::newTab(const QUrl &url)
     });
 }
 
-void TabWidget::Private::newTab(QWebPage *webpage)
+void TabWidget::Private::newTab(QWebPage *webpage, bool mobilemode)
 {
     qDebug() << "newTab: webpage";
 
     WebPageForm *web = new WebPageForm(q);
+    web->setMobileMode(mobilemode);
     web->setWebPage(webpage);
     q->addTab(web, QStringLiteral("(untitled)"));
     q->setCurrentWidget(web);
@@ -116,21 +118,22 @@ void TabWidget::setOpenAndNewTab(bool openAndNewTab)
 }
 
 //リンクを開く
-void TabWidget::openUrl(const QUrl &url)
+void TabWidget::openUrl(const QUrl &url, bool mobilemode)
 {
     if(openAndNewTab() || count() == 0){
         //設定が新規タブとタブが無いとき
-        newTab(url);
+        newTab(url, mobilemode);
     }else{
         //現在のタブ
         WebPageForm *form = reinterpret_cast<WebPageForm *>(widget(currentIndex()));
+        form->setMobileMode(mobilemode);
         form->setUrl(url);
     }
 }
 //新しいタブ
-void TabWidget::newTab(const QUrl &url)
+void TabWidget::newTab(const QUrl &url, bool mobilemode)
 {
-    d->newTab(url);
+    d->newTab(url, mobilemode);
 }
 //タブを閉じる
 void TabWidget::closeTab()
@@ -189,8 +192,15 @@ void TabWidget::load()
     setOpenAndNewTab(settings.value(QStringLiteral(SETTING_TAB_OPEN_AND_NEWTAB), true).toBool());
     if(count() == 0 && saveOpenPage()){   //タブが無いときだけ復元
         QList<QVariant> pagelist = settings.value(QStringLiteral(SETTING_TAB_OPEN_PAGES), QVariant()).toList();
+        QList<QVariant> pageMobileModeList = settings.value(QStringLiteral(SETTING_TAB_OPEN_PAGES_MOBILE_MODE), QVariant()).toList();
+        int i=0;
         foreach (QVariant page, pagelist) {
-            newTab(page.toString());
+            if(i < pageMobileModeList.count()){
+                newTab(page.toString(), pageMobileModeList[i].toBool());
+                i++;
+            }else{
+                newTab(page.toString());
+            }
         }
     }
     settings.endGroup();
@@ -199,6 +209,7 @@ void TabWidget::load()
 void TabWidget::save()
 {
     QList<QVariant> pagelist;
+    QList<QVariant> pageMobileModeList;
     WebPageForm *form;
     QSettings settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT);
     settings.beginGroup(QStringLiteral(SETTING_TAB));
@@ -208,9 +219,11 @@ void TabWidget::save()
         for(int i=0; i<count(); i++){
             form = reinterpret_cast<WebPageForm *>(widget(i));
             pagelist.append(form->url().toString());
+            pageMobileModeList.append(form->isMobileMode());
         }
     }
     settings.setValue(QStringLiteral(SETTING_TAB_OPEN_PAGES), pagelist);
+    settings.setValue(QStringLiteral(SETTING_TAB_OPEN_PAGES_MOBILE_MODE), pageMobileModeList);
     settings.endGroup();
 }
 

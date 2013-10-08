@@ -60,6 +60,7 @@
 //設定：タブ関連
 #define SETTING_TAB                         "tab"
 #define SETTING_TAB_OPEN_PAGES              "openPages"
+#define SETTING_TAB_OPEN_PAGES_MOBILE_MODE  "openPagesMobileMode"
 #define SETTING_TAB_SAVE_OPEN_PAGES         "saveOpenPages"
 #define SETTING_TAB_OPEN_AND_NEWTAB         "openAndNewTab"
 

@@ -37,9 +37,12 @@ public:
     void setUrl(const QUrl &url);
     void setWebPage(QWebPage *webpage);
     QString title() const;
+    bool isMobileMode() const;
+    void setMobileMode(bool mobileMode);
 
     void reload();
     void makeNewWebPage(QWebPage *webpage);
+
 
 signals:
     void urlChanged();
@@ -49,6 +52,8 @@ signals:
 private:
     class Private;
     Private *d;
+
+    bool m_mobileMode;
 };
 
 #endif // WEBPAGEFORM_H
