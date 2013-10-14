@@ -48,6 +48,7 @@ public:
     //    }
     //ウインドウ作成
     QWebPage* createWindow(WebWindowType type) {
+        Q_UNUSED(type);
         //        qDebug() << "createWindow: " << type;
         webPage *webpage = new webPage(webpageform);
         webpageform->makeNewWebPage(webpage);
@@ -208,7 +209,6 @@ void WebPageForm::reload()
 
 void WebPageForm::makeNewWebPage(QWebPage *webpage)
 {
-    qDebug() << "slot make new page";
     emit addTabRequested(webpage);
 }
 
