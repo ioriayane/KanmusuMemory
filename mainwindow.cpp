@@ -24,6 +24,7 @@
 #include "timerdialog.h"
 #include "gamescreen.h"
 #include "webpageform.h"
+#include "favoritemenu.h"
 #include "kanmusumemory_global.h"
 
 #include <QtCore/QDate>
@@ -78,6 +79,7 @@ private:
 
     MainWindow *q;
     TimerDialog *m_timerDialog;
+    FavoriteMenu m_favorite;
 
 public:
     Ui::MainWindow ui;
@@ -89,6 +91,7 @@ MainWindow::Private::Private(MainWindow *parent)
     : q(parent)
     , settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT)
     , trayIcon(QIcon(":/resources/KanmusuMemory32.png"))
+    , m_favorite(parent, ui.favorite)
 {
     ui.setupUi(q);
 
@@ -283,6 +286,9 @@ MainWindow::Private::Private(MainWindow *parent)
     });
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
+
+    //お気に入りの読込み
+    m_favorite.load();
 
     //通知アイコン
 #ifdef Q_OS_WIN

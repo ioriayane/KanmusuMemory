@@ -57,6 +57,7 @@ TimerDialog::~TimerDialog()
 
 void TimerDialog::resizeEvent(QResizeEvent *event)
 {
+    Q_UNUSED(event);
     if(m_viewer != NULL){
         m_viewer->setGeometry(QRect(0, 0, width(), height()));
     }
@@ -64,6 +65,7 @@ void TimerDialog::resizeEvent(QResizeEvent *event)
 
 void TimerDialog::showEvent(QShowEvent *event)
 {
+    Q_UNUSED(event);
     if(m_viewer == NULL){
         m_viewer = new QtQuick2ApplicationViewer(windowHandle());
         connect(m_viewer->engine(), SIGNAL(quit()), this, SLOT(closeQml()));
