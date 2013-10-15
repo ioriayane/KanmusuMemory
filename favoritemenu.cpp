@@ -37,11 +37,11 @@ void FavoriteMenu::load(QMenu *menu)
         file.close();
 
         QJsonDocument json = QJsonDocument::fromJson(data);
-        QJsonValue value = json.object().value("kanmusu");
-        QJsonArray array = json.object().value("kanmusu").toArray();
+//        QJsonValue value = json.object().value("kanmusu");
+        QJsonArray array = json.object().value("root").toArray();
 
-        QAction *action;
-        QMenu *wiki;
+//        QAction *action;
+//        QMenu *wiki;
 //        QMenu *wiki = menu->addMenu(tr("Kanmusu"));
 //        action = wiki->addAction(tr("aaaaa"), this, SLOT(clickItem()));
 //        action->setData("http://wiki 1");
