@@ -293,6 +293,12 @@ MainWindow::Private::Private(MainWindow *parent)
 
     //お気に入りの読込み
     m_favorite.load(ui.favorite);
+    //お気に入りを選択した
+    connect(&m_favorite, &FavoriteMenu::selectFav, [this](const QUrl &url){
+        if(!isSplitWindowVisible())
+            setSplitWindowVisiblity(true);
+        ui.tabWidget->openUrl(url);
+    });
 
     //通知アイコン
 #ifdef Q_OS_WIN

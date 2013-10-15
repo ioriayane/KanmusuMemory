@@ -1,168 +1,167 @@
 {
 "_comment" : "serialは日付+二桁連番で更新されてるか判断する"
 ,"serial" : "2013102600"
-,"kanmusu" : 
+,"root" : 
 [
-	{ "title": "艦(Wikipedia)", "url": ""}
-	, {"array":
+	{"array":
 	[
-		  { "title": "戦艦", "url": ""}
+		{ "title": "艦(Wikipedia)", "url": ""}
 		, {"array":
 		[
-			  { "title": "大和型", "url": ""}
-			, { "title": "大和", "url": "http://ja.wikipedia.org/wiki/%E5%A4%A7%E5%92%8C_(%E6%88%A6%E8%89%A6)" }
-			, { "title": "(武蔵)", "url": "http://ja.wikipedia.org/wiki/%E6%AD%A6%E8%94%B5_(%E6%88%A6%E8%89%A6)" }
+			  { "title": "戦艦", "url": ""}
+			, {"array":
+			[
+				  { "title": "大和型", "url": ""}
+				, { "title": "大和", "url": "http://ja.wikipedia.org/wiki/%E5%A4%A7%E5%92%8C_(%E6%88%A6%E8%89%A6)" }
+				, { "title": "(武蔵)", "url": "http://ja.wikipedia.org/wiki/%E6%AD%A6%E8%94%B5_(%E6%88%A6%E8%89%A6)" }
+			]}
+			, {"array":
+			[
+				  { "title": "長門型", "url": ""}
+				, { "title": "長門", "url": "http://ja.wikipedia.org/wiki/%E9%95%B7%E9%96%80_(%E6%88%A6%E8%89%A6)" }
+				, { "title": "陸奥", "url": "http://ja.wikipedia.org/wiki/%E9%99%B8%E5%A5%A5_(%E6%88%A6%E8%89%A6)" }
+			]}
+			, {"array":
+			[
+				  { "title": "伊勢型", "url": ""}
+				, { "title": "伊勢", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8B%A2_(%E6%88%A6%E8%89%A6)" }
+				, { "title": "日向", "url": "http://ja.wikipedia.org/wiki/%E6%97%A5%E5%90%91_(%E6%88%A6%E8%89%A6)" }
+			]}
+			, {"array":
+			[
+				  { "title": "金剛型", "url": ""}
+				, { "title": "金剛", "url": "http://ja.wikipedia.org/wiki/%E9%87%91%E5%89%9B_(%E6%88%A6%E8%89%A6)" }
+				, { "title": "比叡", "url": "http://ja.wikipedia.org/wiki/%E6%AF%94%E5%8F%A1_(%E6%88%A6%E8%89%A6)" }
+				, { "title": "榛名", "url": "http://ja.wikipedia.org/wiki/%E6%A6%9B%E5%90%8D_(%E6%88%A6%E8%89%A6)" }
+				, { "title": "霧島", "url": "http://ja.wikipedia.org/wiki/%E9%9C%A7%E5%B3%B6_(%E6%88%A6%E8%89%A6)" }
+			]}
+			, {"array":
+			[
+				  { "title": "扶桑型", "url": ""}
+				, { "title": "扶桑", "url": "http://ja.wikipedia.org/wiki/%E6%89%B6%E6%A1%91_(%E6%88%A6%E8%89%A6)" }
+				, { "title": "山城", "url": "http://ja.wikipedia.org/wiki/%E5%B1%B1%E5%9F%8E_(%E6%88%A6%E8%89%A6)" }
+			]}
 		]}
 		, {"array":
 		[
-			  { "title": "長門型", "url": ""}
-			, { "title": "長門", "url": "http://ja.wikipedia.org/wiki/%E9%95%B7%E9%96%80_(%E6%88%A6%E8%89%A6)" }
-			, { "title": "陸奥", "url": "http://ja.wikipedia.org/wiki/%E9%99%B8%E5%A5%A5_(%E6%88%A6%E8%89%A6)" }
+			  { "title": "重巡洋艦", "url": ""}
+			, {"array":
+			[
+				  { "title": "最上型", "url": ""}
+				, { "title": "最上", "url": "404" }
+				, { "title": "三隈", "url": "http://ja.wikipedia.org/wiki/%E4%B8%89%E9%9A%88_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+				, { "title": "鈴谷", "url": "http://ja.wikipedia.org/wiki/%E9%88%B4%E8%B0%B7_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+				, { "title": "熊野", "url": "http://ja.wikipedia.org/wiki/%E7%86%8A%E9%87%8E_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+			]}
+			, {"array":
+			[
+				  { "title": "古鷹型", "url": ""}
+				, { "title": "古鷹", "url": "http://ja.wikipedia.org/wiki/%E5%8F%A4%E9%B7%B9_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+				, { "title": "加古", "url": "http://ja.wikipedia.org/wiki/%E5%8A%A0%E5%8F%A4_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+			]}
+			, {"array":
+			[
+				  { "title": "青葉型", "url": ""}
+				, { "title": "青葉", "url": "http://ja.wikipedia.org/wiki/%E9%9D%92%E8%91%89_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+				, { "title": "衣笠", "url": "http://ja.wikipedia.org/wiki/%E8%A1%A3%E7%AC%A0_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+			]}
+			, {"array":
+			[
+				  { "title": "妙高型", "url": ""}
+				, { "title": "妙高", "url": "http://ja.wikipedia.org/wiki/%E5%A6%99%E9%AB%98_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+				, { "title": "那智", "url": "http://ja.wikipedia.org/wiki/%E9%82%A3%E6%99%BA_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+				, { "title": "足柄", "url": "http://ja.wikipedia.org/wiki/%E8%B6%B3%E6%9F%84_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+				, { "title": "羽黒", "url": "http://ja.wikipedia.org/wiki/%E7%BE%BD%E9%BB%92_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+			]}
+			, {"array":
+			[
+				  { "title": "高雄型", "url": ""}
+				, { "title": "高雄", "url": "http://ja.wikipedia.org/wiki/%E9%AB%98%E9%9B%84_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+				, { "title": "愛宕", "url": "http://ja.wikipedia.org/wiki/%E6%84%9B%E5%AE%95_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+				, { "title": "摩耶", "url": "http://ja.wikipedia.org/wiki/%E6%91%A9%E8%80%B6_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+				, { "title": "鳥海", "url": "http://ja.wikipedia.org/wiki/%E9%B3%A5%E6%B5%B7_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+			]}
+			, {"array":
+			[
+				  { "title": "利根型", "url": ""}
+				, { "title": "利根", "url": "http://ja.wikipedia.org/wiki/%E5%88%A9%E6%A0%B9_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+				, { "title": "筑摩", "url": "http://ja.wikipedia.org/wiki/%E7%AD%91%E6%91%A9_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+			]}
 		]}
 		, {"array":
 		[
-			  { "title": "伊勢型", "url": ""}
-			, { "title": "伊勢", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8B%A2_(%E6%88%A6%E8%89%A6)" }
-			, { "title": "日向", "url": "http://ja.wikipedia.org/wiki/%E6%97%A5%E5%90%91_(%E6%88%A6%E8%89%A6)" }
+			  { "title": "軽巡洋艦", "url": ""}
+			, {"array":
+			[
+				  { "title": "型", "url": ""}
+				, { "title": "", "url": "" }
+				, { "title": "", "url": "" }
+			]}
 		]}
 		, {"array":
 		[
-			  { "title": "金剛型", "url": ""}
-			, { "title": "金剛", "url": "http://ja.wikipedia.org/wiki/%E9%87%91%E5%89%9B_(%E6%88%A6%E8%89%A6)" }
-			, { "title": "比叡", "url": "http://ja.wikipedia.org/wiki/%E6%AF%94%E5%8F%A1_(%E6%88%A6%E8%89%A6)" }
-			, { "title": "榛名", "url": "http://ja.wikipedia.org/wiki/%E6%A6%9B%E5%90%8D_(%E6%88%A6%E8%89%A6)" }
-			, { "title": "霧島", "url": "http://ja.wikipedia.org/wiki/%E9%9C%A7%E5%B3%B6_(%E6%88%A6%E8%89%A6)" }
+			  { "title": "駆逐艦", "url": ""}
+			, {"array":
+			[
+				  { "title": "型", "url": ""}
+				, { "title": "", "url": "" }
+				, { "title": "", "url": "" }
+			]}
 		]}
 		, {"array":
 		[
-			  { "title": "扶桑型", "url": ""}
-			, { "title": "扶桑", "url": "http://ja.wikipedia.org/wiki/%E6%89%B6%E6%A1%91_(%E6%88%A6%E8%89%A6)" }
-			, { "title": "山城", "url": "http://ja.wikipedia.org/wiki/%E5%B1%B1%E5%9F%8E_(%E6%88%A6%E8%89%A6)" }
-		]}
-	]}
-	, {"array":
-	[
-		  { "title": "重巡洋艦", "url": ""}
-		, {"array":
-		[
-			  { "title": "最上型", "url": ""}
-			, { "title": "最上", "url": "404" }
-			, { "title": "三隈", "url": "http://ja.wikipedia.org/wiki/%E4%B8%89%E9%9A%88_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-			, { "title": "鈴谷", "url": "http://ja.wikipedia.org/wiki/%E9%88%B4%E8%B0%B7_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-			, { "title": "熊野", "url": "http://ja.wikipedia.org/wiki/%E7%86%8A%E9%87%8E_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-		]}
-		, {"array":
-		[
-			  { "title": "古鷹型", "url": ""}
-			, { "title": "古鷹", "url": "http://ja.wikipedia.org/wiki/%E5%8F%A4%E9%B7%B9_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-			, { "title": "加古", "url": "http://ja.wikipedia.org/wiki/%E5%8A%A0%E5%8F%A4_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-		]}
-		, {"array":
-		[
-			  { "title": "青葉型", "url": ""}
-			, { "title": "青葉", "url": "http://ja.wikipedia.org/wiki/%E9%9D%92%E8%91%89_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-			, { "title": "衣笠", "url": "http://ja.wikipedia.org/wiki/%E8%A1%A3%E7%AC%A0_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-		]}
-		, {"array":
-		[
-			  { "title": "妙高型", "url": ""}
-			, { "title": "妙高", "url": "http://ja.wikipedia.org/wiki/%E5%A6%99%E9%AB%98_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-			, { "title": "那智", "url": "http://ja.wikipedia.org/wiki/%E9%82%A3%E6%99%BA_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-			, { "title": "足柄", "url": "http://ja.wikipedia.org/wiki/%E8%B6%B3%E6%9F%84_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-			, { "title": "羽黒", "url": "http://ja.wikipedia.org/wiki/%E7%BE%BD%E9%BB%92_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-		]}
-		, {"array":
-		[
-			  { "title": "高雄型", "url": ""}
-			, { "title": "高雄", "url": "http://ja.wikipedia.org/wiki/%E9%AB%98%E9%9B%84_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-			, { "title": "愛宕", "url": "http://ja.wikipedia.org/wiki/%E6%84%9B%E5%AE%95_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-			, { "title": "摩耶", "url": "http://ja.wikipedia.org/wiki/%E6%91%A9%E8%80%B6_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-			, { "title": "鳥海", "url": "http://ja.wikipedia.org/wiki/%E9%B3%A5%E6%B5%B7_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-		]}
-		, {"array":
-		[
-			  { "title": "利根型", "url": ""}
-			, { "title": "利根", "url": "http://ja.wikipedia.org/wiki/%E5%88%A9%E6%A0%B9_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-			, { "title": "筑摩", "url": "http://ja.wikipedia.org/wiki/%E7%AD%91%E6%91%A9_(%E9%87%8D%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
-		]}
-	]}
-	, {"array":
-	[
-		  { "title": "軽巡洋艦", "url": ""}
-		, {"array":
-		[
-			  { "title": "型", "url": ""}
+			  { "title": "正規空母", "url": ""}
+			, {"array":
+			[
+				  { "title": "翔鶴型", "url": ""}
+				, { "title": "翔鶴", "url": "http://ja.wikipedia.org/wiki/%E7%BF%94%E9%B6%B4_(%E7%A9%BA%E6%AF%8D)" }
+				, { "title": "瑞鶴", "url": "http://ja.wikipedia.org/wiki/%E7%91%9E%E9%B6%B4_(%E7%A9%BA%E6%AF%8D)" }
+			]}
+			, { "title": "赤城", "url": "http://ja.wikipedia.org/wiki/%E8%B5%A4%E5%9F%8E_(%E7%A9%BA%E6%AF%8D)" }
+			, { "title": "加賀", "url": "http://ja.wikipedia.org/wiki/%E5%8A%A0%E8%B3%80_(%E7%A9%BA%E6%AF%8D)" }
+			, { "title": "(信濃)", "url": "http://ja.wikipedia.org/wiki/%E4%BF%A1%E6%BF%83_(%E7%A9%BA%E6%AF%8D)" }
+			, { "title": "蒼龍", "url": "http://ja.wikipedia.org/wiki/%E8%92%BC%E9%BE%8D_(%E7%A9%BA%E6%AF%8D)" }
+			, { "title": "飛龍", "url": "http://ja.wikipedia.org/wiki/%E9%A3%9B%E9%BE%8D_(%E7%A9%BA%E6%AF%8D)" }
 			, { "title": "", "url": "" }
 			, { "title": "", "url": "" }
 		]}
-	]}
-	, {"array":
-	[
-		  { "title": "駆逐艦", "url": ""}
 		, {"array":
 		[
-			  { "title": "型", "url": ""}
-			, { "title": "", "url": "" }
-			, { "title": "", "url": "" }
-		]}
-	]}
-	, {"array":
-	[
-		  { "title": "正規空母", "url": ""}
-		, {"array":
-		[
-			  { "title": "翔鶴型", "url": ""}
-			, { "title": "翔鶴", "url": "http://ja.wikipedia.org/wiki/%E7%BF%94%E9%B6%B4_(%E7%A9%BA%E6%AF%8D)" }
-			, { "title": "瑞鶴", "url": "http://ja.wikipedia.org/wiki/%E7%91%9E%E9%B6%B4_(%E7%A9%BA%E6%AF%8D)" }
-		]}
-		, { "title": "赤城", "url": "http://ja.wikipedia.org/wiki/%E8%B5%A4%E5%9F%8E_(%E7%A9%BA%E6%AF%8D)" }
-		, { "title": "加賀", "url": "http://ja.wikipedia.org/wiki/%E5%8A%A0%E8%B3%80_(%E7%A9%BA%E6%AF%8D)" }
-		, { "title": "(信濃)", "url": "http://ja.wikipedia.org/wiki/%E4%BF%A1%E6%BF%83_(%E7%A9%BA%E6%AF%8D)" }
-		, { "title": "蒼龍", "url": "http://ja.wikipedia.org/wiki/%E8%92%BC%E9%BE%8D_(%E7%A9%BA%E6%AF%8D)" }
-		, { "title": "飛龍", "url": "http://ja.wikipedia.org/wiki/%E9%A3%9B%E9%BE%8D_(%E7%A9%BA%E6%AF%8D)" }
-		, { "title": "", "url": "" }
-		, { "title": "", "url": "" }
-	]}
-	, {"array":
-	[
-		  { "title": "軽空母", "url": ""}
-		, {"array":
-		[
-			  { "title": "飛鷹型", "url": ""}
-			, { "title": "飛鷹", "url": "http://ja.wikipedia.org/wiki/%E9%A3%9B%E9%B7%B9_(%E7%A9%BA%E6%AF%8D)" }
-			, { "title": "隼鷹", "url": "http://ja.wikipedia.org/wiki/%E9%9A%BC%E9%B7%B9_(%E7%A9%BA%E6%AF%8D)" }
+			  { "title": "軽空母", "url": ""}
+			, {"array":
+			[
+				  { "title": "飛鷹型", "url": ""}
+				, { "title": "飛鷹", "url": "http://ja.wikipedia.org/wiki/%E9%A3%9B%E9%B7%B9_(%E7%A9%BA%E6%AF%8D)" }
+				, { "title": "隼鷹", "url": "http://ja.wikipedia.org/wiki/%E9%9A%BC%E9%B7%B9_(%E7%A9%BA%E6%AF%8D)" }
+			]}
+			, {"array":
+			[
+				  { "title": "祥鳳型", "url": ""}
+				, { "title": "祥鳳", "url": "http://ja.wikipedia.org/wiki/%E7%A5%A5%E9%B3%B3_(%E7%A9%BA%E6%AF%8D)" }
+				, { "title": "瑞鳳", "url": "http://ja.wikipedia.org/wiki/%E7%91%9E%E9%B3%B3_(%E7%A9%BA%E6%AF%8D)" }
+			]}
+			, { "title": "鳳翔", "url": "" }
+			, { "title": "龍驤", "url": "http://ja.wikipedia.org/wiki/%E9%BE%8D%E9%A9%A4_(%E7%A9%BA%E6%AF%8D)" }
 		]}
 		, {"array":
 		[
-			  { "title": "祥鳳型", "url": ""}
-			, { "title": "祥鳳", "url": "http://ja.wikipedia.org/wiki/%E7%A5%A5%E9%B3%B3_(%E7%A9%BA%E6%AF%8D)" }
-			, { "title": "瑞鳳", "url": "http://ja.wikipedia.org/wiki/%E7%91%9E%E9%B3%B3_(%E7%A9%BA%E6%AF%8D)" }
+			  { "title": "水上機母艦", "url": ""}
+			, {"array":
+			[
+				  { "title": "千歳型", "url": ""}
+				, { "title": "千歳", "url": "http://ja.wikipedia.org/wiki/%E5%8D%83%E6%AD%B3_(%E7%A9%BA%E6%AF%8D)" }
+				, { "title": "千代田", "url": "http://ja.wikipedia.org/wiki/%E5%8D%83%E4%BB%A3%E7%94%B0_(%E7%A9%BA%E6%AF%8D)" }
+			]}
 		]}
-		, { "title": "鳳翔", "url": "" }
-		, { "title": "龍驤", "url": "http://ja.wikipedia.org/wiki/%E9%BE%8D%E9%A9%A4_(%E7%A9%BA%E6%AF%8D)" }
-	]}
-	, {"array":
-	[
-		  { "title": "水上機母艦", "url": ""}
 		, {"array":
 		[
-			  { "title": "千歳型", "url": ""}
-			, { "title": "千歳", "url": "http://ja.wikipedia.org/wiki/%E5%8D%83%E6%AD%B3_(%E7%A9%BA%E6%AF%8D)" }
-			, { "title": "千代田", "url": "http://ja.wikipedia.org/wiki/%E5%8D%83%E4%BB%A3%E7%94%B0_(%E7%A9%BA%E6%AF%8D)" }
+			  { "title": "潜水艦", "url": ""}
+			, { "title": "(伊19)", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E4%B8%80%E4%B9%9D%E6%BD%9C%E6%B0%B4%E8%89%A6" }
+			, { "title": "伊58", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E4%BA%94%E5%85%AB%E6%BD%9C%E6%B0%B4%E8%89%A6" }
+			, { "title": "伊168", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E4%B8%80%E5%85%AD%E5%85%AB%E6%BD%9C%E6%B0%B4%E8%89%A6" }
 		]}
 	]}
-	, {"array":
-	[
-		  { "title": "潜水艦", "url": ""}
-		, { "title": "(伊19)", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E4%B8%80%E4%B9%9D%E6%BD%9C%E6%B0%B4%E8%89%A6" }
-		, { "title": "伊58", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E4%BA%94%E5%85%AB%E6%BD%9C%E6%B0%B4%E8%89%A6" }
-		, { "title": "伊168", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E4%B8%80%E5%85%AD%E5%85%AB%E6%BD%9C%E6%B0%B4%E8%89%A6" }
-	]}
-]
-, "expedition" :
-[
-  {"hour": 0, "minute": 15, "second": 0, "msg1": "鎮守府海域", "msg2": "1 練習航海", "page": 0 }
-, {"hour": 0, "minute": 30, "second": 0, "msg1": "鎮守府海域", "msg2": "2 長距離練習航海", "page": 0 }
-, {"hour": 0, "minute": 20, "second": 0, "msg1": "鎮守府海域", "msg2": "3 警備任務", "page": 0 }
+	, { "title": "艦隊これくしょん ～艦これ～ 攻略＆2chまとめwiki", "url": "http://www56.atwiki.jp/kancolle/" }
+	, { "title": "艦隊これくしょん -艦これ- 攻略 Wiki*", "url": "http://wikiwiki.jp/kancolle/" }
 ]
 }

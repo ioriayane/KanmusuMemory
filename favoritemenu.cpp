@@ -5,6 +5,7 @@
 #include <QJsonValue>
 #include <QJsonArray>
 #include <QFile>
+#include <QUrl>
 #include <QDebug>
 
 #define TO_VALUE(array_at, key) QJsonObject(array_at.toObject()).value(key)
@@ -16,11 +17,6 @@
 FavoriteMenu::FavoriteMenu(QObject *parent) :
     QObject(parent)
 {
-}
-
-FavoriteMenu::~FavoriteMenu()
-{
-qDebug() << "delete fav menu";
 }
 
 void FavoriteMenu::load(QMenu *menu)
@@ -37,39 +33,30 @@ void FavoriteMenu::load(QMenu *menu)
         file.close();
 
         QJsonDocument json = QJsonDocument::fromJson(data);
-//        QJsonValue value = json.object().value("kanmusu");
         QJsonArray array = json.object().value("root").toArray();
-
-//        QAction *action;
-//        QMenu *wiki;
-//        QMenu *wiki = menu->addMenu(tr("Kanmusu"));
-//        action = wiki->addAction(tr("aaaaa"), this, SLOT(clickItem()));
-//        action->setData("http://wiki 1");
-//        action = wiki->addAction(tr("bbbb"), this, SLOT(clickItem()));
-//        action->setData("http://wiki 2");
-
+        QAction *action;
         //フォルダ
-        addItem(menu, &array);
-//        qDebug() << "title:" << TO_STRING(array.at(0), KEY_TITLE);
-//        wiki = menu->addMenu(TO_STRING(array.at(0), KEY_TITLE));
-//        for(int i=1; i<array.count(); i++){
-//            //アイテム
-//            qDebug() << "title:" << TO_STRING(array.at(i), KEY_TITLE);
-//            qDebug() << "url:" << TO_STRING(array.at(i), KEY_URL);
-//            action = wiki->addAction(TO_STRING(array.at(i), KEY_TITLE), this, SLOT(clickItem()));
-//            action->setData(TO_STRING(array.at(i), KEY_URL));
-//        }
+        for(int i=0; i<array.count(); i++){
+            //アイテム
+            if(TO_VALUE(array.at(i), "array").isArray()){
+                addItem(menu, &TO_ARRAY(array.at(i)));
+            }else{
+//            qDebug() << "title:" << TO_STRING(array->at(i), KEY_TITLE);
+                action = menu->addAction(TO_STRING(array.at(i), KEY_TITLE), this, SLOT(clickItem()));
+                action->setData(TO_STRING(array.at(i), KEY_URL));
+            }
+        }
     }
 }
-
-
-
 
 void FavoriteMenu::clickItem()
 {
     QAction *action = qobject_cast<QAction *>(sender());
     if(action){
-        qDebug() << "clickItem:" << action->data().toString();
+        if(action->data().toUrl().isValid()){
+            qDebug() << "clickItem:" << action->data().toUrl();
+            emit selectFav(action->data().toUrl());
+        }
     }
 }
 
@@ -87,7 +74,6 @@ bool FavoriteMenu::addItem(QMenu *parent, QJsonArray *array)
     for(int i=1; i<array->count(); i++){
         //アイテム
         if(TO_VALUE(array->at(i), "array").isArray()){
-//        if(array->at(i).isArray()){
             addItem(me, &TO_ARRAY(array->at(i)));
         }else{
 //            qDebug() << "title:" << TO_STRING(array->at(i), KEY_TITLE);

@@ -9,10 +9,11 @@ class FavoriteMenu : public QObject
     Q_OBJECT
 public:
     explicit FavoriteMenu(QObject *parent);
-    ~FavoriteMenu();
 
     void load(QMenu *menu);
+
 signals:
+    void selectFav(const QUrl &url);
 
 public slots:
     void clickItem();
