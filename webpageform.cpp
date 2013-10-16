@@ -16,9 +16,11 @@
 #include "webpageform.h"
 #include "tabwidget.h"
 #include "ui_webpageform.h"
+#include "kanmusumemory_global.h"
 
 #include <QWebView>
 #include <QNetworkRequest>
+#include <QSettings>
 #include <QDebug>
 
 class webPage : public QWebPage {
@@ -69,8 +71,11 @@ public:
 private:
     WebPageForm *q;
     TabWidget *tab;
+    QSettings settings;
 
     void setParentTitle(QString &title);
+    void updateFavorite(const QString &url, const QString &title, bool add);
+    bool isExistFavorite(const QString &url);
 public:
     Ui::WebPageForm ui;
 };
@@ -78,6 +83,7 @@ public:
 WebPageForm::Private::Private(WebPageForm *parent)
     : q(parent)
     , tab(NULL)
+    , settings(FAV_FILE_NAME, FAV_FILE_FORMAT)
 {
     ui.setupUi(q);
 
@@ -104,6 +110,7 @@ WebPageForm::Private::Private(WebPageForm *parent)
     //URLが変更された
     connect(ui.webView, &QWebView::urlChanged, [this]() {
         ui.urlEdit->setText(ui.webView->url().toString());
+        ui.favoriteButton->setChecked(isExistFavorite(ui.webView->url().toString()));
     });
 
     //URLの編集完了
@@ -117,6 +124,11 @@ WebPageForm::Private::Private(WebPageForm *parent)
             qDebug() << "windowCloseRequested";
             emit q->removeTabRequested(q);
         });
+    });
+
+    //お気に入り
+    connect(ui.favoriteButton, &QPushButton::clicked, [this]() {
+        updateFavorite(ui.webView->url().toString(), ui.webView->title(), ui.favoriteButton->isChecked());
     });
 
     //モバイルとPC版の切り換え
@@ -143,6 +155,66 @@ void WebPageForm::Private::setParentTitle(QString &title)
     if(index > -1){
         tab->setTabText(index, title);
     }
+}
+
+void WebPageForm::Private::updateFavorite(const QString &url, const QString &title, bool add)
+{
+    bool exist = false;
+    bool update = false;
+
+    settings.beginGroup(QStringLiteral(FAV_USER));
+
+    QHash<QString, QVariant> list = settings.value(QStringLiteral(FAV_USER_BOOKMARK)).toHash();
+    foreach (const QString &key, list.keys()) {
+//        qDebug() << list.value(key) << ", " << key;
+        if(url == key){
+            //見つかった
+            exist = true;
+            if(add){
+                //追加（ただしすでにある）
+//                qDebug() << "exist:" << title;
+            }else{
+                //削除
+//                qDebug() << "remove:" << title;
+                list.remove(url);
+                update = true;
+            }
+            break;
+        }
+    }
+    if(!exist){
+//        qDebug() << "add:" << title;
+        list.insert(url, title);
+        update = true;
+    }
+    if(update)
+        settings.setValue(QStringLiteral(FAV_USER_BOOKMARK), list);
+
+    settings.endGroup();
+    settings.sync();
+
+    if(update)
+        emit q->updateFavorite();
+}
+
+bool WebPageForm::Private::isExistFavorite(const QString &url)
+{
+    bool exist = false;
+
+    settings.beginGroup(QStringLiteral(FAV_USER));
+
+    QHash<QString, QVariant> list = settings.value(QStringLiteral(FAV_USER_BOOKMARK)).toHash();
+    foreach (const QString &key, list.keys()) {
+        if(url == key){
+            //見つかった
+            exist = true;
+            break;
+        }
+    }
+
+    settings.endGroup();
+
+    return exist;
 }
 
 

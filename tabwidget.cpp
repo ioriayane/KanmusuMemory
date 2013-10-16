@@ -56,6 +56,8 @@ void TabWidget::Private::newTab(const QUrl &url, bool mobilemode)
     connect(web, &WebPageForm::removeTabRequested, [this](WebPageForm *form) {
         q->closeTab(form);
     });
+    //お気に入りの更新
+    connect(web, &WebPageForm::updateFavorite, [this]() { emit q->updateFavorite(); });
 }
 
 void TabWidget::Private::newTab(QWebPage *webpage, bool mobilemode)
@@ -77,6 +79,8 @@ void TabWidget::Private::newTab(QWebPage *webpage, bool mobilemode)
         qDebug() << "removeTabRequest";
         q->closeTab(form);
     });
+    //お気に入りの更新
+    connect(web, &WebPageForm::updateFavorite, [this]() { emit q->updateFavorite(); });
 }
 
 TabWidget::TabWidget(QWidget* parent)

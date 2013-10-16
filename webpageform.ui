@@ -38,6 +38,21 @@
       <widget class="QLineEdit" name="urlEdit"/>
      </item>
      <item>
+      <widget class="QPushButton" name="favoriteButton">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="KanmusuMemory.qrc">
+         <normaloff>:/resources/fav_icon_off.png</normaloff>
+         <normalon>:/resources/fav_icon_on.png</normalon>:/resources/fav_icon_off.png</iconset>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="changeMobileModeButton">
        <property name="text">
         <string/>

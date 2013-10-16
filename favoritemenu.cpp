@@ -1,4 +1,5 @@
 #include "favoritemenu.h"
+#include "kanmusumemory_global.h"
 
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -6,6 +7,7 @@
 #include <QJsonArray>
 #include <QFile>
 #include <QUrl>
+#include <QSettings>
 #include <QDebug>
 
 #define TO_VALUE(array_at, key) QJsonObject(array_at.toObject()).value(key)
@@ -32,6 +34,9 @@ void FavoriteMenu::load(QMenu *menu)
         }
         file.close();
 
+        //一旦クリア
+        menu->clear();
+
         QJsonDocument json = QJsonDocument::fromJson(data);
         QJsonArray array = json.object().value("root").toArray();
         QAction *action;
@@ -46,6 +51,16 @@ void FavoriteMenu::load(QMenu *menu)
                 action->setData(TO_STRING(array.at(i), KEY_URL));
             }
         }
+
+        //ユーザー登録ぶん
+        QSettings settings(FAV_FILE_NAME, FAV_FILE_FORMAT);
+        settings.beginGroup(QStringLiteral(FAV_USER));
+        QHash<QString, QVariant> list = settings.value(QStringLiteral(FAV_USER_BOOKMARK)).toHash();
+        foreach (const QString &key, list.keys()) {
+            action = menu->addAction(list.value(key).toString(), this, SLOT(clickItem()));
+            action->setData(key);
+        }
+        settings.endGroup();
     }
 }
 

@@ -299,6 +299,11 @@ MainWindow::Private::Private(MainWindow *parent)
             setSplitWindowVisiblity(true);
         ui.tabWidget->openUrl(url);
     });
+    //お気に入りの更新
+    connect(ui.tabWidget, &TabWidget::updateFavorite, [this]() {
+        qDebug() << "UPDATE FAV";
+        m_favorite.load(ui.favorite);
+    });
 
     //通知アイコン
 #ifdef Q_OS_WIN

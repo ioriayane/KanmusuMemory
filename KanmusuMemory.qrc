@@ -14,5 +14,7 @@
         <file>qml/KanmusuMemory/js/HttpAccess.js</file>
         <file>resources/mobile_icon_off.png</file>
         <file>resources/mobile_icon_on.png</file>
+        <file>resources/fav_icon_off.png</file>
+        <file>resources/fav_icon_on.png</file>
     </qresource>
 </RCC>

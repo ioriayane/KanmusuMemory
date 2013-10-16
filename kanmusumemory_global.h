@@ -64,6 +64,13 @@
 #define SETTING_TAB_SAVE_OPEN_PAGES         "saveOpenPages"
 #define SETTING_TAB_OPEN_AND_NEWTAB         "openAndNewTab"
 
+//お気に入り
+#define FAV_FILE_NAME                       "favorite.ini"
+#define FAV_FILE_FORMAT                     QSettings::IniFormat
+#define FAV_USER                            "user"
+#define FAV_USER_BOOKMARK                   "bookmark"
+
+
 #define CLICK_EVENT_INTERVAL            1500
 #define CLICK_EVENT_INTERVAL_LITTLE     500
 #define CLICK_EVENT_FLUCTUATION         500

@@ -43,6 +43,8 @@ public:
     void load();
     void save();
 
+signals:
+    void updateFavorite();
 
 private:
     class Private;

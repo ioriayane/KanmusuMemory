@@ -139,7 +139,7 @@
    </widget>
    <widget class="QMenu" name="favorite">
     <property name="title">
-     <string>Favorite</string>
+     <string>Bookmarks</string>
     </property>
    </widget>
    <addaction name="file"/>
@@ -350,6 +350,11 @@
   <action name="action_2">
    <property name="text">
     <string>ああ</string>
+   </property>
+  </action>
+  <action name="actionAdd">
+   <property name="text">
+    <string>Add</string>
    </property>
   </action>
  </widget>

@@ -48,6 +48,7 @@ signals:
     void urlChanged();
     void addTabRequested(QWebPage *webpage);
     void removeTabRequested(WebPageForm *form);
+    void updateFavorite();
 
 private:
     class Private;
