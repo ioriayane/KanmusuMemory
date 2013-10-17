@@ -40,7 +40,7 @@ TabWidget::Private::Private(TabWidget *parent)
 //新しいタブ
 void TabWidget::Private::newTab(const QUrl &url, bool mobilemode)
 {
-    qDebug() << "newTab:" << url << " : mobile=" << mobilemode;
+//    qDebug() << "newTab:" << url << " : mobile=" << mobilemode;
 
     WebPageForm *web = new WebPageForm(q);
     web->setMobileMode(mobilemode);
@@ -62,7 +62,7 @@ void TabWidget::Private::newTab(const QUrl &url, bool mobilemode)
 
 void TabWidget::Private::newTab(QWebPage *webpage, bool mobilemode)
 {
-    qDebug() << "newTab: webpage";
+//    qDebug() << "newTab: webpage";
 
     WebPageForm *web = new WebPageForm(q);
     web->setMobileMode(mobilemode);
@@ -76,7 +76,6 @@ void TabWidget::Private::newTab(QWebPage *webpage, bool mobilemode)
     });
     //タブを閉じる
     connect(web, &WebPageForm::removeTabRequested, [this](WebPageForm *form) {
-        qDebug() << "removeTabRequest";
         q->closeTab(form);
     });
     //お気に入りの更新
@@ -94,7 +93,7 @@ TabWidget::TabWidget(QWidget* parent)
     //タブの閉じる要求
     connect(this, &QTabWidget::tabCloseRequested, [this](int index) {
         WebPageForm *form = reinterpret_cast<WebPageForm *>(widget(index));
-        qDebug() << "close tab(" << index << "):" << form->url();
+//        qDebug() << "close tab(" << index << "):" << form->url();
         delete form;
     });
 

@@ -88,7 +88,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+194"/>
+        <location filename="../mainwindow.cpp" line="+282"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -102,7 +102,7 @@
         <translation type="obsolete">艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+66"/>
+        <location line="+80"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
@@ -110,29 +110,29 @@
         <location line="+33"/>
         <location line="+13"/>
         <location line="+34"/>
-        <location line="+146"/>
+        <location line="+171"/>
         <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-259"/>
+        <location line="-284"/>
         <location line="+13"/>
-        <location line="+181"/>
+        <location line="+206"/>
         <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-241"/>
+        <location line="-266"/>
         <location line="+17"/>
-        <location line="+98"/>
+        <location line="+123"/>
         <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-200"/>
+        <location line="-225"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -142,7 +142,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+105"/>
+        <location line="+130"/>
         <source>not in catalog</source>
         <translation>図鑑表示ではありません</translation>
     </message>
@@ -176,7 +176,7 @@ Please wait while a cup of coffee.</source>
         <translation>艦隊詳細作成中</translation>
     </message>
     <message>
-        <location line="+122"/>
+        <location line="+135"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -193,7 +193,7 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">about:blank</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+84"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
@@ -203,9 +203,18 @@ Do you want to continue on an understanding of the security risk?
         <translation>ブラウザ(&amp;B)</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+16"/>
         <source>&amp;Help</source>
         <translation>ヘルプ(&amp;H)</translation>
+    </message>
+    <message>
+        <source>Bookmarks</source>
+        <translation type="obsolete">お気に入り</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>F&amp;avorite</source>
+        <translation>お気に入り(&amp;A)</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -213,7 +222,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>toolBar</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>&amp;Exit</source>
         <translation>終了(&amp;E)</translation>
     </message>
@@ -339,6 +348,86 @@ Do you want to continue on an understanding of the security risk?
         <source>Ctrl+F5</source>
         <translation>Ctrl+F5</translation>
     </message>
+    <message>
+        <location line="+5"/>
+        <source>Split window</source>
+        <translation>ウインドウ分割</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Add tab</source>
+        <translation>タブを追加</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ctrl+T</source>
+        <translation>Ctrl+T</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Remove tab</source>
+        <translation>タブを削除</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ctrl+W</source>
+        <translation>Ctrl+W</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Reload tab</source>
+        <translation>タブを再読み込み</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ctrl+R</source>
+        <translation>Ctrl+R</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Tab Switch Prev</source>
+        <translation>前のタブへ移動</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ctrl+Shift+Tab</source>
+        <translation>Ctrl+Shift+Tab</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Tab Switch Next</source>
+        <translation>次のタブへ移動</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ctrl+Tab</source>
+        <translation>Ctrl+Tab</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Tab Switch Prev2</source>
+        <translation>前のタブへ移動</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ctrl+PgUp</source>
+        <translation>Ctrl+PgUp</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Tab Switch Next2</source>
+        <translation>次のタブへ移動</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Ctrl+PgDown</source>
+        <translation>Ctrl+PgDown</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Add</source>
+        <translation>追加</translation>
+    </message>
 </context>
 <context>
     <name>MemoryDialog</name>
@@ -406,7 +495,7 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">ダイアログ</translation>
     </message>
     <message>
-        <location filename="../timerdialog.cpp" line="+91"/>
+        <location filename="../timerdialog.cpp" line="+93"/>
         <source>1st</source>
         <translation>第１</translation>
     </message>
@@ -605,6 +694,19 @@ Do you want to continue on an understanding of the security risk?
     </message>
 </context>
 <context>
+    <name>WebPageForm</name>
+    <message>
+        <location filename="../webpageform.ui" line="+14"/>
+        <source>Form</source>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <location line="+98"/>
+        <source>about:blank</source>
+        <translation>about:blank</translation>
+    </message>
+</context>
+<context>
     <name>WebPageOperation</name>
     <message>
         <source>failed find target</source>
@@ -614,9 +716,14 @@ Do you want to continue on an understanding of the security risk?
 <context>
     <name>WebView</name>
     <message>
-        <location filename="../webview.cpp" line="+300"/>
+        <location filename="../webview.cpp" line="+303"/>
         <source>failed find target</source>
         <translation>艦これが見つかりませんでした。</translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>Open in New Tab</source>
+        <translation>新しいタブで開く</translation>
     </message>
 </context>
 <context>
@@ -680,7 +787,7 @@ Do you want to continue on an understanding of the security risk?
 <context>
     <name>timerDialog</name>
     <message>
-        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+100"/>
+        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+159"/>
         <source>Docking</source>
         <translation>入渠</translation>
     </message>
@@ -700,12 +807,12 @@ Do you want to continue on an understanding of the security risk?
         <translation>時間になったらツイッターでお知らせする</translation>
     </message>
     <message>
-        <location line="+82"/>
+        <location line="+23"/>
         <source></source>
         <translation></translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+130"/>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>
@@ -859,7 +966,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>23 潜水艦通商破壊作戦</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+37"/>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>

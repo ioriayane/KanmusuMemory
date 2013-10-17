@@ -139,13 +139,13 @@
    </widget>
    <widget class="QMenu" name="favorite">
     <property name="title">
-     <string>Bookmarks</string>
+     <string>F&amp;avorite</string>
     </property>
    </widget>
    <addaction name="file"/>
    <addaction name="browser"/>
-   <addaction name="help"/>
    <addaction name="favorite"/>
+   <addaction name="help"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="toolBar">
@@ -345,11 +345,6 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+PgDown</string>
-   </property>
-  </action>
-  <action name="action_2">
-   <property name="text">
-    <string>ああ</string>
    </property>
   </action>
   <action name="actionAdd">
