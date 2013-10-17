@@ -8,8 +8,13 @@
 #include <QFile>
 #include <QUrl>
 #include <QSettings>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 #include <QDebug>
 
+#define FAVORITE_DOWNLOAD_FILE      QStringLiteral("favoritedata.json")
+#define FAVORITE_DOWNLOAD_URL       QUrl("http://relog.xii.jp/download/kancolle/data/favoritedata.json")
 #define TO_VALUE(array_at, key) QJsonObject(array_at.toObject()).value(key)
 #define TO_STRING(array_at, key) QJsonObject(array_at.toObject()).value(key).toString()
 #define TO_ARRAY(array_at) QJsonObject(array_at.toObject()).value("array").toArray()
@@ -18,13 +23,18 @@
 
 FavoriteMenu::FavoriteMenu(QObject *parent) :
     QObject(parent)
+  , m_currentLoadedFavDataDate(QDate::currentDate())
 {
 }
 
-void FavoriteMenu::load(QMenu *menu)
+void FavoriteMenu::load(QMenu *menu, bool download)
 {
+    //一旦クリア
+    menu->clear();
+
+    QAction *action;
     QByteArray data;
-    QFile file(QStringLiteral("favoritedata.json"));
+    QFile file(FAVORITE_DOWNLOAD_FILE);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
     }else{
         QTextStream in(&file);
@@ -34,12 +44,8 @@ void FavoriteMenu::load(QMenu *menu)
         }
         file.close();
 
-        //一旦クリア
-        menu->clear();
-
         QJsonDocument json = QJsonDocument::fromJson(data);
         QJsonArray array = json.object().value("root").toArray();
-        QAction *action;
         //フォルダ
         for(int i=0; i<array.count(); i++){
             //アイテム
@@ -52,15 +58,41 @@ void FavoriteMenu::load(QMenu *menu)
             }
         }
 
-        //ユーザー登録ぶん
-        QSettings settings(FAV_FILE_NAME, FAV_FILE_FORMAT);
-        settings.beginGroup(QStringLiteral(FAV_USER));
-        QHash<QString, QVariant> list = settings.value(QStringLiteral(FAV_USER_BOOKMARK)).toHash();
-        foreach (const QString &key, list.keys()) {
-            action = menu->addAction(list.value(key).toString(), this, SLOT(clickItem()));
-            action->setData(key);
-        }
-        settings.endGroup();
+        //現状のデータの日付を保存
+        m_currentLoadedFavDataDate = QDate::fromString(json.object().value("serial").toString().left(8), "yyyyMMdd");
+//        qDebug() << json.object().value("serial").toString().left(8);
+//        qDebug() << "serial=" << serial << "," << serial.toJulianDay();
+//        qDebug() << "today =" << QDate::currentDate() << "," << QDate::currentDate().toJulianDay();
+
+    }
+
+    //ユーザー登録ぶん
+    QSettings settings(FAV_FILE_NAME, FAV_FILE_FORMAT);
+    settings.beginGroup(QStringLiteral(FAV_USER));
+    QHash<QString, QVariant> list = settings.value(QStringLiteral(FAV_USER_BOOKMARK)).toHash();
+    foreach (const QString &key, list.keys()) {
+        action = menu->addAction(list.value(key).toString(), this, SLOT(clickItem()));
+        action->setData(key);
+    }
+    settings.endGroup();
+
+
+    //お気に入りをダウンロード
+    if(download){
+        qDebug() << "start download";
+        QNetworkAccessManager *net = new QNetworkAccessManager(this);
+        connect(net, &QNetworkAccessManager::finished, [this](QNetworkReply *reply) {
+            if(reply->error() == QNetworkReply::NoError){
+                QFile file(FAVORITE_DOWNLOAD_FILE);
+                if(file.open(QIODevice::WriteOnly)){
+                    file.write(reply->readAll());
+                    file.close();
+                    //通知
+                    emit downloadFinished();
+                }
+            }
+        });
+        net->get(QNetworkRequest(FAVORITE_DOWNLOAD_URL));
     }
 }
 
@@ -69,7 +101,7 @@ void FavoriteMenu::clickItem()
     QAction *action = qobject_cast<QAction *>(sender());
     if(action){
         if(action->data().toUrl().isValid()){
-            qDebug() << "clickItem:" << action->data().toUrl();
+//            qDebug() << "clickItem:" << action->data().toUrl();
             emit selectFav(action->data().toUrl());
         }
     }

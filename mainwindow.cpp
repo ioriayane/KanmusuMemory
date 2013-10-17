@@ -293,7 +293,7 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
 
     //お気に入りの読込み
-    m_favorite.load(ui.favorite);
+    m_favorite.load(ui.favorite, true);
     //お気に入りを選択した
     connect(&m_favorite, &FavoriteMenu::selectFav, [this](const QUrl &url){
         if(!isSplitWindowVisible())
@@ -302,7 +302,10 @@ MainWindow::Private::Private(MainWindow *parent)
     });
     //お気に入りの更新
     connect(ui.tabWidget, &TabWidget::updateFavorite, [this]() {
-        qDebug() << "UPDATE FAV";
+        m_favorite.load(ui.favorite);
+    });
+    //お気に入りのダウンロード
+    connect(&m_favorite, &FavoriteMenu::downloadFinished, [this]() {
         m_favorite.load(ui.favorite);
     });
 
