@@ -125,7 +125,18 @@ WebPageForm::Private::Private(WebPageForm *parent)
             emit q->removeTabRequested(q);
         });
     });
-
+    //戻る
+    connect(ui.goBackButton, &QPushButton::clicked, [this]() {
+        ui.webView->back();
+    });
+    //進む
+    connect(ui.goForwardButton, &QPushButton::clicked, [this]() {
+        ui.webView->forward();
+    });
+    //リロード
+    connect(ui.reloadButton, &QPushButton::clicked, [this]() {
+        ui.webView->reload();
+    });
     //お気に入り
     connect(ui.favoriteButton, &QPushButton::clicked, [this]() {
         updateFavorite(ui.webView->url().toString(), ui.webView->title(), ui.favoriteButton->isChecked());

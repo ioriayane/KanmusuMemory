@@ -35,7 +35,40 @@
       <number>1</number>
      </property>
      <item>
+      <widget class="QPushButton" name="goBackButton">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="KanmusuMemory.qrc">
+         <normaloff>:/resources/go_back.png</normaloff>:/resources/go_back.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="goForwardButton">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="KanmusuMemory.qrc">
+         <normaloff>:/resources/go_forward.png</normaloff>:/resources/go_forward.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QLineEdit" name="urlEdit"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="reloadButton">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset resource="KanmusuMemory.qrc">
+         <normaloff>:/resources/reload.png</normaloff>:/resources/reload.png</iconset>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="favoriteButton">

@@ -28,10 +28,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="388.56444"
-     inkscape:cy="663.28852"
+     inkscape:cx="111.89926"
+     inkscape:cy="662.11701"
      inkscape:document-units="px"
-     inkscape:current-layer="layer4"
+     inkscape:current-layer="layer6"
      showgrid="true"
      inkscape:window-width="1560"
      inkscape:window-height="1038"
@@ -245,10 +245,12 @@
   <g
      inkscape:groupmode="layer"
      id="layer4"
-     inkscape:label="星">
+     inkscape:label="星"
+     sodipodi:insensitive="true"
+     style="display:none">
     <path
        sodipodi:type="star"
-       style="fill:none;fill-opacity:1;stroke:#ffa64a;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       style="fill:none;stroke:#ffa64a;stroke-width:5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
        id="path3796"
        sodipodi:sides="5"
        sodipodi:cx="470"
@@ -267,6 +269,77 @@
        inkscape:export-filename="D:\QtProjects\KanmusuMemory\resources\path2.png"
        inkscape:export-xdpi="9.29"
        inkscape:export-ydpi="9.29" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="進む"
+     sodipodi:insensitive="true"
+     style="display:none">
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Papyrus;-inkscape-font-specification:Papyrus"
+       x="136"
+       y="229.36218"
+       id="text4892"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4894"
+         x="136"
+         y="229.36218" /></text>
+    <g
+       id="g4923"
+       transform="matrix(-1,0,0,1,519.28571,-16.928571)"
+       inkscape:export-filename="D:\QtProjects\KanmusuMemory\resources\g3967.png"
+       inkscape:export-xdpi="9.29"
+       inkscape:export-ydpi="9.29">
+      <path
+         inkscape:connector-curvature="0"
+         id="path4896"
+         d="m 130,322.36218 c 250,0 250,0 250,0"
+         style="fill:none;stroke:#46494a;stroke-width:30;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4898"
+         d="m 300,242.36218 80,80"
+         style="fill:none;stroke:#46494a;stroke-width:30;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4898-1"
+         d="m 300,403.36218 80,-80"
+         style="fill:none;stroke:#46494a;stroke-width:30;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer6"
+     inkscape:label="リロード">
+    <g
+       id="g3833"
+       transform="translate(-20.21503,12.885668)">
+      <path
+         sodipodi:nodetypes="czzc"
+         inkscape:connector-curvature="0"
+         id="path4931"
+         d="m 342.59964,344.68494 c 29.97294,-43.69112 20.8275,-92.80048 -22.86362,-122.77343 -43.69111,-29.97294 -92.80049,-20.8275 -122.77343,22.86362 -29.97294,43.69111 -20.82748,92.80048 22.86363,122.77342"
+         style="fill:none;stroke:#46494a;stroke-width:25;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3787"
+         d="m 346.0081,347.93419 c 51.52115,-30.75016 51.52115,-30.75016 51.52115,-30.75016"
+         style="fill:none;stroke:#46494a;stroke-width:25;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path3787-1"
+         d="m 322.62856,288.58857 c 20.47949,56.39673 20.47949,56.39673 20.47949,56.39673"
+         style="fill:none;stroke:#46494a;stroke-width:25;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+      <path
+         sodipodi:nodetypes="czzc"
+         inkscape:connector-curvature="0"
+         id="path4931-7"
+         d="m 358.18906,279.63329 c -8.06852,-52.36592 -48.35813,-81.89753 -100.72406,-73.82902 -52.36592,8.06852 -81.89753,48.35814 -73.82903,100.72405 8.06852,52.36593 48.35815,81.89754 100.72407,73.82902"
+         style="fill:none;stroke:#46494a;stroke-width:25;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+    </g>
   </g>
   <g
      inkscape:groupmode="layer"
