@@ -13,7 +13,10 @@ SOURCES += main.cpp\
     timerdialog.cpp \
     webview.cpp \
     gamescreen.cpp \
-    imageeditdialog.cpp
+    imageeditdialog.cpp \
+    webpageform.cpp \
+    tabwidget.cpp \
+    favoritemenu.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -26,7 +29,10 @@ HEADERS  += mainwindow.h \
     kanmusumemory_global.h \
     webview.h \
     gamescreen.h \
-    imageeditdialog.h
+    imageeditdialog.h \
+    webpageform.h \
+    tabwidget.h \
+    favoritemenu.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \
@@ -34,7 +40,8 @@ FORMS    += mainwindow.ui \
     aboutdialog.ui \
     memorydialog.ui \
     timerdialog.ui \
-    imageeditdialog.ui
+    imageeditdialog.ui \
+    webpageform.ui
 
 
 include(qtquick/qtquick.pri)

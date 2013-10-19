@@ -42,6 +42,10 @@ int main(int argc, char *argv[])
     translator.load(QString("qt_%1" ).arg(QLocale::system().name()), dir);
     //言語データを登録する
     a.installTranslator(&translator);
+    //Qt標準機能の日本語化(QWebPageとか)
+    QTranslator translator2;
+    translator2.load(QString("qt_ja" ), dir);
+    a.installTranslator(&translator2);
 
     qmlRegisterType<OperatingSystem>("jp.relog.plugin.operatingsystem"
                                      , 1, 0, "OperatingSystem");

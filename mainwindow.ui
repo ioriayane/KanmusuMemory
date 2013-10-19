@@ -24,7 +24,7 @@
     <normaloff>:/resources/KanmusuMemory32.png</normaloff>:/resources/KanmusuMemory32.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
     <property name="spacing">
      <number>0</number>
     </property>
@@ -41,13 +41,51 @@
      <number>0</number>
     </property>
     <item>
-     <widget class="WebView" name="webView" native="true"/>
-    </item>
-    <item>
-     <widget class="QProgressBar" name="progressBar">
-      <property name="value">
-       <number>24</number>
+     <widget class="QSplitter" name="splitter">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="WebView" name="webView" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>800</width>
+            <height>480</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QProgressBar" name="progressBar">
+          <property name="value">
+           <number>0</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="TabWidget" name="tabWidget">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>480</height>
+        </size>
+       </property>
+       <property name="currentIndex">
+        <number>-1</number>
+       </property>
+       <property name="tabsClosable">
+        <bool>true</bool>
+       </property>
+       <property name="movable">
+        <bool>true</bool>
+       </property>
+      </widget>
      </widget>
     </item>
    </layout>
@@ -86,6 +124,11 @@
     <addaction name="separator"/>
     <addaction name="actionFullScreen"/>
     <addaction name="separator"/>
+    <addaction name="actionSplitWindow"/>
+    <addaction name="actionReloadTab"/>
+    <addaction name="actionAddTab"/>
+    <addaction name="actionRemoveTab"/>
+    <addaction name="separator"/>
     <addaction name="actionClearAccessCache"/>
    </widget>
    <widget class="QMenu" name="help">
@@ -94,8 +137,14 @@
     </property>
     <addaction name="about"/>
    </widget>
+   <widget class="QMenu" name="favorite">
+    <property name="title">
+     <string>F&amp;avorite</string>
+    </property>
+   </widget>
    <addaction name="file"/>
    <addaction name="browser"/>
+   <addaction name="favorite"/>
    <addaction name="help"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -114,6 +163,7 @@
    <addaction name="notificationTimer"/>
    <addaction name="captureCatalog"/>
    <addaction name="captureFleetDetail"/>
+   <addaction name="actionSplitWindow"/>
   </widget>
   <action name="exit">
    <property name="text">
@@ -236,6 +286,83 @@
     <string>Ctrl+F5</string>
    </property>
   </action>
+  <action name="actionSplitWindow">
+   <property name="text">
+    <string>Split window</string>
+   </property>
+  </action>
+  <action name="actionAddTab">
+   <property name="text">
+    <string>Add tab</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="actionRemoveTab">
+   <property name="text">
+    <string>Remove tab</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+W</string>
+   </property>
+  </action>
+  <action name="actionReloadTab">
+   <property name="text">
+    <string>Reload tab</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionTabSwitchPrev">
+   <property name="text">
+    <string>Tab Switch Prev</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Tab</string>
+   </property>
+  </action>
+  <action name="actionTabSwitchNext">
+   <property name="text">
+    <string>Tab Switch Next</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Tab</string>
+   </property>
+  </action>
+  <action name="actionTabSwitchPrev2">
+   <property name="text">
+    <string>Tab Switch Prev2</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+PgUp</string>
+   </property>
+  </action>
+  <action name="actionTabSwitchNext2">
+   <property name="text">
+    <string>Tab Switch Next2</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+PgDown</string>
+   </property>
+  </action>
+  <action name="actionAdd">
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </action>
+  <action name="actionFindInTab">
+   <property name="text">
+    <string>Find in tab</string>
+   </property>
+   <property name="toolTip">
+    <string>Find in tab</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -243,6 +370,12 @@
    <class>WebView</class>
    <extends>QWidget</extends>
    <header>webview.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>tabwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

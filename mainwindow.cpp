@@ -23,6 +23,8 @@
 #include "imageeditdialog.h"
 #include "timerdialog.h"
 #include "gamescreen.h"
+#include "webpageform.h"
+#include "favoritemenu.h"
 #include "kanmusumemory_global.h"
 
 #include <QtCore/QDate>
@@ -48,6 +50,7 @@
 
 #define URL_KANCOLLE "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
 
+#define SPLIT_WEBPAGE_INDEX     1       //分割ウインドウの通常ブラウザのインデックス
 
 #define STATUS_BAR_MSG_TIME     5000
 
@@ -64,31 +67,68 @@ public:
     void captureFleetDetail();
     void setFullScreen();
 
+    QList<int> bakSplitterSizes;    //幅のサイズ保存用にとっておく。（非表示だと0になってしまうから）
 private:
     void maskImage(QImage *img, const QRect &rect);
     QString makeFileName(const QString &format) const;
     QString makeTempFileName(const QString &format) const;
     void clickGame(QPoint pos, bool wait_little = false);
+
+    void setSplitWindowVisiblity(bool visible);
+    bool isSplitWindowVisible();
+
     MainWindow *q;
     TimerDialog *m_timerDialog;
+    FavoriteMenu m_favorite;
 
 public:
     Ui::MainWindow ui;
     QSettings settings;         //設定管理
     QSystemTrayIcon trayIcon;   //トレイアイコン
+
+public slots:
+    void clickItem(){}
+
 };
 
 MainWindow::Private::Private(MainWindow *parent)
     : q(parent)
     , settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT)
     , trayIcon(QIcon(":/resources/KanmusuMemory32.png"))
+    , m_favorite(q)
 {
     ui.setupUi(q);
+
+    //WebViewの設定（クッキー）
     ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
+    //WebViewの設定（キャッシュ）
     QNetworkDiskCache *cache = new QNetworkDiskCache(q);
     cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
     cache->setMaximumCacheSize(1073741824); //about 1024MB
     ui.webView->page()->networkAccessManager()->setCache(cache);
+
+    QWebSettings *websetting = QWebSettings::globalSettings();
+    //JavaScript関連設定
+    websetting->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
+    websetting->setAttribute(QWebSettings::JavascriptCanCloseWindows, true);
+    //フォント設定
+#if defined(Q_OS_WIN32)
+//    websetting->setFontFamily(QWebSettings::StandardFont, "ＭＳ Ｐゴシック");
+//    websetting->setFontFamily(QWebSettings::StandardFont, "MS PGothic");
+    websetting->setFontFamily(QWebSettings::StandardFont, "Meiryo UI");
+    websetting->setFontFamily(QWebSettings::SerifFont, "MS PMincho");
+    websetting->setFontFamily(QWebSettings::SansSerifFont, "MS PGothic");
+    websetting->setFontFamily(QWebSettings::FixedFont, "MS Gothic");
+#elif defined(Q_OS_LINUX)
+#elif defined(Q_OS_MAC)
+    QWebSettings *websetting = QWebSettings::globalSettings();
+    websetting->setFontFamily(QWebSettings::StandardFont, "ヒラギノ角ゴPro");
+    websetting->setFontFamily(QWebSettings::SerifFont, "ヒラギノ明朝Pro");
+    websetting->setFontFamily(QWebSettings::SansSerifFont, "ヒラギノ角ゴPro");
+    websetting->setFontFamily(QWebSettings::FixedFont, "Osaka");
+#else
+#endif
+
 
     //通知タイマーのダイアログ作成
     m_timerDialog = new TimerDialog(q, &trayIcon, &settings);
@@ -178,10 +218,66 @@ MainWindow::Private::Private(MainWindow *parent)
             q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
         }else if(ui.webView->gameExists()){
             //フルスクリーンじゃなくてゲームがある
+            setSplitWindowVisiblity(false);
             q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
         }else{
             //フルスクリーンでゲームがないときは何もしない
         }
+    });
+
+    //ウインドウ分割
+    connect(ui.actionSplitWindow, &QAction::triggered, [this]() {
+        setSplitWindowVisiblity(!isSplitWindowVisible());
+    });
+    //タブウインドウの再読み込み
+    connect(ui.actionReloadTab, &QAction::triggered, [this]() {
+        if(!isSplitWindowVisible())
+            return;
+        ui.tabWidget->reloadTab();
+    });
+    //タブウインドウにタブを追加
+    connect(ui.actionAddTab, &QAction::triggered, [this]() {
+        if(!isSplitWindowVisible())
+            return;
+        ui.tabWidget->newTab(QUrl("http://www.google.co.jp"));
+    });
+    //タブウインドウでタブを削除
+    connect(ui.actionRemoveTab, &QAction::triggered, [this]() {
+        if(!isSplitWindowVisible())
+            return;
+        ui.tabWidget->closeTab();
+    });
+    //タブで検索
+    q->addAction(ui.actionFindInTab);
+    connect(ui.actionFindInTab, &QAction::triggered, [this]() {
+        if(!isSplitWindowVisible())
+            return;
+        ui.tabWidget->find();
+    });
+    //タブ移動
+    q->addAction(ui.actionTabSwitchPrev);
+    q->addAction(ui.actionTabSwitchNext);
+    q->addAction(ui.actionTabSwitchPrev2);
+    q->addAction(ui.actionTabSwitchNext2);
+    connect(ui.actionTabSwitchPrev, &QAction::triggered, [this]() {
+        if(!isSplitWindowVisible())
+            return;
+        ui.tabWidget->prevTab();
+    });
+    connect(ui.actionTabSwitchNext, &QAction::triggered, [this]() {
+        if(!isSplitWindowVisible())
+            return;
+        ui.tabWidget->nextTab();
+    });
+    connect(ui.actionTabSwitchPrev2, &QAction::triggered, [this]() {
+        if(!isSplitWindowVisible())
+            return;
+        ui.tabWidget->prevTab();
+    });
+    connect(ui.actionTabSwitchNext2, &QAction::triggered, [this]() {
+        if(!isSplitWindowVisible())
+            return;
+        ui.tabWidget->nextTab();
     });
 
     //WebViewの読込み開始
@@ -202,6 +298,23 @@ MainWindow::Private::Private(MainWindow *parent)
     });
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
+
+    //お気に入りの読込み
+    m_favorite.load(ui.favorite, true);
+    //お気に入りを選択した
+    connect(&m_favorite, &FavoriteMenu::selectFav, [this](const QUrl &url){
+        if(!isSplitWindowVisible())
+            setSplitWindowVisiblity(true);
+        ui.tabWidget->openUrl(url);
+    });
+    //お気に入りの更新
+    connect(ui.tabWidget, &TabWidget::updateFavorite, [this]() {
+        m_favorite.load(ui.favorite);
+    });
+    //お気に入りのダウンロード
+    connect(&m_favorite, &FavoriteMenu::downloadFinished, [this]() {
+        m_favorite.load(ui.favorite);
+    });
 
     //通知アイコン
 #ifdef Q_OS_WIN
@@ -397,6 +510,31 @@ void MainWindow::Private::clickGame(QPoint pos, bool wait_little)
         QApplication::processEvents();
         QThread::usleep(1000);
     }
+}
+//分割ウインドウの表示切り替え
+void MainWindow::Private::setSplitWindowVisiblity(bool visible)
+{
+    if(visible){
+        //→表示
+
+        //タブがひとつも無ければ追加
+        if(ui.tabWidget->count() == 0){
+            ui.tabWidget->newTab(QUrl("http://www56.atwiki.jp/kancolle/"));
+        }
+    }else{
+        //→非表示
+        bakSplitterSizes = ui.splitter->sizes();    //非表示する前に保存しておく
+    }
+    //表示状態をひっくり返す
+    ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(visible);
+
+    //            ui.contentSplitter->setOrientation(Qt::Vertical);
+    //    qDebug() << "splitter size:" << ui.splitter->sizes();
+}
+//分割ウインドウの表示状態
+bool MainWindow::Private::isSplitWindowVisible()
+{
+    return ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible();
 }
 
 void MainWindow::Private::captureCatalog()
@@ -606,6 +744,10 @@ MainWindow::MainWindow(QWidget *parent)
     settings.beginGroup(QStringLiteral(SETTING_MAINWINDOW));
     restoreGeometry(settings.value(QStringLiteral(SETTING_WINDOW_GEO)).toByteArray());
     restoreState(settings.value(QStringLiteral(SETTING_WINDOW_STATE)).toByteArray());
+    //分割ウインドウのサイズ調整
+    d->bakSplitterSizes = TimerData::toIntList(settings.value(QStringLiteral(SETTING_SPLITTER_SIZES), QList<QVariant>() << 900 << 300).toList());
+    d->ui.splitter->setSizes(d->bakSplitterSizes);
+    d->ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(settings.value(QStringLiteral(SETTING_SPLITTER_ON)).toBool());
     settings.endGroup();
 
     //設定
@@ -651,7 +793,16 @@ void MainWindow::closeEvent(QCloseEvent *event)
     settings.beginGroup(QStringLiteral(SETTING_MAINWINDOW));
     settings.setValue(QStringLiteral(SETTING_WINDOW_GEO), saveGeometry());
     settings.setValue(QStringLiteral(SETTING_WINDOW_STATE), saveState());
+    //分割ウインドウのサイズ調整
+    settings.setValue(QStringLiteral(SETTING_SPLITTER_ON), d->ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible());
+    if(d->ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible()){
+        settings.setValue(QStringLiteral(SETTING_SPLITTER_SIZES), TimerData::toList<QVariant, int>(d->ui.splitter->sizes()));
+    }else{
+        settings.setValue(QStringLiteral(SETTING_SPLITTER_SIZES), TimerData::toList<QVariant, int>(d->bakSplitterSizes));
+    }
     settings.endGroup();
+    //タブの保存
+    d->ui.tabWidget->save();
 
     QMainWindow::closeEvent(event);
 }
@@ -672,6 +823,7 @@ void MainWindow::handleSslErrors(QNetworkReply *reply, const QList<QSslError> &e
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
+    Q_UNUSED(event);
     static bool prev = false;
 
     if(prev != isFullScreen()){

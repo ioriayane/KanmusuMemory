@@ -16,7 +16,7 @@
 #ifndef KANMUSUMEMORY_GLOBAL_H
 #define KANMUSUMEMORY_GLOBAL_H
 
-#define KANMEMO_VERSION "0.6.1"
+#define KANMEMO_VERSION "0.7"
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
     << "@task_jp"\
@@ -43,6 +43,8 @@
 #define SETTING_TIMERDIALOG         "timerdialog"
 #define SETTING_WINDOW_GEO          "geometry"
 #define SETTING_WINDOW_STATE        "windowState"
+#define SETTING_SPLITTER_SIZES      "splitterSizes"
+#define SETTING_SPLITTER_ON         "splitterOn"
 //設定：タイマー
 #define SETTING_TIMER                       "timer"
 #define SETTING_TIMER_DOCKING_TIME          "dockingTime"
@@ -55,6 +57,19 @@
 #define SETTING_TIMER_CONSTRUCTION_START    "constructionStart"
 #define SETTING_TIMER_CONSTRUCTION_RUNNING  "constructionRunning"
 #define SETTING_TIMER_TWEETFINISHED         "tweetFinished"
+//設定：タブ関連
+#define SETTING_TAB                         "tab"
+#define SETTING_TAB_OPEN_PAGES              "openPages"
+#define SETTING_TAB_OPEN_PAGES_MOBILE_MODE  "openPagesMobileMode"
+#define SETTING_TAB_SAVE_OPEN_PAGES         "saveOpenPages"
+#define SETTING_TAB_OPEN_AND_NEWTAB         "openAndNewTab"
+
+//お気に入り
+#define FAV_FILE_NAME                       "favorite.ini"
+#define FAV_FILE_FORMAT                     QSettings::IniFormat
+#define FAV_USER                            "user"
+#define FAV_USER_BOOKMARK                   "bookmark"
+
 
 #define CLICK_EVENT_INTERVAL            1500
 #define CLICK_EVENT_INTERVAL_LITTLE     500

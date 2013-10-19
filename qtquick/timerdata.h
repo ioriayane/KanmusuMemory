@@ -78,6 +78,7 @@ public:
 
     static QList<qreal> toRealList(const QList<QVariant> src);
     static QList<bool> toBoolList(const QList<QVariant> src);
+    static QList<int> toIntList(const QList<QVariant> src);
     template <class UD, class US>
     static QList<UD> toList(const QList<US> &src)
     {

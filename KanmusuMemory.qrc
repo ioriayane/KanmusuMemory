@@ -12,5 +12,12 @@
         <file>qml/KanmusuMemory/ImageEditView.qml</file>
         <file>qml/KanmusuMemory/ClipTool.qml</file>
         <file>qml/KanmusuMemory/js/HttpAccess.js</file>
+        <file>resources/mobile_icon_off.png</file>
+        <file>resources/mobile_icon_on.png</file>
+        <file>resources/fav_icon_off.png</file>
+        <file>resources/fav_icon_on.png</file>
+        <file>resources/go_back.png</file>
+        <file>resources/go_forward.png</file>
+        <file>resources/reload.png</file>
     </qresource>
 </RCC>
