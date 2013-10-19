@@ -186,6 +186,11 @@ void TabWidget::nextTab()
     setCurrentIndex(index);
 }
 
+void TabWidget::find()
+{
+//    currentWidget()
+}
+
 //タブとかを読み込む
 void TabWidget::load()
 {
