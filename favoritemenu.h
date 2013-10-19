@@ -12,6 +12,7 @@ public:
     explicit FavoriteMenu(QObject *parent);
 
     void load(QMenu *menu, bool download = false);
+    void updateFromInternet(bool force = false);
 
 signals:
     void selectFav(const QUrl &url);

@@ -1,3 +1,18 @@
+/*
+ * Copyright 2013 KanMemo Project.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 #include "favoritemenu.h"
 #include "kanmusumemory_global.h"
 
@@ -6,6 +21,7 @@
 #include <QJsonValue>
 #include <QJsonArray>
 #include <QFile>
+#include <QFileInfo>
 #include <QUrl>
 #include <QSettings>
 #include <QNetworkAccessManager>
@@ -79,21 +95,34 @@ void FavoriteMenu::load(QMenu *menu, bool download)
 
     //お気に入りをダウンロード
     if(download){
-        qDebug() << "start download";
-        QNetworkAccessManager *net = new QNetworkAccessManager(this);
-        connect(net, &QNetworkAccessManager::finished, [this](QNetworkReply *reply) {
-            if(reply->error() == QNetworkReply::NoError){
-                QFile file(FAVORITE_DOWNLOAD_FILE);
-                if(file.open(QIODevice::WriteOnly)){
-                    file.write(reply->readAll());
-                    file.close();
-                    //通知
-                    emit downloadFinished();
-                }
-            }
-        });
-        net->get(QNetworkRequest(FAVORITE_DOWNLOAD_URL));
+        updateFromInternet();
     }
+}
+
+//ダウンロードしてアップデートする
+void FavoriteMenu::updateFromInternet(bool force)
+{
+    QFileInfo fi(FAVORITE_DOWNLOAD_FILE);
+    if(!force && (fi.lastModified().addDays(1) >= QDateTime::currentDateTime())){
+        //更新期間すぎてないのでなにもしない
+//        qDebug() << "don't update, last modify+2days=" << fi.lastModified().addDays(2)
+//                 << ", today=" << QDateTime::currentDateTime();
+        return;
+    }
+    qDebug() << "start download";
+    QNetworkAccessManager *net = new QNetworkAccessManager(this);
+    connect(net, &QNetworkAccessManager::finished, [this](QNetworkReply *reply) {
+        if(reply->error() == QNetworkReply::NoError){
+            QFile file(FAVORITE_DOWNLOAD_FILE);
+            if(file.open(QIODevice::WriteOnly)){
+                file.write(reply->readAll());
+                file.close();
+                //通知
+                emit downloadFinished();
+            }
+        }
+    });
+    net->get(QNetworkRequest(FAVORITE_DOWNLOAD_URL));
 }
 
 void FavoriteMenu::clickItem()
