@@ -188,7 +188,10 @@ void TabWidget::nextTab()
 
 void TabWidget::find()
 {
-//    currentWidget()
+    WebPageForm *form = qobject_cast<WebPageForm *>(currentWidget());
+    if(form){
+        form->find();
+    }
 }
 
 //タブとかを読み込む

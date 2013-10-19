@@ -36,12 +36,19 @@ public:
     //USER AGENTを調節
     QString userAgentForUrl(const QUrl &url ) const {
         QString ret = QWebPage::userAgentForUrl(url);
-        if(webpageform->isMobileMode())
-            ret.append(QStringLiteral("; Android"));
+        if(webpageform->isMobileMode()){
+#if defined(Q_OS_WIN)
+//            ret = QStringLiteral("Mozilla/5.0 (Windows Phone OS 7.5;) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
+            ret = QStringLiteral("Mozilla/5.0 (Linux; U; Android 4.1.1; ja-jp;) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
+#elif defined(Q_OS_LINUX)
+            ret = QStringLiteral("Mozilla/5.0 (Linux; U; Android 4.1.1; ja-jp;) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
+#elif defined(Q_OS_MAC)
+            ret = QStringLiteral("Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
+#endif
+        }
         return ret;
         //        return QString("Mozilla/5.0 (Windows NT 6.2; Mobile; WOW64) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
         //        return QString("Mozilla/5.0 (Linux; U; Android 4.1.1; ja-jp; Galaxy Nexus Build/JRO03H) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
-        //        return QString("Mozilla/5.0 (Android; Mobile; WOW64) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
     }
     //リンクに関連する操作
     //    bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type) {
@@ -68,6 +75,8 @@ public:
     Private(WebPageForm *parent);
 
     void setTab(TabWidget *tab);
+    void setFindVisiblity(bool visible);
+    bool isFindVisible();
 private:
     WebPageForm *q;
     TabWidget *tab;
@@ -86,6 +95,9 @@ WebPageForm::Private::Private(WebPageForm *parent)
     , settings(FAV_FILE_NAME, FAV_FILE_FORMAT)
 {
     ui.setupUi(q);
+
+    //検索を非表示
+    setFindVisiblity(false);
 
     //WebViewの読込み開始
     connect(ui.webView, &QWebView::loadStarted, [this](){
@@ -150,13 +162,32 @@ WebPageForm::Private::Private(WebPageForm *parent)
         ui.webView->reload();
     });
 
+    //検索
+    connect(ui.findEdit, &QLineEdit::textChanged, [this]() {
+        ui.webView->findText(QString(), QWebPage::HighlightAllOccurrences);    //ハイライトを消す
+        if(ui.webView->findText(ui.findEdit->text())){
+            //検索できた
+            ui.webView->findText(ui.findEdit->text(), QWebPage::HighlightAllOccurrences);//ハイライトする
+        }
+    });
 }
-
+//タブ（親）を保存
 void WebPageForm::Private::setTab(TabWidget *tab)
 {
     this->tab = tab;
 }
-
+//検索の表示切り換え
+void WebPageForm::Private::setFindVisiblity(bool visible)
+{
+    ui.findButton->setVisible(visible);
+    ui.findEdit->setVisible(visible);
+}
+//検索を表示してるか
+bool WebPageForm::Private::isFindVisible()
+{
+    return ui.findEdit->isVisible();
+}
+//タブの名称を変更
 void WebPageForm::Private::setParentTitle(QString &title)
 {
     if(tab == NULL)
@@ -167,7 +198,7 @@ void WebPageForm::Private::setParentTitle(QString &title)
         tab->setTabText(index, title);
     }
 }
-
+//お気に入りを更新
 void WebPageForm::Private::updateFavorite(const QString &url, const QString &title, bool add)
 {
     bool exist = false;
@@ -207,7 +238,7 @@ void WebPageForm::Private::updateFavorite(const QString &url, const QString &tit
     if(update)
         emit q->updateFavorite();
 }
-
+//お気に入りに登録済みか確認
 bool WebPageForm::Private::isExistFavorite(const QString &url)
 {
     bool exist = false;
@@ -227,6 +258,7 @@ bool WebPageForm::Private::isExistFavorite(const QString &url)
 
     return exist;
 }
+
 
 
 
@@ -293,5 +325,15 @@ void WebPageForm::reload()
 void WebPageForm::makeNewWebPage(QWebPage *webpage)
 {
     emit addTabRequested(webpage);
+}
+
+void WebPageForm::find()
+{
+    if(d->isFindVisible()){
+        d->setFindVisiblity(false);
+    }else{
+        d->setFindVisiblity(true);
+        d->ui.findEdit->setFocus();
+    }
 }
 

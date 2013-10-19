@@ -43,6 +43,7 @@ public:
     void reload();
     void makeNewWebPage(QWebPage *webpage);
 
+    void find();
 
 signals:
     void urlChanged();
