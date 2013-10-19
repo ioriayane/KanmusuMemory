@@ -39,6 +39,7 @@ public:
     void reloadTab();
     void prevTab();
     void nextTab();
+    void find();
 
     void load();
     void save();

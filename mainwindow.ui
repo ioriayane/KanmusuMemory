@@ -352,6 +352,17 @@
     <string>Add</string>
    </property>
   </action>
+  <action name="actionFindInTab">
+   <property name="text">
+    <string>Find in tab</string>
+   </property>
+   <property name="toolTip">
+    <string>Find in tab</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

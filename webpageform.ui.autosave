@@ -141,6 +141,9 @@
          </property>
         </spacer>
        </item>
+       <item alignment="Qt::AlignTop">
+        <widget class="QLineEdit" name="lineEdit_2"/>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="widget" native="true">

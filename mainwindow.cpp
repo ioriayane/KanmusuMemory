@@ -247,6 +247,13 @@ MainWindow::Private::Private(MainWindow *parent)
             return;
         ui.tabWidget->closeTab();
     });
+    //タブで検索
+    q->addAction(ui.actionFindInTab);
+    connect(ui.actionFindInTab, &QAction::triggered, [this]() {
+        if(!isSplitWindowVisible())
+            return;
+        ui.tabWidget->find();
+    });
     //タブ移動
     q->addAction(ui.actionTabSwitchPrev);
     q->addAction(ui.actionTabSwitchNext);
