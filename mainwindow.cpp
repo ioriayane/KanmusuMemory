@@ -62,6 +62,9 @@ public:
     void captureGame(bool andEdit = false);         //保存する
     void checkSavePath();       //保存場所の確認
     void openTweetDialog(const QString &path);     //ツイートダイアログを開く
+    void openMemoryDialog();
+    void openSettingDialog();
+    void openAboutDialog();
     void openImageEditDialog(const QString &path, const QString &tempPath, const QString &editPath);
     void captureCatalog();
     void captureFleetDetail();
@@ -69,6 +72,8 @@ public:
 
     QList<int> bakSplitterSizes;    //幅のサイズ保存用にとっておく。（非表示だと0になってしまうから）
 private:
+    void setWebSettings();
+
     void maskImage(QImage *img, const QRect &rect);
     QString makeFileName(const QString &format) const;
     QString makeTempFileName(const QString &format) const;
@@ -99,36 +104,8 @@ MainWindow::Private::Private(MainWindow *parent)
 {
     ui.setupUi(q);
 
-    //WebViewの設定（クッキー）
-    ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
-    //WebViewの設定（キャッシュ）
-    QNetworkDiskCache *cache = new QNetworkDiskCache(q);
-    cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
-    cache->setMaximumCacheSize(1073741824); //about 1024MB
-    ui.webView->page()->networkAccessManager()->setCache(cache);
-
-    QWebSettings *websetting = QWebSettings::globalSettings();
-    //JavaScript関連設定
-    websetting->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
-    websetting->setAttribute(QWebSettings::JavascriptCanCloseWindows, true);
-    //フォント設定
-#if defined(Q_OS_WIN32)
-//    websetting->setFontFamily(QWebSettings::StandardFont, "ＭＳ Ｐゴシック");
-//    websetting->setFontFamily(QWebSettings::StandardFont, "MS PGothic");
-    websetting->setFontFamily(QWebSettings::StandardFont, "Meiryo UI");
-    websetting->setFontFamily(QWebSettings::SerifFont, "MS PMincho");
-    websetting->setFontFamily(QWebSettings::SansSerifFont, "MS PGothic");
-    websetting->setFontFamily(QWebSettings::FixedFont, "MS Gothic");
-#elif defined(Q_OS_LINUX)
-#elif defined(Q_OS_MAC)
-    QWebSettings *websetting = QWebSettings::globalSettings();
-    websetting->setFontFamily(QWebSettings::StandardFont, "ヒラギノ角ゴPro");
-    websetting->setFontFamily(QWebSettings::SerifFont, "ヒラギノ明朝Pro");
-    websetting->setFontFamily(QWebSettings::SansSerifFont, "ヒラギノ角ゴPro");
-    websetting->setFontFamily(QWebSettings::FixedFont, "Osaka");
-#else
-#endif
-
+    //Web関連の設定
+    setWebSettings();
 
     //通知タイマーのダイアログ作成
     m_timerDialog = new TimerDialog(q, &trayIcon, &settings);
@@ -151,64 +128,13 @@ MainWindow::Private::Private(MainWindow *parent)
         ui.webView->page()->networkAccessManager()->cache()->clear();
     });
     //画像リスト
-    connect(ui.viewMemory, &QAction::triggered, [this]() {
-        checkSavePath();
-        MemoryDialog dlg(settings.value(QStringLiteral("path")).toString(), q);
-        dlg.exec();
-        if(QFile::exists(dlg.imagePath())){
-            switch(dlg.nextOperation()){
-            case MemoryDialog::Tweet:
-                //つぶやく
-                openTweetDialog(dlg.imagePath());
-                break;
-            case MemoryDialog::Edit:
-            {
-                //編集
-                QString format;
-                if(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool())
-                    format = QStringLiteral("png");
-                else
-                    format = QStringLiteral("jpg");
-                QString path = makeFileName(format);
-                QString editPath = makeFileName(format);
-                openImageEditDialog(path ,dlg.imagePath(), editPath);
-                break;
-            }
-            default:
-                break;
-            }
-        }
-    });
+    connect(ui.viewMemory, &QAction::triggered, [this]() { openMemoryDialog(); });
     //通知タイマー
-    connect(ui.notificationTimer, &QAction::triggered, [this]() {
-        m_timerDialog->show();
-    });
-
+    connect(ui.notificationTimer, &QAction::triggered, [this]() { m_timerDialog->show(); });
     //設定ダイアログ表示
-    connect(ui.preferences, &QAction::triggered, [this]() {
-        SettingsDialog dlg(q);
-        dlg.setSavePath(settings.value(QStringLiteral("path")).toString());
-        dlg.setUnusedTwitter(settings.value(SETTING_GENERAL_UNUSED_TWITTER, false).toBool());
-        dlg.setSavePng(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool());
-        dlg.setMaskAdmiralName(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool());
-        dlg.setMaskHqLevel(settings.value(SETTING_GENERAL_MASK_HQ_LEVEL, false).toBool());
-        if (dlg.exec()) {
-            //設定更新
-            settings.setValue(QStringLiteral("path"), dlg.savePath());
-            settings.setValue(SETTING_GENERAL_UNUSED_TWITTER, dlg.unusedTwitter());
-            settings.setValue(SETTING_GENERAL_SAVE_PNG, dlg.savePng());
-            settings.setValue(SETTING_GENERAL_MASK_ADMIRAL_NAME, dlg.isMaskAdmiralName());
-            settings.setValue(SETTING_GENERAL_MASK_HQ_LEVEL, dlg.isMaskHqLevel());
-        }
-    });
-
+    connect(ui.preferences, &QAction::triggered, [this]() { openSettingDialog(); });
     //アバウト
-    connect(ui.about, &QAction::triggered, [this]() {
-        AboutDialog dlg(q);
-        dlg.setVersion(KANMEMO_VERSION);
-        dlg.setDevelopers(KANMEMO_DEVELOPERS);
-        dlg.exec();
-    });
+    connect(ui.about, &QAction::triggered, [this]() { openAboutDialog(); });
 
     //フルスクリーン
     q->addAction(ui.actionFullScreen);
@@ -311,7 +237,7 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.tabWidget, &TabWidget::updateFavorite, [this]() {
         m_favorite.load(ui.favorite);
     });
-    //お気に入りのダウンロード
+    //お気に入りのダウンロード終了
     connect(&m_favorite, &FavoriteMenu::downloadFinished, [this]() {
         m_favorite.load(ui.favorite);
     });
@@ -475,6 +401,62 @@ void MainWindow::Private::openTweetDialog(const QString &path)
         settings.setValue(SETTING_GENERAL_USER_ID, dlg.user_id());
         settings.setValue(SETTING_GENERAL_SCREEN_NAME, dlg.screen_name());
     }
+}
+//画像リストダイアログを開く
+void MainWindow::Private::openMemoryDialog()
+{
+    checkSavePath();
+    MemoryDialog dlg(settings.value(QStringLiteral("path")).toString(), q);
+    dlg.exec();
+    if(QFile::exists(dlg.imagePath())){
+        switch(dlg.nextOperation()){
+        case MemoryDialog::Tweet:
+            //つぶやく
+            openTweetDialog(dlg.imagePath());
+            break;
+        case MemoryDialog::Edit:
+        {
+            //編集
+            QString format;
+            if(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool())
+                format = QStringLiteral("png");
+            else
+                format = QStringLiteral("jpg");
+            QString path = makeFileName(format);
+            QString editPath = makeFileName(format);
+            openImageEditDialog(path ,dlg.imagePath(), editPath);
+            break;
+        }
+        default:
+            break;
+        }
+    }
+}
+//設定ダイアログを開く
+void MainWindow::Private::openSettingDialog()
+{
+    SettingsDialog dlg(q);
+    dlg.setSavePath(settings.value(QStringLiteral("path")).toString());
+    dlg.setUnusedTwitter(settings.value(SETTING_GENERAL_UNUSED_TWITTER, false).toBool());
+    dlg.setSavePng(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool());
+    dlg.setMaskAdmiralName(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool());
+    dlg.setMaskHqLevel(settings.value(SETTING_GENERAL_MASK_HQ_LEVEL, false).toBool());
+    if (dlg.exec()) {
+        //設定更新
+        settings.setValue(QStringLiteral("path"), dlg.savePath());
+        settings.setValue(SETTING_GENERAL_UNUSED_TWITTER, dlg.unusedTwitter());
+        settings.setValue(SETTING_GENERAL_SAVE_PNG, dlg.savePng());
+        settings.setValue(SETTING_GENERAL_MASK_ADMIRAL_NAME, dlg.isMaskAdmiralName());
+        settings.setValue(SETTING_GENERAL_MASK_HQ_LEVEL, dlg.isMaskHqLevel());
+    }
+}
+//アバウトダイアログを開く
+void MainWindow::Private::openAboutDialog()
+{
+    AboutDialog dlg(q);
+    dlg.setVersion(KANMEMO_VERSION);
+    dlg.setDevelopers(KANMEMO_DEVELOPERS);
+    dlg.exec();
 }
 //編集ダイアログを開く
 void MainWindow::Private::openImageEditDialog(const QString &path, const QString &tempPath, const QString &editPath)
@@ -732,6 +714,40 @@ void MainWindow::Private::setFullScreen()
         ui.webView->setViewMode(WebView::NormalMode);
     }
 
+}
+
+//Webページに関連する設定をする
+void MainWindow::Private::setWebSettings()
+{
+    //WebViewの設定（クッキー）
+    ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
+    //WebViewの設定（キャッシュ）
+    QNetworkDiskCache *cache = new QNetworkDiskCache(q);
+    cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    cache->setMaximumCacheSize(1073741824); //about 1024MB
+    ui.webView->page()->networkAccessManager()->setCache(cache);
+
+    QWebSettings *websetting = QWebSettings::globalSettings();
+    //JavaScript関連設定
+    websetting->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
+    websetting->setAttribute(QWebSettings::JavascriptCanCloseWindows, true);
+    //フォント設定
+#if defined(Q_OS_WIN32)
+//    websetting->setFontFamily(QWebSettings::StandardFont, "ＭＳ Ｐゴシック");
+//    websetting->setFontFamily(QWebSettings::StandardFont, "MS PGothic");
+    websetting->setFontFamily(QWebSettings::StandardFont, "Meiryo UI");
+    websetting->setFontFamily(QWebSettings::SerifFont, "MS PMincho");
+    websetting->setFontFamily(QWebSettings::SansSerifFont, "MS PGothic");
+    websetting->setFontFamily(QWebSettings::FixedFont, "MS Gothic");
+#elif defined(Q_OS_LINUX)
+#elif defined(Q_OS_MAC)
+    QWebSettings *websetting = QWebSettings::globalSettings();
+    websetting->setFontFamily(QWebSettings::StandardFont, "ヒラギノ角ゴPro");
+    websetting->setFontFamily(QWebSettings::SerifFont, "ヒラギノ明朝Pro");
+    websetting->setFontFamily(QWebSettings::SansSerifFont, "ヒラギノ角ゴPro");
+    websetting->setFontFamily(QWebSettings::FixedFont, "Osaka");
+#else
+#endif
 }
 
 
