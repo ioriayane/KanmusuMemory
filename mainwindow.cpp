@@ -741,7 +741,6 @@ void MainWindow::Private::setWebSettings()
     websetting->setFontFamily(QWebSettings::FixedFont, "MS Gothic");
 #elif defined(Q_OS_LINUX)
 #elif defined(Q_OS_MAC)
-    QWebSettings *websetting = QWebSettings::globalSettings();
     websetting->setFontFamily(QWebSettings::StandardFont, "ヒラギノ角ゴPro");
     websetting->setFontFamily(QWebSettings::SerifFont, "ヒラギノ明朝Pro");
     websetting->setFontFamily(QWebSettings::SansSerifFont, "ヒラギノ角ゴPro");

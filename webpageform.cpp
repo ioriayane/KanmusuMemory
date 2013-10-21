@@ -82,7 +82,7 @@ private:
     TabWidget *tab;
     QSettings settings;
 
-    void setParentTitle(QString &title);
+    void setParentTitle(const QString &title);
     void updateFavorite(const QString &url, const QString &title, bool add);
     bool isExistFavorite(const QString &url);
 public:
@@ -188,7 +188,7 @@ bool WebPageForm::Private::isFindVisible()
     return ui.findEdit->isVisible();
 }
 //タブの名称を変更
-void WebPageForm::Private::setParentTitle(QString &title)
+void WebPageForm::Private::setParentTitle(const QString &title)
 {
     if(tab == NULL)
         return;

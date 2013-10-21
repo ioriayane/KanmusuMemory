@@ -39,7 +39,7 @@ public slots:
 private:
     QDate m_currentLoadedFavDataDate;   //現在読み込んでるお気に入りの作成日
 
-    bool addItem(QMenu *parent, QJsonArray *array);
+    bool addItem(QMenu *parent, const QJsonArray &array);
 };
 
 #endif // FAVORITE_H

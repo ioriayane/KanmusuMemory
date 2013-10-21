@@ -33,7 +33,7 @@
 #define FAVORITE_DOWNLOAD_URL       QUrl("http://relog.xii.jp/download/kancolle/data/favoritedata.json")
 #define TO_VALUE(array_at, key) QJsonObject(array_at.toObject()).value(key)
 #define TO_STRING(array_at, key) QJsonObject(array_at.toObject()).value(key).toString()
-#define TO_ARRAY(array_at) QJsonObject(array_at.toObject()).value("array").toArray()
+#define TO_ARRAY(array_at) (QJsonObject(array_at.toObject()).value("array").toArray())
 #define KEY_TITLE   "title"
 #define KEY_URL     "url"
 
@@ -66,7 +66,7 @@ void FavoriteMenu::load(QMenu *menu, bool download)
         for(int i=0; i<array.count(); i++){
             //アイテム
             if(TO_VALUE(array.at(i), "array").isArray()){
-                addItem(menu, &TO_ARRAY(array.at(i)));
+                addItem(menu, TO_ARRAY(array.at(i)));
             }else{
 //            qDebug() << "title:" << TO_STRING(array->at(i), KEY_TITLE);
                 action = menu->addAction(TO_STRING(array.at(i), KEY_TITLE), this, SLOT(clickItem()));
@@ -136,25 +136,25 @@ void FavoriteMenu::clickItem()
     }
 }
 
-bool FavoriteMenu::addItem(QMenu *parent, QJsonArray *array)
+bool FavoriteMenu::addItem(QMenu *parent, const QJsonArray &array)
 {
     QMenu *me;
     QAction *action;
 
-    if(array->count() < 2)
+    if(array.count() < 2)
         return false;
 
     //フォルダ
 //    qDebug() << "folder:" << TO_STRING(array->at(0), KEY_TITLE) << " - " << array->count();
-    me = parent->addMenu(TO_STRING(array->at(0), KEY_TITLE));
-    for(int i=1; i<array->count(); i++){
+    me = parent->addMenu(TO_STRING(array.at(0), KEY_TITLE));
+    for(int i=1; i<array.count(); i++){
         //アイテム
-        if(TO_VALUE(array->at(i), "array").isArray()){
-            addItem(me, &TO_ARRAY(array->at(i)));
+        if(TO_VALUE(array.at(i), "array").isArray()){
+            addItem(me, TO_ARRAY(array.at(i)));
         }else{
 //            qDebug() << "title:" << TO_STRING(array->at(i), KEY_TITLE);
-            action = me->addAction(TO_STRING(array->at(i), KEY_TITLE), this, SLOT(clickItem()));
-            action->setData(TO_STRING(array->at(i), KEY_URL));
+            action = me->addAction(TO_STRING(array.at(i), KEY_TITLE), this, SLOT(clickItem()));
+            action->setData(TO_STRING(array.at(i), KEY_URL));
         }
     }
 
