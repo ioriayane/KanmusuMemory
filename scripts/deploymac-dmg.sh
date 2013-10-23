@@ -1,7 +1,7 @@
 #!/bin/bash
 
 APPNAME=KanmusuMemory.app/
-QTPATH=/Users/iori/Qt5.1.0/5.1.0/clang_64/
+QTPATH=/Users/iori/Qt5.1.1/5.1.1/clang_64/
 
 #clean
 rm -rf KanmusuMemory.app

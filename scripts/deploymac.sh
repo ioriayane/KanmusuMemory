@@ -1,14 +1,14 @@
 #!/bin/bash
 
 APPNAME=KanmusuMemory.app/
-QTPATH=/Users/iori/Qt5.1.0/5.1.0/clang_64/
+QTPATH=/Users/iori/Qt5.1.1/5.1.1/clang_64/
 
 #clean
 rm -rf KanmusuMemory.app
 rm KanmusuMemory-mac.zip
 
 #build
-~/Qt5.1.0/5.1.0/clang_64/bin/qmake -r
+${QTPATH}bin/qmake -r
 make clean
 make -r
 
@@ -16,7 +16,7 @@ mkdir KanmusuMemory.app/Contents/MacOS/i18n
 cp i18n/qt_ja_JP.qm KanmusuMemory.app/Contents/MacOS/i18n/
 
 #deploy
-~/Qt5.1.0/5.1.0/clang_64/bin/macdeployqt KanmusuMemory.app/
+${QTPATH}bin/macdeployqt KanmusuMemory.app/
 
 
 #setup QML modules
