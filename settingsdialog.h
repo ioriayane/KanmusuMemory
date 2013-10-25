@@ -30,6 +30,8 @@ public:
     bool savePng() const;
     bool isMaskAdmiralName() const;
     bool isMaskHqLevel() const;
+    const QString &proxyHost() const;
+    quint16 proxyPort() const;
 
     static QString selectSavePath(QWidget *parent, const QString &currentPath);
 
@@ -39,6 +41,8 @@ public slots:
     void setSavePng(bool savePng);
     void setMaskAdmiralName(bool maskAdmiralName);
     void setMaskHqLevel(bool maskHqLevel);
+    void setProxyHost(const QString &proxyHost);
+    void setProxyPort(quint16 proxyPort);
 
 signals:
     void savePathChanged(const QString &savePath);
@@ -46,6 +50,8 @@ signals:
     void savePngChanged(bool savePng);
     void maskAdmiralNameChanged(bool maskAdmiralName);
     void maskHqLevelChanged(bool maskHqLevel);
+    void proxyHostChanged(const QString &proxyHost);
+    void proxyPortChanged(quint16 proxyPort);
 
 private:
     class Private;

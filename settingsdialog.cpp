@@ -37,6 +37,8 @@ public:
     bool savePng;
     bool maskAdmiralName;
     bool maskHqLevel;
+    QString proxyHost;
+    quint16 proxyPort;
 };
 
 SettingsDialog::Private::Private(SettingsDialog *parent)
@@ -55,6 +57,8 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         savePng = ui.savePngCheckBox->isChecked();
         maskAdmiralName = ui.maskAdmiralNameCheckBox->isChecked();
         maskHqLevel = ui.maskHqLevelCheckBox->isChecked();
+        proxyHost = ui.proxyHost->text();
+        proxyPort = ui.proxyPort->value();
         q->accept();
     });
     connect(ui.buttonBox, &QDialogButtonBox::rejected, q, &QDialog::reject);
@@ -72,6 +76,12 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
     connect(q, &SettingsDialog::savePngChanged, ui.savePngCheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::maskAdmiralNameChanged, ui.maskAdmiralNameCheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::maskHqLevelChanged, ui.maskHqLevelCheckBox, &QCheckBox::setChecked);
+    connect(q, &SettingsDialog::proxyHostChanged, ui.proxyHost, &QLineEdit::setText);
+    connect(q, &SettingsDialog::proxyPortChanged, ui.proxyPort, &QSpinBox::setValue);
+
+    QSpinBox * portNum = ui.proxyPort;
+    portNum->setMinimum(1);
+    portNum->setMaximum(65535);
 }
 
 SettingsDialog::SettingsDialog(QWidget *parent)
@@ -147,4 +157,28 @@ void SettingsDialog::setMaskHqLevel(bool maskHqLevel)
     if (d->maskHqLevel == maskHqLevel) return;
     d->maskHqLevel = maskHqLevel;
     emit maskHqLevelChanged(maskHqLevel);
+}
+
+const QString &SettingsDialog::proxyHost() const
+{
+    return d->proxyHost;
+}
+
+void SettingsDialog::setProxyHost(const QString &proxyHost)
+{
+    if(d->proxyHost == proxyHost) return;
+    d->proxyHost = proxyHost;
+    emit proxyHostChanged(proxyHost);
+}
+
+quint16 SettingsDialog::proxyPort() const
+{
+    return d->proxyPort;
+}
+
+void SettingsDialog::setProxyPort(quint16 proxyPort)
+{
+    if(d->proxyPort == proxyPort) return;
+    d->proxyPort = proxyPort;
+    emit proxyPortChanged(proxyPort);
 }
