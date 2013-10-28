@@ -64,6 +64,7 @@ public:
     void openTweetDialog(const QString &path);     //ツイートダイアログを開く
     void openMemoryDialog();
     void openSettingDialog();
+    void updateProxyConfiguration();
     void openAboutDialog();
     void openImageEditDialog(const QString &path, const QString &tempPath, const QString &editPath);
     void captureCatalog();
@@ -441,6 +442,8 @@ void MainWindow::Private::openSettingDialog()
     dlg.setSavePng(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool());
     dlg.setMaskAdmiralName(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool());
     dlg.setMaskHqLevel(settings.value(SETTING_GENERAL_MASK_HQ_LEVEL, false).toBool());
+    dlg.setProxyHost(settings.value(QStringLiteral("proxy_host")).toString());
+    dlg.setProxyPort(settings.value(SETTING_GENERAL_PROXY_PORT, 8888).toInt());
     if (dlg.exec()) {
         //設定更新
         settings.setValue(QStringLiteral("path"), dlg.savePath());
@@ -448,6 +451,31 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_SAVE_PNG, dlg.savePng());
         settings.setValue(SETTING_GENERAL_MASK_ADMIRAL_NAME, dlg.isMaskAdmiralName());
         settings.setValue(SETTING_GENERAL_MASK_HQ_LEVEL, dlg.isMaskHqLevel());
+        settings.setValue(QStringLiteral("proxy_host"), dlg.proxyHost());
+        settings.setValue(SETTING_GENERAL_PROXY_PORT, dlg.proxyPort());
+
+        updateProxyConfiguration();
+    }
+}
+//Update proxy setting.
+void MainWindow::Private::updateProxyConfiguration()
+{
+    // Update proxy setting.
+    QNetworkAccessManager * accessmanager = ui.webView->page()->networkAccessManager();
+    QNetworkProxy * proxy = new QNetworkProxy();
+
+    QString host = settings.value(QStringLiteral("proxy_host")).toString();
+    if(host.length() > 0)
+    {
+        proxy->setType(QNetworkProxy::HttpProxy);
+        proxy->setHostName(host);
+        proxy->setPort(settings.value(SETTING_GENERAL_PROXY_PORT, 8888).toInt());
+
+        accessmanager->setProxy(*proxy);
+    }
+    else
+    {
+        accessmanager->setProxy(QNetworkProxy::NoProxy);
     }
 }
 //アバウトダイアログを開く
@@ -747,6 +775,7 @@ void MainWindow::Private::setWebSettings()
     websetting->setFontFamily(QWebSettings::FixedFont, "Osaka");
 #else
 #endif
+    updateProxyConfiguration();
 }
 
 
