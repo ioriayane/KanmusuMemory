@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include "cookiejar.h"
+#include "kanmusumemory_global.h"
 
 #include <QtCore/QDateTime>
 #include <QtCore/QDebug>
@@ -21,8 +22,6 @@
 #include <QtCore/QStringList>
 #include <QtNetwork/QNetworkCookie>
 
-#define SETTING_FILE_NAME       "settings.ini"
-#define SETTING_FILE_FORMAT     QSettings::IniFormat
 
 class CookieJar::Private
 {
@@ -37,7 +36,7 @@ public:
 
 CookieJar::Private::Private(CookieJar *parent)
     : q(parent)
-    , settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT)
+    , settings(QSettings::IniFormat, QSettings::UserScope, KANMEMO_PROJECT, KANMEMO_NAME)
 {
     settings.beginGroup(QStringLiteral("cookies"));
 }

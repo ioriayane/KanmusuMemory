@@ -92,7 +92,7 @@ public:
 WebPageForm::Private::Private(WebPageForm *parent)
     : q(parent)
     , tab(NULL)
-    , settings(FAV_FILE_NAME, FAV_FILE_FORMAT)
+    , settings(QSettings::IniFormat, QSettings::UserScope, KANMEMO_PROJECT, KANMEMO_NAME_FAV)
 {
     ui.setupUi(q);
 

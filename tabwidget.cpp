@@ -197,7 +197,7 @@ void TabWidget::find()
 //タブとかを読み込む
 void TabWidget::load()
 {
-    QSettings settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT);
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, KANMEMO_PROJECT, KANMEMO_NAME);
     settings.beginGroup(QStringLiteral(SETTING_TAB));
     setSaveOpenPage(settings.value(QStringLiteral(SETTING_TAB_SAVE_OPEN_PAGES), true).toBool());
     setOpenAndNewTab(settings.value(QStringLiteral(SETTING_TAB_OPEN_AND_NEWTAB), true).toBool());
@@ -222,7 +222,7 @@ void TabWidget::save()
     QList<QVariant> pagelist;
     QList<QVariant> pageMobileModeList;
     WebPageForm *form;
-    QSettings settings(SETTING_FILE_NAME, SETTING_FILE_FORMAT);
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, KANMEMO_PROJECT, KANMEMO_NAME);
     settings.beginGroup(QStringLiteral(SETTING_TAB));
     settings.setValue(QStringLiteral(SETTING_TAB_SAVE_OPEN_PAGES), saveOpenPage());
     settings.setValue(QStringLiteral(SETTING_TAB_OPEN_AND_NEWTAB), openAndNewTab());

@@ -83,7 +83,7 @@ void FavoriteMenu::load(QMenu *menu, bool download)
     }
 
     //ユーザー登録ぶん
-    QSettings settings(FAV_FILE_NAME, FAV_FILE_FORMAT);
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, KANMEMO_PROJECT, KANMEMO_NAME_FAV);
     settings.beginGroup(QStringLiteral(FAV_USER));
     QHash<QString, QVariant> list = settings.value(QStringLiteral(FAV_USER_BOOKMARK)).toHash();
     foreach (const QString &key, list.keys()) {

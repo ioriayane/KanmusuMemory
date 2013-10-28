@@ -16,6 +16,9 @@
 #ifndef KANMUSUMEMORY_GLOBAL_H
 #define KANMUSUMEMORY_GLOBAL_H
 
+#define KANMEMO_NAME "KanmusuMemory"
+#define KANMEMO_NAME_FAV "KanmusuMemoryFav"
+#define KANMEMO_PROJECT "KanmemoProject"
 #define KANMEMO_VERSION "0.7"
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
@@ -24,11 +27,12 @@
     << "@androidsola"\
     << "@tkhshmsy"\
     << "@nowsprinting"\
+    << "@EnderAlice"\
     )
 
 //設定ファイル
-#define SETTING_FILE_NAME       "settings.ini"
-#define SETTING_FILE_FORMAT     QSettings::IniFormat
+//#define SETTING_FILE_NAME       "settings.ini"
+//#define SETTING_FILE_FORMAT     QSettings::IniFormat
 //設定：一般
 #define SETTING_GENERAL_TOKEN               "token"
 #define SETTING_GENERAL_TOKENSECRET         "tokenSecret"
@@ -68,8 +72,8 @@
 #define SETTING_TAB_OPEN_AND_NEWTAB         "openAndNewTab"
 
 //お気に入り
-#define FAV_FILE_NAME                       "favorite.ini"
-#define FAV_FILE_FORMAT                     QSettings::IniFormat
+//#define FAV_FILE_NAME                       "favorite.ini"
+//#define FAV_FILE_FORMAT                     QSettings::IniFormat
 #define FAV_USER                            "user"
 #define FAV_USER_BOOKMARK                   "bookmark"
 
