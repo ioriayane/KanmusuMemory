@@ -88,7 +88,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+282"/>
+        <location filename="../mainwindow.cpp" line="+217"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -102,7 +102,7 @@
         <translation type="obsolete">艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+80"/>
+        <location line="+83"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
@@ -110,29 +110,29 @@
         <location line="+33"/>
         <location line="+13"/>
         <location line="+34"/>
-        <location line="+171"/>
+        <location line="+257"/>
         <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-284"/>
+        <location line="-370"/>
         <location line="+13"/>
-        <location line="+206"/>
+        <location line="+292"/>
         <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-266"/>
+        <location line="-352"/>
         <location line="+17"/>
-        <location line="+123"/>
+        <location line="+209"/>
         <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-225"/>
+        <location line="-311"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -142,7 +142,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+216"/>
         <source>not in catalog</source>
         <translation>図鑑表示ではありません</translation>
     </message>
@@ -176,7 +176,7 @@ Please wait while a cup of coffee.</source>
         <translation>艦隊詳細作成中</translation>
     </message>
     <message>
-        <location line="+135"/>
+        <location line="+169"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -258,11 +258,12 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+3"/>
+        <location line="+163"/>
         <source>Ctrl+F</source>
         <translation>Ctrl+F</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-155"/>
         <source>&amp;View memories</source>
         <translation>思い出を表示(F6)</translation>
     </message>
@@ -428,6 +429,12 @@ Do you want to continue on an understanding of the security risk?
         <source>Add</source>
         <translation>追加</translation>
     </message>
+    <message>
+        <location line="+5"/>
+        <location line="+3"/>
+        <source>Find in tab</source>
+        <translation>タブの中を検索</translation>
+    </message>
 </context>
 <context>
     <name>MemoryDialog</name>
@@ -453,7 +460,7 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">キャンセル</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Pictures path</source>
         <translation>思い出の保存先</translation>
     </message>
@@ -468,7 +475,27 @@ Do you want to continue on an understanding of the security risk?
         <translation>ツイッター連携を使用しない</translation>
     </message>
     <message>
-        <location line="-13"/>
+        <location line="+40"/>
+        <source>Proxy:</source>
+        <translation>プロキシ設定</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Proxy host:</source>
+        <translation>プロキシサーバー</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Proxy port:</source>
+        <translation>プロキシポート</translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>Enable</source>
+        <translation>プロキシ設定を有効にする</translation>
+    </message>
+    <message>
+        <location line="-104"/>
         <source>Save in PNG format.</source>
         <translation>画像をPNG形式で保存する（標準はJPEG）</translation>
     </message>
@@ -483,7 +510,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
-        <location filename="../settingsdialog.cpp" line="+98"/>
+        <location filename="../settingsdialog.cpp" line="+111"/>
         <source>Select save folder</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -701,7 +728,12 @@ Do you want to continue on an understanding of the security risk?
         <translation>Form</translation>
     </message>
     <message>
-        <location line="+98"/>
+        <location line="+102"/>
+        <source>Search</source>
+        <translation>検索</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>about:blank</source>
         <translation>about:blank</translation>
     </message>
