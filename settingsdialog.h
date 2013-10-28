@@ -30,6 +30,7 @@ public:
     bool savePng() const;
     bool isMaskAdmiralName() const;
     bool isMaskHqLevel() const;
+    bool isProxyEnable() const;
     const QString &proxyHost() const;
     quint16 proxyPort() const;
 
@@ -41,6 +42,7 @@ public slots:
     void setSavePng(bool savePng);
     void setMaskAdmiralName(bool maskAdmiralName);
     void setMaskHqLevel(bool maskHqLevel);
+    void setProxyEnable(bool enable);
     void setProxyHost(const QString &proxyHost);
     void setProxyPort(quint16 proxyPort);
 
@@ -50,6 +52,7 @@ signals:
     void savePngChanged(bool savePng);
     void maskAdmiralNameChanged(bool maskAdmiralName);
     void maskHqLevelChanged(bool maskHqLevel);
+    void proxyEnableChanged(bool enable);
     void proxyHostChanged(const QString &proxyHost);
     void proxyPortChanged(quint16 proxyPort);
 

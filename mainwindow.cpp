@@ -442,7 +442,8 @@ void MainWindow::Private::openSettingDialog()
     dlg.setSavePng(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool());
     dlg.setMaskAdmiralName(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool());
     dlg.setMaskHqLevel(settings.value(SETTING_GENERAL_MASK_HQ_LEVEL, false).toBool());
-    dlg.setProxyHost(settings.value(QStringLiteral("proxy_host")).toString());
+    dlg.setProxyEnable(settings.value(SETTING_GENERAL_PROXY_ENABLE, false).toBool());
+    dlg.setProxyHost(settings.value(SETTING_GENERAL_PROXY_HOST).toString());
     dlg.setProxyPort(settings.value(SETTING_GENERAL_PROXY_PORT, 8888).toInt());
     if (dlg.exec()) {
         //設定更新
@@ -451,7 +452,8 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_SAVE_PNG, dlg.savePng());
         settings.setValue(SETTING_GENERAL_MASK_ADMIRAL_NAME, dlg.isMaskAdmiralName());
         settings.setValue(SETTING_GENERAL_MASK_HQ_LEVEL, dlg.isMaskHqLevel());
-        settings.setValue(QStringLiteral("proxy_host"), dlg.proxyHost());
+        settings.setValue(SETTING_GENERAL_PROXY_ENABLE, dlg.isProxyEnable());
+        settings.setValue(SETTING_GENERAL_PROXY_HOST, dlg.proxyHost());
         settings.setValue(SETTING_GENERAL_PROXY_PORT, dlg.proxyPort());
 
         updateProxyConfiguration();
@@ -464,8 +466,9 @@ void MainWindow::Private::updateProxyConfiguration()
     QNetworkAccessManager * accessmanager = ui.webView->page()->networkAccessManager();
     QNetworkProxy * proxy = new QNetworkProxy();
 
-    QString host = settings.value(QStringLiteral("proxy_host")).toString();
-    if(host.length() > 0)
+    bool enable = settings.value(SETTING_GENERAL_PROXY_ENABLE, false).toBool();
+    QString host = settings.value(SETTING_GENERAL_PROXY_HOST).toString();
+    if(host.length() > 0 && enable)
     {
         proxy->setType(QNetworkProxy::HttpProxy);
         proxy->setHostName(host);

@@ -101,23 +101,30 @@
       </widget>
      </item>
      <item row="6" column="0">
+      <widget class="QLabel" name="proxyHostLabel_2">
+       <property name="text">
+        <string>Proxy:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
       <widget class="QLabel" name="proxyHostLabel">
        <property name="text">
         <string>Proxy host:</string>
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
+     <item row="7" column="1">
       <widget class="QLineEdit" name="proxyHost"/>
      </item>
-     <item row="7" column="0">
+     <item row="8" column="0">
       <widget class="QLabel" name="proxyPortLabel">
        <property name="text">
         <string>Proxy port:</string>
        </property>
       </widget>
      </item>
-     <item row="7" column="1">
+     <item row="8" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QSpinBox" name="proxyPort">
@@ -143,6 +150,13 @@
         </spacer>
        </item>
       </layout>
+     </item>
+     <item row="6" column="1">
+      <widget class="QCheckBox" name="proxyEnableCheckBox">
+       <property name="text">
+        <string>Enable</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

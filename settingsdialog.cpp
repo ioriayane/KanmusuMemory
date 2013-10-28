@@ -37,6 +37,7 @@ public:
     bool savePng;
     bool maskAdmiralName;
     bool maskHqLevel;
+    bool proxyEnable;
     QString proxyHost;
     quint16 proxyPort;
 };
@@ -57,6 +58,7 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         savePng = ui.savePngCheckBox->isChecked();
         maskAdmiralName = ui.maskAdmiralNameCheckBox->isChecked();
         maskHqLevel = ui.maskHqLevelCheckBox->isChecked();
+        proxyEnable = ui.proxyEnableCheckBox->isChecked();
         proxyHost = ui.proxyHost->text();
         proxyPort = ui.proxyPort->value();
         q->accept();
@@ -76,6 +78,7 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
     connect(q, &SettingsDialog::savePngChanged, ui.savePngCheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::maskAdmiralNameChanged, ui.maskAdmiralNameCheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::maskHqLevelChanged, ui.maskHqLevelCheckBox, &QCheckBox::setChecked);
+    connect(q, &SettingsDialog::proxyEnableChanged, ui.proxyEnableCheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::proxyHostChanged, ui.proxyHost, &QLineEdit::setText);
     connect(q, &SettingsDialog::proxyPortChanged, ui.proxyPort, &QSpinBox::setValue);
 
@@ -152,11 +155,23 @@ bool SettingsDialog::isMaskHqLevel() const
     return d->maskHqLevel;
 }
 
+bool SettingsDialog::isProxyEnable() const
+{
+    return d->proxyEnable;
+}
+
 void SettingsDialog::setMaskHqLevel(bool maskHqLevel)
 {
     if (d->maskHqLevel == maskHqLevel) return;
     d->maskHqLevel = maskHqLevel;
     emit maskHqLevelChanged(maskHqLevel);
+}
+
+void SettingsDialog::setProxyEnable(bool enable)
+{
+    if(d->proxyEnable == enable) return;
+    d->proxyEnable = enable;
+    emit proxyEnableChanged(enable);
 }
 
 const QString &SettingsDialog::proxyHost() const

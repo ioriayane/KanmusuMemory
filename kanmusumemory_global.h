@@ -38,6 +38,7 @@
 #define SETTING_GENERAL_SAVE_PNG            "save_png"
 #define SETTING_GENERAL_MASK_ADMIRAL_NAME   "mask_admiral_name"
 #define SETTING_GENERAL_MASK_HQ_LEVEL       "mask_hq_level"
+#define SETTING_GENERAL_PROXY_ENABLE        "proxy_enable"
 #define SETTING_GENERAL_PROXY_HOST          "proxy_host"
 #define SETTING_GENERAL_PROXY_PORT          "proxy_port"
 //設定：ウインドウ位置
