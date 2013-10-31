@@ -49,6 +49,7 @@ public:
     Q_INVOKABLE QString getExistingDirectory(const QString &title, const QString &default_path);
     Q_INVOKABLE QString getOpenFileName(const QString &title, const QString &default_path, const QString &filter);
     Q_INVOKABLE QString getApplicationPath();
+    Q_INVOKABLE QString getWritablePath();
     Q_INVOKABLE bool copy(const QString &fileName, const QString &newName);
     Q_INVOKABLE QString currentPath();
     Q_INVOKABLE bool setCurrent(const QString &path);

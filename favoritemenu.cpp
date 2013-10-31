@@ -27,9 +27,10 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QStandardPaths>
 #include <QDebug>
 
-#define FAVORITE_DOWNLOAD_FILE      QStringLiteral("favoritedata.json")
+#define FAVORITE_DOWNLOAD_FILE      QString("%1/favoritedata.json").arg(QStandardPaths::writableLocation(QStandardPaths::DataLocation))
 #define FAVORITE_DOWNLOAD_URL       QUrl("http://relog.xii.jp/download/kancolle/data/favoritedata.json")
 #define TO_VALUE(array_at, key) QJsonObject(array_at.toObject()).value(key)
 #define TO_STRING(array_at, key) QJsonObject(array_at.toObject()).value(key).toString()
@@ -91,7 +92,6 @@ void FavoriteMenu::load(QMenu *menu, bool download)
         action->setData(key);
     }
     settings.endGroup();
-
 
     //お気に入りをダウンロード
     if(download){
