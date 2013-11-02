@@ -18,6 +18,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QApplication>
+#include <QStandardPaths>
 
 QMLFile::QMLFile(QObject *parent):
     QObject(parent)
@@ -93,6 +94,11 @@ QString QMLFile::getOpenFileName(const QString &title, const QString &default_pa
 QString QMLFile::getApplicationPath()
 {
     return QApplication::applicationDirPath();
+}
+
+QString QMLFile::getWritablePath()
+{
+    return QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 }
 
 

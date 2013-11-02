@@ -64,7 +64,7 @@ Rectangle {
     function responseHttp(oj){
         var data = JSON.parse(oj.responseText)
         var i
-        var local_path = file.getApplicationPath() + "/timerselectguide.json"
+        var local_path = file.getWritablePath() + "/timerselectguide.json"
         var local_data = ""
 
         if(file.exists(local_path)){
