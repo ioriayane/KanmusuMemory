@@ -49,8 +49,6 @@ public slots:
     void timeout();
 
 private:
-    Ui::TimerDialog *ui;
-
     QtQuick2ApplicationViewer *m_viewer;
     TimerData m_timerdata;
     QTimer m_timer;
@@ -60,6 +58,8 @@ private:
     //ツイッター関連
     OAuth m_oauth;
     Status m_status;
+
+    Ui::TimerDialog *ui;
 
     bool checkKanmemoTimerTimeout(qint64 settime, qint64 starttime);
     void showTimerMessage(const QStringList &messages);
