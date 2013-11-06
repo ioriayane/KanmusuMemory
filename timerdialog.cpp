@@ -19,11 +19,13 @@
 #include "../KanmusuMemoryTwitter/twitterinfo.h"
 
 #include <QQmlContext>
+#include <QQuickItem>
 #include <QtQml/QQmlEngine>
 #include <QDateTime>
 
 #include <QtCore/QDebug>
 
+static const int DIALOG_MARGIN = 30;
 
 TimerDialog::TimerDialog(QWidget *parent
                          , QSystemTrayIcon *trayIcon
@@ -76,6 +78,9 @@ void TimerDialog::showEvent(QShowEvent *event)
         //QML設定して表示
         m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/timerDialog.qml"));
         m_viewer->show();
+        QSize contentSize = m_viewer->rootObject()->childrenRect().toRect().size() + QSize(DIALOG_MARGIN,DIALOG_MARGIN);
+        setMinimumSize(contentSize);
+        setMaximumSize(contentSize);
     }
 }
 
