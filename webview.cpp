@@ -255,6 +255,7 @@ WebView::WebView(QWidget *parent)
     : QWebView(parent)
     , d(new Private(this))
 {
+    setAttribute(Qt::WA_AcceptTouchEvents, false);
     connect(this, &QObject::destroyed, [this]() { delete d; });
 }
 

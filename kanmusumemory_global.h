@@ -28,6 +28,7 @@
     << "@tkhshmsy"\
     << "@nowsprinting"\
     << "@EnderAlice"\
+    << "@hermit4"\
     )
 
 //設定ファイル
