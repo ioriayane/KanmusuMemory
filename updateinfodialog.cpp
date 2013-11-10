@@ -30,7 +30,7 @@
 
 #include <QDebug>
 
-#define CHECK_UPDATE_URL    QString("http://157.7.154.101:8080/kanmemo/api/checkupdate.qml?version=%1+versioncode=%2+os=%3+lang=%4")
+#define CHECK_UPDATE_URL    QString("http://157.7.154.101/kanmemo/api/checkupdate.qml?version=%1+versioncode=%2+os=%3+lang=%4")
 
 // OS number define
 // 0: Windows(32bit)
