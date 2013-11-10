@@ -19,9 +19,11 @@ Database {
         property int key
         property date checkTime
         property string version
+        property int versionCode
         property int os
         property string lang
         property string userAgent
+        property string remoteAddress
     }
 }
 

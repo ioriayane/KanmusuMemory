@@ -9,6 +9,7 @@ Json {
             , "download-url": downloadUrl
             , "webpage-url": webpageUrl
             , "new-version": newVersion
+            , "new-version-code": newVersionCode
     }
 
     UpdateInfo {
@@ -19,17 +20,20 @@ Json {
     property string downloadUrl: info.downloadUrl[os]
     property string webpageUrl: info.webpageUrl
     property string newVersion: info.version
+    property int newVersionCode: info.versionCode
 
     property string version: ""
+    property int versionCode: 0
     property int os: 0
     property string lang: ""
     
     // OS number define
     // 0: Windows(32bit)
     // 1: Windows(64bit)
-    // 2: Mac OS X
-    // 3: Linux(32bit)
-    // 4: Linux(64bit)
+    // 2: Mac OS X(32bit)
+    // 3: Mac OS X(64bit)
+    // 4: Linux(32bit)
+    // 5: Linux(64bit)
 
     Component.onCompleted: {
         var params
@@ -41,11 +45,13 @@ Json {
             items = params[i].split('=')
             if(items[0] == 'os'){
                 os = 0 + items[1]
-                if(os > 4){
+                if(os > 5){
                     os = 0
                 }
             }else if(items[0] == 'version'){
                 version = items[1]
+            }else if(items[0] == 'versioncode'){
+                versionCode = 0 + items[1]
             }else if(items[0] == 'lang'){
                 lang = items[1]
             }else{
@@ -53,7 +59,7 @@ Json {
         }
 
         // Check Update exist
-        if(newVersion > version){
+        if(newVersionCode > versionCode){
             //exist
             updateExist = true
         }else{
@@ -66,8 +72,10 @@ Json {
         if(db.transaction()){
             db.tableModel.insert({"checkTime": (new Date())
                                , "version": root.version
+                               , "versionCode": root.versionCode
                                , "os": root.os
                                , "lang": root.lang
+                               , "remoteAddress": http.remoteAddress
                                , "userAgent": http.requestHeader["user-agent"]
                            })
             if(!db.commit()) db.rollback()

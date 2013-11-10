@@ -135,6 +135,8 @@
     <property name="title">
      <string>&amp;Help</string>
     </property>
+    <addaction name="actionUpdate"/>
+    <addaction name="separator"/>
     <addaction name="about"/>
    </widget>
    <widget class="QMenu" name="favorite">
@@ -361,6 +363,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionUpdate">
+   <property name="text">
+    <string>&amp;Update</string>
    </property>
   </action>
  </widget>
