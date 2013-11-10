@@ -88,7 +88,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+217"/>
+        <location filename="../mainwindow.cpp" line="+221"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -102,7 +102,7 @@
         <translation type="obsolete">艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+83"/>
+        <location line="+89"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
@@ -212,7 +212,7 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">お気に入り</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>F&amp;avorite</source>
         <translation>お気に入り(&amp;A)</translation>
     </message>
@@ -435,6 +435,11 @@ Do you want to continue on an understanding of the security risk?
         <source>Find in tab</source>
         <translation>タブの中を検索</translation>
     </message>
+    <message>
+        <location line="+8"/>
+        <source>&amp;Update</source>
+        <translation>更新を確認する(&amp;U)</translation>
+    </message>
 </context>
 <context>
     <name>MemoryDialog</name>
@@ -522,7 +527,7 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">ダイアログ</translation>
     </message>
     <message>
-        <location filename="../timerdialog.cpp" line="+93"/>
+        <location filename="../timerdialog.cpp" line="+98"/>
         <source>1st</source>
         <translation>第１</translation>
     </message>
@@ -582,7 +587,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location filename="../timerdialog.ui" line="+26"/>
+        <location filename="../timerdialog.ui" line="+14"/>
         <source>Timer</source>
         <translation>お知らせタイマー</translation>
     </message>
@@ -721,6 +726,61 @@ Do you want to continue on an understanding of the security risk?
     </message>
 </context>
 <context>
+    <name>UpdateInfoDialog</name>
+    <message>
+        <location filename="../updateinfodialog.ui" line="+14"/>
+        <source>Update Information</source>
+        <translation>更新情報</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>The update was found.</source>
+        <translation>更新が見つかりました。</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>New Version:</source>
+        <translation>新バージョン</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>0.1</source>
+        <translation>0.1</translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Download URL:</source>
+        <translation>ダウンロードURL:</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location line="+16"/>
+        <location line="+23"/>
+        <source>url</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location line="-7"/>
+        <source>Detail information:</source>
+        <translation>更新情報:</translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Hide until next update.</source>
+        <translation>次回の更新まで非表示にする。</translation>
+    </message>
+    <message>
+        <location filename="../updateinfodialog.cpp" line="+165"/>
+        <source>Kan Memo</source>
+        <translation>艦メモ</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There was no update.</source>
+        <translation>更新はありませんでした。</translation>
+    </message>
+</context>
+<context>
     <name>WebPageForm</name>
     <message>
         <location filename="../webpageform.ui" line="+14"/>
@@ -748,7 +808,7 @@ Do you want to continue on an understanding of the security risk?
 <context>
     <name>WebView</name>
     <message>
-        <location filename="../webview.cpp" line="+303"/>
+        <location filename="../webview.cpp" line="+304"/>
         <source>failed find target</source>
         <translation>艦これが見つかりませんでした。</translation>
     </message>

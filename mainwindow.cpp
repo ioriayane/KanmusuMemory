@@ -22,6 +22,7 @@
 #include "memorydialog.h"
 #include "imageeditdialog.h"
 #include "timerdialog.h"
+#include "updateinfodialog.h"
 #include "gamescreen.h"
 #include "webpageform.h"
 #include "favoritemenu.h"
@@ -85,6 +86,7 @@ private:
 
     MainWindow *q;
     TimerDialog *m_timerDialog;
+    UpdateInfoDialog *m_updateInfoDialog;
     FavoriteMenu m_favorite;
 
 public:
@@ -110,6 +112,8 @@ MainWindow::Private::Private(MainWindow *parent)
 
     //通知タイマーのダイアログ作成
     m_timerDialog = new TimerDialog(q, &trayIcon, &settings);
+    //アップデート通知のダイアログ作成
+    m_updateInfoDialog = new UpdateInfoDialog(q, &settings);
 
     //メニュー
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
@@ -243,6 +247,11 @@ MainWindow::Private::Private(MainWindow *parent)
         m_favorite.load(ui.favorite);
     });
 
+    //アップデートの確認をする
+    m_updateInfoDialog->CheckUpdate();
+    connect(ui.actionUpdate, &QAction::triggered, [this](){ m_updateInfoDialog->CheckUpdate(); });
+
+
     //通知アイコン
 #ifdef Q_OS_WIN
     trayIcon.show();
@@ -256,6 +265,7 @@ MainWindow::Private::Private(MainWindow *parent)
 
 MainWindow::Private::~Private()
 {
+    delete m_updateInfoDialog;
     delete m_timerDialog;
 }
 //指定範囲をマスクする

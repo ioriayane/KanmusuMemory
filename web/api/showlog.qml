@@ -27,8 +27,10 @@ Html {
                     Th { text: 'key' }
                     Th { text: 'date' }
                     Th { text: 'version' }
+                    Th { text: 'code' }
                     Th { text: 'os' }
                     Th { text: 'lang' }
+                    Th { text: 'ip' }
                     Th { text: 'agent' }
                 }
             }
@@ -40,8 +42,10 @@ Html {
                             Td { text: model.key }
                             Td { text: model.checkTime }
                             Td { text: model.version }
+                            Td { text: model.versionCode }
                             Td { text: model.os > 4 ? "unkown" : osName[model.os] }
                             Td { text: model.lang }
+                            Td { text: model.remoteAddress }
                             Td { text: model.userAgent }
                         }
                     }

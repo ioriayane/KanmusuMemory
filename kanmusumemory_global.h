@@ -20,6 +20,7 @@
 #define KANMEMO_NAME_FAV "KanmusuMemoryFav"
 #define KANMEMO_PROJECT "KanmemoProject"
 #define KANMEMO_VERSION "0.7"
+#define KANMEMO_VERSION_CODE 6
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
     << "@task_jp"\
@@ -71,6 +72,10 @@
 #define SETTING_TAB_OPEN_PAGES_MOBILE_MODE  "openPagesMobileMode"
 #define SETTING_TAB_SAVE_OPEN_PAGES         "saveOpenPages"
 #define SETTING_TAB_OPEN_AND_NEWTAB         "openAndNewTab"
+//設定：更新確認
+#define SETTING_UPDATE_CHECK                "updateCheck"
+#define SETTING_UPDATE_CHECK_HIDE           "hideUntilNextUpdate"
+#define SETTING_UPDATE_CHECK_HIDE_VERSION   "hideUntilNextUpdateVersion"
 
 //お気に入り
 //#define FAV_FILE_NAME                       "favorite.ini"
