@@ -51,6 +51,7 @@
 #define KEY_NEW_VERSION         QStringLiteral("new-version")
 #define KEY_NEW_VERSION_CODE    QStringLiteral("new-version-code")
 #define KEY_UPDATE_EXIST        QStringLiteral("update-exist")
+#define KEY_MESSAGE             QStringLiteral("message")
 
 
 UpdateInfoDialog::UpdateInfoDialog(QWidget *parent
@@ -157,7 +158,8 @@ void UpdateInfoDialog::CheckUpdate()
                 ui->webpageUrlLabel->setText(QString("<a href='%1'>%1</a>").arg(json.object().value(KEY_WEBPAGE_URL).toString()));
                 //Version Number
                 ui->versionNumberLabel->setText(json.object().value(KEY_NEW_VERSION).toString());
-
+                //message
+                ui->messageTextEdit->setPlainText(json.object().value(KEY_MESSAGE).toString());
                 //必ずチェックを外す
                 ui->hideNextUpdatecheckBox->setChecked(false);
 

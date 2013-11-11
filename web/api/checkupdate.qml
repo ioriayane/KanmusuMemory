@@ -1,3 +1,18 @@
+/*
+ * Copyright 2013 KanMemo Project.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 import Silk.JSON 1.0
 import QtQml 2.0
 import me.qtquick.Database 0.1
@@ -6,10 +21,11 @@ Json {
     id: root
 
     object: { "update-exist": updateExist
-            , "download-url": downloadUrl
-            , "webpage-url": webpageUrl
-            , "new-version": newVersion
-            , "new-version-code": newVersionCode
+        , "download-url": downloadUrl
+        , "webpage-url": webpageUrl
+        , "new-version": newVersion
+        , "new-version-code": newVersionCode
+        , "message" : message
     }
 
     UpdateInfo {
@@ -21,6 +37,7 @@ Json {
     property string webpageUrl: info.webpageUrl
     property string newVersion: info.version
     property int newVersionCode: info.versionCode
+    property string message: info.message[lang == "ja_JP" ? 1 : 0]
 
     property string version: ""
     property int versionCode: 0
@@ -66,18 +83,17 @@ Json {
             updateExist = false
         }
 
-
-        // Insert User Information        
+        // Insert User Information
         db.tableModel.select = false;
         if(db.transaction()){
             db.tableModel.insert({"checkTime": (new Date())
-                               , "version": root.version
-                               , "versionCode": root.versionCode
-                               , "os": root.os
-                               , "lang": root.lang
-                               , "remoteAddress": http.remoteAddress
-                               , "userAgent": http.requestHeader["user-agent"]
-                           })
+                                     , "version": root.version
+                                     , "versionCode": root.versionCode
+                                     , "os": root.os
+                                     , "lang": root.lang
+                                     , "remoteAddress": http.remoteAddress
+                                     , "userAgent": http.requestHeader["user-agent"]
+                                 })
             if(!db.commit()) db.rollback()
         }
         db.tableModel.select = true;
@@ -85,7 +101,7 @@ Json {
     
     // Database Setting
     KanmemoDatabase {
-        id: db        
+        id: db
     }
 }
 
