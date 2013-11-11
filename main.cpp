@@ -18,6 +18,8 @@
 #include <QtCore/QTranslator>
 #include <QtCore/QLocale>
 #include <QQmlEngine>
+#include <QStandardPaths>
+#include <QDir>
 
 #include "operatingsystem.h"
 #include "clipcursor.h"
@@ -52,6 +54,12 @@ int main(int argc, char *argv[])
     qmlRegisterType<ClipCursor>("jp.relog.plugin.clipcursor"
                                 , 1, 0, "ClipCursor");
     qmlRegisterType<QMLFile>("jp.relog.plugin.qmlfile", 1, 0, "QMLFile");
+
+    //ダウンロードデータなどの保存場所のディレクトリを作成しておく
+    QDir location(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+    if(!location.exists()){
+        location.mkdir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
+    }
 
     MainWindow w;
     w.show();
