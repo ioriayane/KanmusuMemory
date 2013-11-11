@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import QtQml 2.
+import QtQml 2.0
 
 QtObject {
 
     property string version: "0.7"
     property int versionCode: 7
     //最新版のダウンロードURL（複数あるときは「|」で区切る
-    property variant downloadUrl: ["http://relog.xii.jp/download/kancolle/KanmusuMemory-0.7-win.zip"    // Win 32bit
-                                , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.7-win.zip"     // Win 64bit
-                                , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.7-mac.dmg"     // Mac 32bit
-                                , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.7-mac.dmg"     // Mac 64bit
-                                , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.7-ubuntu-x86.zip"
-                                + "|http://relog.xii.jp/download/kancolle/kanmusumemory-0.7-ubuntu-x86.deb" //Linux 32bit
-                                , "http://relog.xii.jp/download/kancolle/kanmusumemory-0.7-ubuntu-x86.deb"
-                                + "|http://relog.xii.jp/download/kancolle/kanmusumemory-0.7-ubuntu-x86-64.deb" //Linux 64bit
-                                ]
+    property variant downloadUrl: [
+        "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.7-win.zip"    // Win 32bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.7-win.zip"     // Win 64bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.7-mac.dmg"     // Mac 32bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.7-mac.dmg"     // Mac 64bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.7-ubuntu-x86.zip"
+        + "|http://relog.xii.jp/download/kancolle/kanmusumemory-0.7-ubuntu-x86.deb" //Linux 32bit
+        , "http://relog.xii.jp/download/kancolle/kanmusumemory-0.7-ubuntu-x86-64.zip"
+        + "|http://relog.xii.jp/download/kancolle/kanmusumemory-0.7-ubuntu-x86-64.deb" //Linux 64bit
+    ]
     property string webpageUrl: "http://relog.xii.jp/mt5r/2013/08/post-349.html"
-    property variant message: ["Support proxy, touch panel.\nAdd simple browser."
-        , "プロキシ対応\nタッチパネル対応\n簡易ブラウザ機能"             //日本語の説明
-                                ]
+    property variant message: ["-Support proxy, touch panel.\n-Add simple browser."
+        , "・プロキシ対応\n・タッチパネル対応\n・簡易ブラウザ機能"             //日本語の説明
+    ]
 }
 
