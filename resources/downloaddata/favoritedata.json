@@ -14,7 +14,7 @@
 			[
 				  { "title": "大和型", "url": ""}
 				, { "title": "1 大和", "url": "http://ja.wikipedia.org/wiki/%E5%A4%A7%E5%92%8C_(%E6%88%A6%E8%89%A6)" }
-				, { "title": "2 (武蔵)", "url": "http://ja.wikipedia.org/wiki/%E6%AD%A6%E8%94%B5_(%E6%88%A6%E8%89%A6)" }
+				, { "title": "2 武蔵", "url": "http://ja.wikipedia.org/wiki/%E6%AD%A6%E8%94%B5_(%E6%88%A6%E8%89%A6)" }
 			]}
 			, {"array":
 			[
@@ -124,6 +124,12 @@
 				, { "title": "2 神通", "url": "http://ja.wikipedia.org/wiki/%E7%A5%9E%E9%80%9A_(%E8%BB%BD%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
 				, { "title": "3 那珂", "url": "http://ja.wikipedia.org/wiki/%E9%82%A3%E7%8F%82_(%E8%BB%BD%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
 			]}
+			, {"array":
+			[
+				  { "title": "阿賀野型", "url": ""}
+				, { "title": "1 阿賀野", "url": "http://ja.wikipedia.org/wiki/%E9%98%BF%E8%B3%80%E9%87%8E_(%E8%BB%BD%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+				, { "title": "2 能代", "url": "http://ja.wikipedia.org/wiki/%E8%83%BD%E4%BB%A3_(%E8%BB%BD%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+			]}
 			, { "title": "夕張", "url": "http://ja.wikipedia.org/wiki/%E5%A4%95%E5%BC%B5_(%E8%BB%BD%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
 		]}
 		, {"array":
@@ -213,6 +219,7 @@
 				  { "title": "夕雲型", "url": ""}
 				, { "title": "1 夕雲", "url": "http://ja.wikipedia.org/wiki/%E5%A4%95%E9%9B%B2_(%E9%A7%86%E9%80%90%E8%89%A6)" }
 				, { "title": "2 巻雲", "url": "http://ja.wikipedia.org/wiki/%E5%B7%BB%E9%9B%B2_(%E5%A4%95%E9%9B%B2%E5%9E%8B%E9%A7%86%E9%80%90%E8%89%A6)" }
+				, { "title": "4 長波", "url": "http://ja.wikipedia.org/wiki/%E9%95%B7%E6%B3%A2_(%E9%A7%86%E9%80%90%E8%89%A6)" }
 			]}
 			, { "title": "島風", "url": "http://ja.wikipedia.org/wiki/%E5%B3%B6%E9%A2%A8_(%E5%B3%B6%E9%A2%A8%E5%9E%8B%E9%A7%86%E9%80%90%E8%89%A6)" }
 		]}
@@ -262,7 +269,8 @@
 		, {"array":
 		[
 			  { "title": "潜水艦", "url": ""}
-			, { "title": "(伊19)", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E4%B8%80%E4%B9%9D%E6%BD%9C%E6%B0%B4%E8%89%A6" }
+			, { "title": "伊8", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E5%85%AB%E6%BD%9C%E6%B0%B4%E8%89%A6" }
+			, { "title": "伊19", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E4%B8%80%E4%B9%9D%E6%BD%9C%E6%B0%B4%E8%89%A6" }
 			, { "title": "伊58", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E4%BA%94%E5%85%AB%E6%BD%9C%E6%B0%B4%E8%89%A6" }
 			, { "title": "伊168", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E4%B8%80%E5%85%AD%E5%85%AB%E6%BD%9C%E6%B0%B4%E8%89%A6" }
 		]}
