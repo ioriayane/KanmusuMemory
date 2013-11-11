@@ -30,78 +30,95 @@
     <number>1</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <property name="spacing">
       <number>1</number>
      </property>
      <item>
-      <widget class="QPushButton" name="goBackButton">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="KanmusuMemory.qrc">
-         <normaloff>:/resources/go_back.png</normaloff>:/resources/go_back.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="goForwardButton">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="KanmusuMemory.qrc">
-         <normaloff>:/resources/go_forward.png</normaloff>:/resources/go_forward.png</iconset>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="goBackButton">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="KanmusuMemory.qrc">
+           <normaloff>:/resources/go_back.png</normaloff>:/resources/go_back.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="goForwardButton">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="KanmusuMemory.qrc">
+           <normaloff>:/resources/go_forward.png</normaloff>:/resources/go_forward.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="reloadButton">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="KanmusuMemory.qrc">
+           <normaloff>:/resources/reload.png</normaloff>:/resources/reload.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QPushButton" name="favoriteButton">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="KanmusuMemory.qrc">
+           <normaloff>:/resources/fav_icon_off.png</normaloff>
+           <normalon>:/resources/fav_icon_on.png</normalon>:/resources/fav_icon_off.png</iconset>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="changeMobileModeButton">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="KanmusuMemory.qrc">
+           <normaloff>:/resources/mobile_icon_off.png</normaloff>
+           <normalon>:/resources/mobile_icon_on.png</normalon>:/resources/mobile_icon_off.png</iconset>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="QLineEdit" name="urlEdit"/>
-     </item>
-     <item>
-      <widget class="QPushButton" name="reloadButton">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="KanmusuMemory.qrc">
-         <normaloff>:/resources/reload.png</normaloff>:/resources/reload.png</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="favoriteButton">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="KanmusuMemory.qrc">
-         <normaloff>:/resources/fav_icon_off.png</normaloff>
-         <normalon>:/resources/fav_icon_on.png</normalon>:/resources/fav_icon_off.png</iconset>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="changeMobileModeButton">
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset resource="KanmusuMemory.qrc">
-         <normaloff>:/resources/mobile_icon_off.png</normaloff>
-         <normalon>:/resources/mobile_icon_on.png</normalon>:/resources/mobile_icon_off.png</iconset>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-      </widget>
      </item>
     </layout>
    </item>
