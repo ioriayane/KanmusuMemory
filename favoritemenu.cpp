@@ -27,6 +27,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QNetworkProxy>
 #include <QStandardPaths>
 #include <QDebug>
 
@@ -122,6 +123,19 @@ void FavoriteMenu::updateFromInternet(bool force)
             }
         }
     });
+    //プロキシ
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, KANMEMO_PROJECT, KANMEMO_NAME);
+    QNetworkProxy *proxy = new QNetworkProxy();
+    bool enable = settings.value(SETTING_GENERAL_PROXY_ENABLE, false).toBool();
+    QString host = settings.value(SETTING_GENERAL_PROXY_HOST).toString();
+    if(host.length() > 0 && enable){
+        proxy->setType(QNetworkProxy::HttpProxy);
+        proxy->setHostName(host);
+        proxy->setPort(settings.value(SETTING_GENERAL_PROXY_PORT, 8888).toInt());
+        net->setProxy(*proxy);
+    }else{
+        net->setProxy(QNetworkProxy::NoProxy);
+    }
     net->get(QNetworkRequest(FAVORITE_DOWNLOAD_URL));
 }
 
