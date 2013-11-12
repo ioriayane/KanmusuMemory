@@ -2,7 +2,7 @@
 
 APPNAME=KanmusuMemory
 TMPPATH=tmp
-QTPATH=~/Qt5.1.0/5.1.0/gcc_64
+QTPATH=~/Qt5.2.0b1/5.2.0-beta1/gcc_64
 LIBSETPATH=../KanmusuMemoryBin/KanmusuMemory
 
 #clean
