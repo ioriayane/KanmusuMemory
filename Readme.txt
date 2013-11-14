@@ -127,6 +127,8 @@
 　　・簡易ブラウザ機能追加
 　　　・画面を分割機能
 　　　・お気に入り機能（艦娘のWikipediaリンク付き）
+　　・タイマーダイアログのウインドウサイズの調整
+　　・バージョンアップお知らせ機能
 
 　・Version 0.6.2 2013/10/28
 　　・Mac OS X 10.9対応
@@ -194,6 +196,11 @@
 　@IoriAYANE
 　@task_jp
 　@nagakenjs
+  @androidsola
+  @tkhshmsy
+  @nowsprinting
+  @EnderAlice
+　@hermit4
 
 
 【その他】
