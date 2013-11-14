@@ -24,9 +24,10 @@ Html {
     property variant osName: [
         "0:Windows(32bit)"
         , "1:Windows(64bit)"
-        , "2:Mac OS X"
-        , "3:Linux(32bit)"
-        , "4:Linux(64bit)"]
+        , "2:Mac OS X(32bit)"
+        , "3:Mac OS X(64bit)"
+        , "4:Linux(32bit)"
+        , "5:Linux(64bit)"]
 
     Head {
         Meta { charset: "utf-8" }
@@ -58,7 +59,7 @@ Html {
                             Td { text: model.checkTime }
                             Td { text: model.version }
                             Td { text: model.versionCode }
-                            Td { text: model.os > 4 ? "unkown" : osName[model.os] }
+                            Td { text: model.os > 5 ? "%1:unkown".arg(model.os) : osName[model.os] }
                             Td { text: model.lang }
                             Td { text: model.remoteAddress }
                             Td { text: model.userAgent }

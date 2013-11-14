@@ -18,9 +18,14 @@ moc_*.cpp
 qrc_*.cpp
 Makefile
 *-build-*
+ui_*.h
 
 
 *.bak
 *.BAK
 *.autosave
-
+*.obj
+Makefile.*
+*.exe
+*.exe.embed.manifest
+*.res
