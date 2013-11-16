@@ -29,84 +29,6 @@ for ($i = 0; $i <= $#ARGV; $i++) {
 	}
 }
 
-################################################
-# OSごとの設定
-################################################
-if($OS eq "win"){
-	################################################
-	# Windowsの設定
-	################################################
-
-	# 実行ファイル名
-	$EXENAME="KanmusuMemory.exe";
-	# 実行ファイルができるディレクトリ
-	$EXEDIR="release\\";
-	# デプロイ先のディレクトリ
-	$OUTDIR='..\\KanmusuMemoryBin\\KanmusuMemory\\';
-	# 言語ファイルを保存しているディレクトリ
-	$I18N="i18n\\";
-
-
-	# Qtのディレクトリ
-	$QTDIR="C:\\Qt\\Qt5.1.1vs12-32\\5.1.1\\msvc2012\\";
-	# Qtのバイナリの場所
-	$QTBIN="bin\\";
-	# Qtのライブラリ（Winならdll, Ubuntuならso）の保存場所
-	$QTLIB="bin\\";
-	# QtQuickのプラグインの保存場所
-	$QTQML="qml\\";
-	# プラグインの保存場所
-	$QTPLUGINS="plugins\\";
-
-	# ライブラリの拡張子
-	@LIBEXTS=(".dll");
-
-	# 環境に依存したファイル
-	if($PTRSIZE == 32){
-		$PTRSIZE_NAME="x86";
-	}else{
-		$PTRSIZE_NAME="x64";
-	}
-	@PLATFORM_LIBS=("C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\VC\\redist\\" . $PTRSIZE_NAME . "\\Microsoft.VC110.CRT\\msvcp110.dll"
-				  , "C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\VC\\redist\\" . $PTRSIZE_NAME . "\\Microsoft.VC110.CRT\\msvcr110.dll"
-				  , "..\\ssl_dll\\libssl32.dll"
-				  , "..\\ssl_dll\\libeay32.dll"
-				  , "..\\ssl_dll\\ssleay32.dll"
-				  );
-	# 環境ごとのコマンドの設定
-	$MAKE="nmake";					# makeコマンド
-	$CP="copy";						# 単品コピー
-	$COPY="xcopy /S /E /I /Y";		# 複数コピー
-	$MKDIR="mkdir";					# ディレクトリ作成
-	$RMDIR="rmdir /S /Q";			# ディレクトリ削除
-	$RM="del /F";					# ファイル削除
-
-	# ファイルをコピーした最後に消すファイルのフィルタ
-	@REMOVE_FILES=(
-		"d.dll\$"
-		, ".pdb\$"
-		, "plugins.qmltypes"
-		, "qoffscreen.dll"		#platforms
-		, "qminimal.dll"		#platforms
-		, "dsengine.dll"		#mediaservice
-		);
-
-}elsif($OS eq "ubuntu"){
-	################################################
-	# Ubuntuの設定
-	################################################
-
-
-	exit;
-#}elsif($OS eq "mac"){
-}else{
-	print "invalid parameter\n";
-	print "deploy win32|win64|ubuntu32|ubuntu64|mac'\n";
-
-	exit;
-}
-
-
 #setup QML modules
 @QML_MODULE=(
 	  "Qt"
@@ -153,13 +75,10 @@ if($OS eq "win"){
 
 #setup Qt libraries
 @QT_MODULE_LIBRARY=(
-	"d3dcompiler_46"
-	, "icudt51", "icuin51", "icuuc51"
-	, "libEGL", "libGLESv2"
-	, "Qt0TwitterAPI"
 #	, "Qt5CLucene"
 #	, "Qt5Concurrent"
-	, "Qt5Core"
+	 "Qt5Core"
+    , "Qt5DBus"
 #	, "Qt5Declarative"
 #	, "Qt5Designer"
 #	, "Qt5DesignerComponents"
@@ -186,6 +105,174 @@ if($OS eq "win"){
 #	, "Qt5XmlPatterns"
 	);
 
+################################################
+# OSごとの設定
+################################################
+if($OS eq "win"){
+	################################################
+	# Windowsの設定
+	################################################
+
+	# 実行ファイル名
+	$EXENAME="KanmusuMemory.exe";
+	# 実行ファイルができるディレクトリ
+	$EXEDIR="release\\";
+	# デプロイ先のディレクトリ
+	$OUTDIR='..\\KanmusuMemoryBin\\KanmusuMemory\\';
+    $OUTDIRBIN="";
+    $OUTDIRLIB="";
+	# 言語ファイルを保存しているディレクトリ
+	$I18N="i18n\\";
+
+
+	# Qtのディレクトリ
+	$QTDIR="C:\\Qt\\Qt5.1.1vs12-32\\5.1.1\\msvc2012\\";
+	# Qtのバイナリの場所
+	$QTBIN="bin\\";
+	# Qtのライブラリ（Winならdll, Ubuntuならso）の保存場所
+	$QTLIB="bin\\";
+	# QtQuickのプラグインの保存場所
+	$QTQML="qml\\";
+	# プラグインの保存場所
+	$QTPLUGINS="plugins\\";
+
+	# 環境に依存したファイル
+	if($PTRSIZE == 32){
+		$PTRSIZE_NAME="x86";
+	}else{
+		$PTRSIZE_NAME="x64";
+	}
+	@PLATFORM_LIBS=("C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\VC\\redist\\" . $PTRSIZE_NAME . "\\Microsoft.VC110.CRT\\msvcp110.dll"
+				  , "C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\VC\\redist\\" . $PTRSIZE_NAME . "\\Microsoft.VC110.CRT\\msvcr110.dll"
+				  , "..\\ssl_dll\\libssl32.dll"
+				  , "..\\ssl_dll\\libeay32.dll"
+				  , "..\\ssl_dll\\ssleay32.dll"
+                  , "resources\\alarm.mp3"
+				  );
+
+	# 環境ごとのコマンドの設定
+	$MAKE="nmake";					# makeコマンド
+	$CP="copy";						# 単品コピー
+	$COPY="xcopy /S /E /I /Y";		# 複数コピー
+	$MKDIR="mkdir";					# ディレクトリ作成
+	$RMDIR="rmdir /S /Q";			# ディレクトリ削除
+	$RM="del /F";					# ファイル削除
+
+	# ファイルをコピーした最後に消すファイルのフィルタ
+	@REMOVE_FILES=(
+		"d.dll\$"
+		, ".pdb\$"
+		, "plugins.qmltypes"
+		, "qoffscreen.dll"		#platforms
+		, "qminimal.dll"		#platforms
+		, "dsengine.dll"		#mediaservice
+		);
+
+    # 名称の修正
+    @temp = ();
+    foreach $name (@QT_MODULE_LIBRARY){
+        push(@temp, $name . ".dll");
+    }
+    @QT_MODULE_LIBRARY = @temp;
+
+    # 追加
+    push(@QT_MODULE_LIBRARY, "Qt0TwitterAPI.dll");
+    push(@QT_MODULE_LIBRARY, "d3dcompiler_46.dll");
+    push(@QT_MODULE_LIBRARY, "icudt51.dll");
+    push(@QT_MODULE_LIBRARY, "icuin51.dll");
+    push(@QT_MODULE_LIBRARY, "icuuc51.dll");
+    push(@QT_MODULE_LIBRARY, "libEGL.dll");
+    push(@QT_MODULE_LIBRARY, "libGLESv2.dll");
+
+}elsif($OS eq "ubuntu"){
+	################################################
+	# Ubuntuの設定
+	################################################
+
+	# 実行ファイル名
+	$EXENAME="KanmusuMemory";
+	# 実行ファイルができるディレクトリ
+	$EXEDIR="";
+	# デプロイ先のディレクトリ
+	$OUTDIR='tmp/';
+    $OUTDIRBIN="bin/";
+    $OUTDIRLIB="lib/";
+	# 言語ファイルを保存しているディレクトリ
+	$I18N="i18n/";
+
+
+	# Qtのディレクトリ
+	$QTDIR="~/Qt5.1.0/5.1.0/gcc_64/";
+	# Qtのバイナリの場所
+	$QTBIN="bin/";
+	# Qtのライブラリ（Winならdll, Ubuntuならso）の保存場所
+	$QTLIB="lib/";
+	# QtQuickのプラグインの保存場所
+	$QTQML="qml/";
+	# プラグインの保存場所
+	$QTPLUGINS="plugins/";
+
+	# 環境に依存したファイル
+	if($PTRSIZE == 32){
+		$PTRSIZE_NAME="x86";
+	}else{
+		$PTRSIZE_NAME="x64";
+	}
+	@PLATFORM_LIBS=(
+                    "resources/alarm.mp3"
+                    , "scripts/KanmusuMemory.sh"
+				  );
+
+	# 環境ごとのコマンドの設定
+	$MAKE="make";				# makeコマンド
+	$CP="cp";					# 単品コピー
+	$COPY="cp -rf";	            # 複数コピー
+	$MKDIR="mkdir";				# ディレクトリ作成
+	$RMDIR="rm -rf";			# ディレクトリ削除
+	$RM="rm";					# ファイル削除
+
+	# ファイルをコピーした最後に消すファイルのフィルタ
+	@REMOVE_FILES=(
+		"plugins.qmltypes"
+        , "libqlinuxfb.so"        #platforms
+        , "libqminimal.so"      #platforms
+        , "libqoffscreen.so"    #platforms
+		);
+
+
+    # 名称の修正
+    @temp = ();
+    foreach $name (@QT_MODULE_LIBRARY){
+        push(@temp, "lib" . $name . ".so");
+        push(@temp, "lib" . $name . ".so.5.1.0");
+    }
+    @QT_MODULE_LIBRARY = @temp;
+    
+    # 追加ライブラリ
+    push(@QT_MODULE_PLUGIN, "platforminputcontexts");
+    push(@QT_MODULE_PLUGIN, "platformthemes");
+
+    push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so");
+    push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0.1.0");
+    push(@QT_MODULE_LIBRARY, "libicudata.so.51");
+    push(@QT_MODULE_LIBRARY, "libicudata.so.51.1");
+    push(@QT_MODULE_LIBRARY, "libicui18n.so.51");
+    push(@QT_MODULE_LIBRARY, "libicui18n.so.51.1");
+    push(@QT_MODULE_LIBRARY, "libicuuc.so.51");
+    push(@QT_MODULE_LIBRARY, "libicuuc.so.51.1");
+    push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1");
+    push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1.0.0");
+
+#}elsif($OS eq "mac"){
+}else{
+	print "invalid parameter\n";
+	print "deploy win32|win64|ubuntu32|ubuntu64|mac'\n";
+
+	exit;
+}
+
+
+
 
 
 # カレントディレクトリを取得する
@@ -204,7 +291,6 @@ $PWD =~ s/\n//g;
 # クリーン
 system($RMDIR . " " . $OUTDIR);
 # リビルド
-system($PALTFORM_SETUP);
 system($QTDIR . $QTBIN . "qmake -r");
 system("$MAKE clean");
 system("$MAKE");
@@ -213,21 +299,30 @@ system("$MAKE");
 ##################################
 #deploy
 ##################################
+# 出力先作成
+system("$MKDIR $OUTDIR");
+if($OS eq "ubuntu"){
+    system("$MKDIR $OUTDIR$OUTDIRBIN");
+    system("$MKDIR $OUTDIR$OUTDIRLIB");
+}
+
 # 実行ファイル
-system($MKDIR . " " . $OUTDIR);
+system("$CP $EXEDIR$EXENAME $OUTDIR$OUTDIRBIN");
 
 # Readme.txtとか付属品のコピー
-system("$CP $EXEDIR$EXENAME $OUTDIR");
-system("$CP $PWD" . "\\Readme.txt $OUTDIR");
-system("$CP resources\\alarm.mp3 $OUTDIR");
-
+if($OS eq "win"){
+    system("$CP $PWD" . "\\Readme.txt $OUTDIR");
+#    system("$CP resources\\alarm.mp3 $OUTDIR");
+}elsif($OS eq "ubuntu"){
+    system("$CP $PWD" . "/Readme.txt $OUTDIR");
+}else{
+}
 
 ##################################
 #setup lang
 ##################################
-system("$MKDIR $OUTDIR$I18N");
-system("$COPY $I18N" . "*.qm $OUTDIR$I18N");
-
+system("$MKDIR $OUTDIR$OUTDIRBIN$I18N");
+system("$COPY $I18N" . "*.qm $OUTDIR$OUTDIRBIN$I18N");
 
 ##################################
 #setup QML modules
@@ -235,17 +330,23 @@ system("$COPY $I18N" . "*.qm $OUTDIR$I18N");
 @libs=@QML_MODULE;
 $lib_dir=$QTQML;
 foreach $lib (@libs) {
-	system("$COPY $QTDIR$lib_dir$lib $OUTDIR$lib");
+	system("$COPY $QTDIR$lib_dir$lib $OUTDIR$OUTDIRBIN$lib");
 }
 
 #sub folder "qml/QtQuick"
 @libs=@QML_MODULE_QTQUICK;
 $lib_dir=$QTQML;
-$sub_dir="QtQuick\\";
-foreach $lib (@libs) {
-	system("$COPY $QTDIR$lib_dir$sub_dir$lib $OUTDIR$sub_dir$lib");
+if($OS eq "win"){
+    $sub_dir="QtQuick\\";
+}else{
+    $sub_dir="QtQuick/";
 }
-
+if($#libs >= 0){
+    system("$MKDIR $OUTDIR$OUTDIRBIN$sub_dir");
+    foreach $lib (@libs) {
+	    system("$COPY $QTDIR$lib_dir$sub_dir$lib $OUTDIR$OUTDIRBIN$sub_dir$lib");
+    }
+}
 
 ##################################
 #setup Qt plugins
@@ -253,7 +354,7 @@ foreach $lib (@libs) {
 @libs=@QT_MODULE_PLUGIN;
 $lib_dir=$QTPLUGINS;
 foreach $lib (@libs) {
-	system("$COPY $QTDIR$lib_dir$lib $OUTDIR$lib");
+	system("$COPY $QTDIR$lib_dir$lib $OUTDIR$OUTDIRBIN$lib");
 }
 
 
@@ -263,20 +364,16 @@ foreach $lib (@libs) {
 @libs=@QT_MODULE_LIBRARY;
 $lib_dir=$QTLIB;
 foreach $lib (@libs) {
-	foreach $libext (@LIBEXTS) {
-		system("$COPY $QTDIR$lib_dir$lib$libext $OUTDIR");
-	}
+	system("$COPY $QTDIR$lib_dir$lib$libext $OUTDIR$OUTDIRLIB");
 }
 
 
 ##################################
-#setup platform deplend files
+#setup platform depend files
 ##################################
 foreach $plat_lib (@PLATFORM_LIBS) {
-	system("$CP \"$plat_lib\" $OUTDIR");
+	system("$CP \"$plat_lib\" $OUTDIR$OUTDIRBIN");
 }
-
-
 
 ##################################
 # remove 
@@ -288,13 +385,12 @@ find(\&find_callback_remove, $OUTDIR);
 sub find_callback_remove {
 
 	foreach $filter (@REMOVE_FILES) {
-#		if($File::Find::name =~ /d.dll$/){
 		if($File::Find::name =~ /$filter/){
 			$temp = $File::Find::name;
 			if($OS eq "win"){
 				$temp =~ s/\//\\/g;
 			}
-			print "$RM $_ \n";
+			#print "$RM $_ \n";
 			system("$RM $_");
 		}
 	}

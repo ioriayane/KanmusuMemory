@@ -2,33 +2,17 @@
 
 APPNAME=KanmusuMemory
 TMPPATH=tmp
-QTPATH=~/Qt5.2.0b1/5.2.0-beta1/gcc_64
-LIBSETPATH=../KanmusuMemoryBin/KanmusuMemory
 
 #clean
 rm -rf ${APPNAME}
 rm ${APPNAME}-0.0-ubuntu-x86.zip
 rm -rf kanmusumemory
-${QTPATH}/bin/qmake -r
-make clean
-make
 
-#deploy
-mkdir ${TMPPATH}
-
-#copy libs
-cp -R ${LIBSETPATH}/* ${TMPPATH}/
-
-#copy tmp files
-cp Readme.txt ${TMPPATH}/
-cp resources/alarm.mp3 ${TMPPATH}/bin
-cp scripts/KanmusuMemory.sh ${TMPPATH}/bin
-cp i18n/qt_ja_JP.qm ${TMPPATH}/bin/i18n/
-
-#copy bin
-mv ${APPNAME} ${TMPPATH}/bin/
+#build and deploy
+perl scripts/deploy.pl ubuntu64
 
 #rename dir
+rm ${APPNAME}
 mv ${TMPPATH} ${APPNAME}
 
 #archive
