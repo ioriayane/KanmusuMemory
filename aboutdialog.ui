@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>391</width>
-    <height>215</height>
+    <width>413</width>
+    <height>247</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -71,8 +71,20 @@
           <layout class="QVBoxLayout" name="verticalLayout">
            <item>
             <widget class="QLabel" name="versionLabel">
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
              <property name="text">
               <string>Version : </string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="qtVersionLabel">
+             <property name="text">
+              <string>Qt</string>
              </property>
             </widget>
            </item>

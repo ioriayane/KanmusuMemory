@@ -40,6 +40,16 @@ AboutDialog::Private::Private(AboutDialog *parent)
     connect(q, &AboutDialog::developersChanged, [this](const QStringList &developers) {
         ui.developerLabel->setText(developers.join("\n"));
     });
+
+    //Qtバージョン
+    QString ver = "Based on Qt ";
+    ver.append(QT_VERSION_STR);
+    if(QT_POINTER_SIZE == 4){
+        ver.append(" (32bit)");
+    }else{
+        ver.append(" (64bit)");
+    }
+    ui.qtVersionLabel->setText(ver);
 }
 
 AboutDialog::AboutDialog(QWidget *parent)
