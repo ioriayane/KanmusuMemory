@@ -105,6 +105,14 @@ for ($i = 0; $i <= $#ARGV; $i++) {
 #	, "Qt5XmlPatterns"
 	);
 
+
+#32bit or 64bit
+if($PTRSIZE == 32){
+	$PTRSIZE_NAME="x86";
+}else{
+	$PTRSIZE_NAME="x64";
+}
+
 ################################################
 # OSごとの設定
 ################################################
@@ -118,7 +126,7 @@ if($OS eq "win"){
 	# 実行ファイルができるディレクトリ
 	$EXEDIR="release\\";
 	# デプロイ先のディレクトリ
-	$OUTDIR='..\\KanmusuMemoryBin\\KanmusuMemory\\';
+	$OUTDIR='..\\KanmusuMemoryBin\\KanmusuMemory' . $PTRSIZE_NAME . '\\';
     $OUTDIRBIN="";
     $OUTDIRLIB="";
 	# 言語ファイルを保存しているディレクトリ
@@ -126,7 +134,11 @@ if($OS eq "win"){
 
 
 	# Qtのディレクトリ
-	$QTDIR="C:\\Qt\\Qt5.1.1vs12-32\\5.1.1\\msvc2012\\";
+	if($PTRSIZE_NAME eq "x86"){
+		$QTDIR="C:\\Qt\\Qt5.1.1vs12-32\\5.1.1\\msvc2012\\";
+	}else{
+		$QTDIR="C:\\Qt\\Qt5.1.1vs12-64\\5.1.1\\msvc2012_64\\";
+	}
 	# Qtのバイナリの場所
 	$QTBIN="bin\\";
 	# Qtのライブラリ（Winならdll, Ubuntuならso）の保存場所
@@ -137,21 +149,20 @@ if($OS eq "win"){
 	$QTPLUGINS="plugins\\";
 
 	# 環境に依存したファイル
-	if($PTRSIZE == 32){
-		$PTRSIZE_NAME="x86";
-	}else{
-		$PTRSIZE_NAME="x64";
-	}
 	@PLATFORM_LIBS=("C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\VC\\redist\\" . $PTRSIZE_NAME . "\\Microsoft.VC110.CRT\\msvcp110.dll"
 				  , "C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\VC\\redist\\" . $PTRSIZE_NAME . "\\Microsoft.VC110.CRT\\msvcr110.dll"
-				  , "..\\ssl_dll\\libssl32.dll"
-				  , "..\\ssl_dll\\libeay32.dll"
-				  , "..\\ssl_dll\\ssleay32.dll"
+#				  , "..\\ssl_dll\\". $PTRSIZE_NAME . "\\libssl32.dll"
+				  , "..\\ssl_dll\\". $PTRSIZE_NAME . "\\libeay32.dll"
+				  , "..\\ssl_dll\\". $PTRSIZE_NAME . "\\ssleay32.dll"
                   , "resources\\alarm.mp3"
 				  );
 
 	# 環境ごとのコマンドの設定
-	$MAKE="nmake";					# makeコマンド
+	if($PTRSIZE_NAME eq "x86"){
+		$MAKE="c:\\qt\\Qt5.1.1vs12-32\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
+	}else{
+		$MAKE="c:\\qt\\Qt5.1.1vs12-64\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
+	}
 	$CP="copy";						# 単品コピー
 	$COPY="xcopy /S /E /I /Y";		# 複数コピー
 	$MKDIR="mkdir";					# ディレクトリ作成
@@ -213,11 +224,6 @@ if($OS eq "win"){
 	$QTPLUGINS="plugins/";
 
 	# 環境に依存したファイル
-	if($PTRSIZE == 32){
-		$PTRSIZE_NAME="x86";
-	}else{
-		$PTRSIZE_NAME="x64";
-	}
 	@PLATFORM_LIBS=(
                     "resources/alarm.mp3"
                     , "scripts/KanmusuMemory.sh"
@@ -287,6 +293,7 @@ $PWD =~ s/\n//g;
 ##################################
 #build
 ##################################
+
 
 # クリーン
 system($RMDIR . " " . $OUTDIR);
