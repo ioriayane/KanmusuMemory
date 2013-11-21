@@ -30,6 +30,7 @@ public:
 private:
     void showNormal();
     void showFullScreen();
+    void showOptionalSize(int width, int height, bool isfullscreen);
 
 private:
     WebView *q;
@@ -43,6 +44,7 @@ private:
     QHash<QString, QString> flashWrap;
     QHash<QString, QString> embed;
     QHash<QString, QString> sectionWrap;
+    QRect defaultRect;
 };
 
 WebView::Private::Private(WebView *parent)
@@ -54,6 +56,12 @@ WebView::Private::Private(WebView *parent)
         case WebView::NormalMode:
             showNormal();
             break;
+        case WebView::OneAndHalfMode:
+            if(!defaultRect.isValid()){
+                defaultRect = q->getGameRect();
+            }
+            showOptionalSize(defaultRect.width() * 1.5, defaultRect.height() * 1.5, false);
+            break;
         case WebView::FullScreenMode:
             showFullScreen();
             break;
@@ -64,7 +72,11 @@ WebView::Private::Private(WebView *parent)
 void WebView::Private::showFullScreen()
 {
     //normal -> full
+    showOptionalSize(q->window()->width(), q->window()->height(), true);
+}
 
+void WebView::Private::showOptionalSize(int width, int height, bool isfull)
+{
     QWebFrame *frame = q->page()->mainFrame();
 
     //スクロールバー非表示
@@ -73,7 +85,6 @@ void WebView::Private::showFullScreen()
         qDebug() << "failed find target";
         return;
     }
-
     QHash<QString, QString> properties;
     properties.insert(QStringLiteral("overflow"), QStringLiteral("hidden"));
     if(body.isEmpty()){
@@ -82,8 +93,11 @@ void WebView::Private::showFullScreen()
         }
         qDebug() << element.styleProperty(QStringLiteral("overflow"), QWebElement::InlineStyle);
     }
-    foreach (const QString &key, properties.keys()) {
-        element.setStyleProperty(key, properties.value(key));
+    if(isfull){
+        //フルスクリーンのみ
+        foreach (const QString &key, properties.keys()) {
+            element.setStyleProperty(key, properties.value(key));
+        }
     }
     properties.clear();
 
@@ -95,12 +109,11 @@ void WebView::Private::showFullScreen()
         //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
         return;
     }
-
     properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
     properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
     properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
-    properties.insert(QStringLiteral("width"), QString("%1px").arg(q->window()->width()));
-    properties.insert(QStringLiteral("height"), QString("%1px").arg(q->window()->height()));
+    properties.insert(QStringLiteral("width"), QString("%1px").arg(width));
+    properties.insert(QStringLiteral("height"), QString("%1px").arg(height));
     properties.insert(QStringLiteral("z-index"), QStringLiteral("10"));
     if(gameFrame.isEmpty()){
         foreach (const QString &key, properties.keys()) {
@@ -112,25 +125,30 @@ void WebView::Private::showFullScreen()
                  << "," << element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle)
                  << "," << element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle);
     }
+    if(!isfull){
+        //フルスクリーンじゃない時は変更しない
+        properties.remove(QStringLiteral("position"));
+        properties.remove(QStringLiteral("top"));
+        properties.remove(QStringLiteral("left"));
+    }
     foreach (const QString &key, properties.keys()) {
         element.setStyleProperty(key, properties.value(key));
     }
     properties.clear();
+
 
     //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
     frame = frame->childFrames().first();
     element = frame->findFirstElement(QStringLiteral("#flashWrap"));
     if (element.isNull()) {
         qDebug() << "failed find target";
-        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
         return;
     }
-
     properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
     properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
     properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
-    properties.insert(QStringLiteral("width"), QString("%1px").arg(q->window()->width()));
-    properties.insert(QStringLiteral("height"), QString("%1px").arg(q->window()->height()));
+    properties.insert(QStringLiteral("width"), QString("%1px").arg(width));
+    properties.insert(QStringLiteral("height"), QString("%1px").arg(height));
     if(flashWrap.isEmpty()){
         foreach (const QString &key, properties.keys()) {
             flashWrap.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
@@ -141,27 +159,30 @@ void WebView::Private::showFullScreen()
                  << "," << element.styleProperty(QStringLiteral("width"), QWebElement::InlineStyle)
                  << "," << element.styleProperty(QStringLiteral("height"), QWebElement::InlineStyle);
     }
+    if(!isfull){
+        //フルスクリーンじゃない時は変更しない
+        properties.remove(QStringLiteral("position"));
+    }
     foreach (const QString &key, properties.keys()) {
         element.setStyleProperty(key, properties.value(key));
     }
     properties.clear();
 
+    //embedタグを探す
     element = element.findFirst(QStringLiteral("embed"));
     if (element.isNull()) {
         qDebug() << "failed find target";
-        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
         return;
     }
-
-    properties.insert(QStringLiteral("width"), QString::number(q->window()->width()));
-    properties.insert(QStringLiteral("height"), QString::number(q->window()->height()));
+    properties.insert(QStringLiteral("width"), QString::number(width));
+    properties.insert(QStringLiteral("height"), QString::number(height));
     if(embed.isEmpty()){
         foreach (const QString &key, properties.keys()) {
             embed.insert(key, element.attribute(key));
         }
         qDebug() << element.attribute(QStringLiteral("width"))
                  << "," << element.attribute(QStringLiteral("height"))
-                 << "->" << q->window()->width() << "," << q->window()->height();
+                 << "->" << width << "," << height;
     }
     foreach (const QString &key, properties.keys()) {
         element.evaluateJavaScript(QString("this.%1='%2'").arg(key).arg(properties.value(key)));
@@ -172,7 +193,6 @@ void WebView::Private::showFullScreen()
     element = frame->findFirstElement(QStringLiteral("#sectionWrap"));
     if (element.isNull()) {
         qDebug() << "failed find target";
-        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
         return;
     }
     properties.insert(QStringLiteral("visibility"), QStringLiteral("hidden"));
@@ -181,8 +201,11 @@ void WebView::Private::showFullScreen()
             sectionWrap.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
         }
     }
-    foreach (const QString &key, properties.keys()) {
-        element.setStyleProperty(key, properties.value(key));
+    if(isfull){
+        //フルスクリーンのみ
+        foreach (const QString &key, properties.keys()) {
+            element.setStyleProperty(key, properties.value(key));
+        }
     }
 }
 

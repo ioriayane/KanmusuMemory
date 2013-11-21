@@ -155,6 +155,14 @@ MainWindow::Private::Private(MainWindow *parent)
             //フルスクリーンでゲームがないときは何もしない
         }
     });
+    //1.5倍表示
+    connect(ui.actionOneAndHalfTimesSize, &QAction::triggered, [this]() {
+        ui.webView->setViewMode(WebView::OneAndHalfMode);
+    });
+    //通常サイズ表示
+    connect(ui.actionNormalSize, &QAction::triggered, [this](){
+        ui.webView->setViewMode(WebView::NormalMode);
+    });
 
     //ウインドウ分割
     connect(ui.actionSplitWindow, &QAction::triggered, [this]() {

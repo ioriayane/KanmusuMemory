@@ -27,6 +27,7 @@ class WebView : public QWebView
 public:
     enum ViewMode {
         NormalMode,
+        OneAndHalfMode,
         FullScreenMode
     };
 

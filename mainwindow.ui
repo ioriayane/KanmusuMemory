@@ -119,10 +119,18 @@
     <property name="title">
      <string>&amp;Browser</string>
     </property>
+    <widget class="QMenu" name="menuGame_size">
+     <property name="title">
+      <string>Game size</string>
+     </property>
+     <addaction name="actionNormalSize"/>
+     <addaction name="actionOneAndHalfTimesSize"/>
+    </widget>
     <addaction name="reload"/>
     <addaction name="actionReturn_to_Kan_Colle"/>
     <addaction name="separator"/>
     <addaction name="actionFullScreen"/>
+    <addaction name="menuGame_size"/>
     <addaction name="separator"/>
     <addaction name="actionSplitWindow"/>
     <addaction name="actionReloadTab"/>
@@ -368,6 +376,16 @@
   <action name="actionUpdate">
    <property name="text">
     <string>&amp;Update</string>
+   </property>
+  </action>
+  <action name="actionOneAndHalfTimesSize">
+   <property name="text">
+    <string>1.5 times</string>
+   </property>
+  </action>
+  <action name="actionNormalSize">
+   <property name="text">
+    <string>Normal</string>
    </property>
   </action>
  </widget>
