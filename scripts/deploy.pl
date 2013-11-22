@@ -213,7 +213,11 @@ if($OS eq "win"){
 
 
 	# Qtのディレクトリ
+if($PTRSIZE == 32){
+	$QTDIR="~/Qt5.1.0/5.1.0/gcc/";
+else
 	$QTDIR="~/Qt5.1.0/5.1.0/gcc_64/";
+}
 	# Qtのバイナリの場所
 	$QTBIN="bin/";
 	# Qtのライブラリ（Winならdll, Ubuntuならso）の保存場所
@@ -249,7 +253,7 @@ if($OS eq "win"){
     # 名称の修正
     @temp = ();
     foreach $name (@QT_MODULE_LIBRARY){
-        push(@temp, "lib" . $name . ".so");
+        push(@temp, "lib" . $name . ".so.5");
         push(@temp, "lib" . $name . ".so.5.1.0");
     }
     @QT_MODULE_LIBRARY = @temp;
