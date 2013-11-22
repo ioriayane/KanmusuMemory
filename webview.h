@@ -27,7 +27,6 @@ class WebView : public QWebView
 public:
     enum ViewMode {
         NormalMode,
-        OneAndHalfMode,
         FullScreenMode
     };
 
@@ -39,11 +38,15 @@ public:
 
     ViewMode viewMode() const;
 
+    qreal getGameSizeFactor() const;
+    void setGameSizeFactor(const qreal &factor);
+
 public slots:
     void setViewMode(ViewMode viewMode);
 
 signals:
     void viewModeChanged(ViewMode viewMode);
+    void gameSizeFactorChanged(qreal factor);
     void error(const QString &message);
 
 protected:
@@ -56,6 +59,7 @@ private:
     class Private;
     Private *d;
 
+    qreal gameSizeFactor;
 };
 
 #endif // WEBVIEW_H

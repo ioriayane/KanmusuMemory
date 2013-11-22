@@ -155,14 +155,14 @@ MainWindow::Private::Private(MainWindow *parent)
             //フルスクリーンでゲームがないときは何もしない
         }
     });
-    //1.5倍表示
-    connect(ui.actionOneAndHalfTimesSize, &QAction::triggered, [this]() {
-        ui.webView->setViewMode(WebView::OneAndHalfMode);
-    });
-    //通常サイズ表示
-    connect(ui.actionNormalSize, &QAction::triggered, [this](){
-        ui.webView->setViewMode(WebView::NormalMode);
-    });
+    //ズーム
+    connect(ui.actionZoom050, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(0.5); });
+    connect(ui.actionZoom075, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(0.75); });
+    connect(ui.actionZoom100, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(1); });
+    connect(ui.actionZoom125, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(1.25); });
+    connect(ui.actionZoom150, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(1.5); });
+    connect(ui.actionZoom175, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(1.75); });
+    connect(ui.actionZoom200, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(2); });
 
     //ウインドウ分割
     connect(ui.actionSplitWindow, &QAction::triggered, [this]() {

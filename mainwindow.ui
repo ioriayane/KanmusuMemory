@@ -121,10 +121,15 @@
     </property>
     <widget class="QMenu" name="menuGame_size">
      <property name="title">
-      <string>Game size</string>
+      <string>Zoom</string>
      </property>
-     <addaction name="actionNormalSize"/>
-     <addaction name="actionOneAndHalfTimesSize"/>
+     <addaction name="actionZoom200"/>
+     <addaction name="actionZoom175"/>
+     <addaction name="actionZoom150"/>
+     <addaction name="actionZoom125"/>
+     <addaction name="actionZoom100"/>
+     <addaction name="actionZoom075"/>
+     <addaction name="actionZoom050"/>
     </widget>
     <addaction name="reload"/>
     <addaction name="actionReturn_to_Kan_Colle"/>
@@ -378,14 +383,60 @@
     <string>&amp;Update</string>
    </property>
   </action>
-  <action name="actionOneAndHalfTimesSize">
+  <action name="actionZoom075">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>1.5 times</string>
+    <string>75%</string>
    </property>
   </action>
-  <action name="actionNormalSize">
+  <action name="actionZoom100">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Normal</string>
+    <string>100%</string>
+   </property>
+  </action>
+  <action name="actionZoom050">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>50%</string>
+   </property>
+  </action>
+  <action name="actionZoom125">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>125%</string>
+   </property>
+  </action>
+  <action name="actionZoom150">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>150%</string>
+   </property>
+  </action>
+  <action name="actionZoom175">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>175%</string>
+   </property>
+  </action>
+  <action name="actionZoom200">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>200%</string>
    </property>
   </action>
  </widget>
