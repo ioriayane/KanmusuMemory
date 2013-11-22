@@ -1,5 +1,16 @@
 #!/bin/bash
 
+if [[ $1 = "x86" ]]
+then
+PARAM=ubuntu32
+elif [[ $1 = "x64" ]]
+then
+PARAM=ubuntu64
+else
+echo " invalid param.    deployubuntu.sh x86|x64"
+return 2>&- || exit
+fi
+
 APPNAME=KanmusuMemory
 TMPPATH=tmp
 
@@ -9,7 +20,7 @@ rm ${APPNAME}-0.0-ubuntu-x86.zip
 rm -rf kanmusumemory
 
 #build and deploy
-perl scripts/deploy.pl ubuntu64
+perl scripts/deploy.pl ${PARAM}
 
 #rename dir
 rm ${APPNAME}

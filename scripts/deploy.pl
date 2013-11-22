@@ -215,7 +215,7 @@ if($OS eq "win"){
 	# Qtのディレクトリ
 if($PTRSIZE == 32){
 	$QTDIR="~/Qt5.1.0/5.1.0/gcc/";
-else
+}else{
 	$QTDIR="~/Qt5.1.0/5.1.0/gcc_64/";
 }
 	# Qtのバイナリの場所
