@@ -39,6 +39,9 @@ public:
     ViewMode viewMode;
 
 private:
+    QHash<QString, QString> naviBar;
+    QHash<QString, QString> naviApp;
+    QHash<QString, QString> foot;
     QHash<QString, QString> body;
     QHash<QString, QString> gameFrame;
     QHash<QString, QString> flashWrap;
@@ -79,6 +82,7 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
 {
     QWebFrame *frame = q->page()->mainFrame();
 
+    ///////////////////////////////////////
     //スクロールバー非表示
     QWebElement element = frame->findFirstElement(QStringLiteral("body"));
     if (element.isNull()) {
@@ -101,7 +105,62 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
     }
     properties.clear();
 
+    /////////////////////////////////////////
+    //ナビバーの横幅をあわせる
+    element = frame->findFirstElement(QStringLiteral("#dmm_ntgnavi"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        return;
+    }
+    properties.insert(QStringLiteral("width"), QString("%1px").arg(width+188));
+    if(naviBar.isEmpty()){
+        foreach (const QString &key, properties.keys()) {
+            naviBar.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
+        }
+    }
+    foreach (const QString &key, properties.keys()) {
+        element.setStyleProperty(key, properties.value(key));
+    }
+    properties.clear();
 
+    /////////////////////////////////////////
+    //下のナビバーの横幅をあわせる
+    element = frame->findFirstElement(QStringLiteral("#area-game"));
+    element = element.nextSibling();
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        return;
+    }
+    properties.insert(QStringLiteral("width"), QString("%1px").arg(width+188));
+    if(naviApp.isEmpty()){
+        foreach (const QString &key, properties.keys()) {
+            naviApp.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
+        }
+    }
+    foreach (const QString &key, properties.keys()) {
+        element.setStyleProperty(key, properties.value(key));
+    }
+    properties.clear();
+
+    /////////////////////////////////////////
+    //フッターの横幅をあわせる
+    element = frame->findFirstElement(QStringLiteral("#foot"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        return;
+    }
+    properties.insert(QStringLiteral("width"), QString("%1px").arg(width+188));
+    if(foot.isEmpty()){
+        foreach (const QString &key, properties.keys()) {
+            foot.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
+        }
+    }
+    foreach (const QString &key, properties.keys()) {
+        element.setStyleProperty(key, properties.value(key));
+    }
+    properties.clear();
+
+    /////////////////////////////////////////
     //フレームを最大化
     element = frame->findFirstElement(QStringLiteral("#game_frame"));
     if (element.isNull()) {
@@ -112,8 +171,8 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
     properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
     properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
     properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
-    properties.insert(QStringLiteral("width"), QString("%1px").arg(width));
-    properties.insert(QStringLiteral("height"), QString("%1px").arg(height));
+    properties.insert(QStringLiteral("width"), QString("%1px").arg(width+100));
+    properties.insert(QStringLiteral("height"), QString("%1px").arg(height+100));
     properties.insert(QStringLiteral("z-index"), QStringLiteral("10"));
     if(gameFrame.isEmpty()){
         foreach (const QString &key, properties.keys()) {
@@ -130,6 +189,7 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
         properties.remove(QStringLiteral("position"));
         properties.remove(QStringLiteral("top"));
         properties.remove(QStringLiteral("left"));
+        properties.remove(QStringLiteral("z-index"));
     }
     foreach (const QString &key, properties.keys()) {
         element.setStyleProperty(key, properties.value(key));
@@ -137,6 +197,7 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
     properties.clear();
 
 
+    /////////////////////////////////////////
     //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
     frame = frame->childFrames().first();
     element = frame->findFirstElement(QStringLiteral("#flashWrap"));
@@ -162,12 +223,15 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
     if(!isfull){
         //フルスクリーンじゃない時は変更しない
         properties.remove(QStringLiteral("position"));
+        properties.remove(QStringLiteral("top"));
+        properties.remove(QStringLiteral("left"));
     }
     foreach (const QString &key, properties.keys()) {
         element.setStyleProperty(key, properties.value(key));
     }
     properties.clear();
 
+    /////////////////////////////////////////
     //embedタグを探す
     element = element.findFirst(QStringLiteral("embed"));
     if (element.isNull()) {
@@ -189,6 +253,7 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
     }
     properties.clear();
 
+    /////////////////////////////////////////
     //解説とか消す
     element = frame->findFirstElement(QStringLiteral("#sectionWrap"));
     if (element.isNull()) {
@@ -215,6 +280,7 @@ void WebView::Private::showNormal()
 
     QWebFrame *frame = q->page()->mainFrame();
 
+    /////////////////////////////////////////
     //スクロールバー表示
     QWebElement element = frame->findFirstElement(QStringLiteral("body"));
     if (element.isNull()) {
@@ -226,10 +292,48 @@ void WebView::Private::showNormal()
         element.setStyleProperty(key, body.value(key));
     }
 
+    /////////////////////////////////////////
+    //ナビバーの横幅をあわせる
+    element = frame->findFirstElement(QStringLiteral("#dmm_ntgnavi"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        return;
+    }
+    //もとに戻す
+    foreach (const QString &key, naviBar.keys()) {
+        element.setStyleProperty(key, naviBar.value(key));
+    }
+
+    /////////////////////////////////////////
+    //下のナビバーの横幅をあわせる
+    element = frame->findFirstElement(QStringLiteral("#area-game"));
+    element = element.nextSibling();
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        return;
+    }
+    //もとに戻す
+    foreach (const QString &key, naviApp.keys()) {
+        element.setStyleProperty(key, naviApp.value(key));
+    }
+
+    /////////////////////////////////////////
+    //フッターの横幅をあわせる
+    element = frame->findFirstElement(QStringLiteral("#foot"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        return;
+    }
+    //もとに戻す
+    foreach (const QString &key, foot.keys()) {
+        element.setStyleProperty(key, foot.value(key));
+    }
+
+    /////////////////////////////////////////
+    //フレーム
     element = frame->findFirstElement(QStringLiteral("#game_frame"));
     if (element.isNull()) {
         qDebug() << "failed find target";
-        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
         return;
     }
     //もとに戻す
@@ -237,12 +341,12 @@ void WebView::Private::showNormal()
         element.setStyleProperty(key, gameFrame.value(key));
     }
 
+    /////////////////////////////////////////
     //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
     frame = frame->childFrames().first();
     element = frame->findFirstElement(QStringLiteral("#flashWrap"));
     if (element.isNull()) {
         qDebug() << "failed find target";
-        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
         return;
     }
     //もとに戻す
@@ -250,10 +354,10 @@ void WebView::Private::showNormal()
         element.setStyleProperty(key, flashWrap.value(key));
     }
 
+    /////////////////////////////////////////
     element = element.findFirst(QStringLiteral("embed"));
     if (element.isNull()) {
         qDebug() << "failed find target";
-        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
         return;
     }
     //もとに戻す
@@ -261,7 +365,8 @@ void WebView::Private::showNormal()
         element.evaluateJavaScript(QStringLiteral("this.%1='%2'").arg(key).arg(embed.value(key)));
     }
 
-    //解説とか消す
+    /////////////////////////////////////////
+    //解説とか
     element = frame->findFirstElement(QStringLiteral("#sectionWrap"));
     if (element.isNull()) {
         qDebug() << "failed find target";
