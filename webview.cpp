@@ -39,7 +39,7 @@ public:
     ViewMode viewMode;
 
 private:
-    QHash<QString, QString> naviBar;
+    QHash<QString, QString> idW;
     QHash<QString, QString> naviApp;
     QHash<QString, QString> foot;
     QHash<QString, QString> body;
@@ -74,6 +74,7 @@ WebView::Private::Private(WebView *parent)
         }
         showOptionalSize(defaultRect.width() * factor, defaultRect.height() * factor, false);
     });
+
 }
 
 void WebView::Private::showFullScreen()
@@ -84,58 +85,34 @@ void WebView::Private::showFullScreen()
 
 void WebView::Private::showOptionalSize(int width, int height, bool isfull)
 {
+    //ゲーム画面有るか
+    if(!q->gameExists())   return;
+
+    QHash<QString, QString> properties;
     QWebFrame *frame = q->page()->mainFrame();
 
     ///////////////////////////////////////
     //スクロールバー非表示
     QWebElement element = frame->findFirstElement(QStringLiteral("body"));
-    if (element.isNull()) {
-        qDebug() << "failed find target";
-        return;
-    }
-    QHash<QString, QString> properties;
-    properties.insert(QStringLiteral("overflow"), QStringLiteral("hidden"));
-    if(body.isEmpty()){
-        foreach (const QString &key, properties.keys()) {
-            body.insert(key, element.styleProperty(key, QWebElement::InlineStyle));
-        }
-        qDebug() << element.styleProperty(QStringLiteral("overflow"), QWebElement::InlineStyle);
-    }
-    if(isfull){
+    if(!isfull){
+        properties.insert(QStringLiteral("overflow"), QStringLiteral(""));
+        properties.insert(QStringLiteral("min-width"), QString("%1px").arg(width+188));
+    }else{
         //フルスクリーンのみ
-        foreach (const QString &key, properties.keys()) {
-            element.setStyleProperty(key, properties.value(key));
-        }
+        properties.insert(QStringLiteral("overflow"), QStringLiteral("hidden"));
+        properties.insert(QStringLiteral("min-width"), QString("%1px").arg(width+188));
     }
-    properties.clear();
-
-    /////////////////////////////////////////
-    //ナビバーの横幅をあわせる
-    element = frame->findFirstElement(QStringLiteral("#dmm_ntgnavi"));
-    properties.insert(QStringLiteral("width"), QString("%1px").arg(width+188));
-    if(!setElementProperty(element, properties, naviBar)){
-        qDebug() << "failed find target";
-        return;
-    }
-    properties.clear();
-
-
-    /////////////////////////////////////////
-    //下のナビバーの横幅をあわせる
-    element = frame->findFirstElement(QStringLiteral("#area-game"));
-    element = element.nextSibling();
-    properties.insert(QStringLiteral("width"), QString("%1px").arg(width+188));
-    if(!setElementProperty(element, properties, naviApp)){
+    if(!setElementProperty(element, properties, body)){
         qDebug() << "failed find target";
         return;
     }
     properties.clear();
 
     /////////////////////////////////////////
-    //フッターの横幅をあわせる
-    element = frame->findFirstElement(QStringLiteral("#foot"));
+    //wってエリアを調節
+    element = frame->findFirstElement(QStringLiteral("#w"));
     properties.insert(QStringLiteral("width"), QString("%1px").arg(width+188));
-    if(!setElementProperty(element, properties, foot)){
+    if(!setElementProperty(element, properties, idW)){
         qDebug() << "failed find target";
         return;
     }
@@ -278,40 +255,15 @@ void WebView::Private::showNormal()
     }
 
     /////////////////////////////////////////
-    //ナビバーの横幅をあわせる
-    element = frame->findFirstElement(QStringLiteral("#dmm_ntgnavi"));
+    //wってエリア
+    element = frame->findFirstElement(QStringLiteral("#w"));
     if (element.isNull()) {
         qDebug() << "failed find target";
         return;
     }
     //もとに戻す
-    foreach (const QString &key, naviBar.keys()) {
-        element.setStyleProperty(key, naviBar.value(key));
-    }
-
-    /////////////////////////////////////////
-    //下のナビバーの横幅をあわせる
-    element = frame->findFirstElement(QStringLiteral("#area-game"));
-    element = element.nextSibling();
-    if (element.isNull()) {
-        qDebug() << "failed find target";
-        return;
-    }
-    //もとに戻す
-    foreach (const QString &key, naviApp.keys()) {
-        element.setStyleProperty(key, naviApp.value(key));
-    }
-
-    /////////////////////////////////////////
-    //フッターの横幅をあわせる
-    element = frame->findFirstElement(QStringLiteral("#foot"));
-    if (element.isNull()) {
-        qDebug() << "failed find target";
-        return;
-    }
-    //もとに戻す
-    foreach (const QString &key, foot.keys()) {
-        element.setStyleProperty(key, foot.value(key));
+    foreach (const QString &key, idW.keys()) {
+        element.setStyleProperty(key, idW.value(key));
     }
 
     /////////////////////////////////////////
@@ -470,6 +422,7 @@ qreal WebView::getGameSizeFactor() const
 void WebView::setGameSizeFactor(const qreal &factor)
 {
     if(gameSizeFactor == factor) return;
+
     if(factor < 0){
         gameSizeFactor = 0;
     }else{

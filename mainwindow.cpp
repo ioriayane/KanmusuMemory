@@ -71,6 +71,7 @@ public:
     void captureCatalog();
     void captureFleetDetail();
     void setFullScreen();
+    void setGameSize(qreal factor);
 
     QList<int> bakSplitterSizes;    //幅のサイズ保存用にとっておく。（非表示だと0になってしまうから）
 private:
@@ -156,13 +157,14 @@ MainWindow::Private::Private(MainWindow *parent)
         }
     });
     //ズーム
-    connect(ui.actionZoom050, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(0.5); });
-    connect(ui.actionZoom075, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(0.75); });
-    connect(ui.actionZoom100, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(1); });
-    connect(ui.actionZoom125, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(1.25); });
-    connect(ui.actionZoom150, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(1.5); });
-    connect(ui.actionZoom175, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(1.75); });
-    connect(ui.actionZoom200, &QAction::triggered, [this](){ ui.webView->setGameSizeFactor(2); });
+    setGameSize(1); //初期状態
+    connect(ui.actionZoom050, &QAction::triggered, [this](){ setGameSize(0.5); });
+    connect(ui.actionZoom075, &QAction::triggered, [this](){ setGameSize(0.75); });
+    connect(ui.actionZoom100, &QAction::triggered, [this](){ setGameSize(1); });
+    connect(ui.actionZoom125, &QAction::triggered, [this](){ setGameSize(1.25); });
+    connect(ui.actionZoom150, &QAction::triggered, [this](){ setGameSize(1.5); });
+    connect(ui.actionZoom175, &QAction::triggered, [this](){ setGameSize(1.75); });
+    connect(ui.actionZoom200, &QAction::triggered, [this](){ setGameSize(2); });
 
     //ウインドウ分割
     connect(ui.actionSplitWindow, &QAction::triggered, [this]() {
@@ -228,6 +230,7 @@ MainWindow::Private::Private(MainWindow *parent)
         if (ok) {
             ui.statusBar->showMessage(MainWindow::tr("complete"), STATUS_BAR_MSG_TIME);
 //            if(ui.webView->url().toString().compare(URL_KANCOLLE) == 0){
+//                qDebug() << "complete:" << ui.webView->url();
 //                setFullScreen();
 //            }
         } else {
@@ -764,6 +767,20 @@ void MainWindow::Private::setFullScreen()
     }
 
 }
+//ゲームサイズを調整する（メニューも）
+void MainWindow::Private::setGameSize(qreal factor)
+{
+    //サイズ調整
+    ui.webView->setGameSizeFactor(factor);
+    //メニュー調整
+    ui.actionZoom050->setChecked(factor == 0.5);
+    ui.actionZoom075->setChecked(factor == 0.75);
+    ui.actionZoom100->setChecked(factor == 1);
+    ui.actionZoom125->setChecked(factor == 1.25);
+    ui.actionZoom150->setChecked(factor == 1.5);
+    ui.actionZoom175->setChecked(factor == 1.75);
+    ui.actionZoom200->setChecked(factor == 2);
+}
 
 //Webページに関連する設定をする
 void MainWindow::Private::setWebSettings()
@@ -814,6 +831,9 @@ MainWindow::MainWindow(QWidget *parent)
     d->ui.splitter->setSizes(d->bakSplitterSizes);
     d->ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(settings.value(QStringLiteral(SETTING_SPLITTER_ON)).toBool());
     settings.endGroup();
+
+    //拡縮の設定を復元
+    //d->setGameSize(settings.value(QStringLiteral(SETTING_GENERAL_ZOOM_FACTOR), 1.0).toReal());
 
     //設定
     QNetworkProxyFactory::setUseSystemConfiguration(true);
@@ -866,6 +886,10 @@ void MainWindow::closeEvent(QCloseEvent *event)
         settings.setValue(QStringLiteral(SETTING_SPLITTER_SIZES), TimerData::toList<QVariant, int>(d->bakSplitterSizes));
     }
     settings.endGroup();
+
+    //拡縮の設定の保存
+    //settings.setValue(QStringLiteral(SETTING_GENERAL_ZOOM_FACTOR), d->ui.webView->getGameSizeFactor());
+
     //タブの保存
     d->ui.tabWidget->save();
 
