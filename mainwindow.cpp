@@ -229,6 +229,9 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.webView, &QWebView::loadFinished, [this](bool ok) {
         if (ok) {
             ui.statusBar->showMessage(MainWindow::tr("complete"), STATUS_BAR_MSG_TIME);
+
+            setGameSize(1); //元に戻す
+
 //            if(ui.webView->url().toString().compare(URL_KANCOLLE) == 0){
 //                qDebug() << "complete:" << ui.webView->url();
 //                setFullScreen();
