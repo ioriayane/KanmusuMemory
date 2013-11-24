@@ -1,6 +1,6 @@
 {
 "_comment" : "serialは日付+二桁連番で更新されてるか判断する"
-,"serial" : "2013102600"
+,"serial" : "2013112300"
 ,"root" : 
 [
 	{"array":
@@ -129,6 +129,7 @@
 				  { "title": "阿賀野型", "url": ""}
 				, { "title": "1 阿賀野", "url": "http://ja.wikipedia.org/wiki/%E9%98%BF%E8%B3%80%E9%87%8E_(%E8%BB%BD%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
 				, { "title": "2 能代", "url": "http://ja.wikipedia.org/wiki/%E8%83%BD%E4%BB%A3_(%E8%BB%BD%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
+				, { "title": "3 矢矧", "url": "http://ja.wikipedia.org/wiki/%E7%9F%A2%E7%9F%A7_(%E8%BB%BD%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
 			]}
 			, { "title": "夕張", "url": "http://ja.wikipedia.org/wiki/%E5%A4%95%E5%BC%B5_(%E8%BB%BD%E5%B7%A1%E6%B4%8B%E8%89%A6)" }
 		]}
