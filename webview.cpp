@@ -47,6 +47,7 @@ private:
     QHash<QString, QString> flashWrap;
     QHash<QString, QString> embed;
     QHash<QString, QString> sectionWrap;
+    QHash<QString, QString> globalNavi;
     QRect defaultRect;
 
     bool setElementProperty(QWebElement &element, QHash<QString, QString> &properties, QHash<QString, QString> &backup);
@@ -199,9 +200,11 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
     //解説とか消す
     element = frame->findFirstElement(QStringLiteral("#sectionWrap"));
     if(!isfull){
+//        properties.insert(QStringLiteral("width"), QString("%1px").arg(width));
         properties.insert(QStringLiteral("visibility"), QStringLiteral(""));
     }else{
         //フルスクリーンのみ
+//        properties.insert(QStringLiteral("width"), QString("%1px").arg(width));
         properties.insert(QStringLiteral("visibility"), QStringLiteral("hidden"));
     }
     if(!setElementProperty(element, properties, sectionWrap)){
@@ -209,6 +212,18 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
         return;
     }
     properties.clear();
+
+    /////////////////////////////////////////
+    //友達招待のバルーンを移動させるためにサイズ調整
+    element = frame->findFirstElement(QStringLiteral("#globalNavi"));
+    element = element.findFirst(QStringLiteral("p"));
+    properties.insert(QStringLiteral("right"), QString("%1px").arg((800-width)/2-43));
+    if(!setElementProperty(element, properties, globalNavi)){
+        qDebug() << "failed find target";
+        return;
+    }
+    properties.clear();
+
 }
 
 //エレメントにプロパティを設定する（初回はバックアップする）
@@ -307,13 +322,26 @@ void WebView::Private::showNormal()
     element = frame->findFirstElement(QStringLiteral("#sectionWrap"));
     if (element.isNull()) {
         qDebug() << "failed find target";
-        //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
         return;
     }
     //もとに戻す
     foreach (const QString &key, sectionWrap.keys()) {
         element.setStyleProperty(key, sectionWrap.value(key));
     }
+
+    /////////////////////////////////////////
+    //友達招待のバルーンを移動させるためにサイズ調整
+    element = frame->findFirstElement(QStringLiteral("#globalNavi"));
+    element = element.findFirst(QStringLiteral("p"));
+    if (element.isNull()) {
+        qDebug() << "failed find target";
+        return;
+    }
+    //もとに戻す
+    foreach (const QString &key, globalNavi.keys()) {
+        element.setStyleProperty(key, globalNavi.value(key));
+    }
+
 }
 
 WebView::WebView(QWidget *parent)
@@ -322,6 +350,61 @@ WebView::WebView(QWidget *parent)
 {
     setAttribute(Qt::WA_AcceptTouchEvents, false);
     connect(this, &QObject::destroyed, [this]() { delete d; });
+
+    connect(this, &QWebView::loadFinished, [this](bool ok) {
+        if(ok){
+            qDebug() << "2 loadFinished " << url() << " game exist " << gameExists();
+            QWebFrame *frame = page()->mainFrame();
+
+            connect(frame->page(), &QWebPage::contentsChanged, [this](){
+                qDebug() << "2 frame contentsChanged " << gameExists();
+            });
+
+            if(frame->childFrames().isEmpty()){
+                qDebug() << "2 child frame empty";
+                return;
+            }
+            frame = frame->childFrames().first();
+            connect(frame, &QWebFrame::loadFinished, [this](bool ok){
+                qDebug() << "3 frame loadFinished " << ok << " game exist " << gameExists();
+            });
+            connect(frame->page(), &QWebPage::contentsChanged, [this](){
+                qDebug() << "3 frame contentsChanged " << gameExists();
+            });
+            connect(frame->page(), &QWebPage::loadFinished, [this](bool ok){
+                qDebug() << " frame loadFinished " << gameExists();
+            });
+
+            QWebElement element = frame->findFirstElement(QStringLiteral("#flashWrap"));
+            if (element.isNull()) {
+                qDebug() << "none flashWrap";
+                return;
+            }
+            qDebug() << "flashWrap : " << element.toPlainText();
+        }
+    });
+    connect(page(), &QWebPage::contentsChanged, [this](){
+        qDebug() << "1 contentsChanged " << gameExists();
+    });
+
+    connect(page(), &QWebPage::frameCreated, [this](QWebFrame *frame){
+        qDebug() << "1 frameCreated " << frame->url() << "," << frame->childFrames().length();
+        connect(frame, &QWebFrame::loadFinished, [this](bool ok){
+            qDebug() << "1 loadFinished " << ok << " game exist " << gameExists();
+        });
+
+        if(frame->childFrames().isEmpty()){
+            qDebug() << "1 child frame empty";
+            return;
+        }
+        frame = frame->childFrames().first();
+        connect(frame, &QWebFrame::loadFinished, [this](bool ok){
+            qDebug() << "1 frame loadFinished " << ok << " game exist " << gameExists();
+        });
+        connect(frame->page(), &QWebPage::contentsChanged, [this](){
+            qDebug() << "1 frame contentsChanged " << gameExists();
+        });
+    });
 }
 
 bool WebView::gameExists() const
