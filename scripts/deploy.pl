@@ -262,7 +262,7 @@ if($PTRSIZE == 32){
     push(@QT_MODULE_PLUGIN, "platforminputcontexts");
     push(@QT_MODULE_PLUGIN, "platformthemes");
 
-    push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so");
+    push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0");
     push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0.1.0");
     push(@QT_MODULE_LIBRARY, "libicudata.so.51");
     push(@QT_MODULE_LIBRARY, "libicudata.so.51.1");
