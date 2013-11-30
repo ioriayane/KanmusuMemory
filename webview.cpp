@@ -39,7 +39,6 @@ public:
     ViewMode viewMode;
 
 private:
-    QHash<QString, QString> idW;
     QHash<QString, QString> naviApp;
     QHash<QString, QString> foot;
     QHash<QString, QString> body;
@@ -104,16 +103,6 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
         properties.insert(QStringLiteral("min-width"), QString("%1px").arg(width+188));
     }
     if(!setElementProperty(element, properties, body)){
-        qDebug() << "failed find target";
-        return;
-    }
-    properties.clear();
-
-    /////////////////////////////////////////
-    //wってエリアを調節
-    element = frame->findFirstElement(QStringLiteral("#w"));
-    properties.insert(QStringLiteral("width"), QString("%1px").arg(width+188));
-    if(!setElementProperty(element, properties, idW)){
         qDebug() << "failed find target";
         return;
     }
@@ -270,18 +259,6 @@ void WebView::Private::showNormal()
     }
 
     /////////////////////////////////////////
-    //wってエリア
-    element = frame->findFirstElement(QStringLiteral("#w"));
-    if (element.isNull()) {
-        qDebug() << "failed find target";
-        return;
-    }
-    //もとに戻す
-    foreach (const QString &key, idW.keys()) {
-        element.setStyleProperty(key, idW.value(key));
-    }
-
-    /////////////////////////////////////////
     //フレーム
     element = frame->findFirstElement(QStringLiteral("#game_frame"));
     if (element.isNull()) {
@@ -351,6 +328,7 @@ WebView::WebView(QWidget *parent)
     setAttribute(Qt::WA_AcceptTouchEvents, false);
     connect(this, &QObject::destroyed, [this]() { delete d; });
 
+#if 0   //
     connect(this, &QWebView::loadFinished, [this](bool ok) {
         if(ok){
             qDebug() << "2 loadFinished " << url() << " game exist " << gameExists();
@@ -405,6 +383,7 @@ WebView::WebView(QWidget *parent)
             qDebug() << "1 frame contentsChanged " << gameExists();
         });
     });
+#endif
 }
 
 bool WebView::gameExists() const
