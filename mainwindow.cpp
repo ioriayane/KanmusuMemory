@@ -165,6 +165,9 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.actionZoom150, &QAction::triggered, [this](){ setGameSize(1.5); });
     connect(ui.actionZoom175, &QAction::triggered, [this](){ setGameSize(1.75); });
     connect(ui.actionZoom200, &QAction::triggered, [this](){ setGameSize(2); });
+    //崩れるのでなし
+    ui.actionZoom050->setVisible(false);
+    ui.actionZoom075->setVisible(false);
 
     //ウインドウ分割
     connect(ui.actionSplitWindow, &QAction::triggered, [this]() {
