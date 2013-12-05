@@ -71,6 +71,18 @@ Html {
     }
     
     Component.onCompleted: {
+        var d = new Date() - (24 * 3600 * 1000)
+        d = new Date(d)
+        var mm = d.getMonth() + 1
+        var dd = d.getDate()
+        var hh = d.getHours()
+        var m = d.getMinutes()
+        if(mm < 10) { mm = "0" + mm }
+        if(dd < 10) { dd = "0" + dd }
+        if(hh < 10) { hh = "0" + hh }
+        if(m < 10) { m = "0" + m }
+        db.tableModel.condition = "checkTime > '%1-%2-%3T%4:%5:00'".arg(d.getFullYear()).arg(mm).arg(dd).arg(hh).arg(m)
+        db.tableModel.select = true
     }
     
     // Database Setting

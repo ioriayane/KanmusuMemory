@@ -29,7 +29,7 @@ Database {
     TableModel {
         id: history
         tableName: 'UpdateCheckHistory'
-        select: true
+        select: false
         primaryKey: 'key'
         property int key
         property date checkTime
