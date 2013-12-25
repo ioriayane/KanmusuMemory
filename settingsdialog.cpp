@@ -40,6 +40,7 @@ public:
     bool proxyEnable;
     QString proxyHost;
     quint16 proxyPort;
+    bool useCookie;
 };
 
 SettingsDialog::Private::Private(SettingsDialog *parent)
@@ -61,6 +62,7 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         proxyEnable = ui.proxyEnableCheckBox->isChecked();
         proxyHost = ui.proxyHost->text();
         proxyPort = ui.proxyPort->value();
+        useCookie = ui.useCookieCheckBox->isChecked();
         q->accept();
     });
     connect(ui.buttonBox, &QDialogButtonBox::rejected, q, &QDialog::reject);
@@ -81,6 +83,7 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
     connect(q, &SettingsDialog::proxyEnableChanged, ui.proxyEnableCheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::proxyHostChanged, ui.proxyHost, &QLineEdit::setText);
     connect(q, &SettingsDialog::proxyPortChanged, ui.proxyPort, &QSpinBox::setValue);
+    connect(q, &SettingsDialog::useCookieChanged, ui.useCookieCheckBox, &QCheckBox::setChecked);
 
     QSpinBox * portNum = ui.proxyPort;
     portNum->setMinimum(1);
@@ -191,9 +194,21 @@ quint16 SettingsDialog::proxyPort() const
     return d->proxyPort;
 }
 
+bool SettingsDialog::useCookie() const
+{
+    return d->useCookie;
+}
+
 void SettingsDialog::setProxyPort(quint16 proxyPort)
 {
     if(d->proxyPort == proxyPort) return;
     d->proxyPort = proxyPort;
     emit proxyPortChanged(proxyPort);
+}
+
+void SettingsDialog::setUseCookie(bool use)
+{
+    if(d->useCookie == use) return;
+    d->useCookie = use;
+    emit useCookieChanged(use);
 }

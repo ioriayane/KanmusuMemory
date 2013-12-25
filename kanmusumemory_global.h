@@ -48,6 +48,7 @@
 #define SETTING_GENERAL_PROXY_HOST          "proxy_host"
 #define SETTING_GENERAL_PROXY_PORT          "proxy_port"
 #define SETTING_GENERAL_ZOOM_FACTOR         "zoom_factor"
+#define SETTING_GENERAL_USE_COOKIE          "use_cookie"
 //設定：ウインドウ位置
 #define SETTING_MAINWINDOW          "mainwindow"
 #define SETTING_TIMERDIALOG         "timerdialog"

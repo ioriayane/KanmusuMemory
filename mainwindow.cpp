@@ -476,6 +476,7 @@ void MainWindow::Private::openSettingDialog()
     dlg.setProxyEnable(settings.value(SETTING_GENERAL_PROXY_ENABLE, false).toBool());
     dlg.setProxyHost(settings.value(SETTING_GENERAL_PROXY_HOST).toString());
     dlg.setProxyPort(settings.value(SETTING_GENERAL_PROXY_PORT, 8888).toInt());
+    dlg.setUseCookie(settings.value(SETTING_GENERAL_USE_COOKIE, true).toBool());
     if (dlg.exec()) {
         //設定更新
         settings.setValue(QStringLiteral("path"), dlg.savePath());
@@ -486,6 +487,7 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_PROXY_ENABLE, dlg.isProxyEnable());
         settings.setValue(SETTING_GENERAL_PROXY_HOST, dlg.proxyHost());
         settings.setValue(SETTING_GENERAL_PROXY_PORT, dlg.proxyPort());
+        settings.setValue(SETTING_GENERAL_USE_COOKIE, dlg.useCookie());
 
         updateProxyConfiguration();
     }
@@ -796,7 +798,9 @@ void MainWindow::Private::setGameSize(qreal factor)
 void MainWindow::Private::setWebSettings()
 {
     //WebViewの設定（クッキー）
-    ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
+    if(settings.value(SETTING_GENERAL_USE_COOKIE, true).toBool()){
+        ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
+    }
     //WebViewの設定（キャッシュ）
     QNetworkDiskCache *cache = new QNetworkDiskCache(q);
     cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));

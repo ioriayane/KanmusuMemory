@@ -110,7 +110,7 @@
      <item row="7" column="1">
       <widget class="QCheckBox" name="useCookieCheckBox">
        <property name="text">
-        <string>Use Cookie</string>
+        <string>Use Cookie(need to restart the Kanmemo)</string>
        </property>
        <property name="checked">
         <bool>false</bool>
