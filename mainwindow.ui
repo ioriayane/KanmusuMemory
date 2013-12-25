@@ -109,8 +109,6 @@
     <addaction name="captureCatalog"/>
     <addaction name="captureFleetDetail"/>
     <addaction name="separator"/>
-    <addaction name="notificationTimer"/>
-    <addaction name="separator"/>
     <addaction name="preferences"/>
     <addaction name="separator"/>
     <addaction name="exit"/>
@@ -157,9 +155,18 @@
      <string>F&amp;avorite</string>
     </property>
    </widget>
+   <widget class="QMenu" name="tool">
+    <property name="title">
+     <string>&amp;Tool</string>
+    </property>
+    <addaction name="notificationTimer"/>
+    <addaction name="separator"/>
+    <addaction name="actionViewToolBar"/>
+   </widget>
    <addaction name="file"/>
    <addaction name="browser"/>
    <addaction name="favorite"/>
+   <addaction name="tool"/>
    <addaction name="help"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -437,6 +444,17 @@
    </property>
    <property name="text">
     <string>200%</string>
+   </property>
+  </action>
+  <action name="actionViewToolBar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>View tool bar</string>
    </property>
   </action>
  </widget>

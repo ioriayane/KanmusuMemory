@@ -141,6 +141,10 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.preferences, &QAction::triggered, [this]() { openSettingDialog(); });
     //アバウト
     connect(ui.about, &QAction::triggered, [this]() { openAboutDialog(); });
+    //ツールバーの表示非表示
+    connect(ui.actionViewToolBar, &QAction::changed, [this](){
+        ui.toolBar->setVisible(ui.actionViewToolBar->isChecked());
+    });
 
     //フルスクリーン
     q->addAction(ui.actionFullScreen);
