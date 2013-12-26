@@ -50,6 +50,7 @@ CookieJar::CookieJar(QObject *parent)
 
 QList<QNetworkCookie> CookieJar::cookiesForUrl(const QUrl& url) const
 {
+    Q_UNUSED(url);
     QList<QNetworkCookie> ret;
     foreach (const QString &group, d->settings.childGroups()) {
         d->settings.beginGroup(group);
@@ -99,6 +100,7 @@ bool CookieJar::insertCookie(const QNetworkCookie &cookie)
 
 bool CookieJar::setCookiesFromUrl(const QList<QNetworkCookie>& cookieList, const QUrl &url)
 {
+    Q_UNUSED(url);
     bool ret = true;
 
     foreach (const QNetworkCookie &cookie, cookieList) {

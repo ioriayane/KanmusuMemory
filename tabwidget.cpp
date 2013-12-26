@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 #include "tabwidget.h"
+#include "webpage.h"
 #include "kanmusumemory_global.h"
 
 #include <QSettings>
@@ -25,7 +26,7 @@ public:
     Private(TabWidget *parent);
 
     void newTab(const QUrl &url, bool mobilemode = true);
-    void newTab(QWebPage *webpage, bool mobilemode = true);
+    void newTab(WebPage *webpage, bool mobilemode = true);
 
 private:
     TabWidget *q;
@@ -49,7 +50,7 @@ void TabWidget::Private::newTab(const QUrl &url, bool mobilemode)
     q->setCurrentWidget(web);
 
     //タブの追加
-    connect(web, &WebPageForm::addTabRequested, [this](QWebPage *webpage){
+    connect(web, &WebPageForm::addTabRequested, [this](WebPage *webpage){
         newTab(webpage);
     });
     //タブを閉じる
@@ -60,7 +61,7 @@ void TabWidget::Private::newTab(const QUrl &url, bool mobilemode)
     connect(web, &WebPageForm::updateFavorite, [this]() { emit q->updateFavorite(); });
 }
 
-void TabWidget::Private::newTab(QWebPage *webpage, bool mobilemode)
+void TabWidget::Private::newTab(WebPage *webpage, bool mobilemode)
 {
 //    qDebug() << "newTab: webpage";
 
@@ -71,7 +72,7 @@ void TabWidget::Private::newTab(QWebPage *webpage, bool mobilemode)
     q->setCurrentWidget(web);
 
     //タブの追加
-    connect(web, &WebPageForm::addTabRequested, [this](QWebPage *webpage){
+    connect(web, &WebPageForm::addTabRequested, [this](WebPage *webpage){
         newTab(webpage);
     });
     //タブを閉じる

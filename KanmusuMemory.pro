@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     webpageform.cpp \
     tabwidget.cpp \
     favoritemenu.cpp \
-    updateinfodialog.cpp
+    updateinfodialog.cpp \
+    webpage.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -34,7 +35,8 @@ HEADERS  += mainwindow.h \
     webpageform.h \
     tabwidget.h \
     favoritemenu.h \
-    updateinfodialog.h
+    updateinfodialog.h \
+    webpage.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \
