@@ -28,7 +28,8 @@ public:
     explicit webPage(QObject * parent)
         :QWebPage(parent)
     {
-        webpageform = reinterpret_cast<WebPageForm *>(parent);
+        this->parent = parent;
+//        webpageform = reinterpret_cast<WebPageForm *>(parent);
     }
 
 public:
@@ -59,12 +60,16 @@ public:
     QWebPage* createWindow(WebWindowType type) {
         Q_UNUSED(type);
         //        qDebug() << "createWindow: " << type;
-        webPage *webpage = new webPage(webpageform);
+        webPage *webpage = new webPage(parent);
+        webpage->setWebpageform(webpageform);
         webpageform->makeNewWebPage(webpage);
         return webpage;
     }
 
+    void setWebpageform(WebPageForm *value);
+
 private:
+    QObject *parent;
     WebPageForm *webpageform;
 };
 
@@ -129,13 +134,7 @@ WebPageForm::Private::Private(WebPageForm *parent)
     connect(ui.urlEdit, &QLineEdit::editingFinished, [this]() {
         if(ui.webView->url().toString() == ui.urlEdit->text())
             return;
-        webPage *page = new webPage(q);
-        ui.webView->setPage(reinterpret_cast<QWebPage *>(page));
         ui.webView->setUrl(ui.urlEdit->text());
-        connect(page, &QWebPage::windowCloseRequested, [this]() {
-            qDebug() << "windowCloseRequested";
-            emit q->removeTabRequested(q);
-        });
     });
     //戻る
     connect(ui.goBackButton, &QPushButton::clicked, [this]() {
@@ -170,6 +169,7 @@ WebPageForm::Private::Private(WebPageForm *parent)
             ui.webView->findText(ui.findEdit->text(), QWebPage::HighlightAllOccurrences);//ハイライトする
         }
     });
+
 }
 //タブ（親）を保存
 void WebPageForm::Private::setTab(TabWidget *tab)
@@ -270,15 +270,19 @@ WebPageForm::WebPageForm(QWidget *parent) :
 {
     d->setTab(reinterpret_cast<TabWidget *>(parent));
 
+    //独自のwebpageにする
+    webPage *page = new webPage(parent);
+    page->setWebpageform(this);
+    d->ui.webView->setPage(reinterpret_cast<QWebPage *>(page));
+    //ブラウザからの閉じる要求
+    connect(d->ui.webView->page(), &QWebPage::windowCloseRequested, [this]() {
+        qDebug() << "windowCloseRequested";
+        emit removeTabRequested(this);
+    });
+
+    //終了
     connect(this, &QObject::destroyed, [this]() { delete d; });
 
-    //    //親がタブだったら
-    //    if(typeid(QTabWidget *) == typeid((QTabWidget *)parent)){
-    //        d->setTab((QTabWidget *)parent);
-    //        qDebug() << "Tab";
-    //    }else{
-    //        qDebug() << "not Tab " << typeid(parent).name();
-    //    }
 }
 
 WebPageForm::~WebPageForm()
@@ -298,6 +302,13 @@ void WebPageForm::setUrl(const QUrl &url)
 void WebPageForm::setWebPage(QWebPage *webpage)
 {
     d->ui.webView->setPage(webpage);
+
+    //閉じる要求
+    connect(d->ui.webView->page(), &QWebPage::windowCloseRequested, [this]() {
+        qDebug() << "windowCloseRequested 2";
+        emit removeTabRequested(this);
+    });
+
 }
 //表示中のWebページのタイトル
 QString WebPageForm::title() const
@@ -337,3 +348,8 @@ void WebPageForm::find()
     }
 }
 
+
+void webPage::setWebpageform(WebPageForm *value)
+{
+    webpageform = value;
+}
