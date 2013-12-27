@@ -241,6 +241,11 @@
 		]}
 		, {"array":
 		[
+			  { "title": "装甲空母", "url": ""}
+			, { "title": "大鳳", "url": "http://ja.wikipedia.org/wiki/%E5%A4%A7%E9%B3%B3_(%E7%A9%BA%E6%AF%8D)" }
+		]}
+		, {"array":
+		[
 			  { "title": "軽空母", "url": ""}
 			, {"array":
 			[
@@ -274,6 +279,13 @@
 			, { "title": "伊19", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E4%B8%80%E4%B9%9D%E6%BD%9C%E6%B0%B4%E8%89%A6" }
 			, { "title": "伊58", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E4%BA%94%E5%85%AB%E6%BD%9C%E6%B0%B4%E8%89%A6" }
 			, { "title": "伊168", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E4%B8%80%E5%85%AD%E5%85%AB%E6%BD%9C%E6%B0%B4%E8%89%A6" }
+			, { "title": "伊401", "url": "http://ja.wikipedia.org/wiki/%E4%BC%8A%E5%8F%B7%E7%AC%AC%E5%9B%9B%E3%80%87%E4%B8%80%E6%BD%9C%E6%B0%B4%E8%89%A6" }
+			, { "title": "三式潜航輸送艇(まるゆ)", "url": "http://ja.wikipedia.org/wiki/%E4%B8%89%E5%BC%8F%E6%BD%9C%E8%88%AA%E8%BC%B8%E9%80%81%E8%89%87" }
+		]}
+		, {"array":
+		[
+			  { "title": "揚陸艦", "url": ""}
+			, { "title": "あきつ丸", "url": "http://ja.wikipedia.org/wiki/%E3%81%82%E3%81%8D%E3%81%A4%E4%B8%B8" }
 		]}
 	]}
 	, { "title": "「艦これ」開発/運営(Twitter)", "url": "https://twitter.com/KanColle_STAFF" }

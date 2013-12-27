@@ -120,5 +120,7 @@
 , { "hour": 4, "minute": 30, "second": 0, "msg1": "正規空母", "msg2": "赤城" }
 , { "hour": 5, "minute": 0, "second": 0, "msg1": "戦艦", "msg2": "長門 陸奥" }
 , { "hour": 6, "minute": 0, "second": 0, "msg1": "正規空母", "msg2": "翔鶴 瑞鶴" }
+, { "hour": 6, "minute": 40, "second": 0, "msg1": "装甲空母", "msg2": "大鳳" }
+, { "hour": 8, "minute": 0, "second": 0, "msg1": "戦艦", "msg2": "大和" }
 ]
 }
