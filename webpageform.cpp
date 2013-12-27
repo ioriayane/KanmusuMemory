@@ -213,7 +213,8 @@ bool WebPageForm::Private::isExistFavorite(const QString &url)
 WebPageForm::WebPageForm(QWidget *parent) :
     QWidget(parent),
     d(new Private(this)),
-    m_mobileMode(true)
+    m_mobileMode(true),
+    m_cache(NULL)
 {
 
     d->setTab(reinterpret_cast<TabWidget *>(parent));
@@ -278,7 +279,7 @@ void WebPageForm::reload()
 {
     d->ui.webView->reload();
 }
-
+//検索
 void WebPageForm::find()
 {
     if(d->isFindVisible()){
@@ -288,5 +289,19 @@ void WebPageForm::find()
         d->ui.findEdit->setFocus();
     }
 }
+//Webページ用のキャッシュ
+QNetworkDiskCache *WebPageForm::cache() const
+{
+    return m_cache;
+}
+void WebPageForm::setCache(QNetworkDiskCache *cache)
+{
+    if(m_cache != cache){
+        m_cache = cache;
+
+        d->ui.webView->page()->networkAccessManager()->setCache(m_cache);
+    }
+}
+
 
 

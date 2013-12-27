@@ -45,6 +45,7 @@ void TabWidget::Private::newTab(const QUrl &url, bool mobilemode)
 
     WebPageForm *web = new WebPageForm(q);
     web->setMobileMode(mobilemode);
+    web->setCache(q->cache());
     web->setUrl(url);
     q->addTab(web, QStringLiteral("(untitled)"));
     q->setCurrentWidget(web);
@@ -68,6 +69,7 @@ void TabWidget::Private::newTab(WebPage *webpage, bool mobilemode)
     WebPageForm *web = new WebPageForm(q);
     web->setMobileMode(mobilemode);
     web->setWebPage(webpage);
+    web->setCache(q->cache());
     q->addTab(web, QStringLiteral("(untitled)"));
     q->setCurrentWidget(web);
 
@@ -88,6 +90,7 @@ TabWidget::TabWidget(QWidget* parent)
     , d(new Private(this))
     , m_saveOpenPage(true)
     , m_openAndNewTab(true)
+    , m_cache(NULL)
 {
     connect(this, &QObject::destroyed, [this]() { delete d; });
 
@@ -97,9 +100,6 @@ TabWidget::TabWidget(QWidget* parent)
 //        qDebug() << "close tab(" << index << "):" << form->url();
         delete form;
     });
-
-    //タブ復元
-    load();
 }
 
 //タブの状態を保存する
@@ -238,4 +238,14 @@ void TabWidget::save()
     settings.setValue(QStringLiteral(SETTING_TAB_OPEN_PAGES_MOBILE_MODE), pageMobileModeList);
     settings.endGroup();
 }
+//キャッシュをタブの中のWebページへ設定するための情報
+QNetworkDiskCache *TabWidget::cache() const
+{
+    return m_cache;
+}
+void TabWidget::setCache(QNetworkDiskCache *cache)
+{
+    m_cache = cache;
+}
+
 

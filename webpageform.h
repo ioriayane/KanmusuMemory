@@ -21,6 +21,7 @@
 #include <QWidget>
 #include <QtCore/QUrl>
 #include <QWebPage>
+#include <QtNetwork/QNetworkDiskCache>
 
 namespace Ui {
 class WebPageForm;
@@ -43,8 +44,10 @@ public:
     void setMobileMode(bool mobileMode);
 
     void reload();
-
     void find();
+
+    QNetworkDiskCache *cache() const;
+    void setCache(QNetworkDiskCache *cache);
 
 signals:
     void urlChanged();
@@ -57,6 +60,7 @@ private:
     Private *d;
 
     bool m_mobileMode;
+    QNetworkDiskCache *m_cache;
 };
 
 #endif // WEBPAGEFORM_H

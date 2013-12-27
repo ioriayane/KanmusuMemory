@@ -806,6 +806,7 @@ void MainWindow::Private::setWebSettings()
     cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
     cache->setMaximumCacheSize(1073741824); //about 1024MB
     ui.webView->page()->networkAccessManager()->setCache(cache);
+    ui.tabWidget->setCache(cache);
 
     QWebSettings *websetting = QWebSettings::globalSettings();
     //JavaScript関連設定
@@ -860,6 +861,10 @@ MainWindow::MainWindow(QWidget *parent)
     //艦これ読込み
     d->ui.webView->load(QUrl(URL_KANCOLLE));
 
+    //タブを復元
+    d->ui.tabWidget->load();
+
+    //閉じるときにプライベートを破棄
     connect(this, &MainWindow::destroyed, [this]() {delete d;});
 }
 
