@@ -23,50 +23,6 @@
 #include <QSettings>
 #include <QDebug>
 
-class webPage : public QWebPage {
-public:
-    explicit webPage(QObject * parent)
-        :QWebPage(parent)
-    {
-        webpageform = reinterpret_cast<WebPageForm *>(parent);
-    }
-
-public:
-
-    //USER AGENTを調節
-    QString userAgentForUrl(const QUrl &url ) const {
-        QString ret = QWebPage::userAgentForUrl(url);
-        if(webpageform->isMobileMode()){
-#if defined(Q_OS_WIN)
-//            ret = QStringLiteral("Mozilla/5.0 (Windows Phone OS 7.5;) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
-            ret = QStringLiteral("Mozilla/5.0 (Linux; U; Android 4.1.1; ja-jp;) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
-#elif defined(Q_OS_LINUX)
-            ret = QStringLiteral("Mozilla/5.0 (Linux; U; Android 4.1.1; ja-jp;) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
-#elif defined(Q_OS_MAC)
-            ret = QStringLiteral("Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
-#endif
-        }
-        return ret;
-        //        return QString("Mozilla/5.0 (Windows NT 6.2; Mobile; WOW64) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
-        //        return QString("Mozilla/5.0 (Linux; U; Android 4.1.1; ja-jp; Galaxy Nexus Build/JRO03H) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30");
-    }
-    //リンクに関連する操作
-    //    bool acceptNavigationRequest(QWebFrame *frame, const QNetworkRequest &request, NavigationType type) {
-    //        qDebug() << "accept navi page:" << request.url() << "/" << type << "/frame=" << frame << "/this=" << this;
-    //        return QWebPage::acceptNavigationRequest(frame, request, type);
-    //    }
-    //ウインドウ作成
-    QWebPage* createWindow(WebWindowType type) {
-        Q_UNUSED(type);
-        //        qDebug() << "createWindow: " << type;
-        webPage *webpage = new webPage(webpageform);
-        webpageform->makeNewWebPage(webpage);
-        return webpage;
-    }
-
-private:
-    WebPageForm *webpageform;
-};
 
 
 class WebPageForm::Private
@@ -129,13 +85,7 @@ WebPageForm::Private::Private(WebPageForm *parent)
     connect(ui.urlEdit, &QLineEdit::editingFinished, [this]() {
         if(ui.webView->url().toString() == ui.urlEdit->text())
             return;
-        webPage *page = new webPage(q);
-        ui.webView->setPage(reinterpret_cast<QWebPage *>(page));
         ui.webView->setUrl(ui.urlEdit->text());
-        connect(page, &QWebPage::windowCloseRequested, [this]() {
-            qDebug() << "windowCloseRequested";
-            emit q->removeTabRequested(q);
-        });
     });
     //戻る
     connect(ui.goBackButton, &QPushButton::clicked, [this]() {
@@ -156,9 +106,9 @@ WebPageForm::Private::Private(WebPageForm *parent)
 
     //モバイルとPC版の切り換え
     connect(ui.changeMobileModeButton, &QPushButton::clicked, [this]() {
-        webPage *page = reinterpret_cast<webPage *>(ui.webView->page());
+//        WebPage *page = reinterpret_cast<WebPage *>(ui.webView->page());
+//        qDebug() << "USER_AGENT:" << page->userAgentForUrl(ui.webView->url());
         q->setMobileMode(ui.changeMobileModeButton->isChecked());
-        qDebug() << "USER_AGENT:" << page->userAgentForUrl(ui.webView->url());
         ui.webView->reload();
     });
 
@@ -170,6 +120,7 @@ WebPageForm::Private::Private(WebPageForm *parent)
             ui.webView->findText(ui.findEdit->text(), QWebPage::HighlightAllOccurrences);//ハイライトする
         }
     });
+
 }
 //タブ（親）を保存
 void WebPageForm::Private::setTab(TabWidget *tab)
@@ -208,16 +159,13 @@ void WebPageForm::Private::updateFavorite(const QString &url, const QString &tit
 
     QHash<QString, QVariant> list = settings.value(QStringLiteral(FAV_USER_BOOKMARK)).toHash();
     foreach (const QString &key, list.keys()) {
-//        qDebug() << list.value(key) << ", " << key;
         if(url == key){
             //見つかった
             exist = true;
             if(add){
                 //追加（ただしすでにある）
-//                qDebug() << "exist:" << title;
             }else{
                 //削除
-//                qDebug() << "remove:" << title;
                 list.remove(url);
                 update = true;
             }
@@ -225,7 +173,6 @@ void WebPageForm::Private::updateFavorite(const QString &url, const QString &tit
         }
     }
     if(!exist){
-//        qDebug() << "add:" << title;
         list.insert(url, title);
         update = true;
     }
@@ -266,19 +213,18 @@ bool WebPageForm::Private::isExistFavorite(const QString &url)
 WebPageForm::WebPageForm(QWidget *parent) :
     QWidget(parent),
     d(new Private(this)),
-    m_mobileMode(true)
+    m_mobileMode(true),
+    m_cache(NULL)
 {
+
     d->setTab(reinterpret_cast<TabWidget *>(parent));
 
+    //独自のwebpageにする
+    setWebPage(new WebPage(parent));
+
+    //終了
     connect(this, &QObject::destroyed, [this]() { delete d; });
 
-    //    //親がタブだったら
-    //    if(typeid(QTabWidget *) == typeid((QTabWidget *)parent)){
-    //        d->setTab((QTabWidget *)parent);
-    //        qDebug() << "Tab";
-    //    }else{
-    //        qDebug() << "not Tab " << typeid(parent).name();
-    //    }
 }
 
 WebPageForm::~WebPageForm()
@@ -295,9 +241,22 @@ void WebPageForm::setUrl(const QUrl &url)
     d->ui.urlEdit->setText(url.toString());
     d->ui.urlEdit->editingFinished();
 }
-void WebPageForm::setWebPage(QWebPage *webpage)
+void WebPageForm::setWebPage(WebPage *webpage)
 {
+    //モバイルモードのフラグ
+    webpage->setIsMoibleMode(&m_mobileMode);
+    //ページを設定
     d->ui.webView->setPage(webpage);
+
+    //新しいウインドウを作成するときのシグナル
+    connect(webpage, &WebPage::createNewWindow, [this](WebPage *webpage){
+        emit addTabRequested(webpage);
+    });
+    //閉じる要求
+    connect(d->ui.webView->page(), &QWebPage::windowCloseRequested, [this]() {
+        emit removeTabRequested(this);
+    });
+
 }
 //表示中のWebページのタイトル
 QString WebPageForm::title() const
@@ -320,13 +279,7 @@ void WebPageForm::reload()
 {
     d->ui.webView->reload();
 }
-
-
-void WebPageForm::makeNewWebPage(QWebPage *webpage)
-{
-    emit addTabRequested(webpage);
-}
-
+//検索
 void WebPageForm::find()
 {
     if(d->isFindVisible()){
@@ -336,4 +289,19 @@ void WebPageForm::find()
         d->ui.findEdit->setFocus();
     }
 }
+//Webページ用のキャッシュ
+QNetworkDiskCache *WebPageForm::cache() const
+{
+    return m_cache;
+}
+void WebPageForm::setCache(QNetworkDiskCache *cache)
+{
+    if(m_cache != cache){
+        m_cache = cache;
+
+        d->ui.webView->page()->networkAccessManager()->setCache(m_cache);
+    }
+}
+
+
 

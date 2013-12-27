@@ -218,11 +218,13 @@ void ClipCursor::mouseMoveEvent(QMouseEvent *event)
 
 void ClipCursor::hoverEnterEvent(QHoverEvent *event)
 {
+    Q_UNUSED(event);
     QQuickPaintedItem::setCursor(Qt::OpenHandCursor);
 }
 
 void ClipCursor::hoverLeaveEvent(QHoverEvent *event)
 {
+    Q_UNUSED(event);
     QQuickPaintedItem::setCursor(Qt::ArrowCursor);
 }
 

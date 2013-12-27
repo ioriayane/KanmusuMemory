@@ -33,6 +33,7 @@ public:
     bool isProxyEnable() const;
     const QString &proxyHost() const;
     quint16 proxyPort() const;
+    bool useCookie() const;
 
     static QString selectSavePath(QWidget *parent, const QString &currentPath);
 
@@ -45,6 +46,7 @@ public slots:
     void setProxyEnable(bool enable);
     void setProxyHost(const QString &proxyHost);
     void setProxyPort(quint16 proxyPort);
+    void setUseCookie(bool use);
 
 signals:
     void savePathChanged(const QString &savePath);
@@ -55,6 +57,7 @@ signals:
     void proxyEnableChanged(bool enable);
     void proxyHostChanged(const QString &proxyHost);
     void proxyPortChanged(quint16 proxyPort);
+    void useCookieChanged(bool use);
 
 private:
     class Private;

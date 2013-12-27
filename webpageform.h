@@ -16,9 +16,12 @@
 #ifndef WEBPAGEFORM_H
 #define WEBPAGEFORM_H
 
+#include "webpage.h"
+
 #include <QWidget>
 #include <QtCore/QUrl>
 #include <QWebPage>
+#include <QtNetwork/QNetworkDiskCache>
 
 namespace Ui {
 class WebPageForm;
@@ -35,19 +38,20 @@ public:
     
     QUrl url() const;
     void setUrl(const QUrl &url);
-    void setWebPage(QWebPage *webpage);
+    void setWebPage(WebPage *webpage);
     QString title() const;
     bool isMobileMode() const;
     void setMobileMode(bool mobileMode);
 
     void reload();
-    void makeNewWebPage(QWebPage *webpage);
-
     void find();
+
+    QNetworkDiskCache *cache() const;
+    void setCache(QNetworkDiskCache *cache);
 
 signals:
     void urlChanged();
-    void addTabRequested(QWebPage *webpage);
+    void addTabRequested(WebPage *webpage);
     void removeTabRequested(WebPageForm *form);
     void updateFavorite();
 
@@ -56,6 +60,7 @@ private:
     Private *d;
 
     bool m_mobileMode;
+    QNetworkDiskCache *m_cache;
 };
 
 #endif // WEBPAGEFORM_H

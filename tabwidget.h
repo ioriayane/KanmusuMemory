@@ -19,6 +19,7 @@
 #include "webpageform.h"
 
 #include <QTabWidget>
+#include <QtNetwork/QNetworkDiskCache>
 
 class TabWidget : public QTabWidget
 {
@@ -44,6 +45,9 @@ public:
     void load();
     void save();
 
+    QNetworkDiskCache *cache() const;
+    void setCache(QNetworkDiskCache *cache);
+
 signals:
     void updateFavorite();
 
@@ -53,6 +57,7 @@ private:
 
     bool m_saveOpenPage;
     bool m_openAndNewTab;
+    QNetworkDiskCache *m_cache;
 };
 
 #endif // TABWIDGET_H
