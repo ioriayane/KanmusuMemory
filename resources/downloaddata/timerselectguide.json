@@ -1,6 +1,6 @@
 {
 "_comment" : "serialは日付+二桁連番で更新されてるか判断する"
-,"serial" : "2013112300"
+,"serial" : "2013122700"
 ,"docking" : 
 [
   { "hour": 0, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
@@ -94,7 +94,8 @@
 ]
 , "construction" : 
 [
-  { "hour": 0, "minute": 18, "second": 0, "msg1": "駆逐艦", "msg2": "睦月型" }
+  { "hour": 0, "minute": 17, "second": 0, "msg1": "潜水艦", "msg2": "まゆる" }
+, { "hour": 0, "minute": 18, "second": 0, "msg1": "駆逐艦", "msg2": "睦月型" }
 , { "hour": 0, "minute": 20, "second": 0, "msg1": "駆逐艦", "msg2": "吹雪型 綾波型 暁型 初春型" }
 , { "hour": 0, "minute": 22, "second": 0, "msg1": "駆逐艦", "msg2": "白露型 朝潮型" }
 , { "hour": 0, "minute": 22, "second": 0, "msg1": "潜水艦", "msg2": "伊58 伊168" }
@@ -109,6 +110,7 @@
 , { "hour": 1, "minute": 30, "second": 0, "msg1": "重巡洋艦", "msg2": "最上型 利根型" }
 , { "hour": 2, "minute": 0, "second": 0, "msg1": "軽空母", "msg2": "鳳翔" }
 , { "hour": 2, "minute": 20, "second": 0, "msg1": "水上機空母", "msg2": "千歳 千代田" }
+, { "hour": 2, "minute": 30, "second": 0, "msg1": "揚陸艦", "msg2": "あきつ丸" }
 , { "hour": 2, "minute": 40, "second": 0, "msg1": "軽空母", "msg2": "祥鳳 瑞鳳" }
 , { "hour": 2, "minute": 50, "second": 0, "msg1": "軽空母", "msg2": "龍驤" }
 , { "hour": 3, "minute": 0, "second": 0, "msg1": "軽空母", "msg2": "飛鷹 準鷹" }
