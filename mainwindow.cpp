@@ -23,6 +23,7 @@
 #include "imageeditdialog.h"
 #include "timerdialog.h"
 #include "updateinfodialog.h"
+#include "fleetdetaildialog.h"
 #include "gamescreen.h"
 #include "webpageform.h"
 #include "favoritemenu.h"
@@ -68,6 +69,7 @@ public:
     void updateProxyConfiguration();
     void openAboutDialog();
     void openImageEditDialog(const QString &path, const QString &tempPath, const QString &editPath);
+    void openManualCaptureFleetDetail();
     void captureCatalog();
     void captureFleetDetail();
     void setFullScreen();
@@ -81,6 +83,7 @@ private:
     QString makeFileName(const QString &format) const;
     QString makeTempFileName(const QString &format) const;
     void clickGame(QPoint pos, bool wait_little = false);
+    QString combineImage(QStringList file_list, int item_width, int item_height, int columns);
 
     void setSplitWindowVisiblity(bool visible);
     bool isSplitWindowVisible();
@@ -88,6 +91,7 @@ private:
     MainWindow *q;
     TimerDialog *m_timerDialog;
     UpdateInfoDialog *m_updateInfoDialog;
+    FleetDetailDialog *m_fleetDetailDialog;
     FavoriteMenu m_favorite;
 
 public:
@@ -115,6 +119,10 @@ MainWindow::Private::Private(MainWindow *parent)
     m_timerDialog = new TimerDialog(q, &trayIcon, &settings);
     //アップデート通知のダイアログ作成
     m_updateInfoDialog = new UpdateInfoDialog(q, &settings);
+    //艦隊詳細作成のダイアログ作成
+    m_fleetDetailDialog = new FleetDetailDialog(ui.webView
+                                                , DETAIL_RECT_CAPTURE
+                                                , 0.3, 2, q);
 
     //メニュー
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
@@ -122,6 +130,13 @@ MainWindow::Private::Private(MainWindow *parent)
 #ifndef DISABLE_CATALOG_AND_DETAIL_FLEET
     connect(ui.captureCatalog, &QAction::triggered, [this](){ captureCatalog(); });
     connect(ui.captureFleetDetail, &QAction::triggered, [this](){ captureFleetDetail(); });
+#else
+    connect(ui.captureFleetDetail, &QAction::triggered, [this](){ openManualCaptureFleetDetail(); });
+    connect(m_fleetDetailDialog, &FleetDetailDialog::finishedCaptureImages, [this](QStringList file_list, int item_width, int item_height, int columns){
+        QString path = combineImage(file_list, item_width, item_height, columns);
+        if(path.length() > 0)
+            openTweetDialog(path);
+    });
 #endif
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
@@ -280,12 +295,13 @@ MainWindow::Private::Private(MainWindow *parent)
 
 #ifdef DISABLE_CATALOG_AND_DETAIL_FLEET
     ui.captureCatalog->setVisible(false);
-    ui.captureFleetDetail->setVisible(false);
+//    ui.captureFleetDetail->setVisible(false);
 #endif
 }
 
 MainWindow::Private::~Private()
 {
+    delete m_fleetDetailDialog;
     delete m_updateInfoDialog;
     delete m_timerDialog;
 }
@@ -532,6 +548,17 @@ void MainWindow::Private::openImageEditDialog(const QString &path, const QString
         openTweetDialog(dlg.editImagePath());
     }
 }
+
+//艦隊詳細を作成するダイアログを表示する
+void MainWindow::Private::openManualCaptureFleetDetail()
+{
+    //設定確認
+    checkSavePath();
+
+    m_fleetDetailDialog->show();
+    m_fleetDetailDialog->raise();
+    m_fleetDetailDialog->activateWindow();
+}
 //ゲーム画面へクリックイベントを送る
 void MainWindow::Private::clickGame(QPoint pos, bool wait_little)
 {
@@ -556,6 +583,43 @@ void MainWindow::Private::clickGame(QPoint pos, bool wait_little)
         QApplication::processEvents();
         QThread::usleep(1000);
     }
+}
+//画像を結合する（主に艦隊詳細）
+QString MainWindow::Private::combineImage(QStringList file_list, int item_width, int item_height, int columns)
+{
+    if(file_list.length() == 0 || columns < 1)
+        return QString();
+
+    int rows = qCeil(static_cast<qreal>(file_list.length()) / static_cast<qreal>(columns));
+    int x = 0;
+    int y = 0;
+    //結合画像を作る
+    QImage resultImage(item_width * columns, item_height * rows, QImage::Format_ARGB32);
+    QPainter painter(&resultImage);
+    painter.fillRect(resultImage.rect(), "#ece3d4");
+    for(int i=0; i<file_list.length(); i++){
+        QImage item = QImage(file_list[i]);
+        painter.drawImage(x, y, item);
+        if((i % columns) == (columns - 1)){
+            x = 0;
+            y += item_height;
+        }else{
+            x += item_width;
+        }
+    }
+
+    //パスをつくる
+    QString format;
+    if(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool())
+        format = QStringLiteral("png");
+    else
+        format = QStringLiteral("jpg");
+    QString path = makeFileName(format);
+
+    //保存
+    resultImage.save(path);
+
+    return path;
 }
 //分割ウインドウの表示切り替え
 void MainWindow::Private::setSplitWindowVisiblity(bool visible)
@@ -756,6 +820,7 @@ void MainWindow::Private::captureFleetDetail()
     ui.menuBar->setEnabled(true);
     ui.toolBar->setEnabled(true);
 }
+
 
 void MainWindow::Private::setFullScreen()
 {

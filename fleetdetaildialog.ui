@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MemoryDialog</class>
- <widget class="QDialog" name="MemoryDialog">
+ <class>FleetDetailDialog</class>
+ <widget class="QDialog" name="FleetDetailDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>573</width>
-    <height>309</height>
+    <width>400</width>
+    <height>502</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Tweet by selecting the memories</string>
+   <string>Fleet Detail</string>
   </property>
   <property name="windowIcon">
    <iconset resource="KanmusuMemory.qrc">
