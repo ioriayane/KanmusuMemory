@@ -20,7 +20,7 @@ import jp.relog.plugin.operatingsystem 1.0
 
 Rectangle {
     id: root
-    width: 860
+    width: 870
     height: 600
     color: "#f0f0f0"
 

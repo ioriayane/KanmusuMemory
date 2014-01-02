@@ -23,6 +23,7 @@
 #include "imageeditdialog.h"
 #include "timerdialog.h"
 #include "updateinfodialog.h"
+#include "fleetdetaildialog.h"
 #include "gamescreen.h"
 #include "webpageform.h"
 #include "favoritemenu.h"
@@ -61,13 +62,16 @@ public:
     Private(MainWindow *parent);
     ~Private();
     void captureGame(bool andEdit = false);         //保存する
-    void checkSavePath();       //保存場所の確認
-    void openTweetDialog(const QString &path);     //ツイートダイアログを開く
+    void checkSavePath();                           //保存場所の確認
+    void openTweetDialog(const QString &path);      //ツイートダイアログを開く
     void openMemoryDialog();
     void openSettingDialog();
     void updateProxyConfiguration();
     void openAboutDialog();
     void openImageEditDialog(const QString &path, const QString &tempPath, const QString &editPath);
+    void openManualCaptureFleetDetail();
+    void openManualCaptureFleetList();
+    void finishManualCaptureFleetDetail(FleetDetailDialog::NextOperationType next, QStringList file_list, int item_width, int item_height, int columns);
     void captureCatalog();
     void captureFleetDetail();
     void setFullScreen();
@@ -75,12 +79,14 @@ public:
 
     QList<int> bakSplitterSizes;    //幅のサイズ保存用にとっておく。（非表示だと0になってしまうから）
 private:
-    void setWebSettings();
+    void setWebSettings();          //Web関連の設定をする
+    void makeDialog();             //ダイアログの作成をする
 
     void maskImage(QImage *img, const QRect &rect);
     QString makeFileName(const QString &format) const;
     QString makeTempFileName(const QString &format) const;
     void clickGame(QPoint pos, bool wait_little = false);
+    QString combineImage(QStringList file_list, int item_width, int item_height, int columns);
 
     void setSplitWindowVisiblity(bool visible);
     bool isSplitWindowVisible();
@@ -88,6 +94,7 @@ private:
     MainWindow *q;
     TimerDialog *m_timerDialog;
     UpdateInfoDialog *m_updateInfoDialog;
+    FleetDetailDialog *m_fleetDetailDialog;
     FavoriteMenu m_favorite;
 
 public:
@@ -110,11 +117,8 @@ MainWindow::Private::Private(MainWindow *parent)
 
     //Web関連の設定
     setWebSettings();
-
-    //通知タイマーのダイアログ作成
-    m_timerDialog = new TimerDialog(q, &trayIcon, &settings);
-    //アップデート通知のダイアログ作成
-    m_updateInfoDialog = new UpdateInfoDialog(q, &settings);
+    //ダイアログの作成
+    makeDialog();
 
     //メニュー
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
@@ -122,7 +126,19 @@ MainWindow::Private::Private(MainWindow *parent)
 #ifndef DISABLE_CATALOG_AND_DETAIL_FLEET
     connect(ui.captureCatalog, &QAction::triggered, [this](){ captureCatalog(); });
     connect(ui.captureFleetDetail, &QAction::triggered, [this](){ captureFleetDetail(); });
+#else
+    //艦隊詳細
+    connect(ui.captureFleetDetail, &QAction::triggered, [this](){ openManualCaptureFleetDetail(); });
+    connect(m_fleetDetailDialog, &FleetDetailDialog::finishedCaptureImages, [this](FleetDetailDialog::NextOperationType next, QStringList file_list, int item_width, int item_height, int columns){
+        finishManualCaptureFleetDetail(next, file_list, item_width, item_height, columns);
+    });
+    connect(m_fleetDetailDialog, &FleetDetailDialog::finished, [this](int result) {
+        Q_UNUSED(result);
+        finishManualCaptureFleetDetail(FleetDetailDialog::None, QStringList(), 0, 0, 1);
+    });
 #endif
+    //艦隊リスト
+    connect(ui.captureFleetList, &QAction::triggered, [this](){ openManualCaptureFleetList(); });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
     connect(ui.actionReturn_to_Kan_Colle, &QAction::triggered, [this]() {
@@ -280,12 +296,13 @@ MainWindow::Private::Private(MainWindow *parent)
 
 #ifdef DISABLE_CATALOG_AND_DETAIL_FLEET
     ui.captureCatalog->setVisible(false);
-    ui.captureFleetDetail->setVisible(false);
+//    ui.captureFleetDetail->setVisible(false);
 #endif
 }
 
 MainWindow::Private::~Private()
 {
+    delete m_fleetDetailDialog;
     delete m_updateInfoDialog;
     delete m_timerDialog;
 }
@@ -532,6 +549,74 @@ void MainWindow::Private::openImageEditDialog(const QString &path, const QString
         openTweetDialog(dlg.editImagePath());
     }
 }
+
+//艦隊詳細を作成するダイアログを表示する
+void MainWindow::Private::openManualCaptureFleetDetail()
+{
+    //設定確認
+    checkSavePath();
+
+    //メニューを一時停止
+    ui.capture->setEnabled(false);
+    ui.actionCaptureAndEdit->setEnabled(false);
+    ui.captureCatalog->setEnabled(false);
+    ui.captureFleetDetail->setEnabled(false);
+
+    //設定変更
+    QStringList fdd_msg_list;
+    fdd_msg_list << tr("Please to capture with a detailed view of the ship in the organization screen.");
+    fdd_msg_list << tr("The following buttons appear when you capture.");
+    fdd_msg_list << tr("Combine the image you have captured on completion.");
+    m_fleetDetailDialog->setParameters(DETAIL_RECT_CAPTURE, 0.3, 2, 6, fdd_msg_list);
+    //クリア
+    m_fleetDetailDialog->clear();
+    //表示
+    m_fleetDetailDialog->setWindowTitle(tr("Fleet Detail"));
+    m_fleetDetailDialog->show();
+    m_fleetDetailDialog->raise();
+    m_fleetDetailDialog->activateWindow();
+}
+//艦隊リストを作成するダイアログを表示する
+void MainWindow::Private::openManualCaptureFleetList()
+{
+    //設定確認
+    checkSavePath();
+
+    //メニューを一時停止
+    ui.capture->setEnabled(false);
+    ui.actionCaptureAndEdit->setEnabled(false);
+    ui.captureCatalog->setEnabled(false);
+    ui.captureFleetDetail->setEnabled(false);
+
+    //設定変更
+    QStringList fdd_msg_list;
+    fdd_msg_list << tr("Please be captured by a selection list of warships in the scheduling screen.");
+    fdd_msg_list << tr("The following buttons appear when you capture.");
+    fdd_msg_list << tr("Combine the image you have captured on completion.");
+    m_fleetDetailDialog->setParameters(FLEETLIST_RECT_CAPTURE, 0.3, 4, 20, fdd_msg_list);
+    //クリア
+    m_fleetDetailDialog->clear();
+    //表示
+    m_fleetDetailDialog->setWindowTitle(tr("Fleet List"));
+    m_fleetDetailDialog->show();
+    m_fleetDetailDialog->raise();
+    m_fleetDetailDialog->activateWindow();
+}
+//艦隊詳細作成ダイアログ終了時の処理
+void MainWindow::Private::finishManualCaptureFleetDetail(FleetDetailDialog::NextOperationType next, QStringList file_list, int item_width, int item_height, int columns)
+{
+    if(next == FleetDetailDialog::Combine){
+        QString path = combineImage(file_list, item_width, item_height, columns);
+        if(path.length() > 0)
+            openTweetDialog(path);
+    }
+
+    //メニューを復活
+    ui.capture->setEnabled(true);
+    ui.actionCaptureAndEdit->setEnabled(true);
+    ui.captureCatalog->setEnabled(true);
+    ui.captureFleetDetail->setEnabled(true);
+}
 //ゲーム画面へクリックイベントを送る
 void MainWindow::Private::clickGame(QPoint pos, bool wait_little)
 {
@@ -556,6 +641,43 @@ void MainWindow::Private::clickGame(QPoint pos, bool wait_little)
         QApplication::processEvents();
         QThread::usleep(1000);
     }
+}
+//画像を結合する（主に艦隊詳細）
+QString MainWindow::Private::combineImage(QStringList file_list, int item_width, int item_height, int columns)
+{
+    if(file_list.length() == 0 || columns < 1)
+        return QString();
+
+    int rows = qCeil(static_cast<qreal>(file_list.length()) / static_cast<qreal>(columns));
+    int x = 0;
+    int y = 0;
+    //結合画像を作る
+    QImage resultImage(item_width * columns, item_height * rows, QImage::Format_ARGB32);
+    QPainter painter(&resultImage);
+    painter.fillRect(resultImage.rect(), "#ece3d4");
+    for(int i=0; i<file_list.length(); i++){
+        QImage item = QImage(file_list[i]);
+        painter.drawImage(x, y, item);
+        if((i % columns) == (columns - 1)){
+            x = 0;
+            y += item_height;
+        }else{
+            x += item_width;
+        }
+    }
+
+    //パスをつくる
+    QString format;
+    if(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool())
+        format = QStringLiteral("png");
+    else
+        format = QStringLiteral("jpg");
+    QString path = makeFileName(format);
+
+    //保存
+    resultImage.save(path);
+
+    return path;
 }
 //分割ウインドウの表示切り替え
 void MainWindow::Private::setSplitWindowVisiblity(bool visible)
@@ -757,6 +879,7 @@ void MainWindow::Private::captureFleetDetail()
     ui.toolBar->setEnabled(true);
 }
 
+
 void MainWindow::Private::setFullScreen()
 {
     if(q->isFullScreen()){
@@ -829,6 +952,27 @@ void MainWindow::Private::setWebSettings()
 #else
 #endif
     updateProxyConfiguration();
+}
+//ダイアログの作成をする
+void MainWindow::Private::makeDialog()
+{
+    //通知タイマーのダイアログ作成
+    m_timerDialog = new TimerDialog(q, &trayIcon, &settings);
+    //アップデート通知のダイアログ作成
+    m_updateInfoDialog = new UpdateInfoDialog(q, &settings);
+    //艦隊詳細作成のダイアログ作成
+    QStringList fdd_msg_list;
+//    fdd_msg_list << tr("Please to capture with a detailed view of the ship in the organization screen.");
+//    fdd_msg_list << tr("The following buttons appear when you capture.");
+//    fdd_msg_list << tr("Combine the image you have captured on completion.");
+    m_fleetDetailDialog = new FleetDetailDialog(ui.webView
+                                                , DETAIL_RECT_CAPTURE
+                                                , 0.3           //0.3倍
+                                                , 2             //2列
+                                                , 6             //最大6
+                                                , fdd_msg_list  //説明文言リスト
+                                                , &settings
+                                                , q);
 }
 
 

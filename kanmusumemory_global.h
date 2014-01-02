@@ -52,6 +52,7 @@
 //設定：ウインドウ位置
 #define SETTING_MAINWINDOW          "mainwindow"
 #define SETTING_TIMERDIALOG         "timerdialog"
+#define SETTING_FLEETDETAILDIALOG   "fleetdetaildialog"
 #define SETTING_WINDOW_GEO          "geometry"
 #define SETTING_WINDOW_STATE        "windowState"
 #define SETTING_SPLITTER_SIZES      "splitterSizes"
@@ -109,7 +110,7 @@
 //艦隊詳細
 #define DETAIL_CHECK_COLOR1     qRgb(163, 158, 94)
 #define DETAIL_CHECK_COLOR2     qRgb(102, 154, 112)
-#define DETAIL_RECT_CAPTURE     (QRect(325, 100, 465, 370))
+#define DETAIL_RECT_CAPTURE     (QRect(327, 105, 460, 360))
 #define DETAIL_RECT_SHIP1_1     QRect(282, 197, 80, 30)
 #define DETAIL_RECT_SHIP1_2     QRect(365, 197, 80, 30)
 #define DETAIL_RECT_SHIP2_1     QRect(624, 197, 80, 30)
@@ -123,6 +124,9 @@
 #define DETAIL_RECT_SHIP6_1     QRect(624, 424, 80, 30)
 #define DETAIL_RECT_SHIP6_2     QRect(707, 424, 80, 30)
 #define DETAIL_RECT_CLOSE       (QRect(320, 170, 24, 280))
+
+//艦隊リスト
+#define FLEETLIST_RECT_CAPTURE  (QRect(366, 100, 434, 365))
 
 //提督名と司令部レベル
 #define HOME_PORT_CHECK_COLOR   (qRgb(42, 150, 163))

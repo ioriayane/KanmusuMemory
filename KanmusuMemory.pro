@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     tabwidget.cpp \
     favoritemenu.cpp \
     updateinfodialog.cpp \
-    webpage.cpp
+    webpage.cpp \
+    fleetdetaildialog.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -36,7 +37,8 @@ HEADERS  += mainwindow.h \
     tabwidget.h \
     favoritemenu.h \
     updateinfodialog.h \
-    webpage.h
+    webpage.h \
+    fleetdetaildialog.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \
@@ -46,7 +48,8 @@ FORMS    += mainwindow.ui \
     timerdialog.ui \
     imageeditdialog.ui \
     webpageform.ui \
-    updateinfodialog.ui
+    updateinfodialog.ui \
+    fleetdetaildialog.ui
 
 
 include(qtquick/qtquick.pri)

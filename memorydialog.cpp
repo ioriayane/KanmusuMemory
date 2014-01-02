@@ -64,8 +64,12 @@ MemoryDialog::Private::Private(const QString &memoryPath, MemoryDialog *parent)
     view->rootContext()->setContextProperty("memoryPath", memoryPath);
 
     //QML設定して表示
+    view->setResizeMode(QQuickView::SizeRootObjectToView);
     view->setSource(QUrl("qrc:///qml/KanmusuMemory/memoryDialog.qml"));
     ui.layout->addWidget(QWidget::createWindowContainer(view, q));
+    //ウインドウの最小サイズを調節
+    QSize contentSize = view->rootObject()->childrenRect().toRect().size();
+    q->setMinimumSize(contentSize);
 }
 
 MemoryDialog::MemoryDialog(const QString &memoryPath, QWidget *parent)
