@@ -18,7 +18,8 @@
 
 #include "webview.h"
 
-#include <QStringList>
+#include <QtCore/QStringList>
+#include <QtCore/QSettings>
 #include <QDialog>
 
 namespace Ui {
@@ -50,6 +51,7 @@ public:
                                , int columns            //列数
                                , int max                //取り込み最大数
                                , QStringList msg_list   //説明の文言
+                               , QSettings *settings
                                , QWidget *parent = 0);
     ~FleetDetailDialog();
 
@@ -63,6 +65,15 @@ signals:
 private:
     class Private;
     Private *d;
+
+    QSettings *m_settings;
+
+    void loadSettings();
+    void saveSettings();
+
+protected:
+    void showEvent(QShowEvent *event);
+    void closeEvent(QCloseEvent *event);
 };
 
 #endif // FLEETDETAILDIALOG_H

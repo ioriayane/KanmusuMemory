@@ -936,6 +936,7 @@ void MainWindow::Private::makeDialog()
                                                 , 2             //2列
                                                 , 6             //最大6
                                                 , fdd_msg_list  //説明文言リスト
+                                                , &settings
                                                 , q);
 }
 

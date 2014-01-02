@@ -186,21 +186,65 @@ FleetDetailDialog::FleetDetailDialog(WebView *webview
                                      , int columns
                                      , int max
                                      , QStringList msg_list
+                                     , QSettings *settings
                                      , QWidget *parent) :
     QDialog(parent)
   , d(new Private(this, webview, capture_rect, view_ratio
                   , columns, max, msg_list))
+  , m_settings(settings)
 {
     connect(this, &QObject::destroyed, [this]() { delete d; });
 }
 
 FleetDetailDialog::~FleetDetailDialog()
 {
+    saveSettings();
 }
 
 void FleetDetailDialog::clear()
 {
     d->clear();
+}
+
+void FleetDetailDialog::loadSettings()
+{
+    if(m_settings == NULL)
+        return;
+
+    //ウインドウの位置を復元
+    m_settings->beginGroup(QStringLiteral(SETTING_FLEETDETAILDIALOG));
+    QByteArray array = m_settings->value(QStringLiteral(SETTING_WINDOW_GEO)).toByteArray();
+    m_settings->endGroup();
+    if(!array.isEmpty()){
+        restoreGeometry(array);
+    }
+}
+
+void FleetDetailDialog::saveSettings()
+{
+    if(m_settings == NULL)
+        return;
+
+    //ウインドウの位置を保存
+    m_settings->beginGroup(QStringLiteral(SETTING_FLEETDETAILDIALOG));
+    m_settings->setValue(QStringLiteral(SETTING_WINDOW_GEO), saveGeometry());
+    m_settings->endGroup();
+}
+
+void FleetDetailDialog::showEvent(QShowEvent *event)
+{
+    //設定読み込み
+    loadSettings();
+
+    QDialog::showEvent(event);
+}
+
+void FleetDetailDialog::closeEvent(QCloseEvent *event)
+{
+    //設定保存
+    saveSettings();
+
+    QDialog::closeEvent(event);
 }
 
 
