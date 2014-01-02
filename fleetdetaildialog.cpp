@@ -34,9 +34,12 @@ public:
             , WebView *webview
             , QRect capture_rect
             , qreal view_ratio
-            , int columns);
+            , int columns
+            , int max
+            , QStringList msg_list);
     ~Private();
 
+    void clear();
 private:
     FleetDetailDialog *q;
     Ui::FleetDetailDialog ui;
@@ -44,6 +47,8 @@ private:
     int columns;                //プレビューの列数
     qreal viewRatio;            //プレビューの表示倍率
     QRect captureRect;          //取り込む範囲
+    int max;                    //取り込み最大数
+    QStringList messageList;        //説明文言のリスト
 public:
     NextOperationType nextOperation;
     CaptureInterface capture;
@@ -56,12 +61,17 @@ FleetDetailDialog::Private::Private(FleetDetailDialog *parent
                                     , WebView *webview
                                     , QRect capture_rect
                                     , qreal view_ratio
-                                    , int columns)
+                                    , int columns
+                                    , int max
+                                    , QStringList msg_list)
     : q(parent)
     , view(new QQuickView)
+    , nextOperation(FleetDetailDialog::None)
     , columns(columns)
     , viewRatio(view_ratio)
     , captureRect(capture_rect)
+    , max(max)
+    , messageList(msg_list)
 {
     ui.setupUi(q);
     capture.webview = webview;
@@ -69,23 +79,23 @@ FleetDetailDialog::Private::Private(FleetDetailDialog *parent
     connect(view->engine(), &QQmlEngine::quit, [this]() {
 
         QVariantList list = view->rootObject()->property("imageList").toList();
+        QStringList slist;
+        foreach (QVariant item, list) {
+            slist.append(item.toString());
+        }
         switch(view->rootObject()->property("nextOperation").toInt()){
         case 0:
-        {
             nextOperation = Combine;
-            QStringList slist;
-            foreach (QVariant item, list) {
-                slist.append(item.toString());
-            }
-
-            //結合は上位でする
-            emit q->finishedCaptureImages(slist, captureRect.width(), captureRect.height(), this->columns);
             break;
-        }
         default:
             nextOperation = None;
             break;
-        }
+        }        
+        //結合は上位でする
+        emit q->finishedCaptureImages(nextOperation, slist
+                                      , captureRect.width(), captureRect.height()
+                                      , this->columns);
+
         //終了
         q->accept();
     });
@@ -103,6 +113,9 @@ FleetDetailDialog::Private::Private(FleetDetailDialog *parent
     view->rootObject()->setProperty("contentY", captureRect.y());
     view->rootObject()->setProperty("contentWidth", captureRect.width());
     view->rootObject()->setProperty("contentHeight", captureRect.height());
+    //その他の設定
+    view->rootObject()->setProperty("max", this->max);
+    view->rootObject()->setProperty("messageList", messageList);
     //ウインドウの最小サイズを調節
     QSize contentSize = view->rootObject()->childrenRect().toRect().size();
     contentSize.setWidth(view->rootObject()->property("width").toInt());
@@ -111,7 +124,6 @@ FleetDetailDialog::Private::Private(FleetDetailDialog *parent
 
     //QMLのサイズが追従するようにする
     view->setResizeMode(QQuickView::SizeRootObjectToView);
-    //    view->setResizeMode(QQuickView::SizeViewToRootObject);
 }
 
 FleetDetailDialog::Private::~Private()
@@ -126,6 +138,12 @@ FleetDetailDialog::Private::~Private()
     for(int i=0; i<list.length(); i++){
         QFile::remove(list[i].filePath());
     }
+}
+
+void FleetDetailDialog::Private::clear()
+{
+//    view->rootObject()->setProperty("imageList", QStringList());
+    QMetaObject::invokeMethod(view->rootObject(), "clear");
 }
 
 
@@ -166,15 +184,23 @@ FleetDetailDialog::FleetDetailDialog(WebView *webview
                                      , QRect capture_rect
                                      , qreal view_ratio
                                      , int columns
+                                     , int max
+                                     , QStringList msg_list
                                      , QWidget *parent) :
     QDialog(parent)
-  , d(new Private(this, webview, capture_rect, view_ratio, columns))
+  , d(new Private(this, webview, capture_rect, view_ratio
+                  , columns, max, msg_list))
 {
     connect(this, &QObject::destroyed, [this]() { delete d; });
 }
 
 FleetDetailDialog::~FleetDetailDialog()
 {
+}
+
+void FleetDetailDialog::clear()
+{
+    d->clear();
 }
 
 

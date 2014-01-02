@@ -45,14 +45,20 @@ public:
     };
 
     explicit FleetDetailDialog(WebView *webview
-                               , QRect capture_rect
-                               , qreal view_ratio
-                               , int columns
+                               , QRect capture_rect     //取り込み範囲
+                               , qreal view_ratio       //プレビューの倍率
+                               , int columns            //列数
+                               , int max                //取り込み最大数
+                               , QStringList msg_list   //説明の文言
                                , QWidget *parent = 0);
     ~FleetDetailDialog();
 
+    void clear();       //現状のリストをクリア
 signals:
-    void finishedCaptureImages(QStringList file_list, int item_width, int item_height, int columns);
+    void finishedCaptureImages(FleetDetailDialog::NextOperationType next
+                               , QStringList file_list
+                               , int item_width, int item_height
+                               , int columns);
 
 private:
     class Private;

@@ -37,6 +37,21 @@ Rectangle {
     property real viewRatio: 0.4
     //キャプチャした画像のリスト
     property variant imageList: []
+    //メッセージリスト
+    property variant messageList: []
+
+    onMessageListChanged: {
+        msgModel.clear()
+        for(var i=0; i<messageList.length; i++){
+            msgModel.append({"text": messageList[i]})
+        }
+    }
+
+    function clear(){
+        imageList = []
+        sourceList.clear()
+        sourceList.append({"source": ""})
+    }
 
     OperatingSystem {
         id: os
@@ -44,17 +59,14 @@ Rectangle {
 
     Column {
         id: message
-        Text {
-            width: root.width
-            text: qsTr("Please to capture with a detailed view of the ship in the organization screen.")
-            wrapMode: Text.WordWrap
-            font.pixelSize: 16
-        }
-        Text {
-            width: root.width
-            text: qsTr("Combine the image you have captured on completion.")
-            wrapMode: Text.WordWrap
-            font.pixelSize: 16
+        Repeater {
+            model: ListModel{ id: msgModel }
+            delegate: Text {
+                width: root.width
+                text: model.text
+                wrapMode: Text.WordWrap
+                font.pixelSize: 16
+            }
         }
     }
     ScrollView {
@@ -62,10 +74,11 @@ Rectangle {
         anchors.top: message.bottom
         anchors.topMargin: 5
         anchors.bottom: control.top
-        width: root.width
+        anchors.left: parent.left
+        anchors.leftMargin: 5
+        anchors.right: parent.right
         Grid {
             id: grid
-            x: 5
             columns: root.columns
             spacing: 2
             Repeater {
