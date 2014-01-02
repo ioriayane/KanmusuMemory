@@ -244,7 +244,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+84"/>
-        <location filename="../ui_mainwindow.h" line="+70"/>
+        <location filename="../ui_mainwindow.h" line="+71"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
@@ -290,7 +290,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+17"/>
-        <location filename="../ui_mainwindow.h" line="-75"/>
+        <location filename="../ui_mainwindow.h" line="-76"/>
         <source>&amp;Exit</source>
         <translation>終了(&amp;E)</translation>
     </message>
@@ -332,15 +332,15 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+3"/>
-        <location line="+163"/>
+        <location line="+166"/>
         <location filename="../ui_mainwindow.h" line="+1"/>
-        <location line="+50"/>
+        <location line="+51"/>
         <source>Ctrl+F</source>
         <translation>Ctrl+F</translation>
     </message>
     <message>
-        <location line="-155"/>
-        <location filename="../ui_mainwindow.h" line="-49"/>
+        <location line="-158"/>
+        <location filename="../ui_mainwindow.h" line="-50"/>
         <source>&amp;View memories</source>
         <translation>思い出を表示(F6)</translation>
     </message>
@@ -400,11 +400,17 @@ Do you want to continue on an understanding of the security risk?
         <location filename="../ui_mainwindow.h" line="+2"/>
         <location line="+2"/>
         <source>captureFleetDetail</source>
-        <translation>艦隊詳細を作成する</translation>
+        <translation>艦隊詳細を作成する(F9)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../ui_mainwindow.h" line="+2"/>
+        <source>F9</source>
+        <translation>F9</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+2"/>
+        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Return to Kan Colle</source>
         <translation>艦これへ戻る(&amp;B)</translation>
     </message>
