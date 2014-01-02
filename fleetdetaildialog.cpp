@@ -40,6 +40,12 @@ public:
     ~Private();
 
     void clear();
+    void setParameters(QRect capture_rect         //取り込み範囲
+                       , qreal view_ratio         //プレビューの倍率
+                       , int columns              //列数
+                       , int max                  //取り込み最大数
+                       , QStringList msg_list     //説明の文言
+                       );
 private:
     FleetDetailDialog *q;
     Ui::FleetDetailDialog ui;
@@ -106,16 +112,8 @@ FleetDetailDialog::Private::Private(FleetDetailDialog *parent
     //QML設定して表示
     view->setSource(QUrl("qrc:///qml/KanmusuMemory/fleetDetailDialog.qml"));
     ui.layout->addWidget(QWidget::createWindowContainer(view, q));
-    //コンテンツのサイズ
-    view->rootObject()->setProperty("columns", this->columns);
-    view->rootObject()->setProperty("viewRatio", viewRatio);
-    view->rootObject()->setProperty("contentX", captureRect.x());
-    view->rootObject()->setProperty("contentY", captureRect.y());
-    view->rootObject()->setProperty("contentWidth", captureRect.width());
-    view->rootObject()->setProperty("contentHeight", captureRect.height());
-    //その他の設定
-    view->rootObject()->setProperty("max", this->max);
-    view->rootObject()->setProperty("messageList", messageList);
+    //QMLの設定
+    setParameters(captureRect, viewRatio, this->columns, this->max, messageList);
     //ウインドウの最小サイズを調節
     QSize contentSize = view->rootObject()->childrenRect().toRect().size();
     contentSize.setWidth(view->rootObject()->property("width").toInt());
@@ -144,6 +142,30 @@ void FleetDetailDialog::Private::clear()
 {
 //    view->rootObject()->setProperty("imageList", QStringList());
     QMetaObject::invokeMethod(view->rootObject(), "clear");
+}
+
+void FleetDetailDialog::Private::setParameters(QRect capture_rect, qreal view_ratio
+                                               , int columns, int max, QStringList msg_list)
+{
+    captureRect = capture_rect;
+    viewRatio = view_ratio;
+    this->columns = columns;
+    this->max = max;
+
+    //コンテンツのサイズ
+    view->rootObject()->setProperty("columns", columns);
+    view->rootObject()->setProperty("viewRatio", view_ratio);
+    view->rootObject()->setProperty("contentX", capture_rect.x());
+    view->rootObject()->setProperty("contentY", capture_rect.y());
+    view->rootObject()->setProperty("contentWidth", capture_rect.width());
+    view->rootObject()->setProperty("contentHeight", capture_rect.height());
+    //その他の設定
+    view->rootObject()->setProperty("max", max);
+    view->rootObject()->setProperty("messageList", msg_list);
+
+    QRect rect = q->geometry();
+    rect.setWidth(view->rootObject()->property("width").toInt());
+    q->setGeometry(rect);
 }
 
 
@@ -198,12 +220,17 @@ FleetDetailDialog::FleetDetailDialog(WebView *webview
 
 FleetDetailDialog::~FleetDetailDialog()
 {
-    saveSettings();
 }
 
 void FleetDetailDialog::clear()
 {
     d->clear();
+}
+
+void FleetDetailDialog::setParameters(QRect capture_rect, qreal view_ratio
+                                      , int columns, int max, QStringList msg_list)
+{
+    d->setParameters(capture_rect, view_ratio, columns, max, msg_list);
 }
 
 void FleetDetailDialog::loadSettings()

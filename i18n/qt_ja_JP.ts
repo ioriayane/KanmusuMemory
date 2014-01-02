@@ -117,7 +117,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+251"/>
+        <location filename="../mainwindow.cpp" line="+254"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -139,29 +139,29 @@
         <location line="+33"/>
         <location line="+13"/>
         <location line="+34"/>
-        <location line="+332"/>
+        <location line="+364"/>
         <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-445"/>
+        <location line="-477"/>
         <location line="+13"/>
-        <location line="+367"/>
+        <location line="+399"/>
         <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-427"/>
+        <location line="-459"/>
         <location line="+17"/>
-        <location line="+284"/>
+        <location line="+316"/>
         <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-386"/>
+        <location line="-418"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -171,9 +171,19 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+149"/>
+        <location line="+155"/>
         <source>Fleet Detail</source>
         <translation>艦隊詳細</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Please be captured by a selection list of warships in the scheduling screen.</source>
+        <translation>編成画面で艦船の選択リストを表示してキャプチャーしてください。</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Fleet List</source>
+        <translation>艦隊リスト</translation>
     </message>
     <message>
         <location line="+142"/>
@@ -210,22 +220,24 @@ Please wait while a cup of coffee.</source>
         <translation>艦隊詳細作成中</translation>
     </message>
     <message>
-        <location line="+120"/>
+        <location line="-278"/>
         <source>Please to capture with a detailed view of the ship in the organization screen.</source>
         <translation>編成画面で船の詳細画面を表示してキャプチャーしてください。</translation>
     </message>
     <message>
         <location line="+1"/>
+        <location line="+26"/>
         <source>The following buttons appear when you capture.</source>
         <translation>キャプチャーすると次のボタンが表示されます。</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-25"/>
+        <location line="+26"/>
         <source>Combine the image you have captured on completion.</source>
         <translation>完了するとキャプチャーした画像を結合します。</translation>
     </message>
     <message>
-        <location line="+96"/>
+        <location line="+469"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -234,7 +246,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location filename="../mainwindow.ui" line="+20"/>
-        <location filename="../ui_mainwindow.h" line="+293"/>
+        <location filename="../ui_mainwindow.h" line="+298"/>
         <source>Kan Memo -KanMusu Memory-</source>
         <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
@@ -244,12 +256,12 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+84"/>
-        <location filename="../ui_mainwindow.h" line="+71"/>
+        <location filename="../ui_mainwindow.h" line="+73"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Browser</source>
         <translation>ブラウザ(&amp;B)</translation>
@@ -289,8 +301,8 @@ Do you want to continue on an understanding of the security risk?
         <translation>toolBar</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <location filename="../ui_mainwindow.h" line="-76"/>
+        <location line="+18"/>
+        <location filename="../ui_mainwindow.h" line="-78"/>
         <source>&amp;Exit</source>
         <translation>終了(&amp;E)</translation>
     </message>
@@ -400,7 +412,7 @@ Do you want to continue on an understanding of the security risk?
         <location filename="../ui_mainwindow.h" line="+2"/>
         <location line="+2"/>
         <source>captureFleetDetail</source>
-        <translation>艦隊詳細を作成する(F9)</translation>
+        <translation>艦隊詳細を作成(F9)</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -607,6 +619,18 @@ Do you want to continue on an understanding of the security risk?
         <location filename="../ui_mainwindow.h" line="+1"/>
         <source>View tool bar</source>
         <translation>ツールバーを表示する</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../ui_mainwindow.h" line="+1"/>
+        <source>captureFleetList</source>
+        <translation>艦隊リストを作成(F10)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../ui_mainwindow.h" line="+1"/>
+        <source>F10</source>
+        <translation>F10</translation>
     </message>
 </context>
 <context>

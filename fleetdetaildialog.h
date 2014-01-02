@@ -55,7 +55,13 @@ public:
                                , QWidget *parent = 0);
     ~FleetDetailDialog();
 
-    void clear();       //現状のリストをクリア
+    void clear();                           //現状のリストをクリア
+    void setParameters(QRect capture_rect         //取り込み範囲
+                       , qreal view_ratio         //プレビューの倍率
+                       , int columns              //列数
+                       , int max                  //取り込み最大数
+                       , QStringList msg_list     //説明の文言
+                       );
 signals:
     void finishedCaptureImages(FleetDetailDialog::NextOperationType next
                                , QStringList file_list

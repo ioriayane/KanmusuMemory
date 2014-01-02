@@ -70,6 +70,7 @@ public:
     void openAboutDialog();
     void openImageEditDialog(const QString &path, const QString &tempPath, const QString &editPath);
     void openManualCaptureFleetDetail();
+    void openManualCaptureFleetList();
     void finishManualCaptureFleetDetail(FleetDetailDialog::NextOperationType next, QStringList file_list, int item_width, int item_height, int columns);
     void captureCatalog();
     void captureFleetDetail();
@@ -136,6 +137,8 @@ MainWindow::Private::Private(MainWindow *parent)
         finishManualCaptureFleetDetail(FleetDetailDialog::None, QStringList(), 0, 0, 1);
     });
 #endif
+    //艦隊リスト
+    connect(ui.captureFleetList, &QAction::triggered, [this](){ openManualCaptureFleetList(); });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
     connect(ui.actionReturn_to_Kan_Colle, &QAction::triggered, [this]() {
@@ -559,10 +562,42 @@ void MainWindow::Private::openManualCaptureFleetDetail()
     ui.captureCatalog->setEnabled(false);
     ui.captureFleetDetail->setEnabled(false);
 
+    //設定変更
+    QStringList fdd_msg_list;
+    fdd_msg_list << tr("Please to capture with a detailed view of the ship in the organization screen.");
+    fdd_msg_list << tr("The following buttons appear when you capture.");
+    fdd_msg_list << tr("Combine the image you have captured on completion.");
+    m_fleetDetailDialog->setParameters(DETAIL_RECT_CAPTURE, 0.3, 2, 6, fdd_msg_list);
     //クリア
     m_fleetDetailDialog->clear();
     //表示
     m_fleetDetailDialog->setWindowTitle(tr("Fleet Detail"));
+    m_fleetDetailDialog->show();
+    m_fleetDetailDialog->raise();
+    m_fleetDetailDialog->activateWindow();
+}
+//艦隊リストを作成するダイアログを表示する
+void MainWindow::Private::openManualCaptureFleetList()
+{
+    //設定確認
+    checkSavePath();
+
+    //メニューを一時停止
+    ui.capture->setEnabled(false);
+    ui.actionCaptureAndEdit->setEnabled(false);
+    ui.captureCatalog->setEnabled(false);
+    ui.captureFleetDetail->setEnabled(false);
+
+    //設定変更
+    QStringList fdd_msg_list;
+    fdd_msg_list << tr("Please be captured by a selection list of warships in the scheduling screen.");
+    fdd_msg_list << tr("The following buttons appear when you capture.");
+    fdd_msg_list << tr("Combine the image you have captured on completion.");
+    m_fleetDetailDialog->setParameters(FLEETLIST_RECT_CAPTURE, 0.3, 4, 20, fdd_msg_list);
+    //クリア
+    m_fleetDetailDialog->clear();
+    //表示
+    m_fleetDetailDialog->setWindowTitle(tr("Fleet List"));
     m_fleetDetailDialog->show();
     m_fleetDetailDialog->raise();
     m_fleetDetailDialog->activateWindow();
@@ -927,9 +962,9 @@ void MainWindow::Private::makeDialog()
     m_updateInfoDialog = new UpdateInfoDialog(q, &settings);
     //艦隊詳細作成のダイアログ作成
     QStringList fdd_msg_list;
-    fdd_msg_list << tr("Please to capture with a detailed view of the ship in the organization screen.");
-    fdd_msg_list << tr("The following buttons appear when you capture.");
-    fdd_msg_list << tr("Combine the image you have captured on completion.");
+//    fdd_msg_list << tr("Please to capture with a detailed view of the ship in the organization screen.");
+//    fdd_msg_list << tr("The following buttons appear when you capture.");
+//    fdd_msg_list << tr("Combine the image you have captured on completion.");
     m_fleetDetailDialog = new FleetDetailDialog(ui.webView
                                                 , DETAIL_RECT_CAPTURE
                                                 , 0.3           //0.3倍

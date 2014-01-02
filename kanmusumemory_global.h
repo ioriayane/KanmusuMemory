@@ -125,6 +125,9 @@
 #define DETAIL_RECT_SHIP6_2     QRect(707, 424, 80, 30)
 #define DETAIL_RECT_CLOSE       (QRect(320, 170, 24, 280))
 
+//艦隊リスト
+#define FLEETLIST_RECT_CAPTURE  (QRect(366, 100, 434, 365))
+
 //提督名と司令部レベル
 #define HOME_PORT_CHECK_COLOR   (qRgb(42, 150, 163))
 #define HOME_PORT_RECT_CAPTURE  (QRect(300, 3, 490, 4))

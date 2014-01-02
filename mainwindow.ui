@@ -108,6 +108,7 @@
     <addaction name="viewMemory"/>
     <addaction name="captureCatalog"/>
     <addaction name="captureFleetDetail"/>
+    <addaction name="captureFleetList"/>
     <addaction name="separator"/>
     <addaction name="preferences"/>
     <addaction name="separator"/>
@@ -185,6 +186,7 @@
    <addaction name="notificationTimer"/>
    <addaction name="captureCatalog"/>
    <addaction name="captureFleetDetail"/>
+   <addaction name="captureFleetList"/>
    <addaction name="actionSplitWindow"/>
   </widget>
   <action name="exit">
@@ -458,6 +460,14 @@
    </property>
    <property name="text">
     <string>View tool bar</string>
+   </property>
+  </action>
+  <action name="captureFleetList">
+   <property name="text">
+    <string>captureFleetList</string>
+   </property>
+   <property name="shortcut">
+    <string>F10</string>
    </property>
   </action>
  </widget>
