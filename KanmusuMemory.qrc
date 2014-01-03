@@ -22,5 +22,6 @@
         <file>qml/KanmusuMemory/CaptureControl.qml</file>
         <file>qml/KanmusuMemory/fleetDetailDialog.qml</file>
         <file>qml/KanmusuMemory/images/noimage.png</file>
+        <file>qml/KanmusuMemory/ImageGrid.qml</file>
     </qresource>
 </RCC>

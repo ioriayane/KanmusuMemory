@@ -24,6 +24,8 @@
 #include "operatingsystem.h"
 #include "clipcursor.h"
 #include "qmlfile.h"
+#include "filelistfiltermodel.h"
+#include "filelistmodel.h"
 
 #include <QDebug>
 
@@ -54,6 +56,10 @@ int main(int argc, char *argv[])
     qmlRegisterType<ClipCursor>("jp.relog.plugin.clipcursor"
                                 , 1, 0, "ClipCursor");
     qmlRegisterType<QMLFile>("jp.relog.plugin.qmlfile", 1, 0, "QMLFile");
+    qmlRegisterType<FileListFilterModel>("jp.relog.plugin.filelistfiltermodel"
+                                         , 1, 0, "FileListFilterModel");
+    qmlRegisterType<FileListModel>("jp.relog.plugin.filelistmodel"
+                                   , 1, 0, "FileListModel");
 
     //ダウンロードデータなどの保存場所のディレクトリを作成しておく
     QDir location(QStandardPaths::writableLocation(QStandardPaths::DataLocation));

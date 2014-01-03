@@ -7,16 +7,20 @@
 QT += qml quick
 
 SOURCES += $$PWD/qtquick2applicationviewer.cpp \
-    qtquick/operatingsystem.cpp \
-    qtquick/timerdata.cpp \
-    qtquick/clipcursor.cpp \
-    qtquick/qmlfile.cpp \
-    qtquick/qfileasync.cpp
+    $$PWD/operatingsystem.cpp \
+    $$PWD/timerdata.cpp \
+    $$PWD/clipcursor.cpp \
+    $$PWD/qmlfile.cpp \
+    $$PWD/qfileasync.cpp \
+    $$PWD/filelistmodel.cpp \
+    $$PWD/filelistfiltermodel.cpp
 HEADERS += $$PWD/qtquick2applicationviewer.h \
-    qtquick/thumbnailprovider.h \
-    qtquick/operatingsystem.h \
-    qtquick/timerdata.h \
-    qtquick/clipcursor.h \
-    qtquick/qmlfile.h \
-    qtquick/qfileasync.h
+    $$PWD/thumbnailprovider.h \
+    $$PWD/operatingsystem.h \
+    $$PWD/timerdata.h \
+    $$PWD/clipcursor.h \
+    $$PWD/qmlfile.h \
+    $$PWD/qfileasync.h \
+    $$PWD/filelistmodel.h \
+    $$PWD/filelistfiltermodel.h
 INCLUDEPATH += $$PWD

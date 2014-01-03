@@ -17,6 +17,8 @@ import QtQuick 2.0
 import QtQuick.Controls 1.0
 import Qt.labs.folderlistmodel 1.0
 import jp.relog.plugin.operatingsystem 1.0
+import jp.relog.plugin.filelistmodel 1.0
+import jp.relog.plugin.filelistfiltermodel 1.0
 
 Rectangle {
     id: root
@@ -43,7 +45,6 @@ Rectangle {
             width: 81
             height: 31
             text: qsTr("Select")
-            enabled: grid.currentIndex >= 0
             onClicked: {
                 nextOperation = 0
                 Qt.quit()
@@ -53,7 +54,6 @@ Rectangle {
             width: 81
             height: 31
             text: qsTr("Edit")
-            enabled: grid.currentIndex >= 0
             onClicked: {
                 nextOperation = 1
                 Qt.quit()
@@ -87,78 +87,48 @@ Rectangle {
         anchors.bottom: control.top
         anchors.margins: 5
 
-        GridView {
-            id: grid
-            cellWidth: 200 + 6
-            cellHeight: 120 + 6
+        ListView {
+            id: list
 
             //ファイル一覧をモデルで取得
-            model: FolderListModel {
-                id: folderlist
-                folder: os.pathPrefix + memoryPath
-                showDirs: false                                 //ディレクトリは非表示
-                sortField: FolderListModel.Name                 //ファイル名でソート
-                sortReversed: true                              //新しいモノが上
-                nameFilters: ["kanmusu_*.png", "kanmusu_*.jpg"] //フィルタ
+            model: FileListFilterModel {
+                id: fileListFilterModel
+                nameFilters: ["kanmusu_*.png", "kanmusu_*.jpg"]
+                onNameFiltersChanged: folder = memoryPath
             }
             //個々のレイアウト
-            delegate: MouseArea {
-                id: mouse
-                width: image.width + 10
-                height: image.height + 10
-                hoverEnabled: true
-                Image {
-                    id: image
-                    anchors.centerIn: parent
-                    width: 200
-                    height: 120
-                    fillMode: Image.PreserveAspectFit
-//                    fillMode: Image.PreserveAspectCrop
-                    source: "image://thumbnail/" + model.filePath
+            delegate: Column {
+                width: list.width
+                spacing: 5
 
+                Rectangle {
+                    width: parent.width
+                    height: text.paintedHeight * 2
+//                    color: root.color
                     Text {
-                        anchors.bottom: parent.bottom
-                        anchors.bottomMargin: 5
+                        id: text
+                        anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
-                        anchors.right: parent.right
-                        horizontalAlignment: Text.AlignRight
-                        visible: mouse.containsMouse
-                        text: model.fileModified
-                        Rectangle {
-                            anchors.centerIn: parent
-                            width: parent.width
-                            height: parent.height * 1.2
-                            z: -1
-                            opacity: 0.5
-                        }
-                    }
-
-                    Image {
-                        id: spin
-                        anchors.centerIn: parent
-                        source: "images/spinner.png"
-                        visible: loading
-                        property bool loading: image.status != Image.Ready
-
-                        NumberAnimation on rotation {
-                            from: 0
-                            to: 360
-                            duration: 1500
-                            loops: Animation.Infinite
-                            running: spin.loading
-                        }
+                        anchors.leftMargin: 10
+                        text: model.filterName
+                        font.pixelSize: 16
                     }
                 }
-                onClicked: {
-                    grid.currentIndex = index
-                    root.imagePath = model.filePath
-                    viewImage.source = os.pathPrefix + model.filePath
-                    view.xScale = 1
-                }
-                onDoubleClicked: {
-                    root.imagePath = model.filePath
-                    root.nextOperation = 0
-                    Qt.quit()
+
+                ImageGrid {
+                    contentWidth: parent.width
+                    filter: [model.filter + ".png", model.filter + ".jpg"]
+                    onFilterChanged: folder = memoryPath
+                    onClicked: {
+                        root.imagePath = filePath
+                        viewImage.source = os.pathPrefix + filePath
+                        view.xScale = 1
+                    }
+                    onDoubleClicked: {
+                        root.imagePath = filePath
+                        root.nextOperation = 0
+                        Qt.quit()
+                    }
                 }
             }
         }
