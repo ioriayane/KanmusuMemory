@@ -32,7 +32,7 @@ QtObject {
     ]
     property string webpageUrl: "http://relog.xii.jp/mt5r/2013/08/post-349.html"
     property variant message: ["-Assisted creation of additional fleet details list\n-Fixed processing of split-screen browser\n"
-        , "・艦隊詳細・リストの作成補助機能追加\n・分割画面のブラウザの処理を修正\n"             //日本語の説明
+        , "・艦隊詳細・リストの作成補助機能追加\n・分割画面のブラウザの処理を修正\n・思い出を表示画面で日付単位で区切りを追加\n"             //日本語の説明
     ]
 }
 
