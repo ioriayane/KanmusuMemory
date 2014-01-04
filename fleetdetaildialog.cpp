@@ -192,7 +192,7 @@ QString CaptureInterface::captureGame(qreal x, qreal y, qreal w, qreal h)
     //なければつくる
     QDir dir(path);
     if(!dir.exists())
-        dir.mkdir(path);
+        dir.mkpath(path);
     //ファイル名
     QString filename = QString("%1/capture_temp_%3.png").arg(path).arg(number++);
     //保存
