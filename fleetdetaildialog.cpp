@@ -163,9 +163,10 @@ void FleetDetailDialog::Private::setParameters(QRect capture_rect, qreal view_ra
     view->rootObject()->setProperty("max", max);
     view->rootObject()->setProperty("messageList", msg_list);
 
-    QRect rect = q->geometry();
-    rect.setWidth(view->rootObject()->property("width").toInt());
-    q->setGeometry(rect);
+//    QRect rect = q->geometry();
+//    rect.setWidth(view->rootObject()->property("width").toInt());
+//    q->setGeometry(rect);
+
 }
 
 
@@ -231,7 +232,20 @@ void FleetDetailDialog::setParameters(QRect capture_rect, qreal view_ratio
                                       , int columns, int max, QStringList msg_list)
 {
     d->setParameters(capture_rect, view_ratio, columns, max, msg_list);
+
+    setInitWidth(capture_rect.width() * view_ratio * columns * 1.1 + 10 + 2 * (columns - 1));
+                   //プレビュー画像の横幅 * 倍率 * 列数 * 1.1 + 左右の余白 + グリッドの隙間
 }
+
+int FleetDetailDialog::initWidth() const
+{
+    return m_initWidth;
+}
+void FleetDetailDialog::setInitWidth(int initWidth)
+{
+    m_initWidth = initWidth;
+}
+
 
 void FleetDetailDialog::loadSettings()
 {
@@ -262,6 +276,10 @@ void FleetDetailDialog::showEvent(QShowEvent *event)
 {
     //設定読み込み
     loadSettings();
+
+    QRect rect = geometry();
+    rect.setWidth(initWidth());
+    setGeometry(rect);
 
     QDialog::showEvent(event);
 }

@@ -62,6 +62,9 @@ public:
                        , int max                  //取り込み最大数
                        , QStringList msg_list     //説明の文言
                        );
+    int initWidth() const;
+    void setInitWidth(int initWidth);
+
 signals:
     void finishedCaptureImages(FleetDetailDialog::NextOperationType next
                                , QStringList file_list
@@ -73,6 +76,7 @@ private:
     Private *d;
 
     QSettings *m_settings;
+    int m_initWidth;
 
     void loadSettings();
     void saveSettings();

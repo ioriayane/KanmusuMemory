@@ -561,6 +561,7 @@ void MainWindow::Private::openManualCaptureFleetDetail()
     ui.actionCaptureAndEdit->setEnabled(false);
     ui.captureCatalog->setEnabled(false);
     ui.captureFleetDetail->setEnabled(false);
+    ui.captureFleetList->setEnabled(false);
 
     //設定変更
     QStringList fdd_msg_list;
@@ -587,6 +588,7 @@ void MainWindow::Private::openManualCaptureFleetList()
     ui.actionCaptureAndEdit->setEnabled(false);
     ui.captureCatalog->setEnabled(false);
     ui.captureFleetDetail->setEnabled(false);
+    ui.captureFleetList->setEnabled(false);
 
     //設定変更
     QStringList fdd_msg_list;
@@ -616,6 +618,7 @@ void MainWindow::Private::finishManualCaptureFleetDetail(FleetDetailDialog::Next
     ui.actionCaptureAndEdit->setEnabled(true);
     ui.captureCatalog->setEnabled(true);
     ui.captureFleetDetail->setEnabled(true);
+    ui.captureFleetList->setEnabled(true);
 }
 //ゲーム画面へクリックイベントを送る
 void MainWindow::Private::clickGame(QPoint pos, bool wait_little)
