@@ -1,6 +1,6 @@
 {
 "_comment" : "serialは日付+二桁連番で更新されてるか判断する"
-,"serial" : "2013122700"
+,"serial" : "2014010500"
 ,"docking" : 
 [
   { "hour": 0, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
@@ -101,7 +101,7 @@
 , { "hour": 0, "minute": 22, "second": 0, "msg1": "潜水艦", "msg2": "伊58 伊168" }
 , { "hour": 0, "minute": 24, "second": 0, "msg1": "駆逐艦", "msg2": "陽炎型 雪風" }
 , { "hour": 0, "minute": 30, "second": 0, "msg1": "駆逐艦", "msg2": "島風" }
-, { "hour": 1, "minute": 0, "second": 0, "msg1": "軽巡洋艦", "msg2": "天龍型 球磨型 長良型 川内型" }
+, { "hour": 1, "minute": 0, "second": 0, "msg1": "軽巡洋艦", "msg2": "天龍型 球磨型 長良型 川内型 阿賀野型" }
 , { "hour": 1, "minute": 0, "second": 0, "msg1": "重巡洋艦", "msg2": "古鷹型 青葉型" }
 , { "hour": 1, "minute": 15, "second": 0, "msg1": "軽巡洋艦", "msg2": "鬼怒 阿武隈" }
 , { "hour": 1, "minute": 20, "second": 0, "msg1": "重巡洋艦", "msg2": "妙高型" }

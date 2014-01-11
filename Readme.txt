@@ -61,7 +61,7 @@
 
 
 【動作確認環境】
-　・Windows 7(64bit)/8.1(64bit)
+　・Windows 7(32bit)/8.1(64bit)
 　・Ubuntu 12.10(32/64bit)
 　・Mac OS X 10.9.1
 

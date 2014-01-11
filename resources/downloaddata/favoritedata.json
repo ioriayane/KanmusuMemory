@@ -1,6 +1,6 @@
 {
 "_comment" : "serialは日付+二桁連番で更新されてるか判断する"
-,"serial" : "2013122700"
+,"serial" : "2014010400"
 ,"root" : 
 [
 	{"array":
@@ -238,11 +238,6 @@
 			, { "title": "(信濃)", "url": "http://ja.m.wikipedia.org/wiki/%E4%BF%A1%E6%BF%83_(%E7%A9%BA%E6%AF%8D)" }
 			, { "title": "蒼龍", "url": "http://ja.m.wikipedia.org/wiki/%E8%92%BC%E9%BE%8D_(%E7%A9%BA%E6%AF%8D)" }
 			, { "title": "飛龍", "url": "http://ja.m.wikipedia.org/wiki/%E9%A3%9B%E9%BE%8D_(%E7%A9%BA%E6%AF%8D)" }
-		]}
-		, {"array":
-		[
-			  { "title": "装甲空母", "url": ""}
-			, { "title": "大鳳", "url": "http://ja.m.wikipedia.org/wiki/%E5%A4%A7%E9%B3%B3_(%E7%A9%BA%E6%AF%8D)" }
 		]}
 		, {"array":
 		[

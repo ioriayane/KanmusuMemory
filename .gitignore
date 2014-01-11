@@ -29,3 +29,4 @@ Makefile.*
 *.exe
 *.exe.embed.manifest
 *.res
+Thumbs.db
