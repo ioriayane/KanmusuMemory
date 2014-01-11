@@ -654,6 +654,10 @@ QString MainWindow::Private::combineImage(QStringList file_list, int item_width,
     int rows = qCeil(static_cast<qreal>(file_list.length()) / static_cast<qreal>(columns));
     int x = 0;
     int y = 0;
+    //画像の数が列数より小さい時は列数を調節する
+    if(file_list.length() < columns){
+        columns = file_list.length();
+    }
     //結合画像を作る
     QImage resultImage(item_width * columns, item_height * rows, QImage::Format_ARGB32);
     QPainter painter(&resultImage);
