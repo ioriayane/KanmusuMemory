@@ -19,8 +19,8 @@
 #define KANMEMO_NAME "KanmusuMemory"
 #define KANMEMO_NAME_FAV "KanmusuMemoryFav"
 #define KANMEMO_PROJECT "KanmemoProject"
-#define KANMEMO_VERSION "0.9"
-#define KANMEMO_VERSION_CODE 10
+#define KANMEMO_VERSION "0.10"
+#define KANMEMO_VERSION_CODE 11
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
     << "@task_jp"\
@@ -57,6 +57,7 @@
 #define SETTING_WINDOW_STATE        "windowState"
 #define SETTING_SPLITTER_SIZES      "splitterSizes"
 #define SETTING_SPLITTER_ON         "splitterOn"
+#define SETTING_SPLITTER_ORIENTATION    "splitterorientation"
 //設定：タイマー
 #define SETTING_TIMER                       "timer"
 #define SETTING_TIMER_DOCKING_TIME          "dockingTime"

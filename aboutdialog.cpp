@@ -35,7 +35,7 @@ AboutDialog::Private::Private(AboutDialog *parent)
 {
     ui.setupUi(q);
     connect(q, &AboutDialog::versionChanged, [this](const QString &version) {
-        ui.versionLabel->setText(q->tr("Version : %1").arg(version));
+        ui.versionLabel->setText(QString("Version : %1").arg(version));
     });
     connect(q, &AboutDialog::developersChanged, [this](const QStringList &developers) {
         ui.developerLabel->setText(developers.join("\n"));

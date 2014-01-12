@@ -90,6 +90,7 @@ private:
 
     void setSplitWindowVisiblity(bool visible);
     bool isSplitWindowVisible();
+    void setSplitWindowOrientation(Qt::Orientation orientation);
 
     MainWindow *q;
     TimerDialog *m_timerDialog;
@@ -193,6 +194,24 @@ MainWindow::Private::Private(MainWindow *parent)
     connect(ui.actionSplitWindow, &QAction::triggered, [this]() {
         setSplitWindowVisiblity(!isSplitWindowVisible());
     });
+    //左右に分割
+    connect(ui.actionHorizontalSplit, &QAction::triggered, [this]() {
+        setSplitWindowOrientation(Qt::Horizontal);
+        if(!isSplitWindowVisible())
+            setSplitWindowVisiblity(true);
+    });
+    //上下に分割
+    connect(ui.actionVerticalSplit, &QAction::triggered, [this]() {
+        setSplitWindowOrientation(Qt::Vertical);
+        if(!isSplitWindowVisible())
+            setSplitWindowVisiblity(true);
+    });
+    //分割を解除
+    connect(ui.actionDisableSplit, &QAction::triggered, [this]() {
+        if(isSplitWindowVisible())
+            setSplitWindowVisiblity(false);
+    });
+
     //タブウインドウの再読み込み
     connect(ui.actionReloadTab, &QAction::triggered, [this]() {
         if(!isSplitWindowVisible())
@@ -711,6 +730,12 @@ bool MainWindow::Private::isSplitWindowVisible()
 {
     return ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->isVisible();
 }
+//分割方向を変える
+void MainWindow::Private::setSplitWindowOrientation(Qt::Orientation orientation)
+{
+    ui.splitter->setOrientation(orientation);
+
+}
 
 void MainWindow::Private::captureCatalog()
 {
@@ -996,6 +1021,7 @@ MainWindow::MainWindow(QWidget *parent)
     d->bakSplitterSizes = TimerData::toIntList(settings.value(QStringLiteral(SETTING_SPLITTER_SIZES), QList<QVariant>() << 900 << 300).toList());
     d->ui.splitter->setSizes(d->bakSplitterSizes);
     d->ui.splitter->widget(SPLIT_WEBPAGE_INDEX)->setVisible(settings.value(QStringLiteral(SETTING_SPLITTER_ON)).toBool());
+    d->ui.splitter->setOrientation(static_cast<Qt::Orientation>(settings.value(QStringLiteral(SETTING_SPLITTER_ORIENTATION), Qt::Horizontal).toInt()));
     settings.endGroup();
 
     //拡縮の設定を復元
@@ -1055,6 +1081,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }else{
         settings.setValue(QStringLiteral(SETTING_SPLITTER_SIZES), TimerData::toList<QVariant, int>(d->bakSplitterSizes));
     }
+    settings.setValue(QStringLiteral(SETTING_SPLITTER_ORIENTATION), static_cast<int>(d->ui.splitter->orientation()));
     settings.endGroup();
 
     //拡縮の設定の保存
