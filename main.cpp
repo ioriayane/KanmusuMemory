@@ -67,8 +67,17 @@ int main(int argc, char *argv[])
         location.mkdir(QStandardPaths::writableLocation(QStandardPaths::DataLocation));
     }
 
-    MainWindow w;
+    //コマンドライン引数
+    bool not_use_cookie = false;
+    foreach (QString arg, app.arguments()) {
+        if(arg.toLower().compare(QStringLiteral("/notusecookie")) == 0){
+            not_use_cookie = true;
+        }
+    }
+
+    //メインウィンドウ
+    MainWindow w(0, not_use_cookie);
     w.show();
-    
+
     return app.exec();
 }

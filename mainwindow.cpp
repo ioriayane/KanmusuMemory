@@ -59,7 +59,7 @@
 class MainWindow::Private
 {
 public:
-    Private(MainWindow *parent);
+    Private(MainWindow *parent, bool not_use_cookie);
     ~Private();
     void captureGame(bool andEdit = false);         //保存する
     void checkSavePath();                           //保存場所の確認
@@ -102,17 +102,19 @@ public:
     Ui::MainWindow ui;
     QSettings settings;         //設定管理
     QSystemTrayIcon trayIcon;   //トレイアイコン
+    bool notUseCookie;
 
 public slots:
     void clickItem(){}
 
 };
 
-MainWindow::Private::Private(MainWindow *parent)
+MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     : q(parent)
     , settings(QSettings::IniFormat, QSettings::UserScope, KANMEMO_PROJECT, KANMEMO_NAME)
     , trayIcon(QIcon(":/resources/KanmusuMemory32.png"))
     , m_favorite(q)
+    , notUseCookie(not_use_cookie)
 {
     ui.setupUi(q);
 
@@ -953,7 +955,10 @@ void MainWindow::Private::setGameSize(qreal factor)
 void MainWindow::Private::setWebSettings()
 {
     //WebViewの設定（クッキー）
-    if(settings.value(SETTING_GENERAL_USE_COOKIE, true).toBool()){
+    if(notUseCookie){
+        //強制無効化
+        qDebug() << "not use cookie";
+    }else if(settings.value(SETTING_GENERAL_USE_COOKIE, true).toBool()){
         ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
     }
     //WebViewの設定（キャッシュ）
@@ -1008,9 +1013,9 @@ void MainWindow::Private::makeDialog()
 }
 
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(QWidget *parent, bool not_use_cookie)
     : QMainWindow(parent)
-    , d(new Private(this))
+    , d(new Private(this, not_use_cookie))
 {
     //ウインドウの位置を復元
     QSettings settings(QSettings::IniFormat, QSettings::UserScope, KANMEMO_PROJECT, KANMEMO_NAME);
