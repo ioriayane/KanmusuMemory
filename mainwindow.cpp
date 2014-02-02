@@ -63,7 +63,7 @@ public:
     ~Private();
     void captureGame(bool andEdit = false);         //保存する
     void checkSavePath();                           //保存場所の確認
-    void openTweetDialog(const QString &path);      //ツイートダイアログを開く
+    void openTweetDialog(const QString &path, bool force = false);      //ツイートダイアログを開く
     void openMemoryDialog();
     void openSettingDialog();
     void updateProxyConfiguration();
@@ -443,10 +443,10 @@ void MainWindow::Private::checkSavePath()
 }
 
 //ツイートダイアログを開く
-void MainWindow::Private::openTweetDialog(const QString &path)
+void MainWindow::Private::openTweetDialog(const QString &path, bool force)
 {
     //連携を使用しない
-    if(settings.value(SETTING_GENERAL_UNUSED_TWITTER, false).toBool()){
+    if(force == false && settings.value(SETTING_GENERAL_UNUSED_TWITTER, false).toBool()){
         QMessageBox::information(q
                                  , tr("Kan Memo")
                                  , tr("saving to %1...").arg(path));
@@ -480,7 +480,7 @@ void MainWindow::Private::openMemoryDialog()
         switch(dlg.nextOperation()){
         case MemoryDialog::Tweet:
             //つぶやく
-            openTweetDialog(dlg.imagePath());
+            openTweetDialog(dlg.imagePath(), true);
             break;
         case MemoryDialog::Edit:
         {
