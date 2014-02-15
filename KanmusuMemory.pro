@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     favoritemenu.cpp \
     updateinfodialog.cpp \
     webpage.cpp \
-    fleetdetaildialog.cpp
+    fleetdetaildialog.cpp \
+    recodingthread.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -38,7 +39,8 @@ HEADERS  += mainwindow.h \
     favoritemenu.h \
     updateinfodialog.h \
     webpage.h \
-    fleetdetaildialog.h
+    fleetdetaildialog.h \
+    recodingthread.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \

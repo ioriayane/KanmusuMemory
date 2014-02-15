@@ -27,6 +27,7 @@
 #include "gamescreen.h"
 #include "webpageform.h"
 #include "favoritemenu.h"
+#include "recodingthread.h"
 #include "kanmusumemory_global.h"
 
 #include <QtCore/QDate>
@@ -131,7 +132,13 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     connect(ui.captureFleetDetail, &QAction::triggered, [this](){ captureFleetDetail(); });
 #else
     //艦隊詳細
-    connect(ui.captureFleetDetail, &QAction::triggered, [this](){ openManualCaptureFleetDetail(); });
+    connect(ui.captureFleetDetail, &QAction::triggered, [this](){
+//        openManualCaptureFleetDetail();
+
+        RecodingThread *thread = new RecodingThread(q);
+        thread->setWebView(ui.webView);
+        thread->start();
+    });
     connect(m_fleetDetailDialog, &FleetDetailDialog::finishedCaptureImages, [this](FleetDetailDialog::NextOperationType next, QStringList file_list, int item_width, int item_height, int columns){
         finishManualCaptureFleetDetail(next, file_list, item_width, item_height, columns);
     });
