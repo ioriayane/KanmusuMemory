@@ -98,6 +98,7 @@ private:
     UpdateInfoDialog *m_updateInfoDialog;
     FleetDetailDialog *m_fleetDetailDialog;
     FavoriteMenu m_favorite;
+    RecodingThread recodingThread;
 
 public:
     Ui::MainWindow ui;
@@ -135,9 +136,19 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     connect(ui.captureFleetDetail, &QAction::triggered, [this](){
 //        openManualCaptureFleetDetail();
 
-        RecodingThread *thread = new RecodingThread(q);
-        thread->setWebView(ui.webView);
-        thread->start();
+//        RecodingThread *thread = new RecodingThread(q);
+//        connect(thread, &RecodingThread::captureRequest, [this](){
+//            qDebug() << "capture request";
+//            QImage img = ui.webView->capture();
+//            if(img.isNull()){
+//                qDebug() << "--don't capture";
+//            }
+//        });
+//        thread->setWebView(ui.webView);
+//        thread->start();
+//        thread->startTimer();
+        recodingThread.setWebView(ui.webView);
+        recodingThread.startTimer();
     });
     connect(m_fleetDetailDialog, &FleetDetailDialog::finishedCaptureImages, [this](FleetDetailDialog::NextOperationType next, QStringList file_list, int item_width, int item_height, int columns){
         finishManualCaptureFleetDetail(next, file_list, item_width, item_height, columns);
@@ -148,7 +159,10 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     });
 #endif
     //艦隊リスト
-    connect(ui.captureFleetList, &QAction::triggered, [this](){ openManualCaptureFleetList(); });
+    connect(ui.captureFleetList, &QAction::triggered, [this](){
+        recodingThread.stopTimer();
+//        openManualCaptureFleetList();
+    });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
     connect(ui.actionReturn_to_Kan_Colle, &QAction::triggered, [this]() {
