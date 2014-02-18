@@ -20,7 +20,7 @@ SOURCES += main.cpp\
     updateinfodialog.cpp \
     webpage.cpp \
     fleetdetaildialog.cpp \
-    recodingthread.cpp
+    recordingthread.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -40,7 +40,7 @@ HEADERS  += mainwindow.h \
     updateinfodialog.h \
     webpage.h \
     fleetdetaildialog.h \
-    recodingthread.h
+    recordingthread.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \

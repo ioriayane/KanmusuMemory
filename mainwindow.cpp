@@ -27,7 +27,7 @@
 #include "gamescreen.h"
 #include "webpageform.h"
 #include "favoritemenu.h"
-#include "recodingthread.h"
+#include "recordingthread.h"
 #include "kanmusumemory_global.h"
 
 #include <QtCore/QDate>
@@ -98,7 +98,7 @@ private:
     UpdateInfoDialog *m_updateInfoDialog;
     FleetDetailDialog *m_fleetDetailDialog;
     FavoriteMenu m_favorite;
-    RecodingThread recodingThread;
+    RecordingThread recordingThread;
 
 public:
     Ui::MainWindow ui;
@@ -136,19 +136,13 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     connect(ui.captureFleetDetail, &QAction::triggered, [this](){
 //        openManualCaptureFleetDetail();
 
-//        RecodingThread *thread = new RecodingThread(q);
-//        connect(thread, &RecodingThread::captureRequest, [this](){
-//            qDebug() << "capture request";
-//            QImage img = ui.webView->capture();
-//            if(img.isNull()){
-//                qDebug() << "--don't capture";
-//            }
-//        });
-//        thread->setWebView(ui.webView);
-//        thread->start();
-//        thread->startTimer();
-        recodingThread.setWebView(ui.webView);
-        recodingThread.startTimer();
+        recordingThread.setToolPath(QStringLiteral("D:\\ffmpeg\\bin\\ffmpeg.exe"));
+        recordingThread.setToolParam(QStringLiteral("-r %1 -i %2 -vcodec libx264 -qscale:v 0 %3"));
+        recordingThread.setSavePath(QStringLiteral("d:\\temp\\kancolle.mp4"));
+        recordingThread.setAudioInputName(recordingThread.audioInputNames().at(0));
+        recordingThread.setFps(20);
+        recordingThread.setWebView(ui.webView);
+        recordingThread.startRecording();
     });
     connect(m_fleetDetailDialog, &FleetDetailDialog::finishedCaptureImages, [this](FleetDetailDialog::NextOperationType next, QStringList file_list, int item_width, int item_height, int columns){
         finishManualCaptureFleetDetail(next, file_list, item_width, item_height, columns);
@@ -160,7 +154,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
 #endif
     //艦隊リスト
     connect(ui.captureFleetList, &QAction::triggered, [this](){
-        recodingThread.stopTimer();
+        recordingThread.stopRecording();
 //        openManualCaptureFleetList();
     });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
