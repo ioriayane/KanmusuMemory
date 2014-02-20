@@ -12,7 +12,10 @@ RecordingThread::RecordingThread(QObject *parent) :
   , m_timer(NULL)
   , m_recordingCounter(0)
   , m_audio(this)
+  , m_stop(true)
 {
+    m_et.start();
+
     //録音
     QAudioEncoderSettings audioSettings;
     audioSettings.setCodec("audio/mpeg");
@@ -22,6 +25,8 @@ RecordingThread::RecordingThread(QObject *parent) :
     //タイマー
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, [this](){
+        //デバッグ計測
+//        m_interval.append(m_et.elapsed());
         //キャプチャ
         unsigned long counter = getRecordingCounter();
 //        qDebug() << "trigger timer " << counter;
@@ -60,7 +65,14 @@ RecordingThread::RecordingThread(QObject *parent) :
     connect(&m_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processError(QProcess::ProcessError)) );
     //録音がエラー
     connect(&m_audio, SIGNAL(error(QMediaRecorder::Error)), this, SLOT(audioRecordingError(QMediaRecorder::Error)));
-
+    connect(&m_audio, &QAudioRecorder::stateChanged, [this](QMediaRecorder::State state){
+        qint64 t = m_et.elapsed();
+        qDebug() << "QAudioRecorder::stateChanged " << state << "," << QString::number(t);
+    });
+    connect(&m_audio, &QAudioRecorder::statusChanged, [this](QMediaRecorder::Status status){
+        qint64 t = m_et.elapsed();
+        qDebug() << "QAudioRecorder::statusChanged " << status << "," << QString::number(t);
+    });
 }
 //録画開始
 void RecordingThread::startRecording()
@@ -72,6 +84,7 @@ void RecordingThread::startRecording()
     m_recordingCounter = 0;
     m_SaveDataList.clear();
     //タイマー開始
+    m_stop = false;
     m_state = Recording;
     m_timer->start(static_cast<int>(1.0/fps()));
     //録音開始
@@ -92,13 +105,13 @@ void RecordingThread::stopRecording()
     m_audio.stop();
     //タイマー停止
     m_timer->stop();
+    m_stop = true;
 
     qDebug() << "stop recording timer:" << m_recordingCounter;
 
-    //一応スレッド叩いて残りがあれば吐き出して、ツールを使う
+    //終了を待つ
     m_state = Converting;
-    start();
-    wait();
+    if(isRunning()) wait();
 
     //残骸チェック
     foreach (SaveData data, m_SaveDataList) {
@@ -113,6 +126,12 @@ void RecordingThread::stopRecording()
         m_state = Stop;
     }
 
+    //デバッグ計測
+    qint64 pt = 0;
+    foreach (qint64 t, m_interval) {
+        qDebug() << t << "(" << (t-pt) << ")";
+        pt = t;
+    }
 }
 //保存フォルダ（テンポラリの中身をクリア）
 void RecordingThread::clearCaptureFiles()
@@ -250,14 +269,18 @@ void RecordingThread::convert()
     audio_path = audio_path.replace(QStringLiteral("/"), QStringLiteral("\\"));
 #endif
 
+//#error フレームレートは計測しないとダメかも
+    QFileInfo fi(audio_path);
 
     QStringList args;
     args.append("-r");
     args.append(QString::number(fps()));
     args.append("-i");
     args.append(image_path);
-    args.append("-i");
-    args.append(audio_path);
+    if(fi.exists()){
+        args.append("-i");
+        args.append(audio_path);
+    }
     args.append("-vcodec");
     args.append("libx264");
     args.append("-qscale:v");
@@ -301,7 +324,8 @@ QString RecordingThread::getTempPath()
 
 void RecordingThread::run()
 {
-//    qDebug() << "start recoding thread";
+    qint64 t = m_et.elapsed();
+    qDebug() << "start recoding thread " << QString::number(t);
 
 
     if(m_state == Recording){
@@ -326,8 +350,16 @@ void RecordingThread::run()
             m_SaveDataList.removeFirst();
             empty = m_SaveDataList.isEmpty();
             m_mutex.unlock();
+
+            //停止指示がかかってない時は待つ
+            while(empty && m_stop == false){
+//                qDebug() << "wait empty " << m_stop << "," << data.path;
+                msleep(static_cast<unsigned long>(2000.0/m_fps));
+                empty = m_SaveDataList.isEmpty();
+            }
         }
     }
 
-//    qDebug() << "stop recoding thread";
+    t = m_et.elapsed();
+    qDebug() << "stop recoding thread " << QString::number(t);
 }
