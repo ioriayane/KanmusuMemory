@@ -25,6 +25,12 @@ RecordingThread::RecordingThread(QObject *parent) :
     //タイマー
     m_timer = new QTimer(this);
     connect(m_timer, &QTimer::timeout, [this](){
+        static bool f = true;
+        if(f){
+            qDebug() << "timer first " << m_et.elapsed();
+            f = false;
+        }
+
         //デバッグ計測
 //        m_interval.append(m_et.elapsed());
         //キャプチャ
@@ -65,28 +71,26 @@ RecordingThread::RecordingThread(QObject *parent) :
     connect(&m_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processError(QProcess::ProcessError)) );
     //録音がエラー
     connect(&m_audio, SIGNAL(error(QMediaRecorder::Error)), this, SLOT(audioRecordingError(QMediaRecorder::Error)));
-    connect(&m_audio, &QAudioRecorder::stateChanged, [this](QMediaRecorder::State state){
-        qint64 t = m_et.elapsed();
-        qDebug() << "QAudioRecorder::stateChanged " << state << "," << QString::number(t);
-    });
-    connect(&m_audio, &QAudioRecorder::statusChanged, [this](QMediaRecorder::Status status){
-        qint64 t = m_et.elapsed();
-        qDebug() << "QAudioRecorder::statusChanged " << status << "," << QString::number(t);
-    });
+//    connect(&m_audio, &QAudioRecorder::stateChanged, [this](QMediaRecorder::State state){
+//        qint64 t = m_et.elapsed();
+//        qDebug() << "QAudioRecorder::stateChanged " << state << "," << QString::number(t);
+//    });
+//    connect(&m_audio, &QAudioRecorder::statusChanged, [this](QMediaRecorder::Status status){
+//        qint64 t = m_et.elapsed();
+//        qDebug() << "QAudioRecorder::statusChanged " << status << "," << QString::number(t);
+//    });
 }
 //録画開始
 void RecordingThread::startRecording()
 {
-    qDebug() << "start recording timer";
+    qDebug() << "start recording timer " << m_et.elapsed();
 
     //クリア
     clearCaptureFiles();
     m_recordingCounter = 0;
     m_SaveDataList.clear();
-    //タイマー開始
-    m_stop = false;
-    m_state = Recording;
-    m_timer->start(static_cast<int>(1.0/fps()));
+    m_et.start();
+
     //録音開始
     QString audio_path = QString("%1/kanmemo.mp3").arg(getTempPath());
 #if defined(Q_OS_WIN)
@@ -97,6 +101,11 @@ void RecordingThread::startRecording()
     qDebug() << "audio out:" << audio_path << "," << m_audio.outputLocation();
     qDebug() << "audio input:" << m_audio.audioInput();
     m_audio.record();
+
+    //タイマー開始
+    m_stop = false;
+    m_state = Recording;
+    m_timer->start(static_cast<int>(1000.0/fps()));
 }
 //録画終了
 void RecordingThread::stopRecording()
@@ -253,7 +262,9 @@ void RecordingThread::capture(unsigned long count)
         qDebug() << "don't capture";
         return;
     }
-    SaveData data(img, QString("%1/kanmemo_%2.jpg").arg(getTempPath()).arg(count, 6, 10, QChar('0')));
+    SaveData data(img
+                  , QString("%1/kanmemo_%2.jpg").arg(getTempPath()).arg(count, 6, 10, QChar('0'))
+                  , m_et.elapsed());
 
     m_mutex.lock();
     m_SaveDataList.append(data);
@@ -287,9 +298,13 @@ void RecordingThread::convert()
     args.append("0");
     args.append("-y");
     args.append(savePath());
+
+    QString args_str;
     foreach (QString arg, args) {
-        qDebug() << " args:" << arg;
+        args_str += arg + " ";
     }
+    qDebug() << args_str;
+
     m_process.start(toolPath(), args);
 
 }
@@ -324,28 +339,32 @@ QString RecordingThread::getTempPath()
 
 void RecordingThread::run()
 {
-    qint64 t = m_et.elapsed();
-    qDebug() << "start recoding thread " << QString::number(t);
+    qDebug() << "start recoding thread " << QString::number(m_et.elapsed());
 
 
     if(m_state == Recording){
         bool empty;
+        qint64 interval = 1000/4;
+        qint64 next_frame = interval;
+        int frame_per_sec = static_cast<int>(fps()/4.0);
+        int frame_count = 0;//static_cast<int>(fps());
+        unsigned long count = 0;
 
         m_mutex.lock();
         empty = m_SaveDataList.isEmpty();
         m_mutex.unlock();
+//        if(!empty){
+//            next_frame = m_SaveDataList.at(0).elapse + interval;
+//        }
         while(!empty){
+            //保存
             SaveData data = m_SaveDataList.first();
+            save(data, count++);
 
-            if(data.image.isNull()){
-                qDebug() << "list data is null";
-            }else if(data.image.save(data.path, "jpg")){
-                //ok
-            }else{
-                //ng
-                qDebug() << "failed save";
-            }
+            //フレーム数
+            frame_count++;
 
+            //次があるか確認
             m_mutex.lock();
             m_SaveDataList.removeFirst();
             empty = m_SaveDataList.isEmpty();
@@ -354,12 +373,44 @@ void RecordingThread::run()
             //停止指示がかかってない時は待つ
             while(empty && m_stop == false){
 //                qDebug() << "wait empty " << m_stop << "," << data.path;
-                msleep(static_cast<unsigned long>(2000.0/m_fps));
+                msleep(static_cast<unsigned long>(2000.0/fps()));
                 empty = m_SaveDataList.isEmpty();
+            }
+
+            //設定フレームあったか確認
+            if(!empty){
+                if(m_SaveDataList.first().elapse > next_frame){
+                    //次のキャプチャは今回の1秒に入ってない
+                    if(frame_count < frame_per_sec){
+                        //基底のフレーム数に達してない
+                        qDebug() << "shortness frame " << data.elapse << "," << frame_count << "-" << frame_per_sec << "," << (frame_per_sec - frame_count);
+                        for(int fc=frame_count; fc < frame_per_sec; fc++){
+                            //不足分を補充
+                            save(data, count++);
+                        }
+                    }
+                    //フレーム数クリア
+                    frame_count = 0;
+                    //次の判定時間
+                    next_frame += interval;
+                }
             }
         }
     }
 
-    t = m_et.elapsed();
-    qDebug() << "stop recoding thread " << QString::number(t);
+    qDebug() << "stop recoding thread " << QString::number(m_et.elapsed());
+}
+
+void RecordingThread::save(SaveData &data, unsigned long count)
+{
+    QString path = QString("%1/kanmemo_%2.jpg").arg(getTempPath()).arg(count, 6, 10, QChar('0'));
+    if(data.image.isNull()){
+        qDebug() << "list data is null";
+    }else if(data.image.save(path, "jpg")){
+        //ok
+    }else{
+        //ng
+        qDebug() << "failed save";
+    }
+    qDebug() << count << "," << data.elapse;
 }

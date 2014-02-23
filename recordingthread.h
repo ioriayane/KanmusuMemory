@@ -14,13 +14,14 @@
 class SaveData
 {
 public:
-    explicit SaveData(QImage img, QString path)
-        : image(img), path(path)
+    explicit SaveData(QImage img, QString path, qint64 elapse)
+        : image(img), path(path), elapse(elapse)
     {
     }
 
     QImage image;
     QString path;
+    qint64 elapse;
 };
 
 class RecordingThread : public QThread
@@ -88,8 +89,13 @@ private:
     void convert();
     unsigned long getRecordingCounter();
     QString getTempPath();
+
 protected:
     void run();
+
+private:
+    //以下スレッドから使う
+    void save(SaveData &data, unsigned long count);
 };
 
 #endif // RECORDINGTHREAD_H
