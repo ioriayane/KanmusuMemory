@@ -14,8 +14,6 @@ RecordingThread::RecordingThread(QObject *parent) :
   , m_audio(this)
   , m_stop(true)
 {
-    m_et.start();
-
     //録音
     QAudioEncoderSettings audioSettings;
     audioSettings.setCodec("audio/mpeg");
@@ -75,10 +73,12 @@ RecordingThread::RecordingThread(QObject *parent) :
 //        qint64 t = m_et.elapsed();
 //        qDebug() << "QAudioRecorder::stateChanged " << state << "," << QString::number(t);
 //    });
-//    connect(&m_audio, &QAudioRecorder::statusChanged, [this](QMediaRecorder::Status status){
-//        qint64 t = m_et.elapsed();
-//        qDebug() << "QAudioRecorder::statusChanged " << status << "," << QString::number(t);
-//    });
+    connect(&m_audio, &QAudioRecorder::statusChanged, [this](QMediaRecorder::Status status){
+        qDebug() << "QAudioRecorder::statusChanged " << status << "," << QString::number(m_et.elapsed());
+        if(status == QMediaRecorder::RecordingStatus){
+            m_state = Recording;
+        }
+    });
 }
 //録画開始
 void RecordingThread::startRecording()
@@ -104,7 +104,7 @@ void RecordingThread::startRecording()
 
     //タイマー開始
     m_stop = false;
-    m_state = Recording;
+    m_state = Wait;
     m_timer->start(static_cast<int>(1000.0/fps()));
 }
 //録画終了
@@ -115,11 +115,11 @@ void RecordingThread::stopRecording()
     //タイマー停止
     m_timer->stop();
     m_stop = true;
+    m_state = Stop;
 
     qDebug() << "stop recording timer:" << m_recordingCounter;
 
     //終了を待つ
-    m_state = Converting;
     if(isRunning()) wait();
 
     //残骸チェック
@@ -128,12 +128,7 @@ void RecordingThread::stopRecording()
     }
 
     //変換
-    if(m_state == Converting){
-        //画像を変換する
-        convert();
-
-        m_state = Stop;
-    }
+    convert();
 
     //デバッグ計測
     qint64 pt = 0;
@@ -204,7 +199,7 @@ void RecordingThread::processFinished(int exitCode, QProcess::ExitStatus exitSta
 {
     qDebug() << "RecordingThread::processFinished , exitCode=" << exitCode << ", exitStatus=" << exitStatus;
 
-    QByteArray output = m_process.readAllStandardOutput();
+    QByteArray output = m_process.readAllStandardError();
     QString str = QString::fromLocal8Bit( output );
     qDebug() << ">" << str;
 }
@@ -280,7 +275,6 @@ void RecordingThread::convert()
     audio_path = audio_path.replace(QStringLiteral("/"), QStringLiteral("\\"));
 #endif
 
-//#error フレームレートは計測しないとダメかも
     QFileInfo fi(audio_path);
 
     QStringList args;
@@ -341,59 +335,68 @@ void RecordingThread::run()
 {
     qDebug() << "start recoding thread " << QString::number(m_et.elapsed());
 
+    //録画
+    bool empty;
+    qint64 interval = 1000/4;
+    qint64 next_frame = interval;
+    int frame_per_sec = static_cast<int>(fps()/4.0);
+    int frame_count = 0;//static_cast<int>(fps());
+    unsigned long count = 0;
+    //デバッグ
+    unsigned long timer_time = 0;
+    qint64 start_offset_time = m_SaveDataList.first().elapse;
+    qDebug() << "start_offset_time:" << start_offset_time;
 
-    if(m_state == Recording){
-        bool empty;
-        qint64 interval = 1000/4;
-        qint64 next_frame = interval;
-        int frame_per_sec = static_cast<int>(fps()/4.0);
-        int frame_count = 0;//static_cast<int>(fps());
-        unsigned long count = 0;
+    m_mutex.lock();
+    empty = m_SaveDataList.isEmpty();
+    m_mutex.unlock();
+    //1枚目の画像の時間を開始にする
+    if(!empty){
+        next_frame = m_SaveDataList.first().elapse + interval;
+    }
+    while(!empty){
+        //保存
+        SaveData data = m_SaveDataList.first();
+        save(data, count++);
 
+        timer_time = (count-1)*1000/fps() + start_offset_time;
+        qDebug() << count << " , " << timer_time << "-" << data.elapse << "=" << (timer_time - data.elapse);
+
+        //フレーム数
+        frame_count++;
+
+        //次があるか確認
         m_mutex.lock();
+        m_SaveDataList.removeFirst();
         empty = m_SaveDataList.isEmpty();
         m_mutex.unlock();
-//        if(!empty){
-//            next_frame = m_SaveDataList.at(0).elapse + interval;
-//        }
-        while(!empty){
-            //保存
-            SaveData data = m_SaveDataList.first();
-            save(data, count++);
 
-            //フレーム数
-            frame_count++;
-
-            //次があるか確認
-            m_mutex.lock();
-            m_SaveDataList.removeFirst();
-            empty = m_SaveDataList.isEmpty();
-            m_mutex.unlock();
-
-            //停止指示がかかってない時は待つ
-            while(empty && m_stop == false){
+        //停止指示がかかってない時は待つ
+        while(empty && m_stop == false){
 //                qDebug() << "wait empty " << m_stop << "," << data.path;
-                msleep(static_cast<unsigned long>(2000.0/fps()));
-                empty = m_SaveDataList.isEmpty();
-            }
+            msleep(static_cast<unsigned long>(2000.0/fps()));
+            empty = m_SaveDataList.isEmpty();
+        }
 
-            //設定フレームあったか確認
-            if(!empty){
-                if(m_SaveDataList.first().elapse > next_frame){
-                    //次のキャプチャは今回の1秒に入ってない
-                    if(frame_count < frame_per_sec){
-                        //基底のフレーム数に達してない
-                        qDebug() << "shortness frame " << data.elapse << "," << frame_count << "-" << frame_per_sec << "," << (frame_per_sec - frame_count);
-                        for(int fc=frame_count; fc < frame_per_sec; fc++){
-                            //不足分を補充
-                            save(data, count++);
-                        }
+        //設定フレームあったか確認
+        if(!empty){
+            if(m_SaveDataList.first().elapse > next_frame){
+                //次のキャプチャは今回の1秒に入ってない
+                if(frame_count < frame_per_sec){
+                    //基底のフレーム数に達してない
+                    qDebug() << "shortness frame " << data.elapse << "," << frame_count << "-" << frame_per_sec << "," << (frame_per_sec - frame_count);
+                    for(int fc=frame_count; fc < frame_per_sec; fc++){
+                        //不足分を補充
+                        save(data, count++);
+
+                        timer_time = (count-1)*1000/fps() + start_offset_time;
+                        qDebug() << count << " , " << timer_time << "-" << data.elapse << "=" << (timer_time - data.elapse);
                     }
-                    //フレーム数クリア
-                    frame_count = 0;
-                    //次の判定時間
-                    next_frame += interval;
                 }
+                //フレーム数クリア
+                frame_count = 0;
+                //次の判定時間
+                next_frame += interval;
             }
         }
     }
@@ -412,5 +415,5 @@ void RecordingThread::save(SaveData &data, unsigned long count)
         //ng
         qDebug() << "failed save";
     }
-    qDebug() << count << "," << data.elapse;
+
 }

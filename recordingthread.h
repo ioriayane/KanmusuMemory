@@ -32,8 +32,8 @@ public:
 
     enum RecordingState {
         Stop
+        , Wait
         , Recording
-        , Converting
     };
 
     void startRecording();
