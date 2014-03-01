@@ -116,7 +116,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+266"/>
+        <location filename="../mainwindow.cpp" line="+275"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -138,29 +138,29 @@
         <location line="+33"/>
         <location line="+13"/>
         <location line="+34"/>
-        <location line="+377"/>
+        <location line="+383"/>
         <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-490"/>
+        <location line="-496"/>
         <location line="+13"/>
-        <location line="+412"/>
+        <location line="+418"/>
         <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-472"/>
+        <location line="-478"/>
         <location line="+17"/>
-        <location line="+329"/>
+        <location line="+335"/>
         <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-431"/>
+        <location line="-437"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -170,7 +170,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+156"/>
+        <location line="+162"/>
         <source>Fleet Detail</source>
         <translation>艦隊詳細</translation>
     </message>
@@ -236,7 +236,7 @@ Please wait while a cup of coffee.</source>
         <translation>完了するとキャプチャーした画像を結合します。</translation>
     </message>
     <message>
-        <location line="+482"/>
+        <location line="+485"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -675,7 +675,7 @@ Do you want to continue on an understanding of the security risk?
     <name>SettingsDialog</name>
     <message>
         <location filename="../settingsdialog.ui" line="+14"/>
-        <location filename="../ui_settingsdialog.h" line="+206"/>
+        <location filename="../ui_settingsdialog.h" line="+212"/>
         <source>Preferences ..</source>
         <translation>設定</translation>
     </message>
@@ -736,8 +736,14 @@ Do you want to continue on an understanding of the security risk?
         <translation>プロキシポート</translation>
     </message>
     <message>
-        <location line="-17"/>
-        <location filename="../ui_settingsdialog.h" line="-2"/>
+        <location line="+34"/>
+        <location filename="../ui_settingsdialog.h" line="+1"/>
+        <source>Disable coontext menu</source>
+        <translation>コンテキストメニューを表示しない。</translation>
+    </message>
+    <message>
+        <location line="-51"/>
+        <location filename="../ui_settingsdialog.h" line="-3"/>
         <source>Enable</source>
         <translation>プロキシ設定を有効にする</translation>
     </message>
@@ -760,7 +766,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
-        <location filename="../settingsdialog.cpp" line="+114"/>
+        <location filename="../settingsdialog.cpp" line="+117"/>
         <source>Select save folder</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -1075,12 +1081,12 @@ Do you want to continue on an understanding of the security risk?
 <context>
     <name>WebView</name>
     <message>
-        <location filename="../webview.cpp" line="+431"/>
+        <location filename="../webview.cpp" line="+432"/>
         <source>failed find target</source>
         <translation>艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+43"/>
         <source>Open in New Tab</source>
         <translation>新しいタブで開く</translation>
     </message>

@@ -324,6 +324,7 @@ void WebView::Private::showNormal()
 WebView::WebView(QWidget *parent)
     : QWebView(parent)
     , d(new Private(this))
+    , m_disableContextMenu(false)
 {
     setAttribute(Qt::WA_AcceptTouchEvents, false);
     connect(this, &QObject::destroyed, [this]() { delete d; });
@@ -460,7 +461,16 @@ void WebView::setViewMode(ViewMode viewMode)
 void WebView::contextMenuEvent(QContextMenuEvent *event)
 {
     QWebHitTestResult r = page()->mainFrame()->hitTestContent(event->pos());
-    if (!r.linkUrl().isEmpty()) {
+
+    //背景をクリック
+    if(!r.boundingRect().isEmpty()){
+        //右クリックメニュー無効
+        if(disableContextMenu()){
+            return;
+        }
+    }
+    //リンクをクリック
+    if(!r.linkUrl().isEmpty()){
         QMenu menu(this);
         menu.addAction(tr("Open in New Tab"), this, SLOT(openLinkInNewTab()));
         menu.addSeparator();
@@ -475,6 +485,7 @@ void WebView::openLinkInNewTab()
 {
     pageAction(QWebPage::OpenLinkInNewWindow)->trigger();
 }
+
 //ゲームの画面サイズ
 qreal WebView::getGameSizeFactor() const
 {
@@ -492,4 +503,12 @@ void WebView::setGameSizeFactor(const qreal &factor)
     }
     emit gameSizeFactorChanged(factor);
 }
-
+//右クリックメニューを無効化する
+bool WebView::disableContextMenu() const
+{
+    return m_disableContextMenu;
+}
+void WebView::setDisableContextMenu(bool disableContextMenu)
+{
+    m_disableContextMenu = disableContextMenu;
+}

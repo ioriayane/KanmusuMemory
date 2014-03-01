@@ -515,6 +515,7 @@ void MainWindow::Private::openSettingDialog()
     dlg.setProxyHost(settings.value(SETTING_GENERAL_PROXY_HOST).toString());
     dlg.setProxyPort(settings.value(SETTING_GENERAL_PROXY_PORT, 8888).toInt());
     dlg.setUseCookie(settings.value(SETTING_GENERAL_USE_COOKIE, true).toBool());
+    dlg.setDisableContextMenu(settings.value(SETTING_GENERAL_DISABLE_CONTEXT_MENU, false).toBool());
     if (dlg.exec()) {
         //設定更新
         settings.setValue(QStringLiteral("path"), dlg.savePath());
@@ -526,8 +527,13 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_PROXY_HOST, dlg.proxyHost());
         settings.setValue(SETTING_GENERAL_PROXY_PORT, dlg.proxyPort());
         settings.setValue(SETTING_GENERAL_USE_COOKIE, dlg.useCookie());
+        settings.setValue(SETTING_GENERAL_DISABLE_CONTEXT_MENU, dlg.disableContextMenu());
 
+        //設定反映（必要なの）
+        //プロキシ
         updateProxyConfiguration();
+        //右クリックメニュー無効
+        ui.webView->setDisableContextMenu(dlg.disableContextMenu());
     }
 }
 //Update proxy setting.
