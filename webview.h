@@ -40,6 +40,8 @@ public:
 
     qreal getGameSizeFactor() const;
     void setGameSizeFactor(const qreal &factor);
+    bool disableContextMenu() const;
+    void setDisableContextMenu(bool disableContextMenu);
 
 public slots:
     void setViewMode(ViewMode viewMode);
@@ -60,6 +62,7 @@ private:
     Private *d;
 
     qreal gameSizeFactor;
+    bool m_disableContextMenu;
 };
 
 #endif // WEBVIEW_H

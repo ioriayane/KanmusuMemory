@@ -19,8 +19,8 @@
 #define KANMEMO_NAME "KanmusuMemory"
 #define KANMEMO_NAME_FAV "KanmusuMemoryFav"
 #define KANMEMO_PROJECT "KanmemoProject"
-#define KANMEMO_VERSION "0.10"
-#define KANMEMO_VERSION_CODE 11
+#define KANMEMO_VERSION "0.11"
+#define KANMEMO_VERSION_CODE 12
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
     << "@task_jp"\
@@ -49,6 +49,7 @@
 #define SETTING_GENERAL_PROXY_PORT          "proxy_port"
 #define SETTING_GENERAL_ZOOM_FACTOR         "zoom_factor"
 #define SETTING_GENERAL_USE_COOKIE          "use_cookie"
+#define SETTING_GENERAL_DISABLE_CONTEXT_MENU    "disable_context_menu"
 //設定：ウインドウ位置
 #define SETTING_MAINWINDOW          "mainwindow"
 #define SETTING_TIMERDIALOG         "timerdialog"
