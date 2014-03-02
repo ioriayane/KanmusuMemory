@@ -961,11 +961,15 @@ void MainWindow::Private::setGameSize(qreal factor)
 void MainWindow::Private::setWebSettings()
 {
     //WebViewの設定（クッキー）
+    ui.actionClearCookies->setEnabled(false);
     if(notUseCookie){
         //強制無効化
         qDebug() << "not use cookie";
     }else if(settings.value(SETTING_GENERAL_USE_COOKIE, true).toBool()){
-        ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
+        CookieJar* jar = new CookieJar(q);
+        ui.webView->page()->networkAccessManager()->setCookieJar(jar);
+        connect(ui.actionClearCookies, SIGNAL(triggered()), jar, SLOT(deleteAll()));
+        ui.actionClearCookies->setEnabled(true);
     }
     //WebViewの設定（キャッシュ）
     QNetworkDiskCache *cache = new QNetworkDiskCache(q);
