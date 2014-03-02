@@ -96,7 +96,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="file">
@@ -142,6 +142,7 @@
     <addaction name="actionRemoveTab"/>
     <addaction name="separator"/>
     <addaction name="actionClearAccessCache"/>
+    <addaction name="actionClearCookies"/>
    </widget>
    <widget class="QMenu" name="help">
     <property name="title">
@@ -497,6 +498,11 @@
   <action name="actionDisableSplit">
    <property name="text">
     <string>&amp;Disable split</string>
+   </property>
+  </action>
+  <action name="actionClearCookies">
+   <property name="text">
+    <string>Clear Cookies</string>
    </property>
   </action>
  </widget>

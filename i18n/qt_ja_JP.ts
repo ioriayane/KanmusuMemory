@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ja_JP">
+<TS version="2.1" language="ja_JP">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -236,7 +236,7 @@ Please wait while a cup of coffee.</source>
         <translation>完了するとキャプチャーした画像を結合します。</translation>
     </message>
     <message>
-        <location line="+485"/>
+        <location line="+489"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -245,7 +245,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location filename="../mainwindow.ui" line="+20"/>
-        <location filename="../ui_mainwindow.h" line="+317"/>
+        <location filename="../ui_mainwindow.h" line="+321"/>
         <source>Kan Memo -KanMusu Memory-</source>
         <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
@@ -255,7 +255,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+84"/>
-        <location filename="../ui_mainwindow.h" line="+77"/>
+        <location filename="../ui_mainwindow.h" line="+78"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
@@ -272,7 +272,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>拡大・縮小</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+25"/>
         <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Help</source>
         <translation>ヘルプ(&amp;H)</translation>
@@ -307,7 +307,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+18"/>
-        <location filename="../ui_mainwindow.h" line="-83"/>
+        <location filename="../ui_mainwindow.h" line="-84"/>
         <source>&amp;Exit</source>
         <translation>終了(&amp;E)</translation>
     </message>
@@ -660,6 +660,12 @@ Do you want to continue on an understanding of the security risk?
         <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Disable split</source>
         <translation>分割を解除(&amp;D)</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../ui_mainwindow.h" line="+1"/>
+        <source>Clear Cookies</source>
+        <translation>Cookieをクリア</translation>
     </message>
 </context>
 <context>
