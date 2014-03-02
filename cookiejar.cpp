@@ -172,7 +172,10 @@ void CookieJar::removeExpiredCookies()
     int count = cookies.count();
     QMutableListIterator<QNetworkCookie> i(cookies);
     while (i.hasNext()) {
-        if (i.next().expirationDate() < now) {
+        if (i.next().isSessionCookie()) {
+            continue;
+        }
+        if (i.value().expirationDate() < now) {
             i.remove();
         }
     }
