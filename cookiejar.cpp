@@ -15,114 +15,182 @@
  */
 #include "cookiejar.h"
 #include "kanmusumemory_global.h"
-
-#include <QtCore/QDateTime>
-#include <QtCore/QDebug>
 #include <QtCore/QSettings>
-#include <QtCore/QStringList>
+#include <QtCore/QDateTime>
+#include <QtCore/QFileInfo>
+#include <QtCore/QDir>
+#include <QtCore/QDebug>
+#include <QtCore/QList>
+#include <QtCore/QTimer>
+#include <QtCore/QMutableListIterator>
 #include <QtNetwork/QNetworkCookie>
 
+static const unsigned int COOKIEJAR_MAGIC = 80;
+static const int INTERVAL = 1000 * 3;  // 3sec.
 
-class CookieJar::Private
+QDataStream &operator<<(QDataStream &st, const QList<QNetworkCookie> &src)
 {
-public:
-    Private(CookieJar *parent);
-
-private:
-    CookieJar *q;
-public:
-    QSettings settings;
-};
-
-CookieJar::Private::Private(CookieJar *parent)
-    : q(parent)
-    , settings(QSettings::IniFormat, QSettings::UserScope, KANMEMO_PROJECT, KANMEMO_NAME)
-{
-    settings.beginGroup(QStringLiteral("cookies"));
+    st << COOKIEJAR_MAGIC;
+    st << quint32(src.size());
+    for (int i = 0; i < src.size(); ++i) {
+        st << src.at(i).toRawForm();
+    }
+    return st;
 }
+
+QDataStream &operator>>(QDataStream &st, QList<QNetworkCookie> &dest)
+{
+    QList<QNetworkCookie> tmp;
+    quint32 magic;
+    st >> magic;
+    if (magic != COOKIEJAR_MAGIC) {
+        return st;
+    }
+
+    quint32 count;
+    st >> count;
+
+    tmp.reserve(count);
+    for (quint32 i = 0; i < count; ++i) {
+        QByteArray value;
+        st >> value;
+
+        QList<QNetworkCookie> newCookies = QNetworkCookie::parseCookies(value);
+        for (int j = 0; j < newCookies.count(); ++j) {
+            tmp.append(newCookies.at(j));
+        }
+        if (st.atEnd()) {
+            break;
+        }
+    }
+    dest.swap(tmp);
+    return st;
+}
+
 
 CookieJar::CookieJar(QObject *parent)
-    : QNetworkCookieJar(parent)
-    , d(new Private(this))
+    : QNetworkCookieJar(parent), saveDelayTimer_(new QTimer(parent))
 {
-    connect(this, &CookieJar::destroyed, [this](){ delete d; });
+    qRegisterMetaTypeStreamOperators<QList<QNetworkCookie> >("QList<QNetworkCookie>");
+    saveDelayTimer_->setInterval(INTERVAL);
+    saveDelayTimer_->setSingleShot(true);
+    connect(saveDelayTimer_, SIGNAL(timeout()), SLOT(autoSave()));
+
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, KANMEMO_PROJECT, KANMEMO_NAME);
+    dir_ = QFileInfo(settings.fileName()).dir().path();
+    settings.remove(QLatin1String("cookies")); // remove old version.
+    load();
 }
 
-QList<QNetworkCookie> CookieJar::cookiesForUrl(const QUrl& url) const
+CookieJar::~CookieJar()
 {
-    Q_UNUSED(url);
-    QList<QNetworkCookie> ret;
-    foreach (const QString &group, d->settings.childGroups()) {
-        d->settings.beginGroup(group);
-        QNetworkCookie cookie;
-        cookie.setDomain(d->settings.value(QStringLiteral("Domain")).toString());
-        cookie.setExpirationDate(d->settings.value(QStringLiteral("ExpirationDate")).toDateTime());
-        cookie.setHttpOnly(d->settings.value(QStringLiteral("HttpOnly")).toBool());
-        cookie.setName(d->settings.value(QStringLiteral("Name")).toByteArray());
-        cookie.setPath(d->settings.value(QStringLiteral("Path")).toString());
-        cookie.setSecure(d->settings.value(QStringLiteral("Secure")).toBool());
-        cookie.setValue(d->settings.value(QStringLiteral("Value")).toByteArray());
-        ret.append(cookie);
-        d->settings.endGroup();
+    saveDelayTimer_->stop();
+    save();
+}
+
+bool CookieJar::deleteCookie(const QNetworkCookie & cookie)
+{
+    bool changed = QNetworkCookieJar::deleteCookie(cookie); 
+    if (changed) {
+        markChanged();
     }
-
-    return ret;
+    return changed;
 }
 
-bool CookieJar::deleteCookie(const QNetworkCookie &cookie)
+bool CookieJar::insertCookie(const QNetworkCookie & cookie)
 {
-    qDebug() << Q_FUNC_INFO << __LINE__ << cookie;
-    bool ret = true;
-    if (d->settings.childGroups().contains(cookie.name())) {
-        d->settings.beginGroup(cookie.name());
-        d->settings.remove(QString()); // see QSettings::clear() documentation
-        d->settings.endGroup();
+    bool changed = QNetworkCookieJar::insertCookie(cookie); 
+    if (changed) {
+        markChanged();
     }
-    return ret;
+    return changed;
 }
 
-bool CookieJar::insertCookie(const QNetworkCookie &cookie)
+bool CookieJar::setCookiesFromUrl(const QList<QNetworkCookie> & cookieList, const QUrl & url)
 {
-    bool ret = true;
-
-    d->settings.beginGroup(cookie.name());
-    d->settings.setValue(QStringLiteral("Domain"), cookie.domain());
-    d->settings.setValue(QStringLiteral("ExpirationDate"), cookie.expirationDate());
-    d->settings.setValue(QStringLiteral("HttpOnly"), cookie.isHttpOnly());
-    d->settings.setValue(QStringLiteral("Name"), cookie.name());
-    d->settings.setValue(QStringLiteral("Path"), cookie.path());
-    d->settings.setValue(QStringLiteral("Secure"), cookie.isSecure());
-    d->settings.setValue(QStringLiteral("Value"), cookie.value());
-    d->settings.endGroup();
-
-    return ret;
-}
-
-bool CookieJar::setCookiesFromUrl(const QList<QNetworkCookie>& cookieList, const QUrl &url)
-{
-    Q_UNUSED(url);
-    bool ret = true;
-
-    foreach (const QNetworkCookie &cookie, cookieList) {
-        insertCookie(cookie);
+    bool changed = QNetworkCookieJar::setCookiesFromUrl(cookieList, url);
+    if (changed) {
+        markChanged();
     }
-
-    return ret;
+    return changed;
 }
 
-bool CookieJar::updateCookie(const QNetworkCookie &cookie)
+bool CookieJar::updateCookie(const QNetworkCookie & cookie)
 {
-    bool ret = true;
+    bool changed = QNetworkCookieJar::updateCookie(cookie);
+    if (changed) {
+        markChanged();
+    }
+    return changed;
+}
 
-    d->settings.beginGroup(cookie.name());
-    d->settings.setValue(QStringLiteral("Domain"), cookie.domain());
-    d->settings.setValue(QStringLiteral("ExpirationDate"), cookie.expirationDate());
-    d->settings.setValue(QStringLiteral("HttpOnly"), cookie.isHttpOnly());
-    d->settings.setValue(QStringLiteral("Name"), cookie.name());
-    d->settings.setValue(QStringLiteral("Path"), cookie.path());
-    d->settings.setValue(QStringLiteral("Secure"), cookie.isSecure());
-    d->settings.setValue(QStringLiteral("Value"), cookie.value());
-    d->settings.endGroup();
+void CookieJar::save()
+{
+    removeExpiredCookies();
+    QList<QNetworkCookie> cookies = QNetworkCookieJar::allCookies();
+    QMutableListIterator<QNetworkCookie> i(cookies);
+    while (i.hasNext()) {
+        if ( i.next().isSessionCookie() ) {
+            i.remove();
+        }
+    }
+    QSettings cookieSettings(cookiesFile(), QSettings::IniFormat);
+    cookieSettings.setValue(QLatin1String("cookies"), QVariant::fromValue<QList<QNetworkCookie> >(cookies));
+    modified_ = false;
+}
 
-    return ret;
+void CookieJar::load()
+{
+    QSettings cookieSettings(cookiesFile(), QSettings::IniFormat);
+    QList<QNetworkCookie> cookies = qvariant_cast<QList<QNetworkCookie> >(cookieSettings.value(QLatin1String("cookies")));
+    if (cookies.isEmpty()) {
+        return;
+    }
+    setAllCookies(cookies);
+}
+
+void CookieJar::deleteAll()
+{
+    QList<QNetworkCookie> cookies;
+    QSettings cookieSettings(cookiesFile(), QSettings::IniFormat);
+    cookieSettings.setValue(QLatin1String("cookies"), QVariant::fromValue<QList<QNetworkCookie> >(cookies));
+    setAllCookies(cookies);
+}
+
+void CookieJar::autoSave()
+{
+    if (!modified_) { 
+        return; 
+    }
+    save();
+}
+
+void CookieJar::removeExpiredCookies()
+{
+    QDateTime now = QDateTime::currentDateTime();
+    QList<QNetworkCookie> cookies = QNetworkCookieJar::allCookies();
+    int count = cookies.count();
+    QMutableListIterator<QNetworkCookie> i(cookies);
+    while (i.hasNext()) {
+        if (i.next().expirationDate() < now) {
+            i.remove();
+        }
+    }
+    if (cookies.count() != count) {
+        setAllCookies(cookies);
+    }
+}
+
+void CookieJar::markChanged()
+{
+    if (saveDelayTimer_->isActive()) {
+        saveDelayTimer_->stop();
+    }
+    modified_ = true;
+    saveDelayTimer_->start();
+}
+
+QString CookieJar::cookiesFile() const 
+{
+    return QDir(dir_).filePath(QLatin1String("cookies.ini"));
 }
