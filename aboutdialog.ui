@@ -91,7 +91,7 @@
            <item>
             <widget class="QLabel" name="label_3">
              <property name="text">
-              <string>Copyright &amp;copy; 2013 KanMemo Project.</string>
+              <string>Copyright &amp;copy; 2013-2014 KanMemo Project.</string>
              </property>
              <property name="textFormat">
               <enum>Qt::RichText</enum>
