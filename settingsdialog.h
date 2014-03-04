@@ -35,6 +35,7 @@ public:
     quint16 proxyPort() const;
     bool useCookie() const;
     bool disableContextMenu() const;
+    bool disableExitShortcut() const;
 
     static QString selectSavePath(QWidget *parent, const QString &currentPath);
 
@@ -49,6 +50,7 @@ public slots:
     void setProxyPort(quint16 proxyPort);
     void setUseCookie(bool use);
     void setDisableContextMenu(bool disable);
+    void setDisableExitShortcut(bool disable);
 
 signals:
     void savePathChanged(const QString &savePath);
@@ -61,6 +63,7 @@ signals:
     void proxyPortChanged(quint16 proxyPort);
     void useCookieChanged(bool use);
     void disableContextMenuChanged(bool disable);
+    void disableExitShortcutChanged(bool disable);
 
 private:
     class Private;

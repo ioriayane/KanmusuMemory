@@ -50,6 +50,7 @@
 #define SETTING_GENERAL_ZOOM_FACTOR         "zoom_factor"
 #define SETTING_GENERAL_USE_COOKIE          "use_cookie"
 #define SETTING_GENERAL_DISABLE_CONTEXT_MENU    "disable_context_menu"
+#define SETTING_GENERAL_DISABLE_EXIT        "disable_exit"
 //設定：ウインドウ位置
 #define SETTING_MAINWINDOW          "mainwindow"
 #define SETTING_TIMERDIALOG         "timerdialog"

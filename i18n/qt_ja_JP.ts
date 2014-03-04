@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ja_JP">
+<TS version="2.0" language="ja_JP">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -30,7 +30,7 @@
     <message>
         <location line="+7"/>
         <location filename="../ui_aboutdialog.h" line="+1"/>
-        <source>Copyright &amp;copy; 2013 KanMemo Project.</source>
+        <source>Copyright &amp;copy; 2013-2014 KanMemo Project.</source>
         <translation></translation>
     </message>
     <message>
@@ -138,29 +138,29 @@
         <location line="+33"/>
         <location line="+13"/>
         <location line="+34"/>
-        <location line="+383"/>
+        <location line="+391"/>
         <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-496"/>
+        <location line="-504"/>
         <location line="+13"/>
-        <location line="+418"/>
+        <location line="+426"/>
         <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-478"/>
+        <location line="-486"/>
         <location line="+17"/>
-        <location line="+335"/>
+        <location line="+343"/>
         <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-437"/>
+        <location line="-445"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -170,7 +170,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+162"/>
+        <location line="+170"/>
         <source>Fleet Detail</source>
         <translation>艦隊詳細</translation>
     </message>
@@ -681,7 +681,7 @@ Do you want to continue on an understanding of the security risk?
     <name>SettingsDialog</name>
     <message>
         <location filename="../settingsdialog.ui" line="+14"/>
-        <location filename="../ui_settingsdialog.h" line="+212"/>
+        <location filename="../ui_settingsdialog.h" line="+225"/>
         <source>Preferences ..</source>
         <translation>設定</translation>
     </message>
@@ -712,8 +712,8 @@ Do you want to continue on an understanding of the security risk?
         <translation>ツイッター連携を使用しない</translation>
     </message>
     <message>
-        <location line="+40"/>
-        <location filename="../ui_settingsdialog.h" line="+3"/>
+        <location line="+27"/>
+        <location filename="../ui_settingsdialog.h" line="+2"/>
         <source>Browser:</source>
         <translation>ブラウザ</translation>
     </message>
@@ -748,14 +748,20 @@ Do you want to continue on an understanding of the security risk?
         <translation>コンテキストメニューを表示しない。</translation>
     </message>
     <message>
-        <location line="-51"/>
-        <location filename="../ui_settingsdialog.h" line="-3"/>
+        <location line="+27"/>
+        <location filename="../ui_settingsdialog.h" line="+2"/>
+        <source>Disable exit(Ctrl+Q) shortcut</source>
+        <translation>終了ショートカット(Ctrl+Q)を使用しない。</translation>
+    </message>
+    <message>
+        <location line="-78"/>
+        <location filename="../ui_settingsdialog.h" line="-5"/>
         <source>Enable</source>
         <translation>プロキシ設定を有効にする</translation>
     </message>
     <message>
-        <location line="-84"/>
-        <location filename="../ui_settingsdialog.h" line="-7"/>
+        <location line="-71"/>
+        <location filename="../ui_settingsdialog.h" line="-6"/>
         <source>Save in PNG format.</source>
         <translation>画像をPNG形式で保存する（標準はJPEG）</translation>
     </message>
@@ -766,13 +772,13 @@ Do you want to continue on an understanding of the security risk?
         <translation>提督名を消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
+        <location line="+109"/>
+        <location filename="../ui_settingsdialog.h" line="+8"/>
         <source>Mask HQ level</source>
         <translation>艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
-        <location filename="../settingsdialog.cpp" line="+117"/>
+        <location filename="../settingsdialog.cpp" line="+120"/>
         <source>Select save folder</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
