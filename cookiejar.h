@@ -13,25 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef COOKIEJAR_H
-#define COOKIEJAR_H
+#pragma once
 
 #include <QtNetwork/QNetworkCookieJar>
+
+class QTimer;
 
 class CookieJar : public QNetworkCookieJar
 {
     Q_OBJECT
 public:
     explicit CookieJar(QObject *parent = 0);
-    
-    virtual QList<QNetworkCookie> cookiesForUrl(const QUrl& url) const;
-    virtual bool deleteCookie(const QNetworkCookie &cookie);
-    virtual bool insertCookie(const QNetworkCookie &cookie);
-    virtual bool setCookiesFromUrl(const QList<QNetworkCookie>& cookieList, const QUrl &url);
-    virtual bool updateCookie(const QNetworkCookie &cookie);
+    ~CookieJar();
+    bool deleteCookie(const QNetworkCookie & cookie);
+    bool insertCookie(const QNetworkCookie & cookie);
+    bool setCookiesFromUrl(const QList<QNetworkCookie> & cookieList, const QUrl & url);
+    bool updateCookie(const QNetworkCookie & cookie);
+
+public slots:
+    void save();
+    void load();
+    void deleteAll();
+
+private slots:
+    void autoSave();
+
 private:
-    class Private;
-    Private *d;
+    void removeExpiredCookies();
+    void markChanged();
+    QString cookiesFile() const;
+
+    QString dir_;
+    bool    modified_;
+    QTimer* saveDelayTimer_;
 };
 
-#endif // COOKIEJAR_H

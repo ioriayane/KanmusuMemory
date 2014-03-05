@@ -41,6 +41,8 @@ public:
     QString proxyHost;
     quint16 proxyPort;
     bool useCookie;
+    bool disableContextMenu;
+    bool disableExitShortcut;
 };
 
 SettingsDialog::Private::Private(SettingsDialog *parent)
@@ -63,6 +65,8 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         proxyHost = ui.proxyHost->text();
         proxyPort = ui.proxyPort->value();
         useCookie = ui.useCookieCheckBox->isChecked();
+        disableContextMenu = ui.disableContextMenu->isChecked();
+        disableExitShortcut = ui.disableExitShortcut->isChecked();
         q->accept();
     });
     connect(ui.buttonBox, &QDialogButtonBox::rejected, q, &QDialog::reject);
@@ -84,6 +88,8 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
     connect(q, &SettingsDialog::proxyHostChanged, ui.proxyHost, &QLineEdit::setText);
     connect(q, &SettingsDialog::proxyPortChanged, ui.proxyPort, &QSpinBox::setValue);
     connect(q, &SettingsDialog::useCookieChanged, ui.useCookieCheckBox, &QCheckBox::setChecked);
+    connect(q, &SettingsDialog::disableContextMenuChanged, ui.disableContextMenu, &QCheckBox::setChecked);
+    connect(q, &SettingsDialog::disableExitShortcutChanged, ui.disableExitShortcut, &QCheckBox::setChecked);
 
     QSpinBox * portNum = ui.proxyPort;
     portNum->setMinimum(1);
@@ -198,6 +204,16 @@ bool SettingsDialog::useCookie() const
 {
     return d->useCookie;
 }
+//右クリックメニューを無効
+bool SettingsDialog::disableContextMenu() const
+{
+    return d->disableContextMenu;
+}
+//Ctrl+Qで終了を無効化
+bool SettingsDialog::disableExitShortcut() const
+{
+    return d->disableExitShortcut;
+}
 
 void SettingsDialog::setProxyPort(quint16 proxyPort)
 {
@@ -211,4 +227,18 @@ void SettingsDialog::setUseCookie(bool use)
     if(d->useCookie == use) return;
     d->useCookie = use;
     emit useCookieChanged(use);
+}
+
+void SettingsDialog::setDisableContextMenu(bool disable)
+{
+    if(d->disableContextMenu == disable)    return;
+    d->disableContextMenu = disable;
+    emit disableContextMenuChanged(disable);
+}
+
+void SettingsDialog::setDisableExitShortcut(bool disable)
+{
+    if(d->disableExitShortcut == disable)   return;
+    d->disableExitShortcut = disable;
+    emit disableExitShortcutChanged(disable);
 }

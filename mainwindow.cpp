@@ -530,6 +530,8 @@ void MainWindow::Private::openSettingDialog()
     dlg.setProxyHost(settings.value(SETTING_GENERAL_PROXY_HOST).toString());
     dlg.setProxyPort(settings.value(SETTING_GENERAL_PROXY_PORT, 8888).toInt());
     dlg.setUseCookie(settings.value(SETTING_GENERAL_USE_COOKIE, true).toBool());
+    dlg.setDisableContextMenu(settings.value(SETTING_GENERAL_DISABLE_CONTEXT_MENU, false).toBool());
+    dlg.setDisableExitShortcut(settings.value(SETTING_GENERAL_DISABLE_EXIT, DISABLE_EXIT_DEFAULT).toBool());
     if (dlg.exec()) {
         //設定更新
         settings.setValue(QStringLiteral("path"), dlg.savePath());
@@ -541,8 +543,20 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_PROXY_HOST, dlg.proxyHost());
         settings.setValue(SETTING_GENERAL_PROXY_PORT, dlg.proxyPort());
         settings.setValue(SETTING_GENERAL_USE_COOKIE, dlg.useCookie());
+        settings.setValue(SETTING_GENERAL_DISABLE_CONTEXT_MENU, dlg.disableContextMenu());
+        settings.setValue(SETTING_GENERAL_DISABLE_EXIT, dlg.disableExitShortcut());
 
+        //設定反映（必要なの）
+        //プロキシ
         updateProxyConfiguration();
+        //右クリックメニュー無効
+        ui.webView->setDisableContextMenu(dlg.disableContextMenu());
+        //Ctrl+Qを無効化
+        if(dlg.disableExitShortcut()){
+            ui.exit->setShortcut(QKeySequence());
+        }else{
+            ui.exit->setShortcut(QKeySequence(QStringLiteral("Ctrl+Q")));
+        }
     }
 }
 //Update proxy setting.
@@ -970,11 +984,15 @@ void MainWindow::Private::setGameSize(qreal factor)
 void MainWindow::Private::setWebSettings()
 {
     //WebViewの設定（クッキー）
+    ui.actionClearCookies->setEnabled(false);
     if(notUseCookie){
         //強制無効化
         qDebug() << "not use cookie";
     }else if(settings.value(SETTING_GENERAL_USE_COOKIE, true).toBool()){
-        ui.webView->page()->networkAccessManager()->setCookieJar(new CookieJar(q));
+        CookieJar* jar = new CookieJar(q);
+        ui.webView->page()->networkAccessManager()->setCookieJar(jar);
+        connect(ui.actionClearCookies, SIGNAL(triggered()), jar, SLOT(deleteAll()));
+        ui.actionClearCookies->setEnabled(true);
     }
     //WebViewの設定（キャッシュ）
     QNetworkDiskCache *cache = new QNetworkDiskCache(q);
@@ -1046,6 +1064,13 @@ MainWindow::MainWindow(QWidget *parent, bool not_use_cookie)
 
     //拡縮の設定を復元
     //d->setGameSize(settings.value(QStringLiteral(SETTING_GENERAL_ZOOM_FACTOR), 1.0).toReal());
+
+    //Ctrl+Qを無効化
+    if(d->settings.value(SETTING_GENERAL_DISABLE_EXIT, DISABLE_EXIT_DEFAULT).toBool()){
+        d->ui.exit->setShortcut(QKeySequence());
+    }else{
+        d->ui.exit->setShortcut(QKeySequence(QStringLiteral("Ctrl+Q")));
+    }
 
     //設定
     QNetworkProxyFactory::setUseSystemConfiguration(true);
