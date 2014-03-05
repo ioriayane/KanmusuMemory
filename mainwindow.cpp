@@ -143,9 +143,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     //艦隊リスト
     connect(ui.captureFleetList, &QAction::triggered, [this](){ openManualCaptureFleetList(); });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
-    if(!settings.value(SETTING_GENERAL_DISABLE_EXIT, false).toBool()){
-        connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
-    }
+    connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
     connect(ui.actionReturn_to_Kan_Colle, &QAction::triggered, [this]() {
         //艦これ読込み
         ui.webView->load(QUrl(URL_KANCOLLE));
@@ -518,7 +516,7 @@ void MainWindow::Private::openSettingDialog()
     dlg.setProxyPort(settings.value(SETTING_GENERAL_PROXY_PORT, 8888).toInt());
     dlg.setUseCookie(settings.value(SETTING_GENERAL_USE_COOKIE, true).toBool());
     dlg.setDisableContextMenu(settings.value(SETTING_GENERAL_DISABLE_CONTEXT_MENU, false).toBool());
-    dlg.setDisableExitShortcut(settings.value(SETTING_GENERAL_DISABLE_EXIT, false).toBool());
+    dlg.setDisableExitShortcut(settings.value(SETTING_GENERAL_DISABLE_EXIT, DISABLE_EXIT_DEFAULT).toBool());
     if (dlg.exec()) {
         //設定更新
         settings.setValue(QStringLiteral("path"), dlg.savePath());
@@ -540,9 +538,9 @@ void MainWindow::Private::openSettingDialog()
         ui.webView->setDisableContextMenu(dlg.disableContextMenu());
         //Ctrl+Qを無効化
         if(dlg.disableExitShortcut()){
-            disconnect(ui.exit, 0, q, 0);
+            ui.exit->setShortcut(QKeySequence());
         }else{
-            connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
+            ui.exit->setShortcut(QKeySequence(QStringLiteral("Ctrl+Q")));
         }
     }
 }
@@ -1051,6 +1049,13 @@ MainWindow::MainWindow(QWidget *parent, bool not_use_cookie)
 
     //拡縮の設定を復元
     //d->setGameSize(settings.value(QStringLiteral(SETTING_GENERAL_ZOOM_FACTOR), 1.0).toReal());
+
+    //Ctrl+Qを無効化
+    if(d->settings.value(SETTING_GENERAL_DISABLE_EXIT, DISABLE_EXIT_DEFAULT).toBool()){
+        d->ui.exit->setShortcut(QKeySequence());
+    }else{
+        d->ui.exit->setShortcut(QKeySequence(QStringLiteral("Ctrl+Q")));
+    }
 
     //設定
     QNetworkProxyFactory::setUseSystemConfiguration(true);

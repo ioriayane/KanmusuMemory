@@ -94,6 +94,13 @@
 #define CLICK_EVENT_INTERVAL_LITTLE     500
 #define CLICK_EVENT_FLUCTUATION         500
 
+//Ctrl+Qで閉じるのデフォルト値
+#ifdef Q_OS_MAC
+#define DISABLE_EXIT_DEFAULT             false
+#else
+#define DISABLE_EXIT_DEFAULT             true
+#endif
+
 //カタログと艦隊詳細を無効化
 #define DISABLE_CATALOG_AND_DETAIL_FLEET
 
