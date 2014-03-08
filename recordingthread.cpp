@@ -74,9 +74,18 @@ RecordingThread::RecordingThread(QObject *parent) :
 //        qDebug() << "QAudioRecorder::stateChanged " << state << "," << QString::number(t);
 //    });
     connect(&m_audio, &QAudioRecorder::statusChanged, [this](QMediaRecorder::Status status){
-        qDebug() << "QAudioRecorder::statusChanged " << status << "," << QString::number(m_et.elapsed());
+        qDebug() << "QAudioRecorder::statusChanged " << status << "," << QString::number(m_et.elapsed()) << "," << m_audio.duration();
         if(status == QMediaRecorder::RecordingStatus){
             m_state = Recording;
+        }
+    });
+    connect(&m_audio, &QAudioRecorder::durationChanged, [this](qint64 duration){
+        if(m_audio.status() == QMediaRecorder::RecordingStatus){
+            qDebug() << "QAudioRecorder::durationChanged " << m_et.elapsed() << "," << duration;
+            SaveData data = SaveData(QImage(), QString(), m_et.elapsed(), duration);
+            m_mutex.lock();
+            m_SaveDataKeyList.append(data);
+            m_mutex.unlock();
         }
     });
 }
@@ -257,9 +266,11 @@ void RecordingThread::capture(unsigned long count)
         qDebug() << "don't capture";
         return;
     }
+    qint64 elapsed = m_et.elapsed();
+    qint64 duration = m_audio.duration();
     SaveData data(img
                   , QString("%1/kanmemo_%2.jpg").arg(getTempPath()).arg(count, 6, 10, QChar('0'))
-                  , m_et.elapsed());
+                  , elapsed, duration);
 
     m_mutex.lock();
     m_SaveDataList.append(data);
@@ -335,11 +346,17 @@ void RecordingThread::run()
 {
     qDebug() << "start recoding thread " << QString::number(m_et.elapsed());
 
+//#define TEST1
+
     //録画
     bool empty;
     qint64 interval = 1000/4;
     qint64 next_frame = interval;
     int frame_per_sec = static_cast<int>(fps()/4.0);
+#ifdef TEST1
+#else
+    qreal frame_time = 1000.0 / fps();
+#endif
     int frame_count = 0;//static_cast<int>(fps());
     unsigned long count = 0;
     //デバッグ
@@ -360,7 +377,8 @@ void RecordingThread::run()
         save(data, count++);
 
         timer_time = (count-1)*1000/fps() + start_offset_time;
-        qDebug() << count << " , " << timer_time << "-" << data.elapse << "=" << (timer_time - data.elapse);
+        qDebug() << count << " , " << timer_time << "-" << data.elapse << "=" << (timer_time - data.elapse)
+                 << " : " << data.duration << "-" << data.elapse << "=" << (data.duration - data.elapse);
 
         //フレーム数
         frame_count++;
@@ -379,6 +397,7 @@ void RecordingThread::run()
         }
 
         //設定フレームあったか確認
+#ifdef TEST1
         if(!empty){
             if(m_SaveDataList.first().elapse > next_frame){
                 //次のキャプチャは今回の1秒に入ってない
@@ -399,6 +418,25 @@ void RecordingThread::run()
                 next_frame += interval;
             }
         }
+#else
+        if(!empty){
+            //保存しようとしているフレームの理論時間
+            timer_time = (count-1)*1000/fps() + start_offset_time;
+            //理論時間とのズレが1フレームより大きい間補間する
+            while(abs(timer_time - data.elapse) > frame_time){
+                //保存
+                save(data, count++);
+
+                //保存しようとしているフレームの理論時間
+                timer_time = (count-1)*1000/fps() + start_offset_time;
+
+                //保存した時間
+                qDebug() << count << " , " << timer_time << "-" << data.elapse << "=" << (timer_time - data.elapse)
+                         << " : " << data.duration << "-" << data.elapse << "=" << (data.duration - data.elapse)
+                         << " *";
+            }
+        }
+#endif
     }
 
     qDebug() << "stop recoding thread " << QString::number(m_et.elapsed());

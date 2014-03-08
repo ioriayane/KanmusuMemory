@@ -14,14 +14,15 @@
 class SaveData
 {
 public:
-    explicit SaveData(QImage img, QString path, qint64 elapse)
-        : image(img), path(path), elapse(elapse)
+    explicit SaveData(QImage img, QString path, qint64 elapse, qint64 duration)
+        : image(img), path(path), elapse(elapse), duration(duration)
     {
     }
 
     QImage image;
     QString path;
     qint64 elapse;
+    qint64 duration;    //audio
 };
 
 class RecordingThread : public QThread
@@ -81,6 +82,7 @@ private:
     bool m_stop;
     QMutex m_mutex;
     QList<SaveData> m_SaveDataList;     //キャプチャしたデータをリストにしてスレッドでゆっくり保存
+    QList<SaveData> m_SaveDataKeyList;
 
     QElapsedTimer m_et;                 //デバッグ計測用
     QList<qint64> m_interval;           //デバッグ計測用
