@@ -356,6 +356,7 @@ void RecordingThread::run()
 #ifdef TEST1
 #else
     qreal frame_time = 1000.0 / fps();
+    qint64 elapse;
 #endif
     int frame_count = 0;//static_cast<int>(fps());
     unsigned long count = 0;
@@ -376,9 +377,10 @@ void RecordingThread::run()
         SaveData data = m_SaveDataList.first();
         save(data, count++);
 
-        timer_time = (count-1)*1000/fps() + start_offset_time;
-        qDebug() << count << " , " << timer_time << "-" << data.elapse << "=" << (timer_time - data.elapse)
-                 << " : " << data.duration << "-" << data.elapse << "=" << (data.duration - data.elapse);
+        timer_time = (count-1)*1000/fps();
+        elapse = data.elapse - start_offset_time;
+        qDebug() << count << " , " << timer_time << "-" << elapse << "=" << (timer_time - elapse)
+                 << " : " << data.duration << "-" << elapse << "=" << (data.duration - elapse);
 
         //フレーム数
         frame_count++;
@@ -421,18 +423,20 @@ void RecordingThread::run()
 #else
         if(!empty){
             //保存しようとしているフレームの理論時間
-            timer_time = (count-1)*1000/fps() + start_offset_time;
+            timer_time = (count-1)*1000/fps();
+            elapse = data.elapse - start_offset_time;
             //理論時間とのズレが1フレームより大きい間補間する
-            while(abs(timer_time - data.elapse) > frame_time){
+            while(abs(timer_time - elapse) > frame_time){
                 //保存
                 save(data, count++);
 
                 //保存しようとしているフレームの理論時間
-                timer_time = (count-1)*1000/fps() + start_offset_time;
+                timer_time = (count-1)*1000/fps();
+                elapse = data.elapse - start_offset_time;
 
                 //保存した時間
-                qDebug() << count << " , " << timer_time << "-" << data.elapse << "=" << (timer_time - data.elapse)
-                         << " : " << data.duration << "-" << data.elapse << "=" << (data.duration - data.elapse)
+                qDebug() << count << " , " << timer_time << "-" << elapse << "=" << (timer_time - elapse)
+                         << " : " << data.duration << "-" << elapse << "=" << (data.duration - elapse)
                          << " *";
             }
         }
