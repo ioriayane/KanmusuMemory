@@ -729,7 +729,7 @@ void MainWindow::Private::setSplitWindowVisiblity(bool visible)
 
         //タブがひとつも無ければ追加
         if(ui.tabWidget->count() == 0){
-            ui.tabWidget->newTab(QUrl("http://www56.atwiki.jp/kancolle/"));
+            ui.tabWidget->newTab(QUrl("http://www.google.co.jp/"));
         }
     }else{
         //→非表示
