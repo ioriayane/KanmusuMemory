@@ -5,7 +5,7 @@
 [
 	{"array":
 	[
-		{ "title": "艦(Wikipedia)", "url": ""}
+		{ "title": "大日本帝国海軍艦艇(Wikipedia)", "url": ""}
 		, { "title": "大日本帝国海軍艦艇一覧", "url": "http://ja.wikipedia.org/wiki/%E5%A4%A7%E6%97%A5%E6%9C%AC%E5%B8%9D%E5%9B%BD%E6%B5%B7%E8%BB%8D%E8%89%A6%E8%89%87%E4%B8%80%E8%A6%A7"}
 		, {"array":
 		[
@@ -288,6 +288,30 @@
 		[
 			  { "title": "揚陸艦", "url": ""}
 			, { "title": "あきつ丸", "url": "http://ja.wikipedia.org/wiki/%E3%81%82%E3%81%8D%E3%81%A4%E4%B8%B8" }
+		]}
+	]}
+	, {"array":
+	[
+		{ "title": "ドイツ海軍艦艇(Wikipedia)", "url": ""}
+		, { "title": "ドイツ海軍艦艇一覧", "url": "http://ja.wikipedia.org/wiki/%E3%83%89%E3%82%A4%E3%83%84%E6%B5%B7%E8%BB%8D%E8%89%A6%E8%89%87%E4%B8%80%E8%A6%A7"}
+		, {"array":
+		[
+			  { "title": "戦艦", "url": ""}
+			, {"array":
+			[
+				  { "title": "ビスマルク級", "url": ""}
+				, { "title": "1 ビスマルク", "url": "http://ja.wikipedia.org/wiki/%E3%83%93%E3%82%B9%E3%83%9E%E3%83%AB%E3%82%AF_(%E6%88%A6%E8%89%A6)" }
+			]}
+		]}
+		, {"array":
+		[
+			  { "title": "駆逐艦", "url": ""}
+			, {"array":
+			[
+				  { "title": "Z1型", "url": ""}
+				, { "title": "Z1 レーベレヒト・マース", "url": "http://ja.wikipedia.org/wiki/%E3%83%AC%E3%83%BC%E3%83%99%E3%83%AC%E3%83%92%E3%83%88%E3%83%BB%E3%83%9E%E3%83%BC%E3%82%B9_(%E9%A7%86%E9%80%90%E8%89%A6)" }
+				, { "title": "Z3 マックス・シュルツ", "url": "http://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%83%E3%82%AF%E3%82%B9%E3%83%BB%E3%82%B7%E3%83%A5%E3%83%AB%E3%83%84_(%E9%A7%86%E9%80%90%E8%89%A6)" }
+			]}
 		]}
 	]}
 	, { "title": "「艦これ」開発/運営(Twitter)", "url": "https://mobile.twitter.com/KanColle_STAFF" }

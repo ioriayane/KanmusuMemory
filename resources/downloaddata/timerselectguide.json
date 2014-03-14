@@ -79,6 +79,9 @@
 , {"hour": 5, "minute": 0, "second": 0, "msg1": "北方海域", "msg2": "18 航空機輸送作戦", "page": 2 }
 , {"hour": 6, "minute": 0, "second": 0, "msg1": "北方海域", "msg2": "19 北号作戦", "page": 2 }
 , {"hour": 2, "minute": 0, "second": 0, "msg1": "北方海域", "msg2": "20 潜水艦哨戒任務", "page": 2 }
+, {"hour": 2, "minute": 20, "second": 0, "msg1": "北方海域", "msg2": "21 北方鼠輸送作戦", "page": 2 }
+, {"hour": 3, "minute": 0, "second": 0, "msg1": "北方海域", "msg2": "22 艦隊演習", "page": 2 }
+, {"hour": 4, "minute": 0, "second": 0, "msg1": "北方海域", "msg2": "23 航空戦艦運用演習", "page": 2 }
 
 , {"hour": 40, "minute": 0, "second": 0, "msg1": "西方海域", "msg2": "25 通商破壊作戦", "page": 3 }
 , {"hour": 80, "minute": 0, "second": 0, "msg1": "西方海域", "msg2": "26 敵母港空襲作戦", "page": 3 }
@@ -86,11 +89,14 @@
 , {"hour": 25, "minute": 0, "second": 0, "msg1": "西方海域", "msg2": "28 西方海域封鎖作戦", "page": 3 }
 , {"hour": 24, "minute": 0, "second": 0, "msg1": "西方海域", "msg2": "29 潜水艦派遣演習", "page": 3 }
 , {"hour": 48, "minute": 0, "second": 0, "msg1": "西方海域", "msg2": "30 潜水艦派遣作戦", "page": 3 }
+, {"hour": 2, "minute": 0, "second": 0, "msg1": "西方海域", "msg2": "31 海外艦との接触", "page": 3 }
 
 , {"hour": 0, "minute": 15, "second": 0, "msg1": "南方海域", "msg2": "33 前衛支援任務", "page": 4 }
 , {"hour": 0, "minute": 30, "second": 0, "msg1": "南方海域", "msg2": "34 艦隊決戦支援任務", "page": 4 }
 , {"hour": 7, "minute": 0, "second": 0, "msg1": "南方海域", "msg2": "35 MO作戦", "page": 4 }
 , {"hour": 9, "minute": 0, "second": 0, "msg1": "南方海域", "msg2": "36 水上機基地建設", "page": 4 }
+, {"hour": 2, "minute": 45, "second": 0, "msg1": "南方海域", "msg2": "37 東京急行", "page": 4 }
+, {"hour": 2, "minute": 55, "second": 0, "msg1": "南方海域", "msg2": "38 東京急行（弐）", "page": 4 }
 ]
 , "construction" : 
 [
@@ -99,7 +105,7 @@
 , { "hour": 0, "minute": 20, "second": 0, "msg1": "駆逐艦", "msg2": "吹雪型 綾波型 暁型 初春型" }
 , { "hour": 0, "minute": 22, "second": 0, "msg1": "駆逐艦", "msg2": "白露型 朝潮型" }
 , { "hour": 0, "minute": 22, "second": 0, "msg1": "潜水艦", "msg2": "伊58 伊168" }
-, { "hour": 0, "minute": 24, "second": 0, "msg1": "駆逐艦", "msg2": "陽炎型 雪風" }
+, { "hour": 0, "minute": 24, "second": 0, "msg1": "駆逐艦", "msg2": "陽炎型 雪風 Z3" }
 , { "hour": 0, "minute": 30, "second": 0, "msg1": "駆逐艦", "msg2": "島風" }
 , { "hour": 1, "minute": 0, "second": 0, "msg1": "軽巡洋艦", "msg2": "天龍型 球磨型 長良型 川内型 阿賀野型" }
 , { "hour": 1, "minute": 0, "second": 0, "msg1": "重巡洋艦", "msg2": "古鷹型 青葉型" }
@@ -120,7 +126,7 @@
 , { "hour": 4, "minute": 20, "second": 0, "msg1": "正規空母", "msg2": "加賀" }
 , { "hour": 4, "minute": 30, "second": 0, "msg1": "戦艦", "msg2": "伊勢 日向" }
 , { "hour": 4, "minute": 30, "second": 0, "msg1": "正規空母", "msg2": "赤城" }
-, { "hour": 5, "minute": 0, "second": 0, "msg1": "戦艦", "msg2": "長門 陸奥" }
+, { "hour": 5, "minute": 0, "second": 0, "msg1": "戦艦", "msg2": "長門 陸奥 ビスマルク" }
 , { "hour": 6, "minute": 0, "second": 0, "msg1": "正規空母", "msg2": "翔鶴 瑞鶴" }
 , { "hour": 6, "minute": 40, "second": 0, "msg1": "装甲空母", "msg2": "大鳳" }
 , { "hour": 8, "minute": 0, "second": 0, "msg1": "戦艦", "msg2": "大和" }
