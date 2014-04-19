@@ -165,8 +165,10 @@ void TabWidget::closeTabAll()
 //タブの再読み込み
 void TabWidget::reloadTab()
 {
-    WebPageForm *form = reinterpret_cast<WebPageForm *>(currentWidget());
-    form->reload();
+    if(count() > 0){
+        WebPageForm *form = reinterpret_cast<WebPageForm *>(currentWidget());
+        form->reload();
+    }
 }
 //前のタブ
 void TabWidget::prevTab()
