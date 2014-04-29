@@ -32,12 +32,14 @@ public:
     Private(const QImage &image, GameScreen *parent);
     bool isVisible(PartType partType) const;
     void click(WebView *webView, GameScreen::PartType partType, GameScreen::WaitInterval waitInterval);
+    bool isContainMajorDamageShip() const;
 
 private:
     void detectScreenType();
     void setScreenType(GameScreen::ScreenType s);
     QRgb color(const QRect &rect) const;
-    bool fuzzyCompare(QRgb a, QRgb b) const;
+    QRgb color(const QImage &img, const QRect &rect) const;
+    bool fuzzyCompare(QRgb a, QRgb b, uint range = 0x20) const;
     void click(WebView *webView, const QPoint &point, GameScreen::WaitInterval waitInterval);
 
 private:
@@ -54,16 +56,24 @@ GameScreen::Private::Private(const QImage &image, GameScreen *parent)
 {
     detectScreenType();
 }
-
+//表示してる画面を判定
 void GameScreen::Private::detectScreenType()
 {
-    //カタログ画面か
     if (fuzzyCompare(color(QRect(0, 0, 5, 5)), qRgb(45, 43, 43))) {
+        //カタログ画面か
         setScreenType(CatalogScreen);
-        return;
+
+    }else if(fuzzyCompare(color(BUTTLE_RESULT_RECT1), BUTTLE_RESULT_CHECK_COLOR1)
+             && fuzzyCompare(color(BUTTLE_RESULT_RECT2), BUTTLE_RESULT_CHECK_COLOR2)) {
+        //戦果画面
+        setScreenType(ButtleResultScreen);
+
+    }else if(fuzzyCompare(color(BUTTLE_GO_OR_BACK_RECT), BUTTLE_GO_OR_BACK_CHECK_COLOR)){
+        //戦闘後（進撃・撤退）選択画面
+        setScreenType(GoOrBackScreen);
     }
 }
-
+//画面の特定部分を表示してるかを判定
 bool GameScreen::Private::isVisible(PartType partType) const
 {
     bool ret = false;
@@ -124,6 +134,32 @@ void GameScreen::Private::click(WebView *webView, GameScreen::PartType partType,
         break;
     }
 }
+//戦果報告画面で大破が含まれるか
+bool GameScreen::Private::isContainMajorDamageShip() const
+{
+    bool ret = false;
+    if(screenType == GameScreen::ButtleResultScreen){
+//        qDebug() << " Buttle Result";
+        int y[] = {189, 234, 279, 324, 369, 414};
+
+        QImage mask_image(":/resources/MajorDamageMask.png");
+        QImage imagework(mask_image);
+        for(int yi=0; yi<6; yi++){
+            for(int w=0; w<imagework.width(); w++){
+                for(int h=0; h<imagework.height(); h++){
+                    imagework.setPixel(w, h, mask_image.pixel(w, h) & image.pixel(w + 196, h + y[yi]));
+                }
+            }
+
+//            QRgb rgb = color(imagework, BUTTLE_RESULT_MAJOR_DAMAGE_RECT);
+//            qDebug() << yi << "  color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
+//                     << ":" << fuzzyCompare(color(imagework, BUTTLE_RESULT_MAJOR_DAMAGE_RECT), BUTTLE_RESULT_MAJOR_DAMAGE_CHECK_COLOR, 5);
+
+            ret |= fuzzyCompare(color(imagework, BUTTLE_RESULT_MAJOR_DAMAGE_RECT), BUTTLE_RESULT_MAJOR_DAMAGE_CHECK_COLOR, 5);
+        }
+    }
+    return ret;
+}
 
 void GameScreen::Private::click(WebView *webView, const QPoint &point, GameScreen::WaitInterval waitInterval)
 {
@@ -155,11 +191,16 @@ QRgb GameScreen::Private::color(const QRect &rect) const
     return image.copy(rect).scaled(1, 1, Qt::IgnoreAspectRatio, Qt::SmoothTransformation).pixel(0, 0);
 }
 
-bool GameScreen::Private::fuzzyCompare(QRgb a, QRgb b) const
+QRgb GameScreen::Private::color(const QImage &img, const QRect &rect) const
+{
+    return img.copy(rect).scaled(1, 1, Qt::IgnoreAspectRatio, Qt::SmoothTransformation).pixel(0, 0);
+}
+
+bool GameScreen::Private::fuzzyCompare(QRgb a, QRgb b, uint range) const
 {
 //    qDebug() << Q_FUNC_INFO << __LINE__ << qRed(a) << qGreen(a) << qBlue(a);
 //    qDebug() << Q_FUNC_INFO << __LINE__ << qRed(b) << qGreen(b) << qBlue(b);
-    return qAbs(qRed(a) - qRed(b)) < 0x20 && qAbs(qGreen(a) - qGreen(b)) < 0x20 && qAbs(qBlue(a) - qBlue(b)) < 0x20;
+    return (qAbs(qRed(a) - qRed(b)) < range) && (qAbs(qGreen(a) - qGreen(b)) < range) && (qAbs(qBlue(a) - qBlue(b)) < range);
 }
 
 void GameScreen::Private::setScreenType(GameScreen::ScreenType s)
@@ -184,6 +225,11 @@ GameScreen::ScreenType GameScreen::screenType() const
 bool GameScreen::isVisible(GameScreen::PartType partType) const
 {
     return d->isVisible(partType);
+}
+//戦果報告画面で大破が含まれるか
+bool GameScreen::isContainMajorDamageShip() const
+{
+    return d->isContainMajorDamageShip();
 }
 
 void GameScreen::click(WebView *webView, GameScreen::PartType partType, GameScreen::WaitInterval waitInterval)

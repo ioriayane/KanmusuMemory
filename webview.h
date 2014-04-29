@@ -50,9 +50,11 @@ signals:
     void viewModeChanged(ViewMode viewMode);
     void gameSizeFactorChanged(qreal factor);
     void error(const QString &message);
+    void mousePressed(QMouseEvent *event);
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
+    void mousePressEvent(QMouseEvent * event);
 
 private slots:
     void openLinkInNewTab();

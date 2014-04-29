@@ -23,5 +23,8 @@
         <file>qml/KanmusuMemory/fleetDetailDialog.qml</file>
         <file>qml/KanmusuMemory/images/noimage.png</file>
         <file>qml/KanmusuMemory/ImageGrid.qml</file>
+        <file>resources/ButtleResultBackgroundBlue.png</file>
+        <file>resources/ButtleResultBackgroundRed.png</file>
+        <file>resources/MajorDamageMask.png</file>
     </qresource>
 </RCC>

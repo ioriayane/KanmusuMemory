@@ -76,6 +76,7 @@ public:
     void captureFleetDetail();
     void setFullScreen();
     void setGameSize(qreal factor);
+    void checkMajorDamageShip();
 
     QList<int> bakSplitterSizes;    //幅のサイズ保存用にとっておく。（非表示だと0になってしまうから）
 private:
@@ -123,6 +124,9 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     //ダイアログの作成
     makeDialog();
 
+    //戦績報告を非表示
+    ui.prevButtleResult->setVisible(false);
+
     //メニュー
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
     connect(ui.actionCaptureAndEdit, &QAction::triggered, [this]() { captureGame(true); });
@@ -160,7 +164,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     connect(ui.preferences, &QAction::triggered, [this]() { openSettingDialog(); });
     //アバウト
     connect(ui.about, &QAction::triggered, [this]() { openAboutDialog(); });
-    //ツールバーの表示非表示
+    //ツールバーの表示/非表示
     connect(ui.actionViewToolBar, &QAction::changed, [this](){
         ui.toolBar->setVisible(ui.actionViewToolBar->isChecked());
     });
@@ -263,6 +267,11 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
         if(!isSplitWindowVisible())
             return;
         ui.tabWidget->nextTab();
+    });
+    //WebViewをクリック
+    connect(ui.webView, &WebView::mousePressed, [this](QMouseEvent *event) {
+        //艦隊の被弾状況を調べる
+        checkMajorDamageShip();
     });
 
     //WebViewの読込み開始
@@ -368,15 +377,17 @@ void MainWindow::Private::captureGame(bool andEdit)
     //設定確認
     checkSavePath();
 
+    //戦績報告のプレビューを一時的に消してキャプチャー
+    bool old_buttle_result = ui.prevButtleResult->isVisible();
+    ui.prevButtleResult->setVisible(false);
     QImage img = ui.webView->capture();
-    if (img.isNull())
-    {
+    ui.prevButtleResult->setVisible(old_buttle_result);
+    if (img.isNull()){
         ui.statusBar->showMessage(tr("failed capture image"), STATUS_BAR_MSG_TIME);
         return;
     }
 
     GameScreen gameScreen(img);
-
     if (gameScreen.isVisible(GameScreen::HeaderPart)) {
         //提督名をマスク
         if(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool()) {
@@ -517,6 +528,7 @@ void MainWindow::Private::openSettingDialog()
     dlg.setUseCookie(settings.value(SETTING_GENERAL_USE_COOKIE, true).toBool());
     dlg.setDisableContextMenu(settings.value(SETTING_GENERAL_DISABLE_CONTEXT_MENU, false).toBool());
     dlg.setDisableExitShortcut(settings.value(SETTING_GENERAL_DISABLE_EXIT, DISABLE_EXIT_DEFAULT).toBool());
+    dlg.setViewButtleResult(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool());
     if (dlg.exec()) {
         //設定更新
         settings.setValue(QStringLiteral("path"), dlg.savePath());
@@ -530,6 +542,7 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_USE_COOKIE, dlg.useCookie());
         settings.setValue(SETTING_GENERAL_DISABLE_CONTEXT_MENU, dlg.disableContextMenu());
         settings.setValue(SETTING_GENERAL_DISABLE_EXIT, dlg.disableExitShortcut());
+        settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT, dlg.viewButtleResult());
 
         //設定反映（必要なの）
         //プロキシ
@@ -963,6 +976,49 @@ void MainWindow::Private::setGameSize(qreal factor)
     ui.actionZoom150->setChecked(factor == 1.5);
     ui.actionZoom175->setChecked(factor == 1.75);
     ui.actionZoom200->setChecked(factor == 2);
+}
+//戦果報告画面での大破判定
+void MainWindow::Private::checkMajorDamageShip()
+{
+    if(!settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool()){
+        return;
+    }
+
+    bool old = ui.prevButtleResult->isVisible();
+    ui.prevButtleResult->setVisible(false);
+    QImage img = ui.webView->capture();
+    ui.prevButtleResult->setVisible(old);
+    if(img.isNull()){
+        return;
+    }
+
+    GameScreen gameScreen(img);
+    if(gameScreen.screenType() == GameScreen::ButtleResultScreen){
+        if(!ui.prevButtleResult->isVisible()){
+            //非表示→表示
+            QImage buttle;
+            if(gameScreen.isContainMajorDamageShip()){
+                //大破が含まれるっぽい
+                buttle.load(":/resources/ButtleResultBackgroundRed.png");
+            }else{
+                buttle.load(":/resources/ButtleResultBackgroundBlue.png");
+            }
+            QPainter painter(&buttle);
+            painter.drawImage(20, 20, img.scaled(300, 180));
+            ui.prevButtleResult->setPixmap(QPixmap::fromImage(buttle));
+            ui.prevButtleResult->setWindowOpacity(0.5);
+            ui.prevButtleResult->setVisible(true);
+        }
+    }else if(gameScreen.screenType() == GameScreen::GoOrBackScreen){
+        //進撃or撤退
+        ui.prevButtleResult->setVisible(false);
+    }else{
+        if(gameScreen.isVisible(GameScreen::HeaderPart)){
+            //ヘッダーが表示されてたら母港画面
+            ui.prevButtleResult->setVisible(false);
+        }
+    }
+
 }
 
 //Webページに関連する設定をする
