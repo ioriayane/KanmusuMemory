@@ -51,6 +51,7 @@
 #define SETTING_GENERAL_USE_COOKIE          "use_cookie"
 #define SETTING_GENERAL_DISABLE_CONTEXT_MENU    "disable_context_menu"
 #define SETTING_GENERAL_DISABLE_EXIT        "disable_exit"
+#define SETTING_GENERAL_VIEW_BUTTLE_RESULT  "view_buttle_result"
 //設定：ウインドウ位置
 #define SETTING_MAINWINDOW          "mainwindow"
 #define SETTING_TIMERDIALOG         "timerdialog"
@@ -143,5 +144,19 @@
 #define HOME_PORT_RECT_CAPTURE  (QRect(300, 3, 490, 4))
 #define ADMIRAL_RECT_HEADER     (QRect(124, 8, 146, 18))
 #define HQ_LEVEL_RECT_HEADER    (QRect(392, 13, 88, 18))
+
+//戦果画面
+#define BUTTLE_RESULT_CHECK_COLOR1      (qRgb(30, 50, 52)) //左上のタイトル
+#define BUTTLE_RESULT_RECT1             (QRect(0, 10, 300, 60))
+#define BUTTLE_RESULT_CHECK_COLOR2      (qRgb(199, 199, 201))  //真ん中の白い線
+#define BUTTLE_RESULT_RECT2             (QRect(394, 77, 4, 370))
+//大破判定
+#define BUTTLE_RESULT_MAJOR_DAMAGE_CHECK_COLOR (qRgb(31, 18, 17))
+#define BUTTLE_RESULT_MAJOR_DAMAGE_RECT        (QRect(110, 0, 50, 40))
+//進撃or撤退
+#define BUTTLE_GO_OR_BACK_CHECK_COLOR   (qRgb(80, 164, 196))
+#define BUTTLE_GO_OR_BACK_RECT          (QRect(200, 180, 400, 120))
+
+
 
 #endif // KANMUSUMEMORY_GLOBAL_H

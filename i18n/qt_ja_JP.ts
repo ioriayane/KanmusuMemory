@@ -116,7 +116,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+275"/>
+        <location filename="../mainwindow.cpp" line="+284"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -130,37 +130,37 @@
         <translation type="obsolete">艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+90"/>
+        <location line="+93"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+32"/>
         <location line="+13"/>
         <location line="+34"/>
-        <location line="+391"/>
+        <location line="+393"/>
         <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-504"/>
+        <location line="-506"/>
         <location line="+13"/>
-        <location line="+426"/>
+        <location line="+428"/>
         <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-486"/>
+        <location line="-488"/>
         <location line="+17"/>
-        <location line="+343"/>
+        <location line="+345"/>
         <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-445"/>
+        <location line="-447"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -170,7 +170,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+170"/>
+        <location line="+172"/>
         <source>Fleet Detail</source>
         <translation>艦隊詳細</translation>
     </message>
@@ -236,7 +236,7 @@ Please wait while a cup of coffee.</source>
         <translation>完了するとキャプチャーした画像を結合します。</translation>
     </message>
     <message>
-        <location line="+489"/>
+        <location line="+539"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -245,7 +245,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location filename="../mainwindow.ui" line="+20"/>
-        <location filename="../ui_mainwindow.h" line="+321"/>
+        <location filename="../ui_mainwindow.h" line="+362"/>
         <source>Kan Memo -KanMusu Memory-</source>
         <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
@@ -254,8 +254,8 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">about:blank</translation>
     </message>
     <message>
-        <location line="+84"/>
-        <location filename="../ui_mainwindow.h" line="+78"/>
+        <location line="+153"/>
+        <location filename="../ui_mainwindow.h" line="+79"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
@@ -307,7 +307,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+18"/>
-        <location filename="../ui_mainwindow.h" line="-84"/>
+        <location filename="../ui_mainwindow.h" line="-85"/>
         <source>&amp;Exit</source>
         <translation>終了(&amp;E)</translation>
     </message>
@@ -667,6 +667,10 @@ Do you want to continue on an understanding of the security risk?
         <source>Clear Cookies</source>
         <translation>Cookieをクリア</translation>
     </message>
+    <message>
+        <source>View buttle result</source>
+        <translation type="obsolete">戦果報告画面のコピーを表示する</translation>
+    </message>
 </context>
 <context>
     <name>MemoryDialog</name>
@@ -681,7 +685,7 @@ Do you want to continue on an understanding of the security risk?
     <name>SettingsDialog</name>
     <message>
         <location filename="../settingsdialog.ui" line="+14"/>
-        <location filename="../ui_settingsdialog.h" line="+225"/>
+        <location filename="../ui_settingsdialog.h" line="+231"/>
         <source>Preferences ..</source>
         <translation>設定</translation>
     </message>
@@ -754,8 +758,14 @@ Do you want to continue on an understanding of the security risk?
         <translation>終了ショートカット(Ctrl+Q)を使用しない。</translation>
     </message>
     <message>
-        <location line="-78"/>
-        <location filename="../ui_settingsdialog.h" line="-5"/>
+        <location line="+7"/>
+        <location filename="../ui_settingsdialog.h" line="+1"/>
+        <source>View buttle result</source>
+        <translation>戦果報告画面のコピーを表示する</translation>
+    </message>
+    <message>
+        <location line="-85"/>
+        <location filename="../ui_settingsdialog.h" line="-6"/>
         <source>Enable</source>
         <translation>プロキシ設定を有効にする</translation>
     </message>
@@ -778,7 +788,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
-        <location filename="../settingsdialog.cpp" line="+120"/>
+        <location filename="../settingsdialog.cpp" line="+123"/>
         <source>Select save folder</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>

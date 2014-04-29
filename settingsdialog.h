@@ -36,6 +36,7 @@ public:
     bool useCookie() const;
     bool disableContextMenu() const;
     bool disableExitShortcut() const;
+    bool viewButtleResult() const;
 
     static QString selectSavePath(QWidget *parent, const QString &currentPath);
 
@@ -51,6 +52,7 @@ public slots:
     void setUseCookie(bool use);
     void setDisableContextMenu(bool disable);
     void setDisableExitShortcut(bool disable);
+    void setViewButtleResult(bool view);
 
 signals:
     void savePathChanged(const QString &savePath);
@@ -64,6 +66,7 @@ signals:
     void useCookieChanged(bool use);
     void disableContextMenuChanged(bool disable);
     void disableExitShortcutChanged(bool disable);
+    void viewButtleResultChanged(bool view);
 
 private:
     class Private;

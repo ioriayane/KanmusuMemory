@@ -43,6 +43,7 @@ public:
     bool useCookie;
     bool disableContextMenu;
     bool disableExitShortcut;
+    bool viewButtleResult;
 };
 
 SettingsDialog::Private::Private(SettingsDialog *parent)
@@ -67,6 +68,7 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         useCookie = ui.useCookieCheckBox->isChecked();
         disableContextMenu = ui.disableContextMenu->isChecked();
         disableExitShortcut = ui.disableExitShortcut->isChecked();
+        viewButtleResult = ui.viewButtleResultCheckBox->isChecked();
         q->accept();
     });
     connect(ui.buttonBox, &QDialogButtonBox::rejected, q, &QDialog::reject);
@@ -90,6 +92,7 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
     connect(q, &SettingsDialog::useCookieChanged, ui.useCookieCheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::disableContextMenuChanged, ui.disableContextMenu, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::disableExitShortcutChanged, ui.disableExitShortcut, &QCheckBox::setChecked);
+    connect(q, &SettingsDialog::viewButtleResultChanged, ui.viewButtleResultCheckBox, &QCheckBox::setChecked);
 
     QSpinBox * portNum = ui.proxyPort;
     portNum->setMinimum(1);
@@ -215,6 +218,11 @@ bool SettingsDialog::disableExitShortcut() const
     return d->disableExitShortcut;
 }
 
+bool SettingsDialog::viewButtleResult() const
+{
+    return d->viewButtleResult;
+}
+
 void SettingsDialog::setProxyPort(quint16 proxyPort)
 {
     if(d->proxyPort == proxyPort) return;
@@ -241,4 +249,11 @@ void SettingsDialog::setDisableExitShortcut(bool disable)
     if(d->disableExitShortcut == disable)   return;
     d->disableExitShortcut = disable;
     emit disableExitShortcutChanged(disable);
+}
+
+void SettingsDialog::setViewButtleResult(bool view)
+{
+    if(d->viewButtleResult == view) return;
+    d->viewButtleResult = view;
+    emit viewButtleResultChanged(view);
 }

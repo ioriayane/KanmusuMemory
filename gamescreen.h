@@ -36,7 +36,9 @@ public:
         CustomizeScreen,
         SupplyScreen,
         RepairScreen,
-        FactoryScreen
+        FactoryScreen,
+        ButtleResultScreen,         //戦果画面
+        GoOrBackScreen              //進撃or撤退画面
     };
 
     enum PartType {
@@ -57,6 +59,7 @@ public:
     explicit GameScreen(const QImage &image, QObject *parent = 0);
     ScreenType screenType() const;
     bool isVisible(PartType partType) const;
+    bool isContainMajorDamageShip() const;
 
 public slots:
     void click(WebView *webView, PartType partType, WaitInterval waitInterval = WaitNormal);
