@@ -1006,7 +1006,7 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos)
                 buttle.load(":/resources/ButtleResultBackgroundBlue.png");
             }
             QPainter painter(&buttle);
-            painter.drawImage(20, 20, img.scaled(300, 180));
+            painter.drawImage(20, 20, img.scaled(300, 180, Qt::KeepAspectRatio, Qt::SmoothTransformation));
             ui.prevButtleResult->setPixmap(QPixmap::fromImage(buttle));
             ui.prevButtleResult->setWindowOpacity(0.5);
             ui.prevButtleResult->setVisible(true);
