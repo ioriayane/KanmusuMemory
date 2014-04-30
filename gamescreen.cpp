@@ -71,6 +71,10 @@ void GameScreen::Private::detectScreenType()
     }else if(fuzzyCompare(color(BUTTLE_GO_OR_BACK_RECT), BUTTLE_GO_OR_BACK_CHECK_COLOR)){
         //戦闘後（進撃・撤退）選択画面
         setScreenType(GoOrBackScreen);
+    }else if(fuzzyCompare(color(BUTTLE_COMPASS_RECT), BUTTLE_COMPASS_CHECK_COLOR)){
+        //羅針盤を回す画面
+        // 他の画面も誤認してしまってるので注意
+        setScreenType(TurnCompassScreen);
     }
 }
 //画面の特定部分を表示してるかを判定

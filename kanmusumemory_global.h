@@ -156,7 +156,11 @@
 //進撃or撤退
 #define BUTTLE_GO_OR_BACK_CHECK_COLOR   (qRgb(80, 164, 196))
 #define BUTTLE_GO_OR_BACK_RECT          (QRect(200, 180, 400, 120))
-
+#define BUTTLE_GO_BUTTON_RECT           (QRect(220, 190, 150, 110))
+#define BUTTLE_BACK_BUTTON_RECT         (QRect(435, 190, 150, 110))
+//羅針盤を回す
+#define BUTTLE_COMPASS_CHECK_COLOR      (qRgb(134 , 156 , 163))
+#define BUTTLE_COMPASS_RECT             (QRect(380, 140, 40, 200))
 
 
 #endif // KANMUSUMEMORY_GLOBAL_H

@@ -38,7 +38,8 @@ public:
         RepairScreen,
         FactoryScreen,
         ButtleResultScreen,         //戦果画面
-        GoOrBackScreen              //進撃or撤退画面
+        GoOrBackScreen,             //進撃or撤退画面
+        TurnCompassScreen           //羅針盤を回す画面
     };
 
     enum PartType {

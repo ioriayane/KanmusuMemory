@@ -76,7 +76,7 @@ public:
     void captureFleetDetail();
     void setFullScreen();
     void setGameSize(qreal factor);
-    void checkMajorDamageShip();
+    void checkMajorDamageShip(const QPointF &pos);
 
     QList<int> bakSplitterSizes;    //幅のサイズ保存用にとっておく。（非表示だと0になってしまうから）
 private:
@@ -271,7 +271,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     //WebViewをクリック
     connect(ui.webView, &WebView::mousePressed, [this](QMouseEvent *event) {
         //艦隊の被弾状況を調べる
-        checkMajorDamageShip();
+        checkMajorDamageShip(event->localPos());
     });
 
     //WebViewの読込み開始
@@ -978,9 +978,10 @@ void MainWindow::Private::setGameSize(qreal factor)
     ui.actionZoom200->setChecked(factor == 2);
 }
 //戦果報告画面での大破判定
-void MainWindow::Private::checkMajorDamageShip()
+void MainWindow::Private::checkMajorDamageShip(const QPointF &pos)
 {
-    if(!settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool()){
+    if(!settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool()
+            || q->isFullScreen()){
         return;
     }
 
@@ -993,7 +994,8 @@ void MainWindow::Private::checkMajorDamageShip()
     }
 
     GameScreen gameScreen(img);
-    if(gameScreen.screenType() == GameScreen::ButtleResultScreen){
+    switch(gameScreen.screenType()){
+    case GameScreen::ButtleResultScreen:
         if(!ui.prevButtleResult->isVisible()){
             //非表示→表示
             QImage buttle;
@@ -1009,14 +1011,46 @@ void MainWindow::Private::checkMajorDamageShip()
             ui.prevButtleResult->setWindowOpacity(0.5);
             ui.prevButtleResult->setVisible(true);
         }
-    }else if(gameScreen.screenType() == GameScreen::GoOrBackScreen){
+        break;
+
+    case GameScreen::GoOrBackScreen:
+    {
         //進撃or撤退
+        QRect game_rect = ui.webView->getGameRect();
+#if 0
+        //思ったより当たり判定でかいからボタン単位は面倒なだけ
+        QRect go_rect(game_rect.x() + BUTTLE_GO_BUTTON_RECT.x()
+                      , game_rect.y() + BUTTLE_GO_BUTTON_RECT.y()
+                      , BUTTLE_GO_BUTTON_RECT.width()
+                      , BUTTLE_GO_BUTTON_RECT.height());
+        QRect back_rect(game_rect.x() + BUTTLE_BACK_BUTTON_RECT.x()
+                        , game_rect.y() + BUTTLE_BACK_BUTTON_RECT.y()
+                        , BUTTLE_BACK_BUTTON_RECT.width()
+                        , BUTTLE_BACK_BUTTON_RECT.height());
+        if(go_rect.contains(pos.x(), pos.y()) || back_rect.contains(pos.x(), pos.y())){
+#else
+        QRect button_rect(game_rect.x() + BUTTLE_GO_OR_BACK_RECT.x()
+                          , game_rect.y() + BUTTLE_GO_OR_BACK_RECT.y()
+                          , BUTTLE_GO_OR_BACK_RECT.width()
+                          , BUTTLE_GO_OR_BACK_RECT.height());
+        if(button_rect.contains(pos.x(), pos.y())){
+#endif
+        //判定範囲内をクリックしてたら消す
+            ui.prevButtleResult->setVisible(false);
+        }
+        break;
+    }
+    case GameScreen::TurnCompassScreen:
+        //羅針盤を回す
         ui.prevButtleResult->setVisible(false);
-    }else{
+        break;
+
+    default:
         if(gameScreen.isVisible(GameScreen::HeaderPart)){
             //ヘッダーが表示されてたら母港画面
             ui.prevButtleResult->setVisible(false);
         }
+        break;
     }
 
 }
