@@ -81,7 +81,8 @@ public:
     QList<int> bakSplitterSizes;    //幅のサイズ保存用にとっておく。（非表示だと0になってしまうから）
 private:
     void setWebSettings();          //Web関連の設定をする
-    void makeDialog();             //ダイアログの作成をする
+    void makeDialog();              //ダイアログの作成をする
+    void setButtleResultPosition(); //戦果報告の表示位置
 
     void maskImage(QImage *img, const QRect &rect);
     QString makeFileName(const QString &format) const;
@@ -125,7 +126,8 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     makeDialog();
 
     //戦績報告を非表示
-    ui.prevButtleResult->setVisible(false);
+    ui.viewButtleResult->setVisible(false);
+    setButtleResultPosition();
 
     //メニュー
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
@@ -378,10 +380,10 @@ void MainWindow::Private::captureGame(bool andEdit)
     checkSavePath();
 
     //戦績報告のプレビューを一時的に消してキャプチャー
-    bool old_buttle_result = ui.prevButtleResult->isVisible();
-    ui.prevButtleResult->setVisible(false);
+    bool old_buttle_result = ui.viewButtleResult->isVisible();
+    ui.viewButtleResult->setVisible(false);
     QImage img = ui.webView->capture();
-    ui.prevButtleResult->setVisible(old_buttle_result);
+    ui.viewButtleResult->setVisible(old_buttle_result);
     if (img.isNull()){
         ui.statusBar->showMessage(tr("failed capture image"), STATUS_BAR_MSG_TIME);
         return;
@@ -529,6 +531,7 @@ void MainWindow::Private::openSettingDialog()
     dlg.setDisableContextMenu(settings.value(SETTING_GENERAL_DISABLE_CONTEXT_MENU, false).toBool());
     dlg.setDisableExitShortcut(settings.value(SETTING_GENERAL_DISABLE_EXIT, DISABLE_EXIT_DEFAULT).toBool());
     dlg.setViewButtleResult(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool());
+    dlg.setButtleResultPosition(static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt()));
     if (dlg.exec()) {
         //設定更新
         settings.setValue(QStringLiteral("path"), dlg.savePath());
@@ -543,6 +546,11 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_DISABLE_CONTEXT_MENU, dlg.disableContextMenu());
         settings.setValue(SETTING_GENERAL_DISABLE_EXIT, dlg.disableExitShortcut());
         settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT, dlg.viewButtleResult());
+        settings.setValue(SETTING_GENERAL_BUTTLE_RESULT_POSITION, static_cast<int>(dlg.buttleResultPosition()));
+
+        //戦果報告の表示位置などを更新
+        ui.viewButtleResult->setVisible(ui.viewButtleResult->isVisible() & dlg.viewButtleResult());
+        setButtleResultPosition();
 
         //設定反映（必要なの）
         //プロキシ
@@ -985,10 +993,10 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos)
         return;
     }
 
-    bool old = ui.prevButtleResult->isVisible();
-    ui.prevButtleResult->setVisible(false);
+    bool old = ui.viewButtleResult->isVisible();
+    ui.viewButtleResult->setVisible(false);
     QImage img = ui.webView->capture();
-    ui.prevButtleResult->setVisible(old);
+    ui.viewButtleResult->setVisible(old);
     if(img.isNull()){
         return;
     }
@@ -996,7 +1004,7 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos)
     GameScreen gameScreen(img);
     switch(gameScreen.screenType()){
     case GameScreen::ButtleResultScreen:
-        if(!ui.prevButtleResult->isVisible()){
+        if(!ui.viewButtleResult->isVisible()){
             //非表示→表示
             QImage buttle;
             if(gameScreen.isContainMajorDamageShip()){
@@ -1007,9 +1015,9 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos)
             }
             QPainter painter(&buttle);
             painter.drawImage(20, 20, img.scaled(300, 180, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-            ui.prevButtleResult->setPixmap(QPixmap::fromImage(buttle));
-            ui.prevButtleResult->setWindowOpacity(0.5);
-            ui.prevButtleResult->setVisible(true);
+            ui.viewButtleResult->setPixmap(QPixmap::fromImage(buttle));
+            ui.viewButtleResult->setWindowOpacity(0.5);
+            ui.viewButtleResult->setVisible(true);
         }
         break;
 
@@ -1036,19 +1044,19 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos)
         if(button_rect.contains(pos.x(), pos.y())){
 #endif
         //判定範囲内をクリックしてたら消す
-            ui.prevButtleResult->setVisible(false);
+            ui.viewButtleResult->setVisible(false);
         }
         break;
     }
     case GameScreen::TurnCompassScreen:
         //羅針盤を回す
-        ui.prevButtleResult->setVisible(false);
+        ui.viewButtleResult->setVisible(false);
         break;
 
     default:
         if(gameScreen.isVisible(GameScreen::HeaderPart)){
             //ヘッダーが表示されてたら母港画面
-            ui.prevButtleResult->setVisible(false);
+            ui.viewButtleResult->setVisible(false);
         }
         break;
     }
@@ -1118,6 +1126,47 @@ void MainWindow::Private::makeDialog()
                                                 , fdd_msg_list  //説明文言リスト
                                                 , &settings
                                                 , q);
+}
+//戦果報告の表示位置
+void MainWindow::Private::setButtleResultPosition()
+{
+    SettingsDialog::ButtleResultPosition position = static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt());
+
+    switch(position){
+    case SettingsDialog::LeftTop:
+        ui.additionalInfoHSpacerLeft->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerTop->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui.additionalInfoHSpacerRight->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerBottom->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        break;
+    default:
+    case SettingsDialog::RightTop:
+        ui.additionalInfoHSpacerLeft->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerTop->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui.additionalInfoHSpacerRight->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerBottom->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        break;
+    case SettingsDialog::LeftBottom:
+        ui.additionalInfoHSpacerLeft->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerTop->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        ui.additionalInfoHSpacerRight->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerBottom->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        break;
+    case SettingsDialog::RightBottom:
+        ui.additionalInfoHSpacerLeft->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerTop->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        ui.additionalInfoHSpacerRight->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerBottom->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        break;
+    case SettingsDialog::Center:
+        ui.additionalInfoHSpacerLeft->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerTop->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        ui.additionalInfoHSpacerRight->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerBottom->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        break;
+    }
+    //変更反映
+    ui.additionalInfoLayout->invalidate();
 }
 
 

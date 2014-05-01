@@ -25,6 +25,14 @@ class SettingsDialog : public QDialog
 public:
     explicit SettingsDialog(QWidget *parent = 0);
 
+    enum ButtleResultPosition {
+        LeftTop = 0
+        , RightTop = 1
+        , LeftBottom = 2
+        , RightBottom = 3
+        , Center = 4
+    };
+
     const QString &savePath() const;
     bool unusedTwitter() const;
     bool savePng() const;
@@ -37,6 +45,7 @@ public:
     bool disableContextMenu() const;
     bool disableExitShortcut() const;
     bool viewButtleResult() const;
+    ButtleResultPosition buttleResultPosition() const;
 
     static QString selectSavePath(QWidget *parent, const QString &currentPath);
 
@@ -53,6 +62,7 @@ public slots:
     void setDisableContextMenu(bool disable);
     void setDisableExitShortcut(bool disable);
     void setViewButtleResult(bool view);
+    void setButtleResultPosition(ButtleResultPosition position);
 
 signals:
     void savePathChanged(const QString &savePath);
@@ -67,6 +77,7 @@ signals:
     void disableContextMenuChanged(bool disable);
     void disableExitShortcutChanged(bool disable);
     void viewButtleResultChanged(bool view);
+    void buttleResultPositionChanged(ButtleResultPosition position);
 
 private:
     class Private;
