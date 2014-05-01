@@ -146,6 +146,16 @@
 #define ADMIRAL_RECT_HEADER     (QRect(124, 8, 146, 18))
 #define HQ_LEVEL_RECT_HEADER    (QRect(392, 13, 88, 18))
 
+//戦闘
+#define BUTTLE_RECT1            (QRect(0, 0, 400, 15))
+#define BUTTLE_RECT2            (QRect(400, 365, 400, 15))
+//昼戦
+#define BUTTLE_DAYTIME_CHECK_COLOR1     (qRgb(65 , 164 , 209))
+#define BUTTLE_DAYTIME_CHECK_COLOR2     (qRgb(104 , 157 , 176))
+//夜戦
+#define BUTTLE_NIGHT_CHECK_COLOR1     (qRgb(46 , 140 , 182))
+#define BUTTLE_NIGHT_CHECK_COLOR2     (qRgb(63 , 88 , 100))
+
 //戦果画面
 #define BUTTLE_RESULT_CHECK_COLOR1      (qRgb(30, 50, 52)) //左上のタイトル
 #define BUTTLE_RESULT_RECT1             (QRect(0, 10, 300, 60))

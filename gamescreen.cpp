@@ -69,11 +69,29 @@ void GameScreen::Private::detectScreenType()
         //戦果画面
         setScreenType(ButtleResultScreen);
 
+#if 0
+    }else if(fuzzyCompare(color(BUTTLE_RECT1), BUTTLE_DAYTIME_CHECK_COLOR1, 10)
+             && fuzzyCompare(color(BUTTLE_RECT2), BUTTLE_DAYTIME_CHECK_COLOR2)) {
+        //昼戦
+//        QRgb rgb1 = color(BUTTLE_RECT1);
+//        QRgb rgb2 = color(BUTTLE_RECT2);
+//        qDebug() << "daytime:" << qRed(rgb1) << "," << qGreen(rgb1) << "," << qBlue(rgb1)
+//                     << qRed(rgb2) << "," << qGreen(rgb2) << "," << qBlue(rgb2);
+        setScreenType(DaytimeButtleScreen);
+    }else if(fuzzyCompare(color(BUTTLE_RECT1), BUTTLE_NIGHT_CHECK_COLOR1, 10)
+             && fuzzyCompare(color(BUTTLE_RECT2), BUTTLE_NIGHT_CHECK_COLOR2)) {
+        //夜戦
+//        QRgb rgb1 = color(BUTTLE_RECT1);
+//        QRgb rgb2 = color(BUTTLE_RECT2);
+//        qDebug() << "night:" << qRed(rgb1) << "," << qGreen(rgb1) << "," << qBlue(rgb1)
+//                     << qRed(rgb2) << "," << qGreen(rgb2) << "," << qBlue(rgb2);
+        setScreenType(NightButtleScreen);
+#endif
     }else if(fuzzyCompare(color(BUTTLE_GO_OR_BACK_RECT), BUTTLE_GO_OR_BACK_CHECK_COLOR)){
         //戦闘後（進撃・撤退）選択画面
         setScreenType(GoOrBackScreen);
+
     }else if(checkTurnCompassScreen()){
-//    }else if(fuzzyCompare(color(BUTTLE_COMPASS_RECT), BUTTLE_COMPASS_CHECK_COLOR)){
         //羅針盤を回す画面
         // 他の画面も誤認してしまってるので注意
         setScreenType(TurnCompassScreen);
