@@ -44,6 +44,8 @@ public:
     bool disableContextMenu;
     bool disableExitShortcut;
     bool viewButtleResult;
+    SettingsDialog::ButtleResultPosition buttleResultPosition;
+    qreal buttleResultOpacity;
 };
 
 SettingsDialog::Private::Private(SettingsDialog *parent)
@@ -69,6 +71,23 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         disableContextMenu = ui.disableContextMenu->isChecked();
         disableExitShortcut = ui.disableExitShortcut->isChecked();
         viewButtleResult = ui.viewButtleResultCheckBox->isChecked();
+
+        switch(ui.buttleResultPositionComboBox->currentIndex()){
+        case 0:     buttleResultPosition = LeftTop;     break;
+        case 1:     buttleResultPosition = RightTop;    break;
+        case 2:     buttleResultPosition = LeftBottom;  break;
+        case 3:     buttleResultPosition = RightBottom; break;
+        case 4:     buttleResultPosition = Center;      break;
+        default:    buttleResultPosition = RightTop;    break;
+        }
+        switch(ui.buttleResultOpacityComboBox->currentIndex()){
+        case 0:     buttleResultOpacity = 1.0;          break;
+        case 1:     buttleResultOpacity = 0.75;         break;
+        case 2:     buttleResultOpacity = 0.5;          break;
+        case 3:     buttleResultOpacity = 0.25;         break;
+        default:    buttleResultOpacity = 1.0;          break;
+        }
+
         q->accept();
     });
     connect(ui.buttonBox, &QDialogButtonBox::rejected, q, &QDialog::reject);
@@ -93,6 +112,31 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
     connect(q, &SettingsDialog::disableContextMenuChanged, ui.disableContextMenu, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::disableExitShortcutChanged, ui.disableExitShortcut, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::viewButtleResultChanged, ui.viewButtleResultCheckBox, &QCheckBox::setChecked);
+    connect(q, &SettingsDialog::buttleResultPositionChanged, [this](ButtleResultPosition position){
+        int index = 1;
+        switch(position){
+        case LeftTop:       index = 0;  break;
+        case RightTop:      index = 1;  break;
+        case LeftBottom:    index = 2;  break;
+        case RightBottom:   index = 3;  break;
+        case Center:        index = 4;  break;
+        default:            index = 1;  break;
+        }
+        ui.buttleResultPositionComboBox->setCurrentIndex(index);
+    });
+    connect(q, &SettingsDialog::buttleResultOpacityChanged, [this](qreal opacity){
+        if(opacity > 0.999){    //1.0
+            ui.buttleResultOpacityComboBox->setCurrentIndex(0);
+        }else if(opacity > 0.749){  //0.75
+            ui.buttleResultOpacityComboBox->setCurrentIndex(1);
+        }else if(opacity > 0.499){  //0.5
+            ui.buttleResultOpacityComboBox->setCurrentIndex(2);
+        }else if(opacity > 0.249){  //0.25
+            ui.buttleResultOpacityComboBox->setCurrentIndex(3);
+        }else{
+            ui.buttleResultOpacityComboBox->setCurrentIndex(0);
+        }
+    });
 
     QSpinBox * portNum = ui.proxyPort;
     portNum->setMinimum(1);
@@ -223,6 +267,16 @@ bool SettingsDialog::viewButtleResult() const
     return d->viewButtleResult;
 }
 
+SettingsDialog::ButtleResultPosition SettingsDialog::buttleResultPosition() const
+{
+    return d->buttleResultPosition;
+}
+
+qreal SettingsDialog::buttleResultOpacity() const
+{
+    return d->buttleResultOpacity;
+}
+
 void SettingsDialog::setProxyPort(quint16 proxyPort)
 {
     if(d->proxyPort == proxyPort) return;
@@ -256,4 +310,18 @@ void SettingsDialog::setViewButtleResult(bool view)
     if(d->viewButtleResult == view) return;
     d->viewButtleResult = view;
     emit viewButtleResultChanged(view);
+}
+
+void SettingsDialog::setButtleResultPosition(SettingsDialog::ButtleResultPosition position)
+{
+    if(d->buttleResultPosition == position) return;
+    d->buttleResultPosition = position;
+    emit buttleResultPositionChanged(position);
+}
+
+void SettingsDialog::setButtleResultOpacity(qreal opacity)
+{
+    if(d->buttleResultOpacity == opacity)   return;
+    d->buttleResultOpacity = opacity;
+    emit buttleResultOpacityChanged(opacity);
 }

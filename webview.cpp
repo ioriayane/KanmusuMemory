@@ -37,6 +37,7 @@ private:
 
 public:
     ViewMode viewMode;
+    QRect defaultRect;
 
 private:
     QHash<QString, QString> naviApp;
@@ -47,7 +48,6 @@ private:
     QHash<QString, QString> embed;
     QHash<QString, QString> sectionWrap;
     QHash<QString, QString> globalNavi;
-    QRect defaultRect;
 
     bool setElementProperty(QWebElement &element, QHash<QString, QString> &properties, QHash<QString, QString> &backup);
 };
@@ -424,6 +424,7 @@ QRect WebView::getGameRect() const
 QImage WebView::capture()
 {
     QImage ret;
+    QImage temp;
 
     //スクロール位置の保存
     QPoint currentPos = page()->mainFrame()->scrollPosition();
@@ -434,10 +435,28 @@ QImage WebView::capture()
     }
 
     {
-        ret = QImage(geometry.size(), QImage::Format_ARGB32);
+        QRect image_geo(geometry);
+        if(d->defaultRect.isValid()){
+            if(image_geo.width() != d->defaultRect.width() || image_geo.height() != d->defaultRect.height()){
+                image_geo.setWidth(d->defaultRect.width());
+                image_geo.setHeight(d->defaultRect.height());
+            }
+        }
+
+        ret = QImage(image_geo.size(), QImage::Format_ARGB32);  //最終形
+        temp = QImage(geometry.size(), QImage::Format_ARGB32);  //Webviewのコピー
+
         QPainter painter(&ret);
-        //全体を描画
-        render(&painter, QPoint(0,0), geometry);
+        QPainter painterTemp(&temp);
+
+        if(image_geo.width() != geometry.width() || image_geo.height() != geometry.height()){
+            //テンポラリに全体を描画
+            render(&painterTemp, QPoint(0,0), geometry);
+            painter.drawImage(0, 0, temp.scaled(image_geo.width(), image_geo.height(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        }else{
+            //そのまま本番に描画
+            render(&painter, QPoint(0,0), geometry);
+        }
     }
 
 finally:

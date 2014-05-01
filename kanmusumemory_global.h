@@ -52,6 +52,8 @@
 #define SETTING_GENERAL_DISABLE_CONTEXT_MENU    "disable_context_menu"
 #define SETTING_GENERAL_DISABLE_EXIT        "disable_exit"
 #define SETTING_GENERAL_VIEW_BUTTLE_RESULT  "view_buttle_result"
+#define SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY  "view_buttle_result_opacity"
+#define SETTING_GENERAL_BUTTLE_RESULT_POSITION  "buttle_result_position"
 //設定：ウインドウ位置
 #define SETTING_MAINWINDOW          "mainwindow"
 #define SETTING_TIMERDIALOG         "timerdialog"
@@ -145,18 +147,32 @@
 #define ADMIRAL_RECT_HEADER     (QRect(124, 8, 146, 18))
 #define HQ_LEVEL_RECT_HEADER    (QRect(392, 13, 88, 18))
 
+//戦闘
+#define BUTTLE_RECT1            (QRect(0, 0, 400, 15))
+#define BUTTLE_RECT2            (QRect(400, 365, 400, 15))
+//昼戦
+#define BUTTLE_DAYTIME_CHECK_COLOR1     (qRgb(65 , 164 , 209))
+#define BUTTLE_DAYTIME_CHECK_COLOR2     (qRgb(104 , 157 , 176))
+//夜戦
+#define BUTTLE_NIGHT_CHECK_COLOR1     (qRgb(46 , 140 , 182))
+#define BUTTLE_NIGHT_CHECK_COLOR2     (qRgb(63 , 88 , 100))
+
 //戦果画面
 #define BUTTLE_RESULT_CHECK_COLOR1      (qRgb(30, 50, 52)) //左上のタイトル
 #define BUTTLE_RESULT_RECT1             (QRect(0, 10, 300, 60))
 #define BUTTLE_RESULT_CHECK_COLOR2      (qRgb(199, 199, 201))  //真ん中の白い線
 #define BUTTLE_RESULT_RECT2             (QRect(394, 77, 4, 370))
 //大破判定
-#define BUTTLE_RESULT_MAJOR_DAMAGE_CHECK_COLOR (qRgb(31, 18, 17))
+#define BUTTLE_RESULT_MAJOR_DAMAGE_CHECK_COLOR (qRgb(31, 17, 16))
 #define BUTTLE_RESULT_MAJOR_DAMAGE_RECT        (QRect(110, 0, 50, 40))
 //進撃or撤退
 #define BUTTLE_GO_OR_BACK_CHECK_COLOR   (qRgb(80, 164, 196))
 #define BUTTLE_GO_OR_BACK_RECT          (QRect(200, 180, 400, 120))
-
+#define BUTTLE_GO_BUTTON_RECT           (QRect(220, 190, 150, 110))
+#define BUTTLE_BACK_BUTTON_RECT         (QRect(435, 190, 150, 110))
+//羅針盤を回す
+#define BUTTLE_COMPASS_CHECK_COLOR      (qRgb(51 , 24 , 24))
+#define BUTTLE_COMPASS_RECT             (QRect(380, 140, 40, 100))
 
 
 #endif // KANMUSUMEMORY_GLOBAL_H
