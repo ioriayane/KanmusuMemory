@@ -76,7 +76,7 @@ public:
     void captureFleetDetail();
     void setFullScreen();
     void setGameSize(qreal factor);
-    void checkMajorDamageShip(const QPointF &pos);
+    void checkMajorDamageShip(const QPointF &pos, bool force = false);
 
     QList<int> bakSplitterSizes;    //幅のサイズ保存用にとっておく。（非表示だと0になってしまうから）
 private:
@@ -532,6 +532,7 @@ void MainWindow::Private::openSettingDialog()
     dlg.setDisableExitShortcut(settings.value(SETTING_GENERAL_DISABLE_EXIT, DISABLE_EXIT_DEFAULT).toBool());
     dlg.setViewButtleResult(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool());
     dlg.setButtleResultPosition(static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt()));
+    dlg.setButtleResultOpacity(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal());
     if (dlg.exec()) {
         //設定更新
         settings.setValue(QStringLiteral("path"), dlg.savePath());
@@ -547,10 +548,14 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_DISABLE_EXIT, dlg.disableExitShortcut());
         settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT, dlg.viewButtleResult());
         settings.setValue(SETTING_GENERAL_BUTTLE_RESULT_POSITION, static_cast<int>(dlg.buttleResultPosition()));
+        settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY, dlg.buttleResultOpacity());
 
         //戦果報告の表示位置などを更新
         ui.viewButtleResult->setVisible(ui.viewButtleResult->isVisible() & dlg.viewButtleResult());
         setButtleResultPosition();
+        if(ui.viewButtleResult->isVisible()){
+            checkMajorDamageShip(QPointF(0,0), true);
+        }
 
         //設定反映（必要なの）
         //プロキシ
@@ -986,12 +991,13 @@ void MainWindow::Private::setGameSize(qreal factor)
     ui.actionZoom200->setChecked(factor == 2);
 }
 //戦果報告画面での大破判定
-void MainWindow::Private::checkMajorDamageShip(const QPointF &pos)
+void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
 {
     if(!settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool()
             || q->isFullScreen()){
         return;
     }
+    qreal opacity = settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal();
 
     bool old = ui.viewButtleResult->isVisible();
     ui.viewButtleResult->setVisible(false);
@@ -1004,16 +1010,19 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos)
     GameScreen gameScreen(img);
     switch(gameScreen.screenType()){
     case GameScreen::ButtleResultScreen:
-        if(!ui.viewButtleResult->isVisible()){
+        if(!ui.viewButtleResult->isVisible() || force){
             //非表示→表示
-            QImage buttle;
+            QImage background;
             if(gameScreen.isContainMajorDamageShip()){
                 //大破が含まれるっぽい
-                buttle.load(":/resources/ButtleResultBackgroundRed.png");
+                background.load(":/resources/ButtleResultBackgroundRed.png");
             }else{
-                buttle.load(":/resources/ButtleResultBackgroundBlue.png");
+                background.load(":/resources/ButtleResultBackgroundBlue.png");
             }
+            QImage buttle(":/resources/ButtleResultBackgroundTrans.png");
             QPainter painter(&buttle);
+            painter.setOpacity(opacity);
+            painter.drawImage(0, 0, background);
             painter.drawImage(20, 20, img.scaled(300, 180, Qt::KeepAspectRatio, Qt::SmoothTransformation));
             ui.viewButtleResult->setPixmap(QPixmap::fromImage(buttle));
             ui.viewButtleResult->setWindowOpacity(0.5);

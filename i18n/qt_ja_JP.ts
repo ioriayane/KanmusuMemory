@@ -138,29 +138,29 @@
         <location line="+32"/>
         <location line="+13"/>
         <location line="+34"/>
-        <location line="+399"/>
+        <location line="+404"/>
         <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-512"/>
+        <location line="-517"/>
         <location line="+13"/>
-        <location line="+434"/>
+        <location line="+439"/>
         <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-494"/>
+        <location line="-499"/>
         <location line="+17"/>
-        <location line="+351"/>
+        <location line="+356"/>
         <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-453"/>
+        <location line="-458"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -170,7 +170,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+178"/>
+        <location line="+183"/>
         <source>Fleet Detail</source>
         <translation>艦隊詳細</translation>
     </message>
@@ -236,7 +236,7 @@ Please wait while a cup of coffee.</source>
         <translation>完了するとキャプチャーした画像を結合します。</translation>
     </message>
     <message>
-        <location line="+614"/>
+        <location line="+618"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -254,7 +254,7 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">about:blank</translation>
     </message>
     <message>
-        <location line="+185"/>
+        <location line="+191"/>
         <location filename="../ui_mainwindow.h" line="+79"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
@@ -685,7 +685,7 @@ Do you want to continue on an understanding of the security risk?
     <name>SettingsDialog</name>
     <message>
         <location filename="../settingsdialog.ui" line="+14"/>
-        <location filename="../ui_settingsdialog.h" line="+258"/>
+        <location filename="../ui_settingsdialog.h" line="+303"/>
         <source>Preferences ..</source>
         <translation>設定</translation>
     </message>
@@ -716,13 +716,14 @@ Do you want to continue on an understanding of the security risk?
         <translation>ツイッター連携を使用しない</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+170"/>
+        <location filename="../ui_settingsdialog.h" line="+13"/>
         <source>Position</source>
         <translation>表示位置</translation>
     </message>
     <message>
-        <location line="+80"/>
-        <location filename="../ui_settingsdialog.h" line="+5"/>
+        <location line="-95"/>
+        <location filename="../ui_settingsdialog.h" line="-7"/>
         <source>Browser:</source>
         <translation>ブラウザ</translation>
     </message>
@@ -739,31 +740,61 @@ Do you want to continue on an understanding of the security risk?
         <translation>プロキシ設定</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+16"/>
         <location filename="../ui_settingsdialog.h" line="+2"/>
         <source>Proxy host:</source>
         <translation>プロキシサーバー</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
         <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>Proxy port:</source>
         <translation>プロキシポート</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+96"/>
+        <location filename="../ui_settingsdialog.h" line="+11"/>
+        <source>Opacity</source>
+        <translation>不透明度</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <location filename="../ui_settingsdialog.h" line="+3"/>
+        <source>100%</source>
+        <translation>100%</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../ui_settingsdialog.h" line="+1"/>
+        <source>75%</source>
+        <translation>75%</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../ui_settingsdialog.h" line="+1"/>
+        <source>50%</source>
+        <translation>50%</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../ui_settingsdialog.h" line="+1"/>
+        <source>25%</source>
+        <translation>25%</translation>
+    </message>
+    <message>
+        <location line="-218"/>
+        <location filename="../ui_settingsdialog.h" line="-26"/>
         <source>Buttle result</source>
         <translation>戦果報告</translation>
     </message>
     <message>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>Position of buttle result</source>
-        <translation>戦果報告の表示位置</translation>
+        <translation type="obsolete">戦果報告の表示位置</translation>
     </message>
     <message>
-        <location filename="../settingsdialog.ui" line="-160"/>
+        <location line="+137"/>
         <location line="+12"/>
-        <location filename="../ui_settingsdialog.h" line="+4"/>
+        <location filename="../ui_settingsdialog.h" line="+14"/>
         <location line="+5"/>
         <source>RightTop</source>
         <translation>右上</translation>
@@ -793,7 +824,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>中心</translation>
     </message>
     <message>
-        <location line="+61"/>
+        <location line="-112"/>
         <location filename="../ui_settingsdialog.h" line="-12"/>
         <source>Disable coontext menu</source>
         <translation>コンテキストメニューを表示しない。</translation>
@@ -805,20 +836,20 @@ Do you want to continue on an understanding of the security risk?
         <translation>終了ショートカット(Ctrl+Q)を使用しない。</translation>
     </message>
     <message>
-        <location line="-73"/>
+        <location line="-14"/>
         <location filename="../ui_settingsdialog.h" line="-1"/>
         <source>View buttle result</source>
         <translation>戦果報告画面のコピーを表示する</translation>
     </message>
     <message>
-        <location line="+125"/>
+        <location line="+66"/>
         <location filename="../ui_settingsdialog.h" line="+6"/>
         <source>Enable</source>
         <translation>プロキシ設定を有効にする</translation>
     </message>
     <message>
-        <location line="-178"/>
-        <location filename="../ui_settingsdialog.h" line="-10"/>
+        <location line="-126"/>
+        <location filename="../ui_settingsdialog.h" line="-11"/>
         <source>Save in PNG format.</source>
         <translation>画像をPNG形式で保存する（標準はJPEG）</translation>
     </message>
@@ -835,7 +866,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
-        <location filename="../settingsdialog.cpp" line="+147"/>
+        <location filename="../settingsdialog.cpp" line="+167"/>
         <source>Select save folder</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>

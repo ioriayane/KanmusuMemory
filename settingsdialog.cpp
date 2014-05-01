@@ -45,6 +45,7 @@ public:
     bool disableExitShortcut;
     bool viewButtleResult;
     SettingsDialog::ButtleResultPosition buttleResultPosition;
+    qreal buttleResultOpacity;
 };
 
 SettingsDialog::Private::Private(SettingsDialog *parent)
@@ -79,6 +80,13 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         case 4:     buttleResultPosition = Center;      break;
         default:    buttleResultPosition = RightTop;    break;
         }
+        switch(ui.buttleResultOpacityComboBox->currentIndex()){
+        case 0:     buttleResultOpacity = 1.0;          break;
+        case 1:     buttleResultOpacity = 0.75;         break;
+        case 2:     buttleResultOpacity = 0.5;          break;
+        case 3:     buttleResultOpacity = 0.25;         break;
+        default:    buttleResultOpacity = 1.0;          break;
+        }
 
         q->accept();
     });
@@ -104,7 +112,6 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
     connect(q, &SettingsDialog::disableContextMenuChanged, ui.disableContextMenu, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::disableExitShortcutChanged, ui.disableExitShortcut, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::viewButtleResultChanged, ui.viewButtleResultCheckBox, &QCheckBox::setChecked);
-
     connect(q, &SettingsDialog::buttleResultPositionChanged, [this](ButtleResultPosition position){
         int index = 1;
         switch(position){
@@ -116,6 +123,19 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         default:            index = 1;  break;
         }
         ui.buttleResultPositionComboBox->setCurrentIndex(index);
+    });
+    connect(q, &SettingsDialog::buttleResultOpacityChanged, [this](qreal opacity){
+        if(opacity > 0.999){    //1.0
+            ui.buttleResultOpacityComboBox->setCurrentIndex(0);
+        }else if(opacity > 0.749){  //0.75
+            ui.buttleResultOpacityComboBox->setCurrentIndex(1);
+        }else if(opacity > 0.499){  //0.5
+            ui.buttleResultOpacityComboBox->setCurrentIndex(2);
+        }else if(opacity > 0.249){  //0.25
+            ui.buttleResultOpacityComboBox->setCurrentIndex(3);
+        }else{
+            ui.buttleResultOpacityComboBox->setCurrentIndex(0);
+        }
     });
 
     QSpinBox * portNum = ui.proxyPort;
@@ -252,6 +272,11 @@ SettingsDialog::ButtleResultPosition SettingsDialog::buttleResultPosition() cons
     return d->buttleResultPosition;
 }
 
+qreal SettingsDialog::buttleResultOpacity() const
+{
+    return d->buttleResultOpacity;
+}
+
 void SettingsDialog::setProxyPort(quint16 proxyPort)
 {
     if(d->proxyPort == proxyPort) return;
@@ -292,4 +317,11 @@ void SettingsDialog::setButtleResultPosition(SettingsDialog::ButtleResultPositio
     if(d->buttleResultPosition == position) return;
     d->buttleResultPosition = position;
     emit buttleResultPositionChanged(position);
+}
+
+void SettingsDialog::setButtleResultOpacity(qreal opacity)
+{
+    if(d->buttleResultOpacity == opacity)   return;
+    d->buttleResultOpacity = opacity;
+    emit buttleResultOpacityChanged(opacity);
 }

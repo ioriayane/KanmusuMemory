@@ -46,6 +46,7 @@ public:
     bool disableExitShortcut() const;
     bool viewButtleResult() const;
     ButtleResultPosition buttleResultPosition() const;
+    qreal buttleResultOpacity() const;
 
     static QString selectSavePath(QWidget *parent, const QString &currentPath);
 
@@ -63,6 +64,7 @@ public slots:
     void setDisableExitShortcut(bool disable);
     void setViewButtleResult(bool view);
     void setButtleResultPosition(ButtleResultPosition position);
+    void setButtleResultOpacity(qreal opacity);
 
 signals:
     void savePathChanged(const QString &savePath);
@@ -78,6 +80,7 @@ signals:
     void disableExitShortcutChanged(bool disable);
     void viewButtleResultChanged(bool view);
     void buttleResultPositionChanged(ButtleResultPosition position);
+    void buttleResultOpacityChanged(qreal opacity);
 
 private:
     class Private;
