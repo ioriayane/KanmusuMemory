@@ -176,9 +176,9 @@ bool GameScreen::Private::checkTurnCompassScreen() const
             imagework.setPixel(w, h, mask_image.pixel(w, h) & image.pixel(BUTTLE_COMPASS_RECT.x() + w, BUTTLE_COMPASS_RECT.y() + h));
         }
     }
-    QRgb rgb = color(imagework, QRect(0, 0, imagework.width(), imagework.height()));
-    qDebug() << "compass color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
-             << ":" << fuzzyCompare(color(imagework, QRect(0, 0, imagework.width(), imagework.height())), BUTTLE_COMPASS_CHECK_COLOR, 5);
+//    QRgb rgb = color(imagework, QRect(0, 0, imagework.width(), imagework.height()));
+//    qDebug() << "compass color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
+//             << ":" << fuzzyCompare(color(imagework, QRect(0, 0, imagework.width(), imagework.height())), BUTTLE_COMPASS_CHECK_COLOR, 5);
     return fuzzyCompare(color(imagework, QRect(0, 0, imagework.width(), imagework.height())), BUTTLE_COMPASS_CHECK_COLOR, 5);
 }
 
