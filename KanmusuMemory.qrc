@@ -26,5 +26,6 @@
         <file>resources/ButtleResultBackgroundBlue.png</file>
         <file>resources/ButtleResultBackgroundRed.png</file>
         <file>resources/MajorDamageMask.png</file>
+        <file>resources/CompassMask.png</file>
     </qresource>
 </RCC>

@@ -33,13 +33,14 @@ public:
     bool isVisible(PartType partType) const;
     void click(WebView *webView, GameScreen::PartType partType, GameScreen::WaitInterval waitInterval);
     bool isContainMajorDamageShip() const;
+    bool checkTurnCompassScreen() const;
 
 private:
     void detectScreenType();
     void setScreenType(GameScreen::ScreenType s);
     QRgb color(const QRect &rect) const;
     QRgb color(const QImage &img, const QRect &rect) const;
-    bool fuzzyCompare(QRgb a, QRgb b, uint range = 0x20) const;
+    bool fuzzyCompare(QRgb a, QRgb b, int range = 0x20) const;
     void click(WebView *webView, const QPoint &point, GameScreen::WaitInterval waitInterval);
 
 private:
@@ -71,7 +72,8 @@ void GameScreen::Private::detectScreenType()
     }else if(fuzzyCompare(color(BUTTLE_GO_OR_BACK_RECT), BUTTLE_GO_OR_BACK_CHECK_COLOR)){
         //戦闘後（進撃・撤退）選択画面
         setScreenType(GoOrBackScreen);
-    }else if(fuzzyCompare(color(BUTTLE_COMPASS_RECT), BUTTLE_COMPASS_CHECK_COLOR)){
+    }else if(checkTurnCompassScreen()){
+//    }else if(fuzzyCompare(color(BUTTLE_COMPASS_RECT), BUTTLE_COMPASS_CHECK_COLOR)){
         //羅針盤を回す画面
         // 他の画面も誤認してしまってるので注意
         setScreenType(TurnCompassScreen);
@@ -164,6 +166,21 @@ bool GameScreen::Private::isContainMajorDamageShip() const
     }
     return ret;
 }
+//コンパスを回す画面化調べる
+bool GameScreen::Private::checkTurnCompassScreen() const
+{
+    QImage mask_image(":/resources/CompassMask.png");
+    QImage imagework(mask_image);
+    for(int w=0; w<imagework.width(); w++){
+        for(int h=0; h<imagework.height(); h++){
+            imagework.setPixel(w, h, mask_image.pixel(w, h) & image.pixel(BUTTLE_COMPASS_RECT.x() + w, BUTTLE_COMPASS_RECT.y() + h));
+        }
+    }
+    QRgb rgb = color(imagework, QRect(0, 0, imagework.width(), imagework.height()));
+    qDebug() << "compass color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
+             << ":" << fuzzyCompare(color(imagework, QRect(0, 0, imagework.width(), imagework.height())), BUTTLE_COMPASS_CHECK_COLOR, 5);
+    return fuzzyCompare(color(imagework, QRect(0, 0, imagework.width(), imagework.height())), BUTTLE_COMPASS_CHECK_COLOR, 5);
+}
 
 void GameScreen::Private::click(WebView *webView, const QPoint &point, GameScreen::WaitInterval waitInterval)
 {
@@ -200,7 +217,7 @@ QRgb GameScreen::Private::color(const QImage &img, const QRect &rect) const
     return img.copy(rect).scaled(1, 1, Qt::IgnoreAspectRatio, Qt::SmoothTransformation).pixel(0, 0);
 }
 
-bool GameScreen::Private::fuzzyCompare(QRgb a, QRgb b, uint range) const
+bool GameScreen::Private::fuzzyCompare(QRgb a, QRgb b, int range) const
 {
 //    qDebug() << Q_FUNC_INFO << __LINE__ << qRed(a) << qGreen(a) << qBlue(a);
 //    qDebug() << Q_FUNC_INFO << __LINE__ << qRed(b) << qGreen(b) << qBlue(b);

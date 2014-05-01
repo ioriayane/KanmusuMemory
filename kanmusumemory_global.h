@@ -160,8 +160,8 @@
 #define BUTTLE_GO_BUTTON_RECT           (QRect(220, 190, 150, 110))
 #define BUTTLE_BACK_BUTTON_RECT         (QRect(435, 190, 150, 110))
 //羅針盤を回す
-#define BUTTLE_COMPASS_CHECK_COLOR      (qRgb(134 , 156 , 163))
-#define BUTTLE_COMPASS_RECT             (QRect(380, 140, 40, 200))
+#define BUTTLE_COMPASS_CHECK_COLOR      (qRgb(51 , 24 , 24))
+#define BUTTLE_COMPASS_RECT             (QRect(380, 140, 40, 100))
 
 
 #endif // KANMUSUMEMORY_GLOBAL_H
