@@ -1104,6 +1104,8 @@ void MainWindow::Private::setWebSettings()
     //JavaScript関連設定
     websetting->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
     websetting->setAttribute(QWebSettings::JavascriptCanCloseWindows, true);
+    websetting->setAttribute(QWebSettings::PluginsEnabled, true);
+    websetting->setAttribute(QWebSettings::JavascriptEnabled, true);
     //フォント設定
 #if defined(Q_OS_WIN32)
 //    websetting->setFontFamily(QWebSettings::StandardFont, "ＭＳ Ｐゴシック");
@@ -1120,6 +1122,7 @@ void MainWindow::Private::setWebSettings()
     websetting->setFontFamily(QWebSettings::FixedFont, "Osaka");
 #else
 #endif
+    QNetworkProxyFactory::setUseSystemConfiguration(true);
     updateProxyConfiguration();
 }
 //ダイアログの作成をする
@@ -1212,10 +1215,6 @@ MainWindow::MainWindow(QWidget *parent, bool not_use_cookie)
         d->ui.exit->setShortcut(QKeySequence(QStringLiteral("Ctrl+Q")));
     }
 
-    //設定
-    QNetworkProxyFactory::setUseSystemConfiguration(true);
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::JavascriptEnabled, true);
     //SSLエラー
     connect(d->ui.webView->page()->networkAccessManager(),
             SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError> & )),
