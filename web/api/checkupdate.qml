@@ -26,6 +26,8 @@ Json {
         , "new-version": newVersion
         , "new-version-code": newVersionCode
         , "message" : message
+        , "last-favorite" : lastFavoriteData
+        , "last-timer" : lastTimerSelectGuide
     }
 
     UpdateInfo {
@@ -38,6 +40,9 @@ Json {
     property string newVersion: info.version
     property int newVersionCode: info.versionCode
     property string message: info.message[lang == "ja_JP" ? 1 : 0]
+
+    property string lastFavoriteData: info.lastFavoriteData
+    property string lastTimerSelectGuide: info.lastTimerSelectGuide
 
     property string version: ""
     property int versionCode: 0

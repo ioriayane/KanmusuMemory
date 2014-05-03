@@ -319,7 +319,14 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     //アップデートの確認をする
     m_updateInfoDialog->CheckUpdate();
     connect(ui.actionUpdate, &QAction::triggered, [this](){ m_updateInfoDialog->CheckUpdate(); });
-
+    //アプデート確認の情報を元にお気に入りのアップデート
+    connect(m_updateInfoDialog, &UpdateInfoDialog::lastFavoriteUpdateDateChanged, [this](const QString &lastFavoriteUpdateDate){
+        m_favorite.updateFromInternet(lastFavoriteUpdateDate);
+    });
+    //アプデート確認の情報を元にタイマーのアップデート
+    connect(m_updateInfoDialog, &UpdateInfoDialog::lastTimerSelectGuideUpdateDateChanged, [this](const QString &lastTimerSelectGuideUpdateDate){
+        m_timerDialog->setLastTimerSelectGuideUpdateDate(lastTimerSelectGuideUpdateDate);
+    });
 
     //通知アイコン
 #ifdef Q_OS_WIN

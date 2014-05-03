@@ -33,10 +33,10 @@ Rectangle {
     property real d3set: 0
     property real d3start: 0
 
+//    property string lastUpdateDate: ""  //リモートのデータの更新日時
 
     Component.onCompleted: {
-//        console.debug("start download timer data")
-        Http.requestHttp("", "GET", "http://relog.xii.jp/download/kancolle/data/timerselectguide.json", true, responseHttp)
+        updateFromInternet()
     }
 
     OperatingSystem {
@@ -61,34 +61,40 @@ Rectangle {
         onTriggered: updateAll()
     }
 
-    function responseHttp(oj){
-        var data = JSON.parse(oj.responseText)
-        var i
+    function updateFromInternet(){
+//        console.debug("start update timer data " + timerData.lastUpdateDate)
+
         var local_path = file.getWritablePath() + "/timerselectguide.json"
         var local_data = ""
 
         if(file.exists(local_path)){
             local_data = JSON.parse(file.readTextFile(local_path))
 
-            if(data.serial > local_data.serial){
-//                console.debug("use new download data")
-                //新しいのをダウンロードしたので保存
-                file.writeTextFile(local_path, oj.responseText)
-
-                //表示用データと入れ替える
-                viewTimerSelectGuide(data)
+            if(timerData.lastUpdateDate > local_data.serial){
+//                console.debug(" download update data")
+                Http.requestHttp("", "GET", "http://relog.xii.jp/download/kancolle/data/timerselectguide.json", true, responseHttp)
             }else{
 //                console.debug("use local data")
                 //ローカルのデータを表示
                 viewTimerSelectGuide(local_data)
             }
         }else{
-//            console.debug("use download data")
-            //新しいのをダウンロードしたので保存
-            file.writeTextFile(local_path, oj.responseText)
-            //ダウンロードしたデータを表示
-            viewTimerSelectGuide(data)
+//            console.debug(" download update data")
+            Http.requestHttp("", "GET", "http://relog.xii.jp/download/kancolle/data/timerselectguide.json", true, responseHttp)
         }
+
+    }
+
+    function responseHttp(oj){
+        var data = JSON.parse(oj.responseText)
+        var i
+        var local_path = file.getWritablePath() + "/timerselectguide.json"
+        var local_data = ""
+
+        //新しいのをダウンロードしたので保存
+        file.writeTextFile(local_path, oj.responseText)
+        //表示用データと入れ替える
+        viewTimerSelectGuide(data)
     }
 
     //タイマーのガイド情報をモデルに設定する
