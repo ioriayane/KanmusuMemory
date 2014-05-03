@@ -16,6 +16,7 @@
 #ifndef UPDATEINFODIALOG_H
 #define UPDATEINFODIALOG_H
 
+#include <QDate>
 #include <QDialog>
 #include <QSettings>
 
@@ -34,6 +35,16 @@ public:
     
     void CheckUpdate();
 
+    QString lastFavoriteUpdateDate() const;
+    void setLastFavoriteUpdateDate(const QString &lastFavoriteUpdateDate);
+
+    QString lastTimerSelectGuideUpdateDate() const;
+    void setLastTimerSelectGuideUpdateDate(const QString &lastTimerSelectGuideUpdateDate);
+
+signals:
+    void lastFavoriteUpdateDateChanged(const QString &lastFavoriteUpdateDate);
+    void lastTimerSelectGuideUpdateDateChanged(const QString &lastTimerSelectGuideUpdateDate);
+
 private:
     Ui::UpdateInfoDialog *ui;
 
@@ -41,6 +52,9 @@ private:
     int m_hideVersionCode;      //非表示にしたいバージョンコード
     int m_newVersionCode;       //ダウンロードして取得したバージョンコード
     int m_force;                //強制表示
+
+    QString m_lastFavoriteUpdateDate;
+    QString m_lastTimerSelectGuideUpdateDate;
 
     bool isHide(int checkVersion);
 };

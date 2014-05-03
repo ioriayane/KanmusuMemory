@@ -300,6 +300,16 @@ void TimerData::setAlarmSoundVolume(const qreal &volume)
     m_alarmSoundVolume = volume;
     emit alarmSoundVolumeChanged();
 }
+QString TimerData::lastUpdateDate() const
+{
+    return m_lastUpdateDate;
+}
+void TimerData::setLastUpdateDate(const QString &lastUpdateDate)
+{
+    if(m_lastUpdateDate == lastUpdateDate)   return;
+    m_lastUpdateDate = lastUpdateDate;
+    emit lastUpdateDateChanged();
+}
 
 QList<qreal> TimerData::toRealList(const QList<QVariant> src)
 {
@@ -326,4 +336,5 @@ QList<int> TimerData::toIntList(const QList<QVariant> src)
     }
     return d;
 }
+
 
