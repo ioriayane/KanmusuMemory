@@ -168,12 +168,12 @@ bool GameScreen::Private::isContainMajorDamageShip() const
 
         QImage mask_image(":/resources/MajorDamageMask.png");
         QImage imagework(mask_image);
+        QPainter painter(&imagework);
         for(int yi=0; yi<6; yi++){
-            for(int w=0; w<imagework.width(); w++){
-                for(int h=0; h<imagework.height(); h++){
-                    imagework.setPixel(w, h, mask_image.pixel(w, h) & image.pixel(w + 196, h + y[yi]));
-                }
-            }
+            painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+            painter.drawImage(0, 0, mask_image);
+            painter.setCompositionMode(QPainter::RasterOp_SourceAndDestination);
+            painter.drawImage(0, 0, image, 196, y[yi]);
 
 //            QRgb rgb = color(imagework, BUTTLE_RESULT_MAJOR_DAMAGE_RECT);
 //            qDebug() << yi << "  color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
@@ -187,13 +187,11 @@ bool GameScreen::Private::isContainMajorDamageShip() const
 //コンパスを回す画面化調べる
 bool GameScreen::Private::checkTurnCompassScreen() const
 {
-    QImage mask_image(":/resources/CompassMask.png");
-    QImage imagework(mask_image);
-    for(int w=0; w<imagework.width(); w++){
-        for(int h=0; h<imagework.height(); h++){
-            imagework.setPixel(w, h, mask_image.pixel(w, h) & image.pixel(BUTTLE_COMPASS_RECT.x() + w, BUTTLE_COMPASS_RECT.y() + h));
-        }
-    }
+    QImage imagework(":/resources/CompassMask.png");
+    QPainter painter(&imagework);
+    painter.setCompositionMode(QPainter::RasterOp_SourceAndDestination);
+    painter.drawImage(0, 0, image, BUTTLE_COMPASS_RECT.x(), BUTTLE_COMPASS_RECT.y());
+
 //    QRgb rgb = color(imagework, QRect(0, 0, imagework.width(), imagework.height()));
 //    qDebug() << "compass color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
 //             << ":" << fuzzyCompare(color(imagework, QRect(0, 0, imagework.width(), imagework.height())), BUTTLE_COMPASS_CHECK_COLOR, 5);
