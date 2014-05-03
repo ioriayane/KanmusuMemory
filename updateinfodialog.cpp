@@ -52,6 +52,8 @@
 #define KEY_NEW_VERSION_CODE    QStringLiteral("new-version-code")
 #define KEY_UPDATE_EXIST        QStringLiteral("update-exist")
 #define KEY_MESSAGE             QStringLiteral("message")
+#define KEY_FAV_UPDATE          QStringLiteral("last-favorite")
+#define KEY_TIMER_UPDATE        QStringLiteral("last-timer")
 
 
 UpdateInfoDialog::UpdateInfoDialog(QWidget *parent
@@ -171,8 +173,13 @@ void UpdateInfoDialog::CheckUpdate()
                                      , tr("There was no update.")
                                      , QMessageBox::Yes);
             }
-
             m_force = true; //1度通ったらはユーザー操作なので強制表示
+
+
+            //お気に入りの更新確認
+            setLastFavoriteUpdateDate(json.object().value(KEY_FAV_UPDATE).toString("2010010100"));
+            //タイマーの更新確認
+            setLastTimerSelectGuideUpdateDate(json.object().value(KEY_TIMER_UPDATE).toString("2010010100"));
         }
     });
     //プロキシ
@@ -197,6 +204,30 @@ void UpdateInfoDialog::CheckUpdate()
                              .arg(os_num)
                              .arg(QLocale::system().name())));
 }
+QString UpdateInfoDialog::lastFavoriteUpdateDate() const
+{
+    return m_lastFavoriteUpdateDate;
+}
+
+void UpdateInfoDialog::setLastFavoriteUpdateDate(const QString &lastFavoriteUpdateDate)
+{
+    if(m_lastFavoriteUpdateDate == lastFavoriteUpdateDate)  return;
+    m_lastFavoriteUpdateDate = lastFavoriteUpdateDate;
+    emit lastFavoriteUpdateDateChanged(lastFavoriteUpdateDate);
+}
+QString UpdateInfoDialog::lastTimerSelectGuideUpdateDate() const
+{
+    return m_lastTimerSelectGuideUpdateDate;
+}
+
+void UpdateInfoDialog::setLastTimerSelectGuideUpdateDate(const QString &lastTimerSelectGuideUpdateDate)
+{
+//    if(m_lastTimerSelectGuideUpdateDate == lastTimerSelectGuideUpdateDate)  return;
+    m_lastTimerSelectGuideUpdateDate = lastTimerSelectGuideUpdateDate;
+    emit lastTimerSelectGuideUpdateDateChanged(lastTimerSelectGuideUpdateDate);
+}
+
+
 //非表示か確認
 bool UpdateInfoDialog::isHide(int checkVersionCode)
 {
@@ -209,6 +240,6 @@ bool UpdateInfoDialog::isHide(int checkVersionCode)
             ret = false;
         }
     }
-//    qDebug() << "hide:" << ret << "," << checkVersionCode << "<=" << m_hideVersionCode;
+    //    qDebug() << "hide:" << ret << "," << checkVersionCode << "<=" << m_hideVersionCode;
     return ret;
 }

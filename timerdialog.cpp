@@ -151,6 +151,17 @@ void TimerDialog::timeout()
 
 }
 
+QString TimerDialog::lastTimerSelectGuideUpdateDate() const
+{
+    return m_timerdata.lastUpdateDate();
+}
+
+void TimerDialog::setLastTimerSelectGuideUpdateDate(const QString &lastTimerSelectGuideUpdateDate)
+{
+    m_timerdata.setLastUpdateDate(lastTimerSelectGuideUpdateDate);
+}
+
+
 //時間が来ているかチェックする
 bool TimerDialog::checkKanmemoTimerTimeout(qint64 settime, qint64 starttime)
 {

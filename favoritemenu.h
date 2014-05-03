@@ -27,7 +27,6 @@ public:
     explicit FavoriteMenu(QObject *parent);
 
     void load(QMenu *menu, bool download = false);
-    void updateFromInternet(bool force = false);
 
 signals:
     void selectFav(const QUrl &url);
@@ -35,6 +34,7 @@ signals:
 
 public slots:
     void clickItem();
+    void updateFromInternet(const QString &lastUpdateDate);
 
 private:
     QDate m_currentLoadedFavDataDate;   //現在読み込んでるお気に入りの作成日

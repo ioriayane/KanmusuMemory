@@ -34,5 +34,7 @@ QtObject {
     property variant message: ["-Bug fixes related to Cookie.\nDisable right-click\n"
         , "・Cookie関連のトラブルの修正\n・ゲーム画面がある側でコンテキストメニュー（右クリックメニュー）を表示しない設定の追加\n・Twitter連携をOff状態でも履歴から選択したときは連携するように変更\n"             //日本語の説明
     ]
+    property string lastFavoriteData: "2014042600"
+    property string lastTimerSelectGuide: "2014031400"
 }
 

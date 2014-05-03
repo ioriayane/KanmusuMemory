@@ -41,7 +41,7 @@
 
 FavoriteMenu::FavoriteMenu(QObject *parent) :
     QObject(parent)
-  , m_currentLoadedFavDataDate(QDate::currentDate())
+  , m_currentLoadedFavDataDate(2010,1,1)
 {
 }
 
@@ -94,23 +94,23 @@ void FavoriteMenu::load(QMenu *menu, bool download)
     }
     settings.endGroup();
 
-    //お気に入りをダウンロード
-    if(download){
-        updateFromInternet();
-    }
 }
 
 //ダウンロードしてアップデートする
-void FavoriteMenu::updateFromInternet(bool force)
+void FavoriteMenu::updateFromInternet(const QString &lastUpdateDate)
 {
-    QFileInfo fi(FAVORITE_DOWNLOAD_FILE);
-    if(!force && (fi.lastModified().addDays(1) >= QDateTime::currentDateTime())){
-        //更新期間すぎてないのでなにもしない
-//        qDebug() << "don't update, last modify+2days=" << fi.lastModified().addDays(2)
-//                 << ", today=" << QDateTime::currentDateTime();
-        return;
+    if(m_currentLoadedFavDataDate.isValid()){
+        //ダウンロードデータがあるのでアップデートするかをチェック
+//        qDebug() << "update fav " << m_currentLoadedFavDataDate << "," << lastUpdateDate;
+        if(m_currentLoadedFavDataDate < QDate::fromString(lastUpdateDate.left(8), "yyyyMMdd")){
+            //ダウンロードする
+        }else{
+            //ダウンロードしない
+            return;
+        }
     }
-    qDebug() << "start download";
+
+//    qDebug() << "start download";
     QNetworkAccessManager *net = new QNetworkAccessManager(this);
     connect(net, &QNetworkAccessManager::finished, [this](QNetworkReply *reply) {
         if(reply->error() == QNetworkReply::NoError){

@@ -40,6 +40,9 @@ public:
     ~TimerDialog();
     
 
+    QString lastTimerSelectGuideUpdateDate() const;
+    void setLastTimerSelectGuideUpdateDate(const QString &lastTimerSelectGuideUpdateDate);
+
 protected:
     virtual void resizeEvent(QResizeEvent *event);
     virtual void showEvent(QShowEvent *event);
