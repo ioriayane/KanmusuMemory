@@ -20,7 +20,7 @@ Rectangle {
     id: root
     width: control.width * 1.1
     height: control.height * 1.1
-    color: "#00ffffff"
+    color: "#f0f0f0"
     border.color: "gray"
     border.width: 1
 
