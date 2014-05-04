@@ -32,6 +32,10 @@
     << "@hermit4"\
     )
 
+//キャシュの内容がQtのバージョンで互換性が無いみたいなので
+//標準のパスに↓の文字列を追加したフォルダにする
+#define CACHE_LOCATION_SUFFIX       "2"
+
 //設定ファイル
 //#define SETTING_FILE_NAME       "settings.ini"
 //#define SETTING_FILE_FORMAT     QSettings::IniFormat

@@ -21,6 +21,7 @@
 #include <QStandardPaths>
 #include <QDir>
 
+#include "kanmusumemory_global.h"
 #include "operatingsystem.h"
 #include "clipcursor.h"
 #include "qmlfile.h"
@@ -72,6 +73,12 @@ int main(int argc, char *argv[])
     foreach (QString arg, app.arguments()) {
         if(arg.toLower().compare(QStringLiteral("/notusecookie")) == 0){
             not_use_cookie = true;
+        }else if(arg.toLower().compare(QStringLiteral("/clearcache")) == 0){
+            //キャッシュを強制削除して起動
+            QDir dir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+CACHE_LOCATION_SUFFIX);
+            if(dir.exists()){
+                dir.removeRecursively();
+            }
         }
     }
 
