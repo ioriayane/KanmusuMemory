@@ -1095,10 +1095,15 @@ void MainWindow::Private::setWebSettings()
     }
     //WebViewの設定（キャッシュ）
     QNetworkDiskCache *cache = new QNetworkDiskCache(q);
-    cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+CACHE_LOCATION_SUFFIX);
     cache->setMaximumCacheSize(1073741824); //about 1024MB
     ui.webView->page()->networkAccessManager()->setCache(cache);
     ui.tabWidget->setCache(cache);
+    //古いキャッシュフォルダを削除
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    if(dir.exists()){
+        dir.removeRecursively();
+    }
 
     QWebSettings *websetting = QWebSettings::globalSettings();
     //JavaScript関連設定
