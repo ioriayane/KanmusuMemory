@@ -50,7 +50,7 @@ for ($i = 0; $i <= $#ARGV; $i++) {
 #	, "LocalStorage"
 #	, "Particles.2"
 #	, "PrivateWidgets"
-#	, "Window.2"
+	, "Window.2"
 #	, "XmlListModel"
 	);
 
@@ -78,7 +78,7 @@ for ($i = 0; $i <= $#ARGV; $i++) {
 #	, "Qt5CLucene"
 #	, "Qt5Concurrent"
 	 "Qt5Core"
-    , "Qt5DBus"
+	, "Qt5DBus"
 #	, "Qt5Declarative"
 #	, "Qt5Designer"
 #	, "Qt5DesignerComponents"
@@ -87,6 +87,7 @@ for ($i = 0; $i <= $#ARGV; $i++) {
 	, "Qt5Multimedia", "Qt5MultimediaQuick_p", "Qt5MultimediaWidgets"
 	, "Qt5Network"
 	, "Qt5OpenGL"
+	, "Qt5Positioning"
 	, "Qt5PrintSupport"
 	, "Qt5Qml", "Qt5Quick"
 #	, "Qt5QuickParticles"
@@ -98,7 +99,7 @@ for ($i = 0; $i <= $#ARGV; $i++) {
 	, "Qt5Sql"
 #	, "Qt5Svg"
 #	, "Qt5Test"
-	, "Qt5V8"
+#	, "Qt5V8"
 	, "Qt5WebKit", "Qt5WebKitWidgets"
 	, "Qt5Widgets"
 #	, "Qt5Xml"
@@ -127,8 +128,8 @@ if($OS eq "win"){
 	$EXEDIR="release\\";
 	# デプロイ先のディレクトリ
 	$OUTDIR='..\\KanmusuMemoryBin\\KanmusuMemory' . $PTRSIZE_NAME . '\\';
-    $OUTDIRBIN="";
-    $OUTDIRLIB="";
+	$OUTDIRBIN="";
+	$OUTDIRLIB="";
 	# 言語ファイルを保存しているディレクトリ
 	$I18N="i18n\\";
 
@@ -154,7 +155,7 @@ if($OS eq "win"){
 #				  , "..\\ssl_dll\\". $PTRSIZE_NAME . "\\libssl32.dll"
 				  , "..\\ssl_dll\\". $PTRSIZE_NAME . "\\libeay32.dll"
 				  , "..\\ssl_dll\\". $PTRSIZE_NAME . "\\ssleay32.dll"
-                  , "resources\\alarm.mp3"
+				  , "resources\\alarm.mp3"
 				  );
 
 	# 環境ごとのコマンドの設定
@@ -179,16 +180,16 @@ if($OS eq "win"){
 		, "dsengine.dll"		#mediaservice
 		);
 
-    # 名称の修正
-    @temp = ();
-    foreach $name (@QT_MODULE_LIBRARY){
-        push(@temp, $name . ".dll");
-    }
-    @QT_MODULE_LIBRARY = @temp;
+	# 名称の修正
+	@temp = ();
+	foreach $name (@QT_MODULE_LIBRARY){
+		push(@temp, $name . ".dll");
+	}
+	@QT_MODULE_LIBRARY = @temp;
 
-    # 追加（不足分）
-    push(@QT_MODULE_LIBRARY, "Qt0TwitterAPI.dll");
-    push(@QT_MODULE_LIBRARY, "Qt5MultimediaQuick_p.dll");
+	# 追加（不足分）
+	push(@QT_MODULE_LIBRARY, "Qt0TwitterAPI.dll");
+	push(@QT_MODULE_LIBRARY, "Qt5MultimediaQuick_p.dll");
 
 }elsif($OS eq "ubuntu"){
 	################################################
@@ -201,8 +202,8 @@ if($OS eq "win"){
 	$EXEDIR="";
 	# デプロイ先のディレクトリ
 	$OUTDIR='tmp/';
-    $OUTDIRBIN="bin/";
-    $OUTDIRLIB="lib/";
+	$OUTDIRBIN="bin/";
+	$OUTDIRLIB="lib/";
 	# 言語ファイルを保存しているディレクトリ
 	$I18N="i18n/";
 
@@ -239,36 +240,33 @@ if($OS eq "win"){
 	# ファイルをコピーした最後に消すファイルのフィルタ
 	@REMOVE_FILES=(
 		"plugins.qmltypes"
-        , "libqlinuxfb.so"        #platforms
-        , "libqminimal.so"      #platforms
-        , "libqoffscreen.so"    #platforms
+		, "libqlinuxfb.so"        #platforms
+		, "libqminimal.so"      #platforms
+		, "libqoffscreen.so"    #platforms
 		);
 
-
-    # 名称の修正
-    @temp = ();
-    foreach $name (@QT_MODULE_LIBRARY){
-        push(@temp, "lib" . $name . ".so.5");
-        push(@temp, "lib" . $name . ".so.5.1.0");
-    }
-    @QT_MODULE_LIBRARY = @temp;
+	# 名称の修正
+	@temp = ();
+	foreach $name (@QT_MODULE_LIBRARY){
+		push(@temp, "lib" . $name . ".so.5");
+		push(@temp, "lib" . $name . ".so.5.2.1");
+	}
+	@QT_MODULE_LIBRARY = @temp;
     
-    # 追加ライブラリ
-    push(@QT_MODULE_PLUGIN, "platforminputcontexts");
-    push(@QT_MODULE_PLUGIN, "platformthemes");
+	# 追加ライブラリ
+	push(@QT_MODULE_PLUGIN, "platforminputcontexts");
+	push(@QT_MODULE_PLUGIN, "platformthemes");
 
-    push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0");
-    push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0.1.0");
-    push(@QT_MODULE_LIBRARY, "libQt5MultimediaQuick_p.so.0");
-    push(@QT_MODULE_LIBRARY, "libQt5MultimediaQuick_p.so.0.1.0");
-#    push(@QT_MODULE_LIBRARY, "libicudata.so.51");
-#    push(@QT_MODULE_LIBRARY, "libicudata.so.51.1");
-#    push(@QT_MODULE_LIBRARY, "libicui18n.so.51");
-#    push(@QT_MODULE_LIBRARY, "libicui18n.so.51.1");
-#    push(@QT_MODULE_LIBRARY, "libicuuc.so.51");
-#    push(@QT_MODULE_LIBRARY, "libicuuc.so.51.1");
-#    push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1");
-#    push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1.0.0");
+	push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0");
+	push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0.1.0");
+	push(@QT_MODULE_LIBRARY, "libicudata.so.51");
+	push(@QT_MODULE_LIBRARY, "libicudata.so.51.1");
+	push(@QT_MODULE_LIBRARY, "libicui18n.so.51");
+	push(@QT_MODULE_LIBRARY, "libicui18n.so.51.1");
+	push(@QT_MODULE_LIBRARY, "libicuuc.so.51");
+	push(@QT_MODULE_LIBRARY, "libicuuc.so.51.1");
+	push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1");
+	push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1.0.0");
 
 #}elsif($OS eq "mac"){
 }else{
