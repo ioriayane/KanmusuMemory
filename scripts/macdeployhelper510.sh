@@ -3,7 +3,7 @@
 #update library link
 Update(){
 TARGET=`basename $1`
-QTPATH=/Users/iori/Qt5.1.1//5.1.1/clang_64/
+QTPATH=/Users/iori/Qt5.2.1/5.2.1/clang_64/
 LIBPATH=$1
 CMD1="install_name_tool -id"
 CMD2="install_name_tool -change"
