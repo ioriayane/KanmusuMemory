@@ -167,7 +167,7 @@
 #define BUTTLE_RESULT_CHECK_COLOR2      (qRgb(199, 199, 201))  //真ん中の白い線
 #define BUTTLE_RESULT_RECT2             (QRect(394, 77, 4, 370))
 //大破判定
-#define BUTTLE_RESULT_MAJOR_DAMAGE_CHECK_COLOR (qRgb(31, 17, 16))
+#define BUTTLE_RESULT_MAJOR_DAMAGE_CHECK_COLOR (qRgb(27, 15, 14))
 #define BUTTLE_RESULT_MAJOR_DAMAGE_RECT        (QRect(110, 0, 50, 40))
 //進撃or撤退
 #define BUTTLE_GO_OR_BACK_CHECK_COLOR   (qRgb(80, 164, 196))
