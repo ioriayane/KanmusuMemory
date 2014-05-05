@@ -1095,15 +1095,22 @@ void MainWindow::Private::setWebSettings()
     }
     //WebViewの設定（キャッシュ）
     QNetworkDiskCache *cache = new QNetworkDiskCache(q);
-    cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+CACHE_LOCATION_SUFFIX);
     cache->setMaximumCacheSize(1073741824); //about 1024MB
     ui.webView->page()->networkAccessManager()->setCache(cache);
     ui.tabWidget->setCache(cache);
+    //古いキャッシュフォルダを削除
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    if(dir.exists()){
+        dir.removeRecursively();
+    }
 
     QWebSettings *websetting = QWebSettings::globalSettings();
     //JavaScript関連設定
     websetting->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
     websetting->setAttribute(QWebSettings::JavascriptCanCloseWindows, true);
+    websetting->setAttribute(QWebSettings::PluginsEnabled, true);
+    websetting->setAttribute(QWebSettings::JavascriptEnabled, true);
     //フォント設定
 #if defined(Q_OS_WIN32)
 //    websetting->setFontFamily(QWebSettings::StandardFont, "ＭＳ Ｐゴシック");
@@ -1120,6 +1127,7 @@ void MainWindow::Private::setWebSettings()
     websetting->setFontFamily(QWebSettings::FixedFont, "Osaka");
 #else
 #endif
+    QNetworkProxyFactory::setUseSystemConfiguration(true);
     updateProxyConfiguration();
 }
 //ダイアログの作成をする
@@ -1212,10 +1220,6 @@ MainWindow::MainWindow(QWidget *parent, bool not_use_cookie)
         d->ui.exit->setShortcut(QKeySequence(QStringLiteral("Ctrl+Q")));
     }
 
-    //設定
-    QNetworkProxyFactory::setUseSystemConfiguration(true);
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::JavascriptEnabled, true);
     //SSLエラー
     connect(d->ui.webView->page()->networkAccessManager(),
             SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError> & )),
