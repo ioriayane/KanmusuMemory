@@ -815,6 +815,7 @@ void MainWindow::Private::captureCatalog()
     QPainter painter(&resultImg);
 
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
+    ui.webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
     QRect geometry = ui.webView->getGameRect();
 
     if (GameScreen(ui.webView->capture()).screenType() != GameScreen::CatalogScreen)
@@ -1008,7 +1009,7 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
 
     bool old = ui.viewButtleResult->isVisible();
     ui.viewButtleResult->setVisible(false);
-    QImage img = ui.webView->capture();
+    QImage img = ui.webView->capture(false);
     ui.viewButtleResult->setVisible(old);
     if(img.isNull()){
         return;

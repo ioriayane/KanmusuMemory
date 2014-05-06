@@ -395,9 +395,6 @@ bool WebView::gameExists() const
 //ゲームの領域を調べる
 QRect WebView::getGameRect() const
 {
-    //スクロール位置は破壊される
-    //表示位置を一番上へ強制移動
-    page()->mainFrame()->setScrollPosition(QPoint(0, 0));
     //フレームを取得
     QWebFrame *frame = page()->mainFrame();
     if (frame->childFrames().isEmpty()) {
@@ -421,17 +418,26 @@ QRect WebView::getGameRect() const
 }
 
 //ゲーム画面をキャプチャ
-QImage WebView::capture()
+QImage WebView::capture(bool adjustScrollPosition)
 {
     QImage ret;
     QImage temp;
 
     //スクロール位置の保存
     QPoint currentPos = page()->mainFrame()->scrollPosition();
+    //表示位置を一番上へ強制移動
+    if(adjustScrollPosition){
+        page()->mainFrame()->setScrollPosition(QPoint(0, 0));
+    }
+
     QRect geometry = getGameRect();
     if (!geometry.isValid()) {
         emit error(tr("failed find target"));
         goto finally;
+    }
+
+    if(!adjustScrollPosition){
+        geometry.moveTo(geometry.x() - currentPos.x(), geometry.y() - currentPos.y());
     }
 
     {
@@ -461,7 +467,9 @@ QImage WebView::capture()
 
 finally:
     //スクロールの位置を戻す
-    page()->mainFrame()->setScrollPosition(currentPos);
+    if(adjustScrollPosition){
+        page()->mainFrame()->setScrollPosition(currentPos);
+    }
     return ret;
 }
 
