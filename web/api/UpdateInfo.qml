@@ -34,7 +34,7 @@ QtObject {
     property variant message: ["-Adding a function to display the screen veterans report\n-Bug fix\n"
         , "・戦果報告画面のコピーを進撃・撤退選択画面まで表示する機能の追加\n・キャッシュの強制削除機能の追加\n・分割画面にタブが1つもない状態でCtrl+Rを押すと強制終了する不具合の修正\n・アップデート確認機能の内部処理を修正\n・開発環境をQt 5.2.1に変更\n"             //日本語の説明
     ]
-    property string lastFavoriteData: "2014042600"
+    property string lastFavoriteData: "2014050600"
     property string lastTimerSelectGuide: "2014031400"
 }
 

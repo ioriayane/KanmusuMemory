@@ -1,12 +1,12 @@
 {
 "_comment" : "serialは日付+二桁連番で更新されてるか判断する"
-,"serial" : "2014042600"
+,"serial" : "2014050600"
 ,"root" : 
 [
 	{"array":
 	[
-		{ "title": "大日本帝国海軍艦艇(Wikipedia)", "url": ""}
-		, { "title": "大日本帝国海軍艦艇一覧", "url": "http://ja.wikipedia.org/wiki/%E5%A4%A7%E6%97%A5%E6%9C%AC%E5%B8%9D%E5%9B%BD%E6%B5%B7%E8%BB%8D%E8%89%A6%E8%89%87%E4%B8%80%E8%A6%A7"}
+		{ "title": "大日本帝国艦艇(Wikipedia)", "url": ""}
+		, { "title": "大日本帝国艦艇一覧", "url": "http://ja.wikipedia.org/wiki/%E5%A4%A7%E6%97%A5%E6%9C%AC%E5%B8%9D%E5%9B%BD%E6%B5%B7%E8%BB%8D%E8%89%A6%E8%89%87%E4%B8%80%E8%A6%A7"}
 		, {"array":
 		[
 			  { "title": "戦艦", "url": ""}
@@ -301,6 +301,47 @@
 	]}
 	, {"array":
 	[
+		{ "title": "大日本帝国航空機(Wikipedia)", "url": ""}
+		, { "title": "日本製航空機の一覧", "url": "http://ja.wikipedia.org/wiki/%E6%97%A5%E6%9C%AC%E8%A3%BD%E8%88%AA%E7%A9%BA%E6%A9%9F%E3%81%AE%E4%B8%80%E8%A6%A7"}
+		, {"array":
+		[
+			  { "title": "戦闘機", "url": ""}
+			, { "title": "九六式艦上戦闘機", "url": "http://ja.wikipedia.org/wiki/%E4%B9%9D%E5%85%AD%E5%BC%8F%E8%89%A6%E4%B8%8A%E6%88%A6%E9%97%98%E6%A9%9F" }
+			, { "title": "零戦二一型（A6M2b）", "url": "http://ja.wikipedia.org/wiki/%E9%9B%B6%E5%BC%8F%E8%89%A6%E4%B8%8A%E6%88%A6%E9%97%98%E6%A9%9F%E3%81%AE%E6%B4%BE%E7%94%9F%E5%9E%8B#.E9.9B.B6.E6.88.A6.E4.BA.8C.E4.B8.80.E5.9E.8B.EF.BC.88A6M2b.EF.BC.89" }
+			, { "title": "零戦五二型（A6M5）", "url": "http://ja.wikipedia.org/wiki/%E9%9B%B6%E5%BC%8F%E8%89%A6%E4%B8%8A%E6%88%A6%E9%97%98%E6%A9%9F%E3%81%AE%E6%B4%BE%E7%94%9F%E5%9E%8B#.E9.9B.B6.E6.88.A6.E4.BA.94.E4.BA.8C.E5.9E.8B.EF.BC.88A6M5.EF.BC.89" }
+			, { "title": "紫電改", "url": "http://ja.wikipedia.org/wiki/%E7%B4%AB%E9%9B%BB%E6%94%B9" }
+			, { "title": "烈風", "url": "http://ja.wikipedia.org/wiki/%E7%83%88%E9%A2%A8" }
+			, { "title": "震電", "url": "http://ja.wikipedia.org/wiki/%E9%9C%87%E9%9B%BB" }
+		]}
+		, {"array":
+		[
+			  { "title": "攻撃機", "url": ""}
+			, { "title": "九七式艦上攻撃機", "url": "http://ja.wikipedia.org/wiki/%E4%B9%9D%E4%B8%83%E5%BC%8F%E8%89%A6%E4%B8%8A%E6%94%BB%E6%92%83%E6%A9%9F" }
+			, { "title": "天山", "url": "http://ja.wikipedia.org/wiki/%E5%A4%A9%E5%B1%B1_(%E8%88%AA%E7%A9%BA%E6%A9%9F)" }
+			, { "title": "流星", "url": "http://ja.wikipedia.org/wiki/%E6%B5%81%E6%98%9F%E8%89%A6%E4%B8%8A%E6%94%BB%E6%92%83%E6%A9%9F" }
+		]}
+		, {"array":
+		[
+			  { "title": "爆撃機", "url": ""}
+			, { "title": "九九式艦上爆撃機", "url": "http://ja.wikipedia.org/wiki/%E4%B9%9D%E4%B9%9D%E5%BC%8F%E8%89%A6%E4%B8%8A%E7%88%86%E6%92%83%E6%A9%9F" }
+			, { "title": "彗星", "url": "http://ja.wikipedia.org/wiki/%E5%BD%97%E6%98%9F_(%E8%88%AA%E7%A9%BA%E6%A9%9F)" }
+			, { "title": "零戦六二型", "url": "http://ja.wikipedia.org/wiki/%E9%9B%B6%E5%BC%8F%E8%89%A6%E4%B8%8A%E6%88%A6%E9%97%98%E6%A9%9F%E3%81%AE%E6%B4%BE%E7%94%9F%E5%9E%8B#.E9.9B.B6.E6.88.A6.E5.85.AD.E4.BA.8C.E5.9E.8B.2F.E5.85.AD.E4.B8.89.E5.9E.8B.EF.BC.88A6M7.EF.BC.89" }
+			, { "title": "瑞雲", "url": "http://ja.wikipedia.org/wiki/%E7%91%9E%E9%9B%B2_(%E8%88%AA%E7%A9%BA%E6%A9%9F)" }
+			, { "title": "晴嵐", "url": "http://ja.wikipedia.org/wiki/%E6%99%B4%E5%B5%90" }
+		]}
+		, {"array":
+		[
+			  { "title": "偵察機", "url": ""}
+			, { "title": "零式水上偵察機", "url": "http://ja.wikipedia.org/wiki/%E9%9B%B6%E5%BC%8F%E6%B0%B4%E4%B8%8A%E5%81%B5%E5%AF%9F%E6%A9%9F" }
+			, { "title": "零式水上観測機", "url": "http://ja.wikipedia.org/wiki/%E9%9B%B6%E5%BC%8F%E6%B0%B4%E4%B8%8A%E8%A6%B3%E6%B8%AC%E6%A9%9F" }
+			, { "title": "二式艦上偵察機", "url": "http://ja.wikipedia.org/wiki/%E5%BD%97%E6%98%9F_(%E8%88%AA%E7%A9%BA%E6%A9%9F)#.E4.BA.8C.E5.BC.8F.E8.89.A6.E4.B8.8A.E5.81.B5.E5.AF.9F.E6.A9.9F" }
+			, { "title": "彩雲", "url": "http://ja.wikipedia.org/wiki/%E5%BD%A9%E9%9B%B2_(%E8%88%AA%E7%A9%BA%E6%A9%9F)" }
+			, { "title": "三式指揮連絡機", "url": "http://ja.wikipedia.org/wiki/%E4%B8%89%E5%BC%8F%E6%8C%87%E6%8F%AE%E9%80%A3%E7%B5%A1%E6%A9%9F" }
+			, { "title": "カ号観測機", "url": "http://ja.wikipedia.org/wiki/%E3%82%AB%E5%8F%B7%E8%A6%B3%E6%B8%AC%E6%A9%9F" }
+		]}
+	]}
+	, {"array":
+	[
 		{ "title": "ドイツ海軍艦艇(Wikipedia)", "url": ""}
 		, { "title": "ドイツ海軍艦艇一覧", "url": "http://ja.wikipedia.org/wiki/%E3%83%89%E3%82%A4%E3%83%84%E6%B5%B7%E8%BB%8D%E8%89%A6%E8%89%87%E4%B8%80%E8%A6%A7"}
 		, {"array":
@@ -321,6 +362,15 @@
 				, { "title": "Z1 レーベレヒト・マース", "url": "http://ja.wikipedia.org/wiki/%E3%83%AC%E3%83%BC%E3%83%99%E3%83%AC%E3%83%92%E3%83%88%E3%83%BB%E3%83%9E%E3%83%BC%E3%82%B9_(%E9%A7%86%E9%80%90%E8%89%A6)" }
 				, { "title": "Z3 マックス・シュルツ", "url": "http://ja.wikipedia.org/wiki/%E3%83%9E%E3%83%83%E3%82%AF%E3%82%B9%E3%83%BB%E3%82%B7%E3%83%A5%E3%83%AB%E3%83%84_(%E9%A7%86%E9%80%90%E8%89%A6)" }
 			]}
+		]}
+	]}
+	, {"array":
+	[
+		{ "title": "ドイツ航空機(Wikipedia)", "url": ""}
+		, {"array":
+		[
+			  { "title": "爆撃機", "url": ""}
+			, { "title": "Ju87", "url": "http://ja.wikipedia.org/wiki/Ju_87_(%E8%88%AA%E7%A9%BA%E6%A9%9F)" }
 		]}
 	]}
 	, { "title": "「艦これ」開発/運営(Twitter)", "url": "https://mobile.twitter.com/KanColle_STAFF" }
