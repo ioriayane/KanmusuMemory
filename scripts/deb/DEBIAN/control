@@ -1,7 +1,6 @@
 Package: kanmusumemory
 Version: 0.12.0
 Section: games
-Architecture: i386
 Priority: optional
 Maintainer: IoriAYANE <iori.ayane@gmail.com>
 Homepage: http://relog.xii.jp/
