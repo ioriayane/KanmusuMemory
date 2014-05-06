@@ -42,6 +42,9 @@ cp -a ${APPNAME}/lib/* kanmusumemory/usr/local/lib/kanmusumemory/
 cp -a scripts/deb/KanmusuMemory kanmusumemory/usr/local/bin/
 rm kanmusumemory/usr/local/bin/kanmusumemory/KanmusuMemory.sh
 cp -a scripts/deb/Desktop_KanmusuMemory.sh kanmusumemory/usr/local/bin/kanmusumemory/
+sudo chmod 0755 kanmusumemory/DEBIAN/postinst
+sudo chmod 0755 kanmusumemory/DEBIAN/prerm
+sudo chown -R root:root kanmusumemory/
 du -s kanmusumemory| cut -f 1| xargs echo Installed-Size: >> kanmusumemory/DEBIAN/control
 dpkg-deb -b kanmusumemory
 
