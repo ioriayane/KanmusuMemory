@@ -30,6 +30,7 @@
     << "@nowsprinting"\
     << "@EnderAlice"\
     << "@hermit4"\
+    << "@Kaikias_lys"\
     )
 
 //キャシュの内容がQtのバージョンで互換性が無いみたいなので
