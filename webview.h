@@ -34,7 +34,7 @@ public:
 
     bool gameExists() const;
     QRect getGameRect() const;
-    QImage capture();
+    QImage capture(bool adjustScrollPosition = true);
 
     ViewMode viewMode() const;
 

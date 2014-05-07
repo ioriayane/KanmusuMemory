@@ -64,8 +64,8 @@ void GameScreen::Private::detectScreenType()
         //カタログ画面か
         setScreenType(CatalogScreen);
 
-    }else if(fuzzyCompare(color(BUTTLE_RESULT_RECT1), BUTTLE_RESULT_CHECK_COLOR1)
-             && fuzzyCompare(color(BUTTLE_RESULT_RECT2), BUTTLE_RESULT_CHECK_COLOR2)) {
+    }else if(fuzzyCompare(color(BUTTLE_RESULT_RECT1), BUTTLE_RESULT_CHECK_COLOR1, 0x10)
+             && fuzzyCompare(color(BUTTLE_RESULT_RECT2), BUTTLE_RESULT_CHECK_COLOR2, 0x10)) {
         //戦果画面
         setScreenType(ButtleResultScreen);
 
