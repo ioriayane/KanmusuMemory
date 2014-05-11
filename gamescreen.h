@@ -41,7 +41,8 @@ public:
         NightButtleScreen,          //夜戦画面
         ButtleResultScreen,         //戦果画面
         GoOrBackScreen,             //進撃or撤退画面
-        TurnCompassScreen           //羅針盤を回す画面
+        TurnCompassScreen,          //羅針盤を回す画面
+        ExpeditionScreen            //遠征選択画面
     };
 
     enum PartType {
@@ -63,6 +64,10 @@ public:
     ScreenType screenType() const;
     bool isVisible(PartType partType) const;
     bool isContainMajorDamageShip() const;
+
+    int getClickExpeditionItemFleetNo(const QPointF &pos) const;
+    void getExpeditionTime(qint64 *total, qint64 *remain);
+
 
 public slots:
     void click(WebView *webView, PartType partType, WaitInterval waitInterval = WaitNormal);

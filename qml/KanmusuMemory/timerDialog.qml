@@ -61,6 +61,30 @@ Rectangle {
         onTriggered: updateAll()
     }
 
+    //主にC++からtimerDataのプロパティが変更された時の対応
+    Connections {
+        target: timerData
+
+        onExpeditionTimeChanged: {
+            for(var i=0; i<expedition.count; i++){
+                expedition.itemAt(i).setTime = set[i]
+            }
+        }
+        onExpeditionStartChanged: {
+            for(var i=0; i<expedition.count; i++){
+                expedition.itemAt(i).startTime = start[i]
+            }
+        }
+        //C++から動作状況が更新されたら
+        onExpeditionRunningChanged: {
+            for(var i=0; i<expedition.count; i++){
+                if((running[i] == true) && (expedition.itemAt(i).running == false)){
+                    expedition.itemAt(i).restart()
+                }
+            }
+        }
+    }
+
     function updateFromInternet(){
 //        console.debug("start update timer data " + timerData.lastUpdateDate)
 

@@ -77,6 +77,7 @@ public:
     void setFullScreen();
     void setGameSize(qreal factor);
     void checkMajorDamageShip(const QPointF &pos, bool force = false);
+    void checkExpeditionRemainTime(const QPointF &pos);
 
     QList<int> bakSplitterSizes;    //幅のサイズ保存用にとっておく。（非表示だと0になってしまうから）
 private:
@@ -274,6 +275,8 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     connect(ui.webView, &WebView::mousePressed, [this](QMouseEvent *event) {
         //艦隊の被弾状況を調べる
         checkMajorDamageShip(event->localPos());
+        //遠征の残り時間を調べる
+        checkExpeditionRemainTime(event->localPos());
     });
 
     //WebViewの読込み開始
@@ -1078,6 +1081,38 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
         break;
     }
 
+}
+//遠征の残り時間を調べる
+void MainWindow::Private::checkExpeditionRemainTime(const QPointF &pos)
+{
+    QImage img = ui.webView->capture(false);
+    if(img.isNull()){
+        return;
+    }
+    static int last_click_fleet_no = -1;
+    GameScreen gameScreen(img);
+    if(gameScreen.screenType() == GameScreen::ExpeditionScreen){
+        QRect game_rect = ui.webView->getGameRect();
+        QPointF game_pos(pos.x() - game_rect.x(), pos.y() - game_rect.y());
+
+        qDebug() << "Expedition";
+        if(last_click_fleet_no == -1){
+            last_click_fleet_no = gameScreen.getClickExpeditionItemFleetNo(game_pos);
+            qDebug() << "  checkExpeditionRemainTime:" << last_click_fleet_no;
+        }else{
+            qint64 total;
+            qint64 remain;
+            gameScreen.getExpeditionTime(&total, &remain);
+            qDebug() << "  checkExpeditionRemainTime: total=" << total << ", remain=" << remain;
+
+            if(m_timerDialog != NULL){
+                m_timerDialog->updateTimerSetting(1, last_click_fleet_no, remain, total);
+            }
+            last_click_fleet_no = -1;
+        }
+    }else{
+        last_click_fleet_no = -1;
+    }
 }
 
 //Webページに関連する設定をする

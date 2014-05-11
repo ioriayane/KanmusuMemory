@@ -179,5 +179,17 @@
 #define BUTTLE_COMPASS_CHECK_COLOR      (qRgb(51 , 24 , 24))
 #define BUTTLE_COMPASS_RECT             (QRect(380, 140, 40, 100))
 
+//遠征画面
+#define EXPEDITION_CHECK_COLOR          (qRgb(179, 154, 118))
+#define EXPEDITION_RECT                 (QRect(305, 100, 250, 25))
+//遠征項目領域
+#define EXPEDITION_ITEM1_RECT           (QRect(117, 158, 440, 30))
+#define EXPEDITION_ITEM2_RECT           (QRect(117, 188, 440, 30))
+#define EXPEDITION_ITEM3_RECT           (QRect(117, 218, 440, 30))
+#define EXPEDITION_ITEM4_RECT           (QRect(117, 248, 440, 30))
+#define EXPEDITION_ITEM5_RECT           (QRect(117, 278, 440, 30))
+#define EXPEDITION_ITEM6_RECT           (QRect(117, 308, 440, 30))
+#define EXPEDITION_ITEM7_RECT           (QRect(117, 338, 440, 30))
+#define EXPEDITION_ITEM8_RECT           (QRect(117, 368, 440, 30))
 
 #endif // KANMUSUMEMORY_GLOBAL_H

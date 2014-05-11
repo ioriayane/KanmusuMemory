@@ -161,6 +161,20 @@ void TimerDialog::setLastTimerSelectGuideUpdateDate(const QString &lastTimerSele
     m_timerdata.setLastUpdateDate(lastTimerSelectGuideUpdateDate);
 }
 
+//タイマーの設定時間を更新する
+void TimerDialog::updateTimerSetting(const int kind, const int fleet_no, const qint64 remain, const qint64 total)
+{
+    qint64 now = QDateTime::currentMSecsSinceEpoch();
+    int index = fleet_no - 2;
+
+    if(index < 0)   index = 0;
+    if(index >= 3)  index = 2;
+
+    m_timerdata.setTime(kind, index, total);
+    m_timerdata.setStartTime(kind, index, now - (total - remain));
+    m_timerdata.setRunning(kind, index, true);
+}
+
 
 //時間が来ているかチェックする
 bool TimerDialog::checkKanmemoTimerTimeout(qint64 settime, qint64 starttime)
