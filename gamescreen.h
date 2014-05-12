@@ -67,7 +67,8 @@ public:
 
     int getClickExpeditionItemFleetNo(const QPointF &pos) const;
     void getExpeditionTime(qint64 *total, qint64 *remain);
-
+    int getExpeditionFleetNo() const;
+    bool isClickExpeditionStartButton(const QPointF &pos) const;
 
 public slots:
     void click(WebView *webView, PartType partType, WaitInterval waitInterval = WaitNormal);

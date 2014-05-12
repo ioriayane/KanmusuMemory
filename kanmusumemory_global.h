@@ -192,4 +192,18 @@
 #define EXPEDITION_ITEM7_RECT           (QRect(117, 338, 440, 30))
 #define EXPEDITION_ITEM8_RECT           (QRect(117, 368, 440, 30))
 
+#define EXPEDITION_ITEM_COMFIRM_RECT    (QRect(626, 424, 104, 40))      //遠征の項目決定ボタンの位置
+#define EXPEDITION_ITEM_START_RECT      (QRect(546, 424, 167, 43))      //遠征開始ボタン
+#define EXPEDITION_ITEM_START_OUT_RECT  (QRect(0, 0,0, 0))   //遠征出発の有効エリア（コレを外れると戻る）
+
+//遠征開始時の艦隊番号
+#define EXPEDITION_SELECT_FLEET_2_RECT  (QRect(381, 108, 23, 20))
+#define EXPEDITION_SELECT_FLEET_3_RECT  (QRect(411, 108, 23, 20))
+#define EXPEDITION_SELECT_FLEET_4_RECT  (QRect(441, 108, 23, 20))
+#define EXPEDITION_SELECT_FLEET_RECT    (QRect(381, 108, 84, 21))
+
+//遠征開始ボタン
+#define EXPEDITION_START_BUTTON_RECT    (QRect(546, 424, 167, 43))
+#define EXPEDITION_START_BUTTON_COLOR   (qRgb(210 , 157 , 90))
+
 #endif // KANMUSUMEMORY_GLOBAL_H

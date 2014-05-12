@@ -1089,29 +1089,66 @@ void MainWindow::Private::checkExpeditionRemainTime(const QPointF &pos)
     if(img.isNull()){
         return;
     }
+    QRect game_rect = ui.webView->getGameRect();
+    QPointF game_pos(pos.x() - game_rect.x(), pos.y() - game_rect.y());
     static int last_click_fleet_no = -1;
+    static qint64 last_select_total = -1;
+    static int screen_state = -1;
+    //0:item選択
+    //1:item決定押した
+    //2:遠征開始を押した（元画面に戻ってくる）
     GameScreen gameScreen(img);
     if(gameScreen.screenType() == GameScreen::ExpeditionScreen){
-        QRect game_rect = ui.webView->getGameRect();
-        QPointF game_pos(pos.x() - game_rect.x(), pos.y() - game_rect.y());
 
         qDebug() << "Expedition";
-        if(last_click_fleet_no == -1){
-            last_click_fleet_no = gameScreen.getClickExpeditionItemFleetNo(game_pos);
-            qDebug() << "  checkExpeditionRemainTime:" << last_click_fleet_no;
-        }else{
-            qint64 total;
-            qint64 remain;
-            gameScreen.getExpeditionTime(&total, &remain);
-            qDebug() << "  checkExpeditionRemainTime: total=" << total << ", remain=" << remain;
 
+        //時間の取得
+        qint64 total;
+        qint64 remain;
+        gameScreen.getExpeditionTime(&total, &remain);
+        qDebug() << "  checkExpeditionRemainTime: total=" << total << ", remain=" << remain;
+
+        //項目選択済みなら時間を設定
+        if((last_click_fleet_no != -1) && (total != -1) && (remain != -1)){
             if(m_timerDialog != NULL){
                 m_timerDialog->updateTimerSetting(1, last_click_fleet_no, remain, total);
             }
             last_click_fleet_no = -1;
         }
+
+        //メモ：遠征出撃からの時は取得できるまで項目選択をしない？
+
+        //項目選択したか確認
+        last_click_fleet_no = gameScreen.getClickExpeditionItemFleetNo(game_pos);
+        qDebug() << "  checkExpeditionRemainTime:" << last_click_fleet_no;
+
+        //出撃済み遠征を選択してなくて決定を押した？かつ、トータルが取得できて残りが取れないとき
+        if((last_click_fleet_no == -1)
+                && EXPEDITION_ITEM_COMFIRM_RECT.contains(game_pos.x(), game_pos.y())
+                && (total != -1)
+                && (remain == -1)){
+            qDebug() << "  click comfirm " << total;
+            last_select_total = total;
+        }
+
+    }else if(last_select_total != -1){
+        //決定が押されて艦隊選択になっているはず
+        qDebug() << "  select fleet and start.";
+        if(gameScreen.isClickExpeditionStartButton(game_pos)){
+            //開始ボタンを押した
+            qDebug() << "    click start";
+            //艦隊番号確認
+            int fleet_no = gameScreen.getExpeditionFleetNo();
+            //設定を投げる
+            if(m_timerDialog != NULL){
+                m_timerDialog->updateTimerSetting(1, fleet_no, last_select_total, last_select_total);
+            }
+            //クリア
+            last_select_total = -1;
+        }
     }else{
         last_click_fleet_no = -1;
+        last_select_total = -1;
     }
 }
 

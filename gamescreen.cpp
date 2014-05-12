@@ -49,6 +49,8 @@ public:
 
     int getClickExpeditionItemFleetNo(const QPointF &pos);
     void getExpeditionTime(qint64 *total, qint64 *remain);
+    int getExpeditionFleetNo();
+    bool isClickExpeditionStartButton(const QPointF &pos);
 
 private:
     void detectScreenType();
@@ -312,6 +314,9 @@ void GameScreen::Private::getExpeditionTime(qint64 *total, qint64 *remain)
         //各桁の値を取り出す
         int remain_value[6];
         int total_value[6];
+        bool remain_error = false;
+        bool total_error = false;
+
         for(int i=0; i<6; i++){
             remain_value[i] = numberMatching(work, expeditionRemainTimeRectList.at(i)
                                              , expeditionNumberGuideList, QSize(9, 13));
@@ -321,9 +326,49 @@ void GameScreen::Private::getExpeditionTime(qint64 *total, qint64 *remain)
         qDebug() << "  getExpeditionTime:" << total_value[0] << total_value[1] << total_value[2] << total_value[3] << total_value[4] << total_value[5];
         qDebug() << "                   :" << remain_value[0] << remain_value[1] << remain_value[2] << remain_value[3] << remain_value[4] << remain_value[5];
 
-        *remain = ((remain_value[0]*10+remain_value[1])*3600 + (remain_value[2]*10+remain_value[3])*60 + remain_value[4]*10+remain_value[5])*1000;
-        *total = ((total_value[0]*10+total_value[1])*3600 + (total_value[2]*10+total_value[3])*60 + total_value[4]*10+total_value[5])*1000;
-
+        for(int i=0; i<6; i++){
+            if(remain_value[i] == -1)   remain_error = true;
+            if(total_value[i] == -1)    total_error = true;
+        }
+        if(remain_error){
+            *remain = -1;
+        }else{
+            *remain = ((remain_value[0]*10+remain_value[1])*3600 + (remain_value[2]*10+remain_value[3])*60 + remain_value[4]*10+remain_value[5])*1000;
+        }
+        if(total_error){
+            *total = -1;
+        }else{
+            *total = ((total_value[0]*10+total_value[1])*3600 + (total_value[2]*10+total_value[3])*60 + total_value[4]*10+total_value[5])*1000;
+        }
+    }
+}
+//遠征開始時に選択している艦隊番号を取得する
+int GameScreen::Private::getExpeditionFleetNo()
+{
+    int ret = -1;
+    QImage work(image);
+    //2値化
+    imageBinarization(&work, EXPEDITION_SELECT_FLEET_RECT, 100, qRgb(255,255,255), qRgb(0,0,0));
+    //旗の位置の色を取得
+    QRgb rgb2 = color(work, QRect(381, 108, 23, 20));
+    QRgb rgb3 = color(work, QRect(411, 108, 23, 20));
+    QRgb rgb4 = color(work, QRect(441, 108, 23, 20));
+    if(fuzzyCompare(rgb2, qRgb(255,255,255), 5)){
+        ret = 2;
+    }else if(fuzzyCompare(rgb3, qRgb(255,255,255), 5)){
+        ret = 3;
+    }else if(fuzzyCompare(rgb4, qRgb(255,255,255), 5)){
+        ret = 4;
+    }
+    return ret;
+}
+//遠征開始ボタンを押したか？
+bool GameScreen::Private::isClickExpeditionStartButton(const QPointF &pos)
+{
+    if(EXPEDITION_START_BUTTON_RECT.contains(pos.x(), pos.y())){
+        return fuzzyCompare(color(EXPEDITION_START_BUTTON_RECT), EXPEDITION_START_BUTTON_COLOR);
+    }else{
+        return false;
     }
 }
 
@@ -463,6 +508,16 @@ int GameScreen::getClickExpeditionItemFleetNo(const QPointF &pos) const
 void GameScreen::getExpeditionTime(qint64 *total, qint64 *remain)
 {
     d->getExpeditionTime(total, remain);
+}
+//遠征開始時に選択してる艦隊番号取得する
+int GameScreen::getExpeditionFleetNo() const
+{
+    return d->getExpeditionFleetNo();
+}
+//遠征開始ボタンを押したか？
+bool GameScreen::isClickExpeditionStartButton(const QPointF &pos) const
+{
+    return d->isClickExpeditionStartButton(pos);
 }
 
 void GameScreen::click(WebView *webView, GameScreen::PartType partType, GameScreen::WaitInterval waitInterval)
