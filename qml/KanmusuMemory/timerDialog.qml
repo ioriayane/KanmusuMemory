@@ -85,6 +85,23 @@ Rectangle {
         }
     }
 
+    //C++から止める
+    function stop(kind, index){
+        switch(kind){
+        case 0:
+            docking.itemAt(index).stop()
+            break
+        case 1:
+            expedition.itemAt(index).stop()
+            break
+        case 2:
+            construction.itemAt(index).stop()
+            break
+        default:
+            break
+        }
+    }
+
     function updateFromInternet(){
 //        console.debug("start update timer data " + timerData.lastUpdateDate)
 

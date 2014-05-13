@@ -44,6 +44,15 @@ TimerDialog::TimerDialog(QWidget *parent
 
     loadSettings();
 
+    //QMLの読み込み
+    m_viewer = new QtQuick2ApplicationViewer(windowHandle());
+    connect(m_viewer->engine(), SIGNAL(quit()), this, SLOT(closeQml()));
+    //C++のデータをQML側へ公開
+    m_viewer->rootContext()->setContextProperty("timerData", &m_timerdata);
+    //QML設定して表示
+    m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/timerDialog.qml"));
+    ui->layout->addWidget(QWidget::createWindowContainer(m_viewer, this));
+
     m_timer.start(10000);
 }
 
@@ -68,16 +77,21 @@ void TimerDialog::resizeEvent(QResizeEvent *event)
 void TimerDialog::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event);
-    if(m_viewer == NULL){
-        m_viewer = new QtQuick2ApplicationViewer(windowHandle());
-        connect(m_viewer->engine(), SIGNAL(quit()), this, SLOT(closeQml()));
+//    if(m_viewer == NULL){
+//        m_viewer = new QtQuick2ApplicationViewer(windowHandle());
+//        connect(m_viewer->engine(), SIGNAL(quit()), this, SLOT(closeQml()));
 
-        //C++のデータをQML側へ公開
-        m_viewer->rootContext()->setContextProperty("timerData", &m_timerdata);
+//        //C++のデータをQML側へ公開
+//        m_viewer->rootContext()->setContextProperty("timerData", &m_timerdata);
 
-        //QML設定して表示
-        m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/timerDialog.qml"));
-        m_viewer->show();
+//        //QML設定して表示
+//        m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/timerDialog.qml"));
+//        m_viewer->show();
+//        QSize contentSize = m_viewer->rootObject()->childrenRect().toRect().size() + QSize(DIALOG_MARGIN,DIALOG_MARGIN);
+//        setMinimumSize(contentSize);
+//        setMaximumSize(contentSize);
+//    }
+    if(m_viewer != NULL){
         QSize contentSize = m_viewer->rootObject()->childrenRect().toRect().size() + QSize(DIALOG_MARGIN,DIALOG_MARGIN);
         setMinimumSize(contentSize);
         setMaximumSize(contentSize);
@@ -170,6 +184,11 @@ void TimerDialog::updateTimerSetting(const int kind, const int fleet_no, const q
     if(index < 0)   index = 0;
     if(index >= 3)  index = 2;
 
+    if(m_viewer != NULL){
+        QMetaObject::invokeMethod(m_viewer->rootObject(), "stop"
+                                  , Q_ARG(QVariant, QVariant::fromValue(kind))
+                                  , Q_ARG(QVariant, QVariant::fromValue(index)));
+    }
     m_timerdata.setTime(kind, index, total);
     m_timerdata.setStartTime(kind, index, now - (total - remain));
     m_timerdata.setRunning(kind, index, true);
