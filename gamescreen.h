@@ -18,6 +18,8 @@
 
 #include <QtCore/QObject>
 
+#include "recognizeinfo.h"
+
 class WebView;
 
 class GameScreen : public QObject
@@ -60,7 +62,7 @@ public:
         WaitLonger = 1500
     };
 
-    explicit GameScreen(const QImage &image, QObject *parent = 0);
+    explicit GameScreen(const QImage &image, RecognizeInfo *recogExpediInfo = NULL, QObject *parent = 0);
     ScreenType screenType() const;
     bool isVisible(PartType partType) const;
     bool isContainMajorDamageShip() const;

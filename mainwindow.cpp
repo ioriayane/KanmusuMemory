@@ -543,6 +543,7 @@ void MainWindow::Private::openSettingDialog()
     dlg.setViewButtleResult(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool());
     dlg.setButtleResultPosition(static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt()));
     dlg.setButtleResultOpacity(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal());
+    dlg.setTimerAutoStart(settings.value(QStringLiteral(SETTING_GENERAL_TIMER_AUTO_START), false).toBool());
     if (dlg.exec()) {
         //設定更新
         settings.setValue(QStringLiteral("path"), dlg.savePath());
@@ -559,6 +560,7 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT, dlg.viewButtleResult());
         settings.setValue(SETTING_GENERAL_BUTTLE_RESULT_POSITION, static_cast<int>(dlg.buttleResultPosition()));
         settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY, dlg.buttleResultOpacity());
+        settings.setValue(SETTING_GENERAL_TIMER_AUTO_START, dlg.timerAutoStart());
 
         //戦果報告の表示位置などを更新
         ui.viewButtleResult->setVisible(ui.viewButtleResult->isVisible() & dlg.viewButtleResult());
@@ -1085,6 +1087,9 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
 //遠征の残り時間を調べる
 void MainWindow::Private::checkExpeditionRemainTime(const QPointF &pos)
 {
+    if(!settings.value(QStringLiteral(SETTING_GENERAL_TIMER_AUTO_START), false).toBool()){
+        return;
+    }
     QImage img = ui.webView->capture(false);
     if(img.isNull()){
         return;
@@ -1093,7 +1098,6 @@ void MainWindow::Private::checkExpeditionRemainTime(const QPointF &pos)
     QPointF game_pos(pos.x() - game_rect.x(), pos.y() - game_rect.y());
     static int last_click_fleet_no = -1;
     static qint64 last_select_total = -1;
-    static int screen_state = -1;
     //0:item選択
     //1:item決定押した
     //2:遠征開始を押した（元画面に戻ってくる）

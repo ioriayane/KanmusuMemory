@@ -59,6 +59,7 @@
 #define SETTING_GENERAL_VIEW_BUTTLE_RESULT  "view_buttle_result"
 #define SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY  "view_buttle_result_opacity"
 #define SETTING_GENERAL_BUTTLE_RESULT_POSITION  "buttle_result_position"
+#define SETTING_GENERAL_TIMER_AUTO_START    "timer_auto_start"
 //設定：ウインドウ位置
 #define SETTING_MAINWINDOW          "mainwindow"
 #define SETTING_TIMERDIALOG         "timerdialog"

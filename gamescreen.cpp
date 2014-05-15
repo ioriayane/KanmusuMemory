@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 #include "gamescreen.h"
 #include "kanmusumemory_global.h"
 #include "webview.h"
+#include "numberguide.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDebug>
@@ -26,22 +27,11 @@
 #include <QtGui/QImage>
 #include <QtGui/QMouseEvent>
 
-class NumberGuide{
-public:
-    NumberGuide(QString path, int number, int border){
-        image = QImage(path);
-        this->number = number;
-        this->border = border;
-    }
-    QImage image;
-    int number;
-    int border;
-};
 
 class GameScreen::Private
 {
 public:
-    Private(const QImage &image, GameScreen *parent);
+    Private(const QImage &image, GameScreen *parent, RecognizeInfo *recognizeInfo);
     bool isVisible(PartType partType) const;
     void click(WebView *webView, GameScreen::PartType partType, GameScreen::WaitInterval waitInterval);
     bool isContainMajorDamageShip() const;
@@ -65,79 +55,29 @@ private:
     GameScreen *q;
     QImage image;
 
-    QList<QRect> expeditionItemRectList;
+    //認識に必要な情報を管理してくれるクラス
+    RecognizeInfo *recognizeInfo;
 
-    QList<NumberGuide> expeditionFlagGuideList;
-    QList<QRect> expeditionFlagRectList;
-
-    QList<NumberGuide> expeditionNumberGuideList;
-    QList<QRect> expeditionRemainTimeRectList;
-    QList<QRect> expeditionTotalTimeRectList;
 
 public:
     GameScreen::ScreenType screenType;
 };
 
-GameScreen::Private::Private(const QImage &image, GameScreen *parent)
+GameScreen::Private::Private(const QImage &image, GameScreen *parent, RecognizeInfo *recogExpediInfo)
     : q(parent)
     , image(image)
     , screenType(UnknownScreen)
 {
+    //認識に必要な情報を管理してくれるクラス
+    if(recogExpediInfo != NULL){
+        //外から指定されたらそっちを使う
+        this->recognizeInfo = recogExpediInfo;
+    }else{
+        //NULLなら
+        this->recognizeInfo = new RecognizeInfo();
+    }
+
     detectScreenType();
-
-    //遠征のアイテムの四角
-    expeditionItemRectList.append(EXPEDITION_ITEM1_RECT);
-    expeditionItemRectList.append(EXPEDITION_ITEM2_RECT);
-    expeditionItemRectList.append(EXPEDITION_ITEM3_RECT);
-    expeditionItemRectList.append(EXPEDITION_ITEM4_RECT);
-    expeditionItemRectList.append(EXPEDITION_ITEM5_RECT);
-    expeditionItemRectList.append(EXPEDITION_ITEM6_RECT);
-    expeditionItemRectList.append(EXPEDITION_ITEM7_RECT);
-    expeditionItemRectList.append(EXPEDITION_ITEM8_RECT);
-
-    //タイマーの時間の位置
-    expeditionNumberGuideList.append(NumberGuide(":/resources/NumberGuide0.png", 0, 10));
-    expeditionNumberGuideList.append(NumberGuide(":/resources/NumberGuide4.png", 4, 14));
-    expeditionNumberGuideList.append(NumberGuide(":/resources/NumberGuide1.png", 1, 10));
-    expeditionNumberGuideList.append(NumberGuide(":/resources/NumberGuide2.png", 2, 10));
-    expeditionNumberGuideList.append(NumberGuide(":/resources/NumberGuide3.png", 3, 10));
-    expeditionNumberGuideList.append(NumberGuide(":/resources/NumberGuide5.png", 5, 11));
-    expeditionNumberGuideList.append(NumberGuide(":/resources/NumberGuide6.png", 6, 10));
-    expeditionNumberGuideList.append(NumberGuide(":/resources/NumberGuide7.png", 7, 10));
-    expeditionNumberGuideList.append(NumberGuide(":/resources/NumberGuide9.png", 9, 10));
-    expeditionNumberGuideList.append(NumberGuide(":/resources/NumberGuide8.png", 8, 14));
-
-    //残り時間の位置（6個必須）
-    expeditionRemainTimeRectList.append(QRect(722, 387, 9, 13));
-    expeditionRemainTimeRectList.append(QRect(731, 387, 9, 13));
-    expeditionRemainTimeRectList.append(QRect(745, 387, 9, 13));
-    expeditionRemainTimeRectList.append(QRect(754, 387, 9, 13));
-    expeditionRemainTimeRectList.append(QRect(767, 387, 9, 13));
-    expeditionRemainTimeRectList.append(QRect(776, 387, 9, 13));
-
-    //トータル時間の位置（6個必須）
-    expeditionTotalTimeRectList.append(QRect(725, 265, 9, 13));
-    expeditionTotalTimeRectList.append(QRect(734, 265, 9, 13));
-    expeditionTotalTimeRectList.append(QRect(747, 265, 9, 13));
-    expeditionTotalTimeRectList.append(QRect(756, 265, 9, 13));
-    expeditionTotalTimeRectList.append(QRect(770, 265, 9, 13));
-    expeditionTotalTimeRectList.append(QRect(779, 265, 9, 13));
-
-
-    //遠征の旗の位置
-    expeditionFlagGuideList.append(NumberGuide(":/resources/FlagGuide2.png", 2, 5));
-    expeditionFlagGuideList.append(NumberGuide(":/resources/FlagGuide3.png", 3, 5));
-    expeditionFlagGuideList.append(NumberGuide(":/resources/FlagGuide4.png", 4, 5));
-
-    expeditionFlagRectList.append(QRect(517, 163, 23, 20));
-    expeditionFlagRectList.append(QRect(517, 193, 23, 20));
-    expeditionFlagRectList.append(QRect(517, 223, 23, 20));
-    expeditionFlagRectList.append(QRect(517, 253, 23, 20));
-    expeditionFlagRectList.append(QRect(517, 283, 23, 20));
-    expeditionFlagRectList.append(QRect(517, 313, 23, 20));
-    expeditionFlagRectList.append(QRect(517, 343, 23, 20));
-    expeditionFlagRectList.append(QRect(517, 373, 23, 20));
-
 }
 //表示してる画面を判定
 void GameScreen::Private::detectScreenType()
@@ -288,14 +228,14 @@ int GameScreen::Private::getClickExpeditionItemFleetNo(const QPointF &pos)
 {
     int ret = -1;
     if(screenType == ExpeditionScreen){
-        for(int i=0; i<expeditionItemRectList.length(); i++){
-            if(expeditionItemRectList.at(i).contains(pos.x(), pos.y())){
+        for(int i=0; i<recognizeInfo->itemRectList().length(); i++){
+            if(recognizeInfo->itemRectList().at(i).contains(pos.x(), pos.y())){
                 QImage work(image);
                 //2値化
                 imageBinarization(&work, work.rect(), 200, qRgb(255,255,255), qRgb(0,0,0));
                 //既に遠征に出ているマークあるか
-                int click_item_number = numberMatching(work, expeditionFlagRectList.at(i)
-                                                       , expeditionFlagGuideList, QSize(23, 20));
+                int click_item_number = numberMatching(work, recognizeInfo->flagRectList().at(i)
+                                                       , recognizeInfo->flagGuideList(), QSize(23, 20));
                 qDebug() << "  checkClickExpeditionItem:pos=" << i << ", fleet=" << click_item_number;
                 ret = click_item_number;
                 break;
@@ -318,10 +258,10 @@ void GameScreen::Private::getExpeditionTime(qint64 *total, qint64 *remain)
         bool total_error = false;
 
         for(int i=0; i<6; i++){
-            remain_value[i] = numberMatching(work, expeditionRemainTimeRectList.at(i)
-                                             , expeditionNumberGuideList, QSize(9, 13));
-            total_value[i] = numberMatching(work, expeditionTotalTimeRectList.at(i)
-                                            , expeditionNumberGuideList, QSize(9, 13));
+            remain_value[i] = numberMatching(work, recognizeInfo->remainTimeRectList().at(i)
+                                             , recognizeInfo->numberGuideList(), QSize(9, 13));
+            total_value[i] = numberMatching(work, recognizeInfo->totalTimeRectList().at(i)
+                                            , recognizeInfo->numberGuideList(), QSize(9, 13));
         }
         qDebug() << "  getExpeditionTime:" << total_value[0] << total_value[1] << total_value[2] << total_value[3] << total_value[4] << total_value[5];
         qDebug() << "                   :" << remain_value[0] << remain_value[1] << remain_value[2] << remain_value[3] << remain_value[4] << remain_value[5];
@@ -478,9 +418,9 @@ void GameScreen::Private::setScreenType(GameScreen::ScreenType s)
     emit q->screenTypeChanged(s);
 }
 
-GameScreen::GameScreen(const QImage &image, QObject *parent)
+GameScreen::GameScreen(const QImage &image, RecognizeInfo *recogExpediInfo, QObject *parent)
     : QObject(parent)
-    , d(new Private(image, this))
+    , d(new Private(image, this, recogExpediInfo))
 {
     connect(this, &QObject::destroyed, [this]() { delete d; });
 }

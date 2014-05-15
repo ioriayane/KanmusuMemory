@@ -3,6 +3,8 @@ TARGET = KanmusuMemory
 QT       += core gui network webkitwidgets twitterapi
 CONFIG += c++11
 
+CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
+
 SOURCES += main.cpp\
         mainwindow.cpp \
     tweetdialog.cpp \
@@ -19,7 +21,8 @@ SOURCES += main.cpp\
     favoritemenu.cpp \
     updateinfodialog.cpp \
     webpage.cpp \
-    fleetdetaildialog.cpp
+    fleetdetaildialog.cpp \
+    recognizeinfo.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -38,7 +41,9 @@ HEADERS  += mainwindow.h \
     favoritemenu.h \
     updateinfodialog.h \
     webpage.h \
-    fleetdetaildialog.h
+    fleetdetaildialog.h \
+    numberguide.h \
+    recognizeinfo.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \
