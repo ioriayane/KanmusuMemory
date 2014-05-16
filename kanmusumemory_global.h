@@ -19,8 +19,8 @@
 #define KANMEMO_NAME "KanmusuMemory"
 #define KANMEMO_NAME_FAV "KanmusuMemoryFav"
 #define KANMEMO_PROJECT "KanmemoProject"
-#define KANMEMO_VERSION "0.12"
-#define KANMEMO_VERSION_CODE 13
+#define KANMEMO_VERSION "0.13"
+#define KANMEMO_VERSION_CODE 14
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
     << "@task_jp"\
