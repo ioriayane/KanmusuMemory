@@ -47,6 +47,7 @@ public:
     bool viewButtleResult() const;
     ButtleResultPosition buttleResultPosition() const;
     qreal buttleResultOpacity() const;
+    bool timerAutoStart() const;
 
     static QString selectSavePath(QWidget *parent, const QString &currentPath);
 
@@ -65,6 +66,7 @@ public slots:
     void setViewButtleResult(bool view);
     void setButtleResultPosition(ButtleResultPosition position);
     void setButtleResultOpacity(qreal opacity);
+    void setTimerAutoStart(bool start);
 
 signals:
     void savePathChanged(const QString &savePath);
@@ -81,6 +83,7 @@ signals:
     void viewButtleResultChanged(bool view);
     void buttleResultPositionChanged(ButtleResultPosition position);
     void buttleResultOpacityChanged(qreal opacity);
+    void timerAutoStartChanged(bool start);
 
 private:
     class Private;

@@ -46,6 +46,7 @@ public:
     bool viewButtleResult;
     SettingsDialog::ButtleResultPosition buttleResultPosition;
     qreal buttleResultOpacity;
+    bool timerAutoStart;
 };
 
 SettingsDialog::Private::Private(SettingsDialog *parent)
@@ -87,6 +88,8 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         case 3:     buttleResultOpacity = 0.25;         break;
         default:    buttleResultOpacity = 1.0;          break;
         }
+
+        timerAutoStart = ui.timerAutoStartCheckBox->isChecked();
 
         q->accept();
     });
@@ -137,6 +140,7 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
             ui.buttleResultOpacityComboBox->setCurrentIndex(0);
         }
     });
+    connect(q, &SettingsDialog::timerAutoStartChanged, ui.timerAutoStartCheckBox, &QCheckBox::setChecked);
 
     QSpinBox * portNum = ui.proxyPort;
     portNum->setMinimum(1);
@@ -277,6 +281,11 @@ qreal SettingsDialog::buttleResultOpacity() const
     return d->buttleResultOpacity;
 }
 
+bool SettingsDialog::timerAutoStart() const
+{
+    return d->timerAutoStart;
+}
+
 void SettingsDialog::setProxyPort(quint16 proxyPort)
 {
     if(d->proxyPort == proxyPort) return;
@@ -324,4 +333,11 @@ void SettingsDialog::setButtleResultOpacity(qreal opacity)
     if(d->buttleResultOpacity == opacity)   return;
     d->buttleResultOpacity = opacity;
     emit buttleResultOpacityChanged(opacity);
+}
+
+void SettingsDialog::setTimerAutoStart(bool start)
+{
+    if(d->timerAutoStart == start)  return;
+    d->timerAutoStart = start;
+    emit timerAutoStartChanged(start);
 }

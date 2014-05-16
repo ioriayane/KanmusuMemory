@@ -77,6 +77,7 @@ public:
     void setFullScreen();
     void setGameSize(qreal factor);
     void checkMajorDamageShip(const QPointF &pos, bool force = false);
+    void checkExpeditionRemainTime(const QPointF &pos);
 
     QList<int> bakSplitterSizes;    //幅のサイズ保存用にとっておく。（非表示だと0になってしまうから）
 private:
@@ -274,6 +275,8 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     connect(ui.webView, &WebView::mousePressed, [this](QMouseEvent *event) {
         //艦隊の被弾状況を調べる
         checkMajorDamageShip(event->localPos());
+        //遠征の残り時間を調べる
+        checkExpeditionRemainTime(event->localPos());
     });
 
     //WebViewの読込み開始
@@ -540,6 +543,7 @@ void MainWindow::Private::openSettingDialog()
     dlg.setViewButtleResult(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool());
     dlg.setButtleResultPosition(static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt()));
     dlg.setButtleResultOpacity(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal());
+    dlg.setTimerAutoStart(settings.value(QStringLiteral(SETTING_GENERAL_TIMER_AUTO_START), false).toBool());
     if (dlg.exec()) {
         //設定更新
         settings.setValue(QStringLiteral("path"), dlg.savePath());
@@ -556,6 +560,7 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT, dlg.viewButtleResult());
         settings.setValue(SETTING_GENERAL_BUTTLE_RESULT_POSITION, static_cast<int>(dlg.buttleResultPosition()));
         settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY, dlg.buttleResultOpacity());
+        settings.setValue(SETTING_GENERAL_TIMER_AUTO_START, dlg.timerAutoStart());
 
         //戦果報告の表示位置などを更新
         ui.viewButtleResult->setVisible(ui.viewButtleResult->isVisible() & dlg.viewButtleResult());
@@ -1078,6 +1083,77 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
         break;
     }
 
+}
+//遠征の残り時間を調べる
+void MainWindow::Private::checkExpeditionRemainTime(const QPointF &pos)
+{
+    if(!settings.value(QStringLiteral(SETTING_GENERAL_TIMER_AUTO_START), false).toBool()){
+        return;
+    }
+    QImage img = ui.webView->capture(false);
+    if(img.isNull()){
+        return;
+    }
+    QRect game_rect = ui.webView->getGameRect();
+    QPointF game_pos(pos.x() - game_rect.x(), pos.y() - game_rect.y());
+    static int last_click_fleet_no = -1;
+    static qint64 last_select_total = -1;
+    //0:item選択
+    //1:item決定押した
+    //2:遠征開始を押した（元画面に戻ってくる）
+    GameScreen gameScreen(img);
+    if(gameScreen.screenType() == GameScreen::ExpeditionScreen){
+
+        qDebug() << "Expedition";
+
+        //時間の取得
+        qint64 total;
+        qint64 remain;
+        gameScreen.getExpeditionTime(&total, &remain);
+        qDebug() << "  checkExpeditionRemainTime: total=" << total << ", remain=" << remain;
+
+        //項目選択済みなら時間を設定
+        if((last_click_fleet_no != -1) && (total != -1) && (remain != -1)){
+            if(m_timerDialog != NULL){
+                m_timerDialog->updateTimerSetting(1, last_click_fleet_no, remain, total);
+            }
+            last_click_fleet_no = -1;
+        }
+
+        //メモ：遠征出撃からの時は取得できるまで項目選択をしない？
+
+        //項目選択したか確認
+        last_click_fleet_no = gameScreen.getClickExpeditionItemFleetNo(game_pos);
+        qDebug() << "  checkExpeditionRemainTime:" << last_click_fleet_no;
+
+        //出撃済み遠征を選択してなくて決定を押した？かつ、トータルが取得できて残りが取れないとき
+        if((last_click_fleet_no == -1)
+                && EXPEDITION_ITEM_COMFIRM_RECT.contains(game_pos.x(), game_pos.y())
+                && (total != -1)
+                && (remain == -1)){
+            qDebug() << "  click comfirm " << total;
+            last_select_total = total;
+        }
+
+    }else if(last_select_total != -1){
+        //決定が押されて艦隊選択になっているはず
+        qDebug() << "  select fleet and start.";
+        if(gameScreen.isClickExpeditionStartButton(game_pos)){
+            //開始ボタンを押した
+            qDebug() << "    click start";
+            //艦隊番号確認
+            int fleet_no = gameScreen.getExpeditionFleetNo();
+            //設定を投げる
+            if(m_timerDialog != NULL){
+                m_timerDialog->updateTimerSetting(1, fleet_no, last_select_total, last_select_total);
+            }
+            //クリア
+            last_select_total = -1;
+        }
+    }else{
+        last_click_fleet_no = -1;
+        last_select_total = -1;
+    }
 }
 
 //Webページに関連する設定をする

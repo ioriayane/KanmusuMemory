@@ -72,6 +72,9 @@ Rectangle {
             running = true
         }
     }
+    function pause(){
+        running = false
+    }
     function stop(){
         clear()
         running = false;

@@ -43,6 +43,8 @@ public:
     QString lastTimerSelectGuideUpdateDate() const;
     void setLastTimerSelectGuideUpdateDate(const QString &lastTimerSelectGuideUpdateDate);
 
+    void updateTimerSetting(const int kind, const int fleet_no, const qint64 remain, const qint64 total);
+
 protected:
     virtual void resizeEvent(QResizeEvent *event);
     virtual void showEvent(QShowEvent *event);

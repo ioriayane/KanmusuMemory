@@ -59,6 +59,7 @@
 #define SETTING_GENERAL_VIEW_BUTTLE_RESULT  "view_buttle_result"
 #define SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY  "view_buttle_result_opacity"
 #define SETTING_GENERAL_BUTTLE_RESULT_POSITION  "buttle_result_position"
+#define SETTING_GENERAL_TIMER_AUTO_START    "timer_auto_start"
 //設定：ウインドウ位置
 #define SETTING_MAINWINDOW          "mainwindow"
 #define SETTING_TIMERDIALOG         "timerdialog"
@@ -179,5 +180,31 @@
 #define BUTTLE_COMPASS_CHECK_COLOR      (qRgb(51 , 24 , 24))
 #define BUTTLE_COMPASS_RECT             (QRect(380, 140, 40, 100))
 
+//遠征画面
+#define EXPEDITION_CHECK_COLOR          (qRgb(179, 154, 118))
+#define EXPEDITION_RECT                 (QRect(305, 100, 250, 25))
+//遠征項目領域
+#define EXPEDITION_ITEM1_RECT           (QRect(117, 158, 440, 30))
+#define EXPEDITION_ITEM2_RECT           (QRect(117, 188, 440, 30))
+#define EXPEDITION_ITEM3_RECT           (QRect(117, 218, 440, 30))
+#define EXPEDITION_ITEM4_RECT           (QRect(117, 248, 440, 30))
+#define EXPEDITION_ITEM5_RECT           (QRect(117, 278, 440, 30))
+#define EXPEDITION_ITEM6_RECT           (QRect(117, 308, 440, 30))
+#define EXPEDITION_ITEM7_RECT           (QRect(117, 338, 440, 30))
+#define EXPEDITION_ITEM8_RECT           (QRect(117, 368, 440, 30))
+
+#define EXPEDITION_ITEM_COMFIRM_RECT    (QRect(626, 424, 104, 40))      //遠征の項目決定ボタンの位置
+#define EXPEDITION_ITEM_START_RECT      (QRect(546, 424, 167, 43))      //遠征開始ボタン
+#define EXPEDITION_ITEM_START_OUT_RECT  (QRect(0, 0,0, 0))   //遠征出発の有効エリア（コレを外れると戻る）
+
+//遠征開始時の艦隊番号
+#define EXPEDITION_SELECT_FLEET_2_RECT  (QRect(381, 108, 23, 20))
+#define EXPEDITION_SELECT_FLEET_3_RECT  (QRect(411, 108, 23, 20))
+#define EXPEDITION_SELECT_FLEET_4_RECT  (QRect(441, 108, 23, 20))
+#define EXPEDITION_SELECT_FLEET_RECT    (QRect(381, 108, 84, 21))
+
+//遠征開始ボタン
+#define EXPEDITION_START_BUTTON_RECT    (QRect(546, 424, 167, 43))
+#define EXPEDITION_START_BUTTON_COLOR   (qRgb(210 , 157 , 90))
 
 #endif // KANMUSUMEMORY_GLOBAL_H
