@@ -33,3 +33,7 @@ Makefile.*
 Thumbs.db
 * - コピー.*
 *_manifest.rc
+
+# Mac OS X
+.DS_Store
+KanmusuMemory.app/
