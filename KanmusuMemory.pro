@@ -26,7 +26,7 @@ SOURCES += main.cpp\
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
-    ../KanmusuMemoryTwitter/twitterinfo.h \
+    twitterinfo.h \
     settingsdialog.h \
     cookiejar.h \
     aboutdialog.h \
