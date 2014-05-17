@@ -543,7 +543,7 @@ void MainWindow::Private::openSettingDialog()
     dlg.setViewButtleResult(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool());
     dlg.setButtleResultPosition(static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt()));
     dlg.setButtleResultOpacity(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal());
-    dlg.setTimerAutoStart(settings.value(QStringLiteral(SETTING_GENERAL_TIMER_AUTO_START), false).toBool());
+    dlg.setTimerAutoStart(settings.value(QStringLiteral(SETTING_GENERAL_TIMER_AUTO_START), true).toBool());
     if (dlg.exec()) {
         //設定更新
         settings.setValue(QStringLiteral("path"), dlg.savePath());
@@ -1087,7 +1087,7 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
 //遠征の残り時間を調べる
 void MainWindow::Private::checkExpeditionRemainTime(const QPointF &pos)
 {
-    if(!settings.value(QStringLiteral(SETTING_GENERAL_TIMER_AUTO_START), false).toBool()){
+    if(!settings.value(QStringLiteral(SETTING_GENERAL_TIMER_AUTO_START), true).toBool()){
         return;
     }
     QImage img = ui.webView->capture(false);
