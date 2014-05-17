@@ -20,7 +20,8 @@ Makefile
 *-build-*
 ui_*.h
 
-
+*.ilk
+*.pdb
 *.bak
 *.BAK
 *.autosave
@@ -31,3 +32,4 @@ Makefile.*
 *.res
 Thumbs.db
 * - コピー.*
+*_manifest.rc

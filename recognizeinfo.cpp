@@ -41,7 +41,7 @@ RecognizeInfo::RecognizeInfo(QObject *parent) :
     m_numberGuideList.append(NumberGuide(":/resources/NumberGuide3.png", 3, 10));
     m_numberGuideList.append(NumberGuide(":/resources/NumberGuide5.png", 5, 11));
     m_numberGuideList.append(NumberGuide(":/resources/NumberGuide6.png", 6, 10));
-    m_numberGuideList.append(NumberGuide(":/resources/NumberGuide7.png", 7, 10));
+    m_numberGuideList.append(NumberGuide(":/resources/NumberGuide7.png", 7, 14));
     m_numberGuideList.append(NumberGuide(":/resources/NumberGuide9.png", 9, 10));
     m_numberGuideList.append(NumberGuide(":/resources/NumberGuide8.png", 8, 14));
 
