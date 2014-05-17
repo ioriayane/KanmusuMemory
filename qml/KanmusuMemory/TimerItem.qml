@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,6 +30,8 @@ Rectangle {
     property alias progress: progressBar.value       //進捗 0.0-1.0
     property real now: 0
     property int indexOffset: 0     //表示している番号をずらす
+
+    property bool itemClose: false    //閉じてるか
 
     signal started()
     signal stopped()
@@ -163,6 +165,7 @@ Rectangle {
             Button {
                 width: 50
                 text: running ? qsTr("Stop") : qsTr("Start")
+                enabled: !root.itemClose
                 onClicked: {
                     if(running){
                         stop()
@@ -174,12 +177,38 @@ Rectangle {
             Button {
                 width: 50
                 text: qsTr("Set")
+                enabled: !root.itemClose
                 onClicked: {
                     setting()
                 }
             }
         }
     }
+    transform: Scale {
+        id: scale
+        origin.y: 0
+        yScale: 1
+    }
+
+    states: [
+        State {
+            when: itemClose
+            PropertyChanges {
+                target: scale
+                yScale: 0
+            }
+        }
+    ]
+    transitions: [
+        Transition {
+            NumberAnimation {
+                target: scale
+                property: "yScale"
+                duration: 200
+            }
+        }
+    ]
+
     //終わる予定日
     function toEndDateString(){
         var r = setTime

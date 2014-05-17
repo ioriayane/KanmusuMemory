@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -198,20 +198,44 @@ Rectangle {
 
     Column {
         id: timerArea
-        anchors.centerIn: parent
+        anchors.horizontalCenter: parent.horizontalCenter
 
         Item { width: 5; height: 5 }
         //入渠
-        Text {
-            text: qsTr("Docking")
-            font.pointSize: 16
+        Row {
+            Image {
+                id: dockingVisiblityButton
+                width: 16
+                height: 16
+                source: "images/triangle.png"
+                rotation: dockingVisiblityButton.itemClose ? 0 : 90
+                property bool itemClose: false
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        dockingVisiblityButton.itemClose = !dockingVisiblityButton.itemClose
+                    }
+                }
+                Behavior on rotation {
+                    NumberAnimation {
+                        duration: 300
+                    }
+                }
+            }
+            Text {
+                text: qsTr("Docking")
+                font.pointSize: 16
+            }
         }
         GroupBox {
+            id: dockingGroup
             Column {
                 Repeater {
                     id: docking
                     model: timerData.dockingTime.length
                     delegate: TimerItem {
+                        id: timerItem
+                        enabled: !dockingVisiblityButton.itemClose //開閉
                         heightScale: os.type == OperatingSystem.Linux ? 1.1 : 1.3
                         setTime: timerData.dockingTime[index]              //指定時間
                         startTime: timerData.dockingStart[index]          //開始時間
@@ -229,6 +253,21 @@ Rectangle {
                         }
                     }
                 }
+            }
+            //ボックスをたたむ
+            transform: Scale {
+                id: dockingScale
+                origin.y: 0
+                yScale: 1
+            }
+            states: State {
+                when: dockingVisiblityButton.itemClose
+                PropertyChanges { target: dockingGroup; height: 0 }
+                PropertyChanges { target: dockingScale; yScale: 0  }
+            }
+            transitions: Transition {
+                NumberAnimation { target: dockingGroup; property: "height"; duration: 200 }
+                NumberAnimation { target: dockingScale; property: "yScale"; duration: 200 }
             }
         }
         Item { width: 5; height: 5 }

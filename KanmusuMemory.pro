@@ -71,3 +71,4 @@ mac{
 
 RESOURCES += \
     KanmusuMemory.qrc
+
