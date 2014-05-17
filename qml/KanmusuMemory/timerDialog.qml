@@ -202,40 +202,20 @@ Rectangle {
 
         Item { width: 5; height: 5 }
         //入渠
-        Row {
-            Image {
-                id: dockingVisiblityButton
-                width: 16
-                height: 16
-                source: "images/triangle.png"
-                rotation: dockingVisiblityButton.itemClose ? 0 : 90
-                property bool itemClose: false
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        dockingVisiblityButton.itemClose = !dockingVisiblityButton.itemClose
-                    }
-                }
-                Behavior on rotation {
-                    NumberAnimation {
-                        duration: 300
-                    }
-                }
-            }
-            Text {
-                text: qsTr("Docking")
-                font.pointSize: 16
-            }
+        TimerGroupTitle {
+            id: dockingTitle
+            caption: qsTr("Docking")
         }
-        GroupBox {
+        TimerGroupBox {
             id: dockingGroup
+            itemClose: dockingTitle.itemClose
             Column {
                 Repeater {
                     id: docking
                     model: timerData.dockingTime.length
                     delegate: TimerItem {
                         id: timerItem
-                        enabled: !dockingVisiblityButton.itemClose //開閉
+                        enabled: !dockingTitle.itemClose //開閉
                         heightScale: os.type == OperatingSystem.Linux ? 1.1 : 1.3
                         setTime: timerData.dockingTime[index]              //指定時間
                         startTime: timerData.dockingStart[index]          //開始時間
@@ -254,34 +234,22 @@ Rectangle {
                     }
                 }
             }
-            //ボックスをたたむ
-            transform: Scale {
-                id: dockingScale
-                origin.y: 0
-                yScale: 1
-            }
-            states: State {
-                when: dockingVisiblityButton.itemClose
-                PropertyChanges { target: dockingGroup; height: 0 }
-                PropertyChanges { target: dockingScale; yScale: 0  }
-            }
-            transitions: Transition {
-                NumberAnimation { target: dockingGroup; property: "height"; duration: 200 }
-                NumberAnimation { target: dockingScale; property: "yScale"; duration: 200 }
-            }
         }
         Item { width: 5; height: 5 }
         //遠征
-        Text {
-            text: qsTr("Expedition")
-            font.pointSize: 16
+        TimerGroupTitle {
+            id: expeditionTitle
+            caption: qsTr("Expedition")
         }
-        GroupBox {
+        TimerGroupBox {
+            id: expeditionGroup
+            itemClose: expeditionTitle.itemClose
             Column {
                 Repeater {
                     id: expedition
                     model: timerData.expeditionTime.length
                     delegate: TimerItem {
+                        enabled: !expeditionTitle.itemClose
                         heightScale: os.type == OperatingSystem.Linux ? 1.1 : 1.3
                         setTime: timerData.expeditionTime[index]          //指定時間
                         startTime: timerData.expeditionStart[index]      //開始時間
@@ -305,16 +273,19 @@ Rectangle {
         }
         Item { width: 5; height: 5 }
         //建造
-        Text {
-            text: qsTr("Construction")
-            font.pointSize: 16
+        TimerGroupTitle {
+            id: constructionTitle
+            caption: qsTr("Construction")
         }
-        GroupBox {
+        TimerGroupBox {
+            id: constructionGroup
+            itemClose: constructionTitle.itemClose
             Column {
                 Repeater {
                     id: construction
                     model: timerData.constructionTime.length
                     delegate: TimerItem {
+                        enabled: !constructionTitle.itemClose
                         heightScale: os.type == OperatingSystem.Linux ? 1.1 : 1.3
                         setTime: timerData.constructionTime[index]          //指定時間
                         startTime: timerData.constructionStart[index]      //開始時間

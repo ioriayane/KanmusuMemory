@@ -43,5 +43,6 @@
         <file>resources/FlagGuide4.png</file>
         <file>qml/KanmusuMemory/images/triangle.png</file>
         <file>qml/KanmusuMemory/TimerGroupBox.qml</file>
+        <file>qml/KanmusuMemory/TimerGroupTitle.qml</file>
     </qresource>
 </RCC>
