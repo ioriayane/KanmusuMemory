@@ -52,6 +52,10 @@ TimerDialog::TimerDialog(QWidget *parent
     //QML設定して表示
     m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/timerDialog.qml"));
     ui->layout->addWidget(QWidget::createWindowContainer(m_viewer, this));
+    //サイズ調節
+    QSize contentSize = m_viewer->rootObject()->childrenRect().toRect().size() + QSize(DIALOG_MARGIN,DIALOG_MARGIN);
+    setMinimumSize(contentSize);
+    setMaximumSize(contentSize);
 
     m_timer.start(10000);
 }
@@ -77,25 +81,6 @@ void TimerDialog::resizeEvent(QResizeEvent *event)
 void TimerDialog::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event);
-//    if(m_viewer == NULL){
-//        m_viewer = new QtQuick2ApplicationViewer(windowHandle());
-//        connect(m_viewer->engine(), SIGNAL(quit()), this, SLOT(closeQml()));
-
-//        //C++のデータをQML側へ公開
-//        m_viewer->rootContext()->setContextProperty("timerData", &m_timerdata);
-
-//        //QML設定して表示
-//        m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/timerDialog.qml"));
-//        m_viewer->show();
-//        QSize contentSize = m_viewer->rootObject()->childrenRect().toRect().size() + QSize(DIALOG_MARGIN,DIALOG_MARGIN);
-//        setMinimumSize(contentSize);
-//        setMaximumSize(contentSize);
-//    }
-    if(m_viewer != NULL){
-        QSize contentSize = m_viewer->rootObject()->childrenRect().toRect().size() + QSize(DIALOG_MARGIN,DIALOG_MARGIN);
-        setMinimumSize(contentSize);
-        setMaximumSize(contentSize);
-    }
 }
 
 
