@@ -41,6 +41,13 @@ TimerDialog::TimerDialog(QWidget *parent
     ui->setupUi(this);
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
+    connect(&m_timerdata, &TimerData::tweetFinishedChanged, [this](){
+        if(m_settings != NULL){
+            m_settings->beginGroup(QStringLiteral(SETTING_TIMER));
+            m_settings->setValue(QStringLiteral(SETTING_TIMER_TWEETFINISHED), m_timerdata.tweetFinished());
+            m_settings->endGroup();
+        }
+    });
 
     loadSettings();
 
@@ -177,6 +184,15 @@ void TimerDialog::updateTimerSetting(const int kind, const int fleet_no, const q
     m_timerdata.setTime(kind, index, total);
     m_timerdata.setStartTime(kind, index, now - (total - remain));
     m_timerdata.setRunning(kind, index, true);
+}
+
+const bool TimerDialog::tweetFinished() const
+{
+    return m_timerdata.tweetFinished();
+}
+void TimerDialog::setTweetFinished(bool tweet)
+{
+    m_timerdata.setTweetFinished(tweet);
 }
 
 

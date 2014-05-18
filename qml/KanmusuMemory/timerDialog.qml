@@ -33,7 +33,6 @@ Rectangle {
     property real d3set: 0
     property real d3start: 0
 
-//    property string lastUpdateDate: ""  //リモートのデータの更新日時
 
     Component.onCompleted: {
         updateFromInternet()
@@ -64,6 +63,10 @@ Rectangle {
     //主にC++からtimerDataのプロパティが変更された時の対応
     Connections {
         target: timerData
+
+        onTweetFinishedChanged: {
+            tweetFinishedCheckbox.checked = timerData.tweetFinished
+        }
 
         onExpeditionTimeChanged: {
             for(var i=0; i<expedition.count; i++){
@@ -307,11 +310,13 @@ Rectangle {
         }
         Item { width: 5; height: 5 }
         CheckBox {
+            id: tweetFinishedCheckbox
             anchors.left: parent.left
             anchors.leftMargin: 10
             text: qsTr("tweet a time-out")
             checked: timerData.tweetFinished    //このバインドは初期値をもらうだけ
-            onCheckedChanged: timerData.tweetFinished = checked
+//            onCheckedChanged: timerData.tweetFinished = checked
+            onClicked: timerData.tweetFinished = !checked
         }
     }
     //ダイアログ開く

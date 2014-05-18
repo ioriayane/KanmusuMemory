@@ -107,28 +107,28 @@
        </property>
       </widget>
      </item>
-     <item row="7" column="1">
+     <item row="8" column="1">
       <widget class="Line" name="line_5">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
-     <item row="8" column="0">
+     <item row="9" column="0">
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>Buttle result</string>
        </property>
       </widget>
      </item>
-     <item row="8" column="1">
+     <item row="9" column="1">
       <widget class="QCheckBox" name="viewButtleResultCheckBox">
        <property name="text">
         <string>View buttle result</string>
        </property>
       </widget>
      </item>
-     <item row="9" column="1">
+     <item row="10" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <property name="bottomMargin">
         <number>0</number>
@@ -182,7 +182,7 @@
        </item>
       </layout>
      </item>
-     <item row="10" column="1">
+     <item row="11" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
         <widget class="QLabel" name="label_2">
@@ -241,35 +241,35 @@
        </item>
       </layout>
      </item>
-     <item row="11" column="1">
+     <item row="12" column="1">
       <widget class="Line" name="line_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
-     <item row="12" column="1">
+     <item row="13" column="1">
       <widget class="QCheckBox" name="disableExitShortcut">
        <property name="text">
         <string>Disable exit(Ctrl+Q) shortcut</string>
        </property>
       </widget>
      </item>
-     <item row="13" column="1">
+     <item row="14" column="1">
       <widget class="Line" name="line_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
-     <item row="14" column="0">
+     <item row="15" column="0">
       <widget class="QLabel" name="proxyHostLabel_3">
        <property name="text">
         <string>Browser:</string>
        </property>
       </widget>
      </item>
-     <item row="14" column="1">
+     <item row="15" column="1">
       <widget class="QCheckBox" name="useCookieCheckBox">
        <property name="text">
         <string>Use Cookie(need to restart the Kanmemo)</string>
@@ -279,35 +279,35 @@
        </property>
       </widget>
      </item>
-     <item row="15" column="1">
+     <item row="16" column="1">
       <widget class="QCheckBox" name="disableContextMenu">
        <property name="text">
         <string>Disable coontext menu</string>
        </property>
       </widget>
      </item>
-     <item row="16" column="1">
+     <item row="17" column="1">
       <widget class="Line" name="line">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
-     <item row="17" column="0">
+     <item row="18" column="0">
       <widget class="QLabel" name="proxyHostLabel_2">
        <property name="text">
         <string>Proxy:</string>
        </property>
       </widget>
      </item>
-     <item row="17" column="1">
+     <item row="18" column="1">
       <widget class="QCheckBox" name="proxyEnableCheckBox">
        <property name="text">
         <string>Enable</string>
        </property>
       </widget>
      </item>
-     <item row="18" column="1">
+     <item row="19" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
         <widget class="QLabel" name="proxyHostLabel">
@@ -321,7 +321,7 @@
        </item>
       </layout>
      </item>
-     <item row="19" column="1">
+     <item row="20" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QLabel" name="proxyPortLabel">
@@ -359,6 +359,13 @@
       <widget class="QLabel" name="label_5">
        <property name="text">
         <string>Timer</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QCheckBox" name="tweetFinishedCheckBox">
+       <property name="text">
+        <string>Tweet a time-out</string>
        </property>
       </widget>
      </item>

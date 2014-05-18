@@ -35,17 +35,14 @@ Row {
                 duration: 300
             }
         }
+        MouseArea {
+            anchors.fill: parent
+            onClicked: visiblityButton.itemClose = !visiblityButton.itemClose
+        }
     }
     Text {
         id: caption
         text: qsTr("Title")
-        font.pointSize: 16
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        onClicked: {
-            visiblityButton.itemClose = !visiblityButton.itemClose
-        }
+        font.pixelSize: 20
     }
 }
