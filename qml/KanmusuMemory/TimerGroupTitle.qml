@@ -44,5 +44,9 @@ Row {
         id: caption
         text: qsTr("Title")
         font.pixelSize: 20
+        MouseArea {
+            anchors.fill: parent
+            onClicked: visiblityButton.itemClose = !visiblityButton.itemClose
+        }
     }
 }

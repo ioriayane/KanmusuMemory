@@ -57,12 +57,22 @@ TimerDialog::TimerDialog(QWidget *parent
     //C++のデータをQML側へ公開
     m_viewer->rootContext()->setContextProperty("timerData", &m_timerdata);
     //QML設定して表示
+    m_viewer->setResizeMode(QQuickView::SizeViewToRootObject);
     m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/timerDialog.qml"));
     ui->layout->addWidget(QWidget::createWindowContainer(m_viewer, this));
     //サイズ調節
-    QSize contentSize = m_viewer->rootObject()->childrenRect().toRect().size() + QSize(DIALOG_MARGIN,DIALOG_MARGIN);
-    setMinimumSize(contentSize);
-    setMaximumSize(contentSize);
+//    QSize contentSize = m_viewer->rootObject()->childrenRect().toRect().size() + QSize(DIALOG_MARGIN,DIALOG_MARGIN);
+//    setMinimumSize(contentSize);
+//    setMaximumSize(contentSize);
+    QSize size = QSize(m_viewer->rootObject()->width(), m_viewer->rootObject()->height());
+//    setMinimumSize(size);
+    setMaximumSize(size);
+    connect(m_viewer->rootObject(), &QQuickItem::widthChanged, [this](){
+        resize(m_viewer->rootObject()->width(), height());
+    });
+    connect(m_viewer->rootObject(), &QQuickItem::heightChanged, [this](){
+        resize(m_viewer->rootObject()->width(), m_viewer->rootObject()->height());
+    });
 
     m_timer.start(10000);
 }

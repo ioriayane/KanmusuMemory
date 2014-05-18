@@ -23,6 +23,9 @@ import "js/HttpAccess.js" as Http
 Rectangle {
     id: root
     color: "#f0f0f0"
+    width: timerArea.width + 20
+    height: timerArea.height + 20
+onWidthChanged: console.debug("root:" + width)
 
     property real d0set: 0
     property real d0start: 0
@@ -316,7 +319,7 @@ Rectangle {
             text: qsTr("tweet a time-out")
             checked: timerData.tweetFinished    //このバインドは初期値をもらうだけ
 //            onCheckedChanged: timerData.tweetFinished = checked
-            onClicked: timerData.tweetFinished = !checked
+            onClicked: timerData.tweetFinished = checked
         }
     }
     //ダイアログ開く

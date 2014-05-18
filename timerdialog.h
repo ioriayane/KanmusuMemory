@@ -55,7 +55,7 @@ protected:
 public slots:
     void closeQml();
     void timeout();
-
+    void sizeChanged(int w, int h){qDebug() << "height change slot from qml";}
 private:
     QtQuick2ApplicationViewer *m_viewer;
     TimerData m_timerdata;
