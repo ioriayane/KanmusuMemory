@@ -39,6 +39,10 @@ onWidthChanged: console.debug("root:" + width)
 
     Component.onCompleted: {
         updateFromInternet()
+
+        dockingTitle.itemClose = timerData.dockingClose
+        expeditionTitle.itemClose = timerData.expeditionClose
+        constructionTitle.itemClose = timerData.constructionClose
     }
 
     OperatingSystem {
@@ -211,6 +215,7 @@ onWidthChanged: console.debug("root:" + width)
         TimerGroupTitle {
             id: dockingTitle
             caption: qsTr("Docking")
+            onItemCloseChanged: timerData.dockingClose = itemClose
         }
         TimerGroupBox {
             id: dockingGroup
@@ -246,6 +251,7 @@ onWidthChanged: console.debug("root:" + width)
         TimerGroupTitle {
             id: expeditionTitle
             caption: qsTr("Expedition")
+            onItemCloseChanged: timerData.expeditionClose = itemClose
         }
         TimerGroupBox {
             id: expeditionGroup
@@ -282,6 +288,7 @@ onWidthChanged: console.debug("root:" + width)
         TimerGroupTitle {
             id: constructionTitle
             caption: qsTr("Construction")
+            onItemCloseChanged: timerData.constructionClose = itemClose
         }
         TimerGroupBox {
             id: constructionGroup
@@ -311,7 +318,7 @@ onWidthChanged: console.debug("root:" + width)
                 }
             }
         }
-        Item { width: 5; height: 5 }
+        Item { width: 5; height: 10 }
         CheckBox {
             id: tweetFinishedCheckbox
             anchors.left: parent.left

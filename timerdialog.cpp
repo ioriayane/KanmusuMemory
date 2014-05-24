@@ -313,6 +313,11 @@ void TimerDialog::loadSettings()
                                   .arg(QCoreApplication::applicationDirPath()));
 #endif
     m_timerdata.setAlarmSoundVolume(0.4);
+
+    //折りたたみ
+    m_timerdata.setDockingClose(m_settings->value(QStringLiteral(SETTING_TIMER_DOCKING_CLOSE), false).toBool());
+    m_timerdata.setExpeditionClose(m_settings->value(QStringLiteral(SETTING_TIMER_EXPEDITION_CLOSE), false).toBool());
+    m_timerdata.setConstructionClose(m_settings->value(QStringLiteral(SETTING_TIMER_CONSTRUCTION_CLOSE), false).toBool());
     m_settings->endGroup();
 
 
@@ -343,6 +348,10 @@ void TimerDialog::saveSettings()
     m_settings->setValue(QStringLiteral(SETTING_TIMER_CONSTRUCTION_RUNNING), TimerData::toList<QVariant, bool>(m_timerdata.constructionRunning()));
     //つぶやくか
     m_settings->setValue(QStringLiteral(SETTING_TIMER_TWEETFINISHED), m_timerdata.tweetFinished());
+    //折りたたみ
+    m_settings->setValue(QStringLiteral(SETTING_TIMER_DOCKING_CLOSE), m_timerdata.dockingClose());
+    m_settings->setValue(QStringLiteral(SETTING_TIMER_EXPEDITION_CLOSE), m_timerdata.expeditionClose());
+    m_settings->setValue(QStringLiteral(SETTING_TIMER_CONSTRUCTION_CLOSE), m_timerdata.constructionClose());
     m_settings->endGroup();
 
     //ウインドウの位置を保存

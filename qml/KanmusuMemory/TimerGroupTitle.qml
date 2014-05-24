@@ -32,7 +32,7 @@ Row {
         property bool itemClose: false
         Behavior on rotation {
             NumberAnimation {
-                duration: 300
+                duration: 200
             }
         }
         MouseArea {
