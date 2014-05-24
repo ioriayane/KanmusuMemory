@@ -25,7 +25,6 @@ Rectangle {
     color: "#f0f0f0"
     width: timerArea.width + 20
     height: timerArea.height + 20
-onWidthChanged: console.debug("root:" + width)
 
     property real d0set: 0
     property real d0start: 0
@@ -38,7 +37,7 @@ onWidthChanged: console.debug("root:" + width)
 
 
     Component.onCompleted: {
-        updateFromInternet()
+//        updateFromInternet()
 
         dockingTitle.itemClose = timerData.dockingClose
         expeditionTitle.itemClose = timerData.expeditionClose
@@ -73,6 +72,10 @@ onWidthChanged: console.debug("root:" + width)
 
         onTweetFinishedChanged: {
             tweetFinishedCheckbox.checked = timerData.tweetFinished
+        }
+
+        onLastUpdateDateChanged: {
+            updateFromInternet()
         }
 
         onExpeditionTimeChanged: {
@@ -113,7 +116,7 @@ onWidthChanged: console.debug("root:" + width)
     }
 
     function updateFromInternet(){
-//        console.debug("start update timer data " + timerData.lastUpdateDate)
+        console.debug("start update timer data " + timerData.lastUpdateDate)
 
         var local_path = file.getWritablePath() + "/timerselectguide.json"
         var local_data = ""
@@ -122,15 +125,15 @@ onWidthChanged: console.debug("root:" + width)
             local_data = JSON.parse(file.readTextFile(local_path))
 
             if(timerData.lastUpdateDate > local_data.serial){
-//                console.debug(" download update data")
+                console.debug(" download update data")
                 Http.requestHttp("", "GET", "http://relog.xii.jp/download/kancolle/data/timerselectguide.json", true, responseHttp)
             }else{
-//                console.debug("use local data")
+                console.debug("use local data")
                 //ローカルのデータを表示
                 viewTimerSelectGuide(local_data)
             }
         }else{
-//            console.debug(" download update data")
+            console.debug(" download update data")
             Http.requestHttp("", "GET", "http://relog.xii.jp/download/kancolle/data/timerselectguide.json", true, responseHttp)
         }
 

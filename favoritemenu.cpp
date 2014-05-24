@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,7 +101,7 @@ void FavoriteMenu::updateFromInternet(const QString &lastUpdateDate)
 {
     if(m_currentLoadedFavDataDate.isValid()){
         //ダウンロードデータがあるのでアップデートするかをチェック
-//        qDebug() << "update fav " << m_currentLoadedFavDataDate << "," << lastUpdateDate;
+        qDebug() << "update fav " << m_currentLoadedFavDataDate << "," << lastUpdateDate;
         if(m_currentLoadedFavDataDate < QDate::fromString(lastUpdateDate.left(8), "yyyyMMdd")){
             //ダウンロードする
         }else{
@@ -110,7 +110,7 @@ void FavoriteMenu::updateFromInternet(const QString &lastUpdateDate)
         }
     }
 
-//    qDebug() << "start download";
+    qDebug() << "start download fav";
     QNetworkAccessManager *net = new QNetworkAccessManager(this);
     connect(net, &QNetworkAccessManager::finished, [this](QNetworkReply *reply) {
         if(reply->error() == QNetworkReply::NoError){
@@ -136,7 +136,12 @@ void FavoriteMenu::updateFromInternet(const QString &lastUpdateDate)
     }else{
         net->setProxy(QNetworkProxy::NoProxy);
     }
-    net->get(QNetworkRequest(FAVORITE_DOWNLOAD_URL));
+    //リクエスト作成
+    QNetworkRequest req;
+    req.setUrl(FAVORITE_DOWNLOAD_URL);
+    req.setRawHeader("User-Agent", QString("KanmusuMemory %1").arg(KANMEMO_VERSION).toLatin1());
+    //アクセス開始
+    net->get(req);
 }
 
 void FavoriteMenu::clickItem()
