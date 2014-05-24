@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
 #define KANMEMO_NAME "KanmusuMemory"
 #define KANMEMO_NAME_FAV "KanmusuMemoryFav"
 #define KANMEMO_PROJECT "KanmemoProject"
-#define KANMEMO_VERSION "0.13"
-#define KANMEMO_VERSION_CODE 14
+#define KANMEMO_VERSION "0.14"
+#define KANMEMO_VERSION_CODE 15
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
     << "@task_jp"\
