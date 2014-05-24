@@ -138,29 +138,29 @@
         <location line="+32"/>
         <location line="+13"/>
         <location line="+34"/>
-        <location line="+407"/>
+        <location line="+417"/>
         <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-520"/>
+        <location line="-530"/>
         <location line="+13"/>
-        <location line="+442"/>
+        <location line="+452"/>
         <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-502"/>
+        <location line="-512"/>
         <location line="+17"/>
-        <location line="+359"/>
+        <location line="+369"/>
         <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-461"/>
+        <location line="-471"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -170,7 +170,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+185"/>
+        <location line="+195"/>
         <source>Fleet Detail</source>
         <translation>艦隊詳細</translation>
     </message>
@@ -685,7 +685,7 @@ Do you want to continue on an understanding of the security risk?
     <name>SettingsDialog</name>
     <message>
         <location filename="../settingsdialog.ui" line="+14"/>
-        <location filename="../ui_settingsdialog.h" line="+323"/>
+        <location filename="../ui_settingsdialog.h" line="+329"/>
         <source>Preferences ..</source>
         <translation>設定</translation>
     </message>
@@ -764,8 +764,14 @@ Do you want to continue on an understanding of the security risk?
         <translation>お知らせタイマー</translation>
     </message>
     <message>
-        <location line="-222"/>
-        <location filename="../ui_settingsdialog.h" line="-26"/>
+        <location line="+7"/>
+        <location filename="../ui_settingsdialog.h" line="+1"/>
+        <source>Tweet a time-out</source>
+        <translation>時間になったらツイッターでお知らせする</translation>
+    </message>
+    <message>
+        <location line="-229"/>
+        <location filename="../ui_settingsdialog.h" line="-27"/>
         <source>Opacity</source>
         <translation>不透明度</translation>
     </message>
@@ -878,7 +884,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
-        <location filename="../settingsdialog.cpp" line="+171"/>
+        <location filename="../settingsdialog.cpp" line="+174"/>
         <source>Select save folder</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -890,7 +896,7 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">ダイアログ</translation>
     </message>
     <message>
-        <location filename="../timerdialog.cpp" line="+112"/>
+        <location filename="../timerdialog.cpp" line="+114"/>
         <source>1st</source>
         <translation>第１</translation>
     </message>
@@ -945,15 +951,28 @@ Do you want to continue on an understanding of the security risk?
         <translation>%1ドックでの建造が終わる頃です。</translation>
     </message>
     <message>
-        <location line="+70"/>
+        <location line="+79"/>
         <source>KanMemo</source>
         <translation>艦メモ</translation>
+    </message>
+    <message>
+        <location line="+44"/>
+        <source>#kanmemo</source>
+        <translation>#艦メモ通知</translation>
     </message>
     <message>
         <location filename="../timerdialog.ui" line="+14"/>
         <location filename="../ui_timerdialog.h" line="+47"/>
         <source>Timer</source>
         <translation>お知らせタイマー</translation>
+    </message>
+</context>
+<context>
+    <name>TimerGroupTitle</name>
+    <message>
+        <location filename="../qml/KanmusuMemory/TimerGroupTitle.qml" line="+45"/>
+        <source>Title</source>
+        <translation>タイトル</translation>
     </message>
 </context>
 <context>
@@ -1277,32 +1296,32 @@ Do you want to continue on an understanding of the security risk?
 <context>
     <name>timerDialog</name>
     <message>
-        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+206"/>
+        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+217"/>
         <source>Docking</source>
         <translation>入渠</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+36"/>
         <source>Expedition</source>
         <translation>遠征</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+37"/>
         <source>Construction</source>
         <translation>建造</translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+36"/>
         <source>tweet a time-out</source>
         <translation>時間になったらツイッターでお知らせする</translation>
     </message>
     <message>
-        <location line="-24"/>
+        <location line="-48"/>
         <source></source>
         <translation></translation>
     </message>
     <message>
-        <location line="+177"/>
+        <location line="+202"/>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>

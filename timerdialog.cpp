@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -259,7 +259,7 @@ void TimerDialog::tweetTimerMessage(const QStringList &messages)
         for(int i=0; i<messages.length(); i++){
             QString temp = messages[i];
 
-            if((message.length() + temp.length()) >= 120){
+            if((message.length() + temp.length()) >= 110){
                 //文字数オーバー一旦送信
                 message.append(QStringLiteral("%1").arg(QDateTime::currentDateTime().toString(QStringLiteral("MM/dd hh:mm"))));
                 //                qDebug() << message.length() << "," << message;
@@ -274,7 +274,8 @@ void TimerDialog::tweetTimerMessage(const QStringList &messages)
                 message.append(temp + "\n ");
             }
         }
-        message.append(QStringLiteral("%1").arg(QDateTime::currentDateTime().toString(QStringLiteral("MM/dd hh:mm"))));
+        message.append(QStringLiteral("%1 %2").arg(QDateTime::currentDateTime().toString(QStringLiteral("MM/dd hh:mm")))
+                       .arg(tr("#kanmemo")));
         //        qDebug() << message.length() << "," << message;
         QVariantMap map;
         map.insert("status", message);
