@@ -47,6 +47,7 @@ public:
     SettingsDialog::ButtleResultPosition buttleResultPosition;
     qreal buttleResultOpacity;
     bool timerAutoStart;
+    bool tweetFinished;
 };
 
 SettingsDialog::Private::Private(SettingsDialog *parent)
@@ -90,6 +91,7 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         }
 
         timerAutoStart = ui.timerAutoStartCheckBox->isChecked();
+        tweetFinished = ui.tweetFinishedCheckBox->isChecked();
 
         q->accept();
     });
@@ -141,6 +143,7 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         }
     });
     connect(q, &SettingsDialog::timerAutoStartChanged, ui.timerAutoStartCheckBox, &QCheckBox::setChecked);
+    connect(q, &SettingsDialog::tweetFinishedChanged, ui.tweetFinishedCheckBox, &QCheckBox::setChecked);
 
     QSpinBox * portNum = ui.proxyPort;
     portNum->setMinimum(1);
@@ -286,6 +289,11 @@ bool SettingsDialog::timerAutoStart() const
     return d->timerAutoStart;
 }
 
+bool SettingsDialog::tweetFinished() const
+{
+    return d->tweetFinished;
+}
+
 void SettingsDialog::setProxyPort(quint16 proxyPort)
 {
     if(d->proxyPort == proxyPort) return;
@@ -340,4 +348,11 @@ void SettingsDialog::setTimerAutoStart(bool start)
     if(d->timerAutoStart == start)  return;
     d->timerAutoStart = start;
     emit timerAutoStartChanged(start);
+}
+
+void SettingsDialog::setTweetFinished(bool tweet)
+{
+    if(d->tweetFinished == tweet)   return;
+    d->tweetFinished = tweet;
+    emit tweetFinishedChanged(tweet);
 }

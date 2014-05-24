@@ -45,6 +45,9 @@ public:
 
     void updateTimerSetting(const int kind, const int fleet_no, const qint64 remain, const qint64 total);
 
+    const bool tweetFinished() const;
+    void setTweetFinished(bool tweet);
+
 protected:
     virtual void resizeEvent(QResizeEvent *event);
     virtual void showEvent(QShowEvent *event);
@@ -52,7 +55,6 @@ protected:
 public slots:
     void closeQml();
     void timeout();
-
 private:
     QtQuick2ApplicationViewer *m_viewer;
     TimerData m_timerdata;

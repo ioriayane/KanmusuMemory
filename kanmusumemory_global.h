@@ -81,6 +81,9 @@
 #define SETTING_TIMER_CONSTRUCTION_START    "constructionStart"
 #define SETTING_TIMER_CONSTRUCTION_RUNNING  "constructionRunning"
 #define SETTING_TIMER_TWEETFINISHED         "tweetFinished"
+#define SETTING_TIMER_DOCKING_CLOSE         "dockingClose"
+#define SETTING_TIMER_EXPEDITION_CLOSE      "expeditionClose"
+#define SETTING_TIMER_CONSTRUCTION_CLOSE    "constructionClose"
 //設定：タブ関連
 #define SETTING_TAB                         "tab"
 #define SETTING_TAB_OPEN_PAGES              "openPages"

@@ -544,6 +544,10 @@ void MainWindow::Private::openSettingDialog()
     dlg.setButtleResultPosition(static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt()));
     dlg.setButtleResultOpacity(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal());
     dlg.setTimerAutoStart(settings.value(QStringLiteral(SETTING_GENERAL_TIMER_AUTO_START), true).toBool());
+    settings.beginGroup(QStringLiteral(SETTING_TIMER));
+    dlg.setTweetFinished(settings.value(QStringLiteral(SETTING_TIMER_TWEETFINISHED),false).toBool());
+    settings.endGroup();
+
     if (dlg.exec()) {
         //設定更新
         settings.setValue(QStringLiteral("path"), dlg.savePath());
@@ -567,6 +571,12 @@ void MainWindow::Private::openSettingDialog()
         setButtleResultPosition();
         if(ui.viewButtleResult->isVisible()){
             checkMajorDamageShip(QPointF(0,0), true);
+        }
+
+        //タイマーの時間でつぶやく
+        if(m_timerDialog != NULL){
+            //ダイアログとの連携の関係で保存はダイアログのクラスでする
+            m_timerDialog->setTweetFinished(dlg.tweetFinished());
         }
 
         //設定反映（必要なの）

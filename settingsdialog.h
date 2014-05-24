@@ -48,6 +48,7 @@ public:
     ButtleResultPosition buttleResultPosition() const;
     qreal buttleResultOpacity() const;
     bool timerAutoStart() const;
+    bool tweetFinished() const;
 
     static QString selectSavePath(QWidget *parent, const QString &currentPath);
 
@@ -67,6 +68,7 @@ public slots:
     void setButtleResultPosition(ButtleResultPosition position);
     void setButtleResultOpacity(qreal opacity);
     void setTimerAutoStart(bool start);
+    void setTweetFinished(bool tweet);
 
 signals:
     void savePathChanged(const QString &savePath);
@@ -84,6 +86,7 @@ signals:
     void buttleResultPositionChanged(ButtleResultPosition position);
     void buttleResultOpacityChanged(qreal opacity);
     void timerAutoStartChanged(bool start);
+    void tweetFinishedChanged(bool tweet);
 
 private:
     class Private;

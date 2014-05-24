@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,9 @@ import "js/HttpAccess.js" as Http
 Rectangle {
     id: root
     color: "#f0f0f0"
+    width: timerArea.width + 20
+    height: timerArea.height + 20
+onWidthChanged: console.debug("root:" + width)
 
     property real d0set: 0
     property real d0start: 0
@@ -33,10 +36,13 @@ Rectangle {
     property real d3set: 0
     property real d3start: 0
 
-//    property string lastUpdateDate: ""  //リモートのデータの更新日時
 
     Component.onCompleted: {
         updateFromInternet()
+
+        dockingTitle.itemClose = timerData.dockingClose
+        expeditionTitle.itemClose = timerData.expeditionClose
+        constructionTitle.itemClose = timerData.constructionClose
     }
 
     OperatingSystem {
@@ -64,6 +70,10 @@ Rectangle {
     //主にC++からtimerDataのプロパティが変更された時の対応
     Connections {
         target: timerData
+
+        onTweetFinishedChanged: {
+            tweetFinishedCheckbox.checked = timerData.tweetFinished
+        }
 
         onExpeditionTimeChanged: {
             for(var i=0; i<expedition.count; i++){
@@ -198,20 +208,25 @@ Rectangle {
 
     Column {
         id: timerArea
-        anchors.centerIn: parent
+        anchors.horizontalCenter: parent.horizontalCenter
 
         Item { width: 5; height: 5 }
         //入渠
-        Text {
-            text: qsTr("Docking")
-            font.pointSize: 16
+        TimerGroupTitle {
+            id: dockingTitle
+            caption: qsTr("Docking")
+            onItemCloseChanged: timerData.dockingClose = itemClose
         }
-        GroupBox {
+        TimerGroupBox {
+            id: dockingGroup
+            itemClose: dockingTitle.itemClose
             Column {
                 Repeater {
                     id: docking
                     model: timerData.dockingTime.length
                     delegate: TimerItem {
+                        id: timerItem
+                        enabled: !dockingTitle.itemClose //開閉
                         heightScale: os.type == OperatingSystem.Linux ? 1.1 : 1.3
                         setTime: timerData.dockingTime[index]              //指定時間
                         startTime: timerData.dockingStart[index]          //開始時間
@@ -233,16 +248,20 @@ Rectangle {
         }
         Item { width: 5; height: 5 }
         //遠征
-        Text {
-            text: qsTr("Expedition")
-            font.pointSize: 16
+        TimerGroupTitle {
+            id: expeditionTitle
+            caption: qsTr("Expedition")
+            onItemCloseChanged: timerData.expeditionClose = itemClose
         }
-        GroupBox {
+        TimerGroupBox {
+            id: expeditionGroup
+            itemClose: expeditionTitle.itemClose
             Column {
                 Repeater {
                     id: expedition
                     model: timerData.expeditionTime.length
                     delegate: TimerItem {
+                        enabled: !expeditionTitle.itemClose
                         heightScale: os.type == OperatingSystem.Linux ? 1.1 : 1.3
                         setTime: timerData.expeditionTime[index]          //指定時間
                         startTime: timerData.expeditionStart[index]      //開始時間
@@ -266,16 +285,20 @@ Rectangle {
         }
         Item { width: 5; height: 5 }
         //建造
-        Text {
-            text: qsTr("Construction")
-            font.pointSize: 16
+        TimerGroupTitle {
+            id: constructionTitle
+            caption: qsTr("Construction")
+            onItemCloseChanged: timerData.constructionClose = itemClose
         }
-        GroupBox {
+        TimerGroupBox {
+            id: constructionGroup
+            itemClose: constructionTitle.itemClose
             Column {
                 Repeater {
                     id: construction
                     model: timerData.constructionTime.length
                     delegate: TimerItem {
+                        enabled: !constructionTitle.itemClose
                         heightScale: os.type == OperatingSystem.Linux ? 1.1 : 1.3
                         setTime: timerData.constructionTime[index]          //指定時間
                         startTime: timerData.constructionStart[index]      //開始時間
@@ -295,13 +318,15 @@ Rectangle {
                 }
             }
         }
-        Item { width: 5; height: 5 }
+        Item { width: 5; height: 10 }
         CheckBox {
+            id: tweetFinishedCheckbox
             anchors.left: parent.left
             anchors.leftMargin: 10
             text: qsTr("tweet a time-out")
             checked: timerData.tweetFinished    //このバインドは初期値をもらうだけ
-            onCheckedChanged: timerData.tweetFinished = checked
+//            onCheckedChanged: timerData.tweetFinished = checked
+            onClicked: timerData.tweetFinished = checked
         }
     }
     //ダイアログ開く
