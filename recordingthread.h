@@ -20,7 +20,7 @@ public:
     }
 
     QImage image;
-    QString path;
+    QString path;   //これいらないかも
     qint64 elapse;
     qint64 duration;    //audio
 };
@@ -86,7 +86,6 @@ private:
     bool m_stop;
     QMutex m_mutex;
     QList<SaveData> m_SaveDataList;     //キャプチャしたデータをリストにしてスレッドでゆっくり保存
-    QList<SaveData> m_SaveDataKeyList;
 
     QElapsedTimer m_et;                 //デバッグ計測用
     QList<qint64> m_interval;           //デバッグ計測用
@@ -95,6 +94,7 @@ private:
     void convert();
     unsigned long getRecordingCounter();
     QString getTempPath();
+    QString getTempAudioPath();
 
 protected:
     void run();

@@ -22,7 +22,6 @@ RecordingThread::RecordingThread(QObject *parent) :
     m_audio.setEncodingSettings(audioSettings);
     m_audio.moveToThread(&m_recordThread);
 
-    connect(this, &RecordingThread::audioRecord, &m_audio, &AudioRecorder::record);// SLOT(record(QUrl, QString)));
 
 
     //タイマー
@@ -34,11 +33,8 @@ RecordingThread::RecordingThread(QObject *parent) :
             f = false;
         }
 
-        //デバッグ計測
-//        m_interval.append(m_et.elapsed());
         //キャプチャ
         unsigned long counter = getRecordingCounter();
-//        qDebug() << "trigger timer " << counter;
         capture(counter);
 
         //保存スレッド開始
@@ -56,25 +52,16 @@ RecordingThread::RecordingThread(QObject *parent) :
     connect(&m_process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished(int, QProcess::ExitStatus)) );
     //プロセスがエラー
     connect(&m_process, SIGNAL(error(QProcess::ProcessError)), this, SLOT(processError(QProcess::ProcessError)) );
+
+    //録音開始
+    connect(this, &RecordingThread::audioRecord, &m_audio, &AudioRecorder::record);
     //録音がエラー
     connect(&m_audio, SIGNAL(error(QMediaRecorder::Error)), this, SLOT(audioRecordingError(QMediaRecorder::Error)));
-//    connect(&m_audio, &QAudioRecorder::stateChanged, [this](QMediaRecorder::State state){
-//        qint64 t = m_et.elapsed();
-//        qDebug() << "QAudioRecorder::stateChanged " << state << "," << QString::number(t);
-//    });
+    //録音の状態変化
     connect(&m_audio, &QAudioRecorder::statusChanged, [this](QMediaRecorder::Status status){
         qDebug() << "QAudioRecorder::statusChanged " << status << "," << QString::number(m_et.elapsed()) << "," << m_audio.duration();
         if(status == QMediaRecorder::RecordingStatus){
             m_state = Recording;
-        }
-    });
-    connect(&m_audio, &QAudioRecorder::durationChanged, [this](qint64 duration){
-        if(m_audio.status() == QMediaRecorder::RecordingStatus){
-            qDebug() << "QAudioRecorder::durationChanged " << m_et.elapsed() << "," << duration;
-            SaveData data = SaveData(QImage(), QString(), m_et.elapsed(), duration);
-            m_mutex.lock();
-            m_SaveDataKeyList.append(data);
-            m_mutex.unlock();
         }
     });
 
@@ -103,12 +90,7 @@ void RecordingThread::startRecording()
     m_et.start();
 
     //録音開始
-    QString audio_path = QString("%1/kanmemo.wav").arg(getTempPath());
-#if defined(Q_OS_WIN)
-    audio_path = audio_path.replace(QStringLiteral("/"), QStringLiteral("\\"));
-#endif
-    qDebug() << "audio out:" << audio_path << "," << m_audio.outputLocation();
-    qDebug() << "audio input:" << m_audio.audioInput();
+    QString audio_path = getTempAudioPath();
     emit audioRecord(QUrl::fromLocalFile(audio_path), audioInputName());
 
     //タイマー開始
@@ -236,7 +218,7 @@ void RecordingThread::setAudioInputName(const QString &audioInputName)
 {
     m_audioInputName = audioInputName;
 }
-
+//オーディオデバイスの一覧
 QStringList RecordingThread::audioInputNames() const
 {
     return m_audio.audioInputs();
@@ -280,10 +262,9 @@ void RecordingThread::capture(unsigned long count)
 void RecordingThread::convert()
 {
     QString image_path = QString("%1/kanmemo_%6d.jpg").arg(getTempPath());
-    QString audio_path = QString("%1/kanmemo.wav").arg(getTempPath());
+    QString audio_path = getTempAudioPath();
 #if defined(Q_OS_WIN)
     image_path = image_path.replace(QStringLiteral("/"), QStringLiteral("\\"));
-    audio_path = audio_path.replace(QStringLiteral("/"), QStringLiteral("\\"));
 #endif
 
     QFileInfo fi(audio_path);
@@ -338,6 +319,15 @@ QString RecordingThread::getTempPath()
 
     return path;
 }
+//録音ファイルのパスを取得
+QString RecordingThread::getTempAudioPath()
+{
+    QString audio_path = QString("%1/kanmemo.wav").arg(getTempPath());
+#if defined(Q_OS_WIN)
+    audio_path = audio_path.replace(QStringLiteral("/"), QStringLiteral("\\"));
+#endif
+    return audio_path;
+}
 
 
 
@@ -346,19 +336,11 @@ void RecordingThread::run()
 {
     qDebug() << "start recoding thread " << QString::number(m_et.elapsed());
 
-//#define TEST1
-
     //録画
     bool empty;
-    qint64 interval = 1000/4;
-    qint64 next_frame = interval;
-    int frame_per_sec = static_cast<int>(fps()/4.0);
-#ifdef TEST1
-#else
     qreal frame_time = 1000.0 / fps();
     qint64 elapse;
-#endif
-    int frame_count = 0;//static_cast<int>(fps());
+
     unsigned long count = 0;
     //デバッグ
     unsigned long timer_time = 0;
@@ -368,10 +350,6 @@ void RecordingThread::run()
     m_mutex.lock();
     empty = m_SaveDataList.isEmpty();
     m_mutex.unlock();
-    //1枚目の画像の時間を開始にする
-    if(!empty){
-        next_frame = m_SaveDataList.first().elapse + interval;
-    }
     while(!empty){
         //保存
         SaveData data = m_SaveDataList.first();
@@ -379,11 +357,8 @@ void RecordingThread::run()
 
         timer_time = (count-1)*1000/fps();
         elapse = data.elapse - start_offset_time;
-        qDebug() << count << " , " << timer_time << "-" << elapse << "=" << (timer_time - elapse)
-                 << " : " << data.duration << "-" << elapse << "=" << (data.duration - elapse);
-
-        //フレーム数
-        frame_count++;
+//        qDebug() << count << " , " << timer_time << "-" << elapse << "=" << (timer_time - elapse)
+//                 << " : " << data.duration << "-" << elapse << "=" << (data.duration - elapse);
 
         //次があるか確認
         m_mutex.lock();
@@ -399,28 +374,6 @@ void RecordingThread::run()
         }
 
         //設定フレームあったか確認
-#ifdef TEST1
-        if(!empty){
-            if(m_SaveDataList.first().elapse > next_frame){
-                //次のキャプチャは今回の1秒に入ってない
-                if(frame_count < frame_per_sec){
-                    //基底のフレーム数に達してない
-                    qDebug() << "shortness frame " << data.elapse << "," << frame_count << "-" << frame_per_sec << "," << (frame_per_sec - frame_count);
-                    for(int fc=frame_count; fc < frame_per_sec; fc++){
-                        //不足分を補充
-                        save(data, count++);
-
-                        timer_time = (count-1)*1000/fps() + start_offset_time;
-                        qDebug() << count << " , " << timer_time << "-" << data.elapse << "=" << (timer_time - data.elapse);
-                    }
-                }
-                //フレーム数クリア
-                frame_count = 0;
-                //次の判定時間
-                next_frame += interval;
-            }
-        }
-#else
         if(!empty){
             //保存しようとしているフレームの理論時間
             timer_time = (count-1)*1000/fps();
@@ -435,12 +388,11 @@ void RecordingThread::run()
                 elapse = data.elapse - start_offset_time;
 
                 //保存した時間
-                qDebug() << count << " , " << timer_time << "-" << elapse << "=" << (timer_time - elapse)
-                         << " : " << data.duration << "-" << elapse << "=" << (data.duration - elapse)
-                         << " *";
+//                qDebug() << count << " , " << timer_time << "-" << elapse << "=" << (timer_time - elapse)
+//                         << " : " << data.duration << "-" << elapse << "=" << (data.duration - elapse)
+//                         << " *";
             }
         }
-#endif
     }
 
     qDebug() << "stop recoding thread " << QString::number(m_et.elapsed());
