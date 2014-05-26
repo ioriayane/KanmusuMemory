@@ -5,11 +5,11 @@
 #include <QTimer>
 #include <QMutex>
 #include <QProcess>
-#include <QAudioRecorder>
+//#include <QAudioRecorder>
 #include <QElapsedTimer>
 
 #include "webview.h"
-
+#include "audiorecorder.h"
 
 class SaveData
 {
@@ -30,6 +30,7 @@ class RecordingThread : public QThread
     Q_OBJECT
 public:
     explicit RecordingThread(QObject *parent = 0);
+    ~RecordingThread();
 
     enum RecordingState {
         Stop
@@ -58,6 +59,8 @@ public:
     QStringList audioInputNames() const;
 
 signals:
+    void audioRecord(const QUrl& dest, const QString& src);
+//    void audioRecordStop();
 
 public slots:
     void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
@@ -74,8 +77,9 @@ private:
     qreal m_fps;                        //フレームレート
 
     QProcess m_process;                 //動画にするツールを動かす
-    QAudioRecorder m_audio;             //オーディオ録音
     QString m_audioInputName;           //オーディオ録音するデバイス名
+    AudioRecorder m_audio;              //オーディオ録音
+    QThread m_recordThread;             //録音を別スレッドにする
 
     RecordingState m_state;             //状態
 

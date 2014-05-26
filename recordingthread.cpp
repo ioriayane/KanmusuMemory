@@ -11,14 +11,19 @@ RecordingThread::RecordingThread(QObject *parent) :
   , m_webView(NULL)
   , m_timer(NULL)
   , m_recordingCounter(0)
-  , m_audio(this)
+  , m_audio()
+  , m_recordThread(this)
   , m_stop(true)
 {
     //録音
     QAudioEncoderSettings audioSettings;
-    audioSettings.setCodec("audio/mpeg");
+    audioSettings.setCodec("audio/pcm");
     audioSettings.setQuality(QMultimedia::HighQuality);
     m_audio.setEncodingSettings(audioSettings);
+    m_audio.moveToThread(&m_recordThread);
+
+    connect(this, &RecordingThread::audioRecord, &m_audio, &AudioRecorder::record);// SLOT(record(QUrl, QString)));
+
 
     //タイマー
     m_timer = new QTimer(this);
@@ -47,22 +52,6 @@ RecordingThread::RecordingThread(QObject *parent) :
 //        qDebug() << "finish thread " << m_state;
     });
 
-//    //プロセスの状態が変わった
-//    connect(&m_process, &QProcess::stateChanged, [this](QProcess::ProcessState newState){
-//        qDebug() << "QProcess::stateChanged " << newState;
-//        switch(newState){
-//        case QProcess::NotRunning:
-//            break;
-//        case QProcess::Starting:
-//            break;
-//        case QProcess::Running:
-//            //動き出した
-//            break;
-//        default:
-//            break;
-//        }
-//    });
-
     //プロセスが終了した
     connect(&m_process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished(int, QProcess::ExitStatus)) );
     //プロセスがエラー
@@ -88,6 +77,19 @@ RecordingThread::RecordingThread(QObject *parent) :
             m_mutex.unlock();
         }
     });
+
+
+    //録音スレッド開始
+    m_recordThread.start(QThread::TimeCriticalPriority);
+//    m_recordThread.setPriority(QThread::TimeCriticalPriority);
+
+}
+
+RecordingThread::~RecordingThread()
+{
+    //録音スレッド停止
+    m_recordThread.exit();
+    m_recordThread.wait();
 }
 //録画開始
 void RecordingThread::startRecording()
@@ -101,15 +103,13 @@ void RecordingThread::startRecording()
     m_et.start();
 
     //録音開始
-    QString audio_path = QString("%1/kanmemo.mp3").arg(getTempPath());
+    QString audio_path = QString("%1/kanmemo.wav").arg(getTempPath());
 #if defined(Q_OS_WIN)
     audio_path = audio_path.replace(QStringLiteral("/"), QStringLiteral("\\"));
 #endif
-    m_audio.setOutputLocation(QUrl::fromLocalFile(audio_path));
-    m_audio.setAudioInput(audioInputName());
     qDebug() << "audio out:" << audio_path << "," << m_audio.outputLocation();
     qDebug() << "audio input:" << m_audio.audioInput();
-    m_audio.record();
+    emit audioRecord(QUrl::fromLocalFile(audio_path), audioInputName());
 
     //タイマー開始
     m_stop = false;
@@ -280,7 +280,7 @@ void RecordingThread::capture(unsigned long count)
 void RecordingThread::convert()
 {
     QString image_path = QString("%1/kanmemo_%6d.jpg").arg(getTempPath());
-    QString audio_path = QString("%1/kanmemo.mp3").arg(getTempPath());
+    QString audio_path = QString("%1/kanmemo.wav").arg(getTempPath());
 #if defined(Q_OS_WIN)
     image_path = image_path.replace(QStringLiteral("/"), QStringLiteral("\\"));
     audio_path = audio_path.replace(QStringLiteral("/"), QStringLiteral("\\"));

@@ -23,7 +23,8 @@ SOURCES += main.cpp\
     webpage.cpp \
     fleetdetaildialog.cpp \
     recordingthread.cpp \
-    recognizeinfo.cpp
+    recognizeinfo.cpp \
+    audiorecorder.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -45,7 +46,8 @@ HEADERS  += mainwindow.h \
     fleetdetaildialog.h \
     recordingthread.h \
     numberguide.h \
-    recognizeinfo.h
+    recognizeinfo.h \
+    audiorecorder.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \
