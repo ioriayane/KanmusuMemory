@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,6 +71,9 @@ Rectangle {
         if(setTime > 0){
             running = true
         }
+    }
+    function pause(){
+        running = false
     }
     function stop(){
         clear()

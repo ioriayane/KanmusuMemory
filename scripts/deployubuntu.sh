@@ -3,9 +3,11 @@
 if [[ $1 = "x86" ]]
 then
 PARAM=ubuntu32
+ARCH=i386
 elif [[ $1 = "x64" ]]
 then
 PARAM=ubuntu64
+ARCH=amd64
 else
 echo " invalid param.    deployubuntu.sh x86|x64"
 return 2>&- || exit
@@ -17,7 +19,7 @@ TMPPATH=tmp
 #clean
 rm -rf ${APPNAME}
 rm ${APPNAME}-0.0-ubuntu-x86.zip
-rm -rf kanmusumemory
+sudo rm -rf kanmusumemory
 
 #build and deploy
 perl scripts/deploy.pl ${PARAM}
@@ -43,6 +45,10 @@ cp -a scripts/deb/KanmusuMemory kanmusumemory/usr/local/bin/
 rm kanmusumemory/usr/local/bin/kanmusumemory/KanmusuMemory.sh
 cp -a scripts/deb/Desktop_KanmusuMemory.sh kanmusumemory/usr/local/bin/kanmusumemory/
 du -s kanmusumemory| cut -f 1| xargs echo Installed-Size: >> kanmusumemory/DEBIAN/control
+echo Architecture: ${ARCH} >> kanmusumemory/DEBIAN/control
+sudo chmod 0755 kanmusumemory/DEBIAN/postinst
+sudo chmod 0755 kanmusumemory/DEBIAN/prerm
+sudo chown -R root:root kanmusumemory/
 dpkg-deb -b kanmusumemory
 
 

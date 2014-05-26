@@ -300,6 +300,52 @@ void TimerData::setAlarmSoundVolume(const qreal &volume)
     m_alarmSoundVolume = volume;
     emit alarmSoundVolumeChanged();
 }
+QString TimerData::lastUpdateDate() const
+{
+    return m_lastUpdateDate;
+}
+void TimerData::setLastUpdateDate(const QString &lastUpdateDate)
+{
+    if(m_lastUpdateDate == lastUpdateDate)   return;
+    m_lastUpdateDate = lastUpdateDate;
+    emit lastUpdateDateChanged();
+}
+bool TimerData::dockingClose() const
+{
+    return m_dockingClose;
+}
+
+void TimerData::setDockingClose(bool dockingClose)
+{
+    if(m_dockingClose == dockingClose)  return;
+    m_dockingClose = dockingClose;
+    emit dockingCloseChanged();
+}
+bool TimerData::expeditionClose() const
+{
+    return m_expeditionClose;
+}
+
+void TimerData::setExpeditionClose(bool expeditionClose)
+{
+    if(m_expeditionClose == expeditionClose)    return;
+    m_expeditionClose = expeditionClose;
+    emit expeditionCloseChanged();
+}
+bool TimerData::constructionClose() const
+{
+    return m_constructionClose;
+}
+
+void TimerData::setConstructionClose(bool constructionClose)
+{
+    if(m_constructionClose == constructionClose)    return;
+    m_constructionClose = constructionClose;
+    emit constructionCloseChanged();
+}
+
+
+
 
 QList<qreal> TimerData::toRealList(const QList<QVariant> src)
 {
@@ -326,4 +372,5 @@ QList<int> TimerData::toIntList(const QList<QVariant> src)
     }
     return d;
 }
+
 

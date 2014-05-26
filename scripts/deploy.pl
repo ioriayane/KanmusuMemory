@@ -50,7 +50,7 @@ for ($i = 0; $i <= $#ARGV; $i++) {
 #	, "LocalStorage"
 #	, "Particles.2"
 #	, "PrivateWidgets"
-#	, "Window.2"
+	, "Window.2"
 #	, "XmlListModel"
 	);
 
@@ -78,7 +78,7 @@ for ($i = 0; $i <= $#ARGV; $i++) {
 #	, "Qt5CLucene"
 #	, "Qt5Concurrent"
 	 "Qt5Core"
-    , "Qt5DBus"
+	, "Qt5DBus"
 #	, "Qt5Declarative"
 #	, "Qt5Designer"
 #	, "Qt5DesignerComponents"
@@ -87,6 +87,7 @@ for ($i = 0; $i <= $#ARGV; $i++) {
 	, "Qt5Multimedia", "Qt5MultimediaQuick_p", "Qt5MultimediaWidgets"
 	, "Qt5Network"
 	, "Qt5OpenGL"
+	, "Qt5Positioning"
 	, "Qt5PrintSupport"
 	, "Qt5Qml", "Qt5Quick"
 #	, "Qt5QuickParticles"
@@ -98,7 +99,7 @@ for ($i = 0; $i <= $#ARGV; $i++) {
 	, "Qt5Sql"
 #	, "Qt5Svg"
 #	, "Qt5Test"
-	, "Qt5V8"
+#	, "Qt5V8"
 	, "Qt5WebKit", "Qt5WebKitWidgets"
 	, "Qt5Widgets"
 #	, "Qt5Xml"
@@ -127,17 +128,17 @@ if($OS eq "win"){
 	$EXEDIR="release\\";
 	# デプロイ先のディレクトリ
 	$OUTDIR='..\\KanmusuMemoryBin\\KanmusuMemory' . $PTRSIZE_NAME . '\\';
-    $OUTDIRBIN="";
-    $OUTDIRLIB="";
+	$OUTDIRBIN="";
+	$OUTDIRLIB="";
 	# 言語ファイルを保存しているディレクトリ
 	$I18N="i18n\\";
 
 
 	# Qtのディレクトリ
 	if($PTRSIZE_NAME eq "x86"){
-		$QTDIR="C:\\Qt\\Qt5.1.1vs12-32\\5.1.1\\msvc2012\\";
+		$QTDIR="C:\\Qt\\Qt5.2.1vs12-32\\5.2.1\\msvc2012\\";
 	}else{
-		$QTDIR="C:\\Qt\\Qt5.1.1vs12-64\\5.1.1\\msvc2012_64\\";
+		$QTDIR="C:\\Qt\\Qt5.2.1vs12-64\\5.2.1\\msvc2012_64\\";
 	}
 	# Qtのバイナリの場所
 	$QTBIN="bin\\";
@@ -154,14 +155,14 @@ if($OS eq "win"){
 #				  , "..\\ssl_dll\\". $PTRSIZE_NAME . "\\libssl32.dll"
 				  , "..\\ssl_dll\\". $PTRSIZE_NAME . "\\libeay32.dll"
 				  , "..\\ssl_dll\\". $PTRSIZE_NAME . "\\ssleay32.dll"
-                  , "resources\\alarm.mp3"
+				  , "resources\\alarm.mp3"
 				  );
 
 	# 環境ごとのコマンドの設定
 	if($PTRSIZE_NAME eq "x86"){
-		$MAKE="c:\\qt\\Qt5.1.1vs12-32\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
+		$MAKE="c:\\qt\\Qt5.2.1vs12-32\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
 	}else{
-		$MAKE="c:\\qt\\Qt5.1.1vs12-64\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
+		$MAKE="c:\\qt\\Qt5.2.1vs12-64\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
 	}
 	$CP="copy";						# 単品コピー
 	$COPY="xcopy /S /E /I /Y";		# 複数コピー
@@ -179,21 +180,16 @@ if($OS eq "win"){
 		, "dsengine.dll"		#mediaservice
 		);
 
-    # 名称の修正
-    @temp = ();
-    foreach $name (@QT_MODULE_LIBRARY){
-        push(@temp, $name . ".dll");
-    }
-    @QT_MODULE_LIBRARY = @temp;
+	# 名称の修正
+	@temp = ();
+	foreach $name (@QT_MODULE_LIBRARY){
+		push(@temp, $name . ".dll");
+	}
+	@QT_MODULE_LIBRARY = @temp;
 
-    # 追加
-    push(@QT_MODULE_LIBRARY, "Qt0TwitterAPI.dll");
-    push(@QT_MODULE_LIBRARY, "d3dcompiler_46.dll");
-    push(@QT_MODULE_LIBRARY, "icudt51.dll");
-    push(@QT_MODULE_LIBRARY, "icuin51.dll");
-    push(@QT_MODULE_LIBRARY, "icuuc51.dll");
-    push(@QT_MODULE_LIBRARY, "libEGL.dll");
-    push(@QT_MODULE_LIBRARY, "libGLESv2.dll");
+	# 追加（不足分）
+	push(@QT_MODULE_LIBRARY, "Qt0TwitterAPI.dll");
+	push(@QT_MODULE_LIBRARY, "Qt5MultimediaQuick_p.dll");
 
 }elsif($OS eq "ubuntu"){
 	################################################
@@ -206,18 +202,18 @@ if($OS eq "win"){
 	$EXEDIR="";
 	# デプロイ先のディレクトリ
 	$OUTDIR='tmp/';
-    $OUTDIRBIN="bin/";
-    $OUTDIRLIB="lib/";
+	$OUTDIRBIN="bin/";
+	$OUTDIRLIB="lib/";
 	# 言語ファイルを保存しているディレクトリ
 	$I18N="i18n/";
 
 
 	# Qtのディレクトリ
-if($PTRSIZE == 32){
-	$QTDIR="~/Qt5.1.0/5.1.0/gcc/";
-}else{
-	$QTDIR="~/Qt5.1.0/5.1.0/gcc_64/";
-}
+	if($PTRSIZE == 32){
+		$QTDIR="~/Qt5.2.1/5.2.1/gcc/";
+	}else{
+		$QTDIR="~/Qt5.2.1/5.2.1/gcc_64/";
+	}
 	# Qtのバイナリの場所
 	$QTBIN="bin/";
 	# Qtのライブラリ（Winならdll, Ubuntuならso）の保存場所
@@ -244,34 +240,33 @@ if($PTRSIZE == 32){
 	# ファイルをコピーした最後に消すファイルのフィルタ
 	@REMOVE_FILES=(
 		"plugins.qmltypes"
-        , "libqlinuxfb.so"        #platforms
-        , "libqminimal.so"      #platforms
-        , "libqoffscreen.so"    #platforms
+		, "libqlinuxfb.so"        #platforms
+		, "libqminimal.so"      #platforms
+		, "libqoffscreen.so"    #platforms
 		);
 
-
-    # 名称の修正
-    @temp = ();
-    foreach $name (@QT_MODULE_LIBRARY){
-        push(@temp, "lib" . $name . ".so.5");
-        push(@temp, "lib" . $name . ".so.5.1.0");
-    }
-    @QT_MODULE_LIBRARY = @temp;
+	# 名称の修正
+	@temp = ();
+	foreach $name (@QT_MODULE_LIBRARY){
+		push(@temp, "lib" . $name . ".so.5");
+		push(@temp, "lib" . $name . ".so.5.2.1");
+	}
+	@QT_MODULE_LIBRARY = @temp;
     
-    # 追加ライブラリ
-    push(@QT_MODULE_PLUGIN, "platforminputcontexts");
-    push(@QT_MODULE_PLUGIN, "platformthemes");
+	# 追加ライブラリ
+	push(@QT_MODULE_PLUGIN, "platforminputcontexts");
+	push(@QT_MODULE_PLUGIN, "platformthemes");
 
-    push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0");
-    push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0.1.0");
-    push(@QT_MODULE_LIBRARY, "libicudata.so.51");
-    push(@QT_MODULE_LIBRARY, "libicudata.so.51.1");
-    push(@QT_MODULE_LIBRARY, "libicui18n.so.51");
-    push(@QT_MODULE_LIBRARY, "libicui18n.so.51.1");
-    push(@QT_MODULE_LIBRARY, "libicuuc.so.51");
-    push(@QT_MODULE_LIBRARY, "libicuuc.so.51.1");
-    push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1");
-    push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1.0.0");
+	push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0");
+	push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0.1.0");
+	push(@QT_MODULE_LIBRARY, "libicudata.so.51");
+	push(@QT_MODULE_LIBRARY, "libicudata.so.51.1");
+	push(@QT_MODULE_LIBRARY, "libicui18n.so.51");
+	push(@QT_MODULE_LIBRARY, "libicui18n.so.51.1");
+	push(@QT_MODULE_LIBRARY, "libicuuc.so.51");
+	push(@QT_MODULE_LIBRARY, "libicuuc.so.51.1");
+	push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1");
+	push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1.0.0");
 
 #}elsif($OS eq "mac"){
 }else{
@@ -335,39 +330,46 @@ if($OS eq "win"){
 system("$MKDIR $OUTDIR$OUTDIRBIN$I18N");
 system("$COPY $I18N" . "*.qm $OUTDIR$OUTDIRBIN$I18N");
 
-##################################
-#setup QML modules
-##################################
-@libs=@QML_MODULE;
-$lib_dir=$QTQML;
-foreach $lib (@libs) {
-	system("$COPY $QTDIR$lib_dir$lib $OUTDIR$OUTDIRBIN$lib");
-}
-
-#sub folder "qml/QtQuick"
-@libs=@QML_MODULE_QTQUICK;
-$lib_dir=$QTQML;
 if($OS eq "win"){
-    $sub_dir="QtQuick\\";
+
+	system("windeployqt --qmldir qml --dir $OUTDIR $EXEDIR$EXENAME");
+
 }else{
-    $sub_dir="QtQuick/";
-}
-if($#libs >= 0){
-    system("$MKDIR $OUTDIR$OUTDIRBIN$sub_dir");
-    foreach $lib (@libs) {
-	    system("$COPY $QTDIR$lib_dir$sub_dir$lib $OUTDIR$OUTDIRBIN$sub_dir$lib");
-    }
-}
 
-##################################
-#setup Qt plugins
-##################################
-@libs=@QT_MODULE_PLUGIN;
-$lib_dir=$QTPLUGINS;
-foreach $lib (@libs) {
-	system("$COPY $QTDIR$lib_dir$lib $OUTDIR$OUTDIRBIN$lib");
-}
 
+	##################################
+	#setup QML modules
+	##################################
+	@libs=@QML_MODULE;
+	$lib_dir=$QTQML;
+	foreach $lib (@libs) {
+		system("$COPY $QTDIR$lib_dir$lib $OUTDIR$OUTDIRBIN$lib");
+	}
+
+	#sub folder "qml/QtQuick"
+	@libs=@QML_MODULE_QTQUICK;
+	$lib_dir=$QTQML;
+	if($OS eq "win"){
+	    $sub_dir="QtQuick\\";
+	}else{
+	    $sub_dir="QtQuick/";
+	}
+	if($#libs >= 0){
+	    system("$MKDIR $OUTDIR$OUTDIRBIN$sub_dir");
+	    foreach $lib (@libs) {
+		    system("$COPY $QTDIR$lib_dir$sub_dir$lib $OUTDIR$OUTDIRBIN$sub_dir$lib");
+	    }
+	}
+
+	##################################
+	#setup Qt plugins
+	##################################
+	@libs=@QT_MODULE_PLUGIN;
+	$lib_dir=$QTPLUGINS;
+	foreach $lib (@libs) {
+		system("$COPY $QTDIR$lib_dir$lib $OUTDIR$OUTDIRBIN$lib");
+	}
+}
 
 ##################################
 #setup Qt libraries
@@ -378,13 +380,13 @@ foreach $lib (@libs) {
 	system("$COPY $QTDIR$lib_dir$lib$libext $OUTDIR$OUTDIRLIB");
 }
 
-
 ##################################
 #setup platform depend files
 ##################################
 foreach $plat_lib (@PLATFORM_LIBS) {
 	system("$CP \"$plat_lib\" $OUTDIR$OUTDIRBIN");
 }
+
 
 ##################################
 # remove 

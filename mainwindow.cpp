@@ -77,11 +77,14 @@ public:
     void captureFleetDetail();
     void setFullScreen();
     void setGameSize(qreal factor);
+    void checkMajorDamageShip(const QPointF &pos, bool force = false);
+    void checkExpeditionRemainTime(const QPointF &pos);
 
     QList<int> bakSplitterSizes;    //幅のサイズ保存用にとっておく。（非表示だと0になってしまうから）
 private:
     void setWebSettings();          //Web関連の設定をする
-    void makeDialog();             //ダイアログの作成をする
+    void makeDialog();              //ダイアログの作成をする
+    void setButtleResultPosition(); //戦果報告の表示位置
 
     void maskImage(QImage *img, const QRect &rect);
     QString makeFileName(const QString &format) const;
@@ -124,6 +127,10 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     setWebSettings();
     //ダイアログの作成
     makeDialog();
+
+    //戦績報告を非表示
+    ui.viewButtleResult->setVisible(false);
+    setButtleResultPosition();
 
     //メニュー
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
@@ -175,7 +182,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     connect(ui.preferences, &QAction::triggered, [this]() { openSettingDialog(); });
     //アバウト
     connect(ui.about, &QAction::triggered, [this]() { openAboutDialog(); });
-    //ツールバーの表示非表示
+    //ツールバーの表示/非表示
     connect(ui.actionViewToolBar, &QAction::changed, [this](){
         ui.toolBar->setVisible(ui.actionViewToolBar->isChecked());
     });
@@ -279,6 +286,13 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
             return;
         ui.tabWidget->nextTab();
     });
+    //WebViewをクリック
+    connect(ui.webView, &WebView::mousePressed, [this](QMouseEvent *event) {
+        //艦隊の被弾状況を調べる
+        checkMajorDamageShip(event->localPos());
+        //遠征の残り時間を調べる
+        checkExpeditionRemainTime(event->localPos());
+    });
 
     //WebViewの読込み開始
     connect(ui.webView, &QWebView::loadStarted, [this](){
@@ -323,7 +337,14 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     //アップデートの確認をする
     m_updateInfoDialog->CheckUpdate();
     connect(ui.actionUpdate, &QAction::triggered, [this](){ m_updateInfoDialog->CheckUpdate(); });
-
+    //アプデート確認の情報を元にお気に入りのアップデート
+    connect(m_updateInfoDialog, &UpdateInfoDialog::lastFavoriteUpdateDateChanged, [this](const QString &lastFavoriteUpdateDate){
+        m_favorite.updateFromInternet(lastFavoriteUpdateDate);
+    });
+    //アプデート確認の情報を元にタイマーのアップデート
+    connect(m_updateInfoDialog, &UpdateInfoDialog::lastTimerSelectGuideUpdateDateChanged, [this](const QString &lastTimerSelectGuideUpdateDate){
+        m_timerDialog->setLastTimerSelectGuideUpdateDate(lastTimerSelectGuideUpdateDate);
+    });
 
     //通知アイコン
 #ifdef Q_OS_WIN
@@ -383,15 +404,17 @@ void MainWindow::Private::captureGame(bool andEdit)
     //設定確認
     checkSavePath();
 
+    //戦績報告のプレビューを一時的に消してキャプチャー
+    bool old_buttle_result = ui.viewButtleResult->isVisible();
+    ui.viewButtleResult->setVisible(false);
     QImage img = ui.webView->capture();
-    if (img.isNull())
-    {
+    ui.viewButtleResult->setVisible(old_buttle_result);
+    if (img.isNull()){
         ui.statusBar->showMessage(tr("failed capture image"), STATUS_BAR_MSG_TIME);
         return;
     }
 
     GameScreen gameScreen(img);
-
     if (gameScreen.isVisible(GameScreen::HeaderPart)) {
         //提督名をマスク
         if(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool()) {
@@ -532,6 +555,14 @@ void MainWindow::Private::openSettingDialog()
     dlg.setUseCookie(settings.value(SETTING_GENERAL_USE_COOKIE, true).toBool());
     dlg.setDisableContextMenu(settings.value(SETTING_GENERAL_DISABLE_CONTEXT_MENU, false).toBool());
     dlg.setDisableExitShortcut(settings.value(SETTING_GENERAL_DISABLE_EXIT, DISABLE_EXIT_DEFAULT).toBool());
+    dlg.setViewButtleResult(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool());
+    dlg.setButtleResultPosition(static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt()));
+    dlg.setButtleResultOpacity(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal());
+    dlg.setTimerAutoStart(settings.value(QStringLiteral(SETTING_GENERAL_TIMER_AUTO_START), true).toBool());
+    settings.beginGroup(QStringLiteral(SETTING_TIMER));
+    dlg.setTweetFinished(settings.value(QStringLiteral(SETTING_TIMER_TWEETFINISHED),false).toBool());
+    settings.endGroup();
+
     if (dlg.exec()) {
         //設定更新
         settings.setValue(QStringLiteral("path"), dlg.savePath());
@@ -545,6 +576,23 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_USE_COOKIE, dlg.useCookie());
         settings.setValue(SETTING_GENERAL_DISABLE_CONTEXT_MENU, dlg.disableContextMenu());
         settings.setValue(SETTING_GENERAL_DISABLE_EXIT, dlg.disableExitShortcut());
+        settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT, dlg.viewButtleResult());
+        settings.setValue(SETTING_GENERAL_BUTTLE_RESULT_POSITION, static_cast<int>(dlg.buttleResultPosition()));
+        settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY, dlg.buttleResultOpacity());
+        settings.setValue(SETTING_GENERAL_TIMER_AUTO_START, dlg.timerAutoStart());
+
+        //戦果報告の表示位置などを更新
+        ui.viewButtleResult->setVisible(ui.viewButtleResult->isVisible() & dlg.viewButtleResult());
+        setButtleResultPosition();
+        if(ui.viewButtleResult->isVisible()){
+            checkMajorDamageShip(QPointF(0,0), true);
+        }
+
+        //タイマーの時間でつぶやく
+        if(m_timerDialog != NULL){
+            //ダイアログとの連携の関係で保存はダイアログのクラスでする
+            m_timerDialog->setTweetFinished(dlg.tweetFinished());
+        }
 
         //設定反映（必要なの）
         //プロキシ
@@ -744,7 +792,7 @@ void MainWindow::Private::setSplitWindowVisiblity(bool visible)
 
         //タブがひとつも無ければ追加
         if(ui.tabWidget->count() == 0){
-            ui.tabWidget->newTab(QUrl("http://www56.atwiki.jp/kancolle/"));
+            ui.tabWidget->newTab(QUrl("http://www.google.co.jp/"));
         }
     }else{
         //→非表示
@@ -797,6 +845,7 @@ void MainWindow::Private::captureCatalog()
     QPainter painter(&resultImg);
 
     QPoint currentPos = ui.webView->page()->mainFrame()->scrollPosition();
+    ui.webView->page()->mainFrame()->setScrollPosition(QPoint(0, 0));
     QRect geometry = ui.webView->getGameRect();
 
     if (GameScreen(ui.webView->capture()).screenType() != GameScreen::CatalogScreen)
@@ -979,6 +1028,158 @@ void MainWindow::Private::setGameSize(qreal factor)
     ui.actionZoom175->setChecked(factor == 1.75);
     ui.actionZoom200->setChecked(factor == 2);
 }
+//戦果報告画面での大破判定
+void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
+{
+    if(!settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool()
+            || q->isFullScreen()){
+        return;
+    }
+    qreal opacity = settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal();
+
+    bool old = ui.viewButtleResult->isVisible();
+    ui.viewButtleResult->setVisible(false);
+    QImage img = ui.webView->capture(false);
+    ui.viewButtleResult->setVisible(old);
+    if(img.isNull()){
+        return;
+    }
+
+    GameScreen gameScreen(img);
+    switch(gameScreen.screenType()){
+    case GameScreen::ButtleResultScreen:
+        if(!ui.viewButtleResult->isVisible() || force){
+            //非表示→表示
+            QImage background;
+            if(gameScreen.isContainMajorDamageShip()){
+                //大破が含まれるっぽい
+                background.load(":/resources/ButtleResultBackgroundRed.png");
+            }else{
+                background.load(":/resources/ButtleResultBackgroundBlue.png");
+            }
+            QImage buttle(":/resources/ButtleResultBackgroundTrans.png");
+            QPainter painter(&buttle);
+            painter.setOpacity(opacity);
+            painter.drawImage(0, 0, background);
+            painter.drawImage(20, 20, img.scaled(300, 180, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            ui.viewButtleResult->setPixmap(QPixmap::fromImage(buttle));
+            ui.viewButtleResult->setWindowOpacity(0.5);
+            ui.viewButtleResult->setVisible(true);
+        }
+        break;
+
+    case GameScreen::GoOrBackScreen:
+    {
+        //進撃or撤退
+        QRect game_rect = ui.webView->getGameRect();
+#if 0
+        //思ったより当たり判定でかいからボタン単位は面倒なだけ
+        QRect go_rect(game_rect.x() + BUTTLE_GO_BUTTON_RECT.x()
+                      , game_rect.y() + BUTTLE_GO_BUTTON_RECT.y()
+                      , BUTTLE_GO_BUTTON_RECT.width()
+                      , BUTTLE_GO_BUTTON_RECT.height());
+        QRect back_rect(game_rect.x() + BUTTLE_BACK_BUTTON_RECT.x()
+                        , game_rect.y() + BUTTLE_BACK_BUTTON_RECT.y()
+                        , BUTTLE_BACK_BUTTON_RECT.width()
+                        , BUTTLE_BACK_BUTTON_RECT.height());
+        if(go_rect.contains(pos.x(), pos.y()) || back_rect.contains(pos.x(), pos.y())){
+#else
+        QRect button_rect(game_rect.x() + BUTTLE_GO_OR_BACK_RECT.x()
+                          , game_rect.y() + BUTTLE_GO_OR_BACK_RECT.y()
+                          , BUTTLE_GO_OR_BACK_RECT.width()
+                          , BUTTLE_GO_OR_BACK_RECT.height());
+        if(button_rect.contains(pos.x(), pos.y())){
+#endif
+        //判定範囲内をクリックしてたら消す
+            ui.viewButtleResult->setVisible(false);
+        }
+        break;
+    }
+    case GameScreen::TurnCompassScreen:
+        //羅針盤を回す
+        ui.viewButtleResult->setVisible(false);
+        break;
+
+    default:
+        if(gameScreen.isVisible(GameScreen::HeaderPart)){
+            //ヘッダーが表示されてたら母港画面
+            ui.viewButtleResult->setVisible(false);
+        }
+        break;
+    }
+
+}
+//遠征の残り時間を調べる
+void MainWindow::Private::checkExpeditionRemainTime(const QPointF &pos)
+{
+    if(!settings.value(QStringLiteral(SETTING_GENERAL_TIMER_AUTO_START), true).toBool()){
+        return;
+    }
+    QImage img = ui.webView->capture(false);
+    if(img.isNull()){
+        return;
+    }
+    QRect game_rect = ui.webView->getGameRect();
+    QPointF game_pos(pos.x() - game_rect.x(), pos.y() - game_rect.y());
+    static int last_click_fleet_no = -1;
+    static qint64 last_select_total = -1;
+    //0:item選択
+    //1:item決定押した
+    //2:遠征開始を押した（元画面に戻ってくる）
+    GameScreen gameScreen(img);
+    if(gameScreen.screenType() == GameScreen::ExpeditionScreen){
+
+        qDebug() << "Expedition";
+
+        //時間の取得
+        qint64 total;
+        qint64 remain;
+        gameScreen.getExpeditionTime(&total, &remain);
+        qDebug() << "  checkExpeditionRemainTime: total=" << total << ", remain=" << remain;
+
+        //項目選択済みなら時間を設定
+        if((last_click_fleet_no != -1) && (total != -1) && (remain != -1)){
+            if(m_timerDialog != NULL){
+                m_timerDialog->updateTimerSetting(1, last_click_fleet_no, remain, total);
+            }
+            last_click_fleet_no = -1;
+        }
+
+        //メモ：遠征出撃からの時は取得できるまで項目選択をしない？
+
+        //項目選択したか確認
+        last_click_fleet_no = gameScreen.getClickExpeditionItemFleetNo(game_pos);
+        qDebug() << "  checkExpeditionRemainTime:" << last_click_fleet_no;
+
+        //出撃済み遠征を選択してなくて決定を押した？かつ、トータルが取得できて残りが取れないとき
+        if((last_click_fleet_no == -1)
+                && EXPEDITION_ITEM_COMFIRM_RECT.contains(game_pos.x(), game_pos.y())
+                && (total != -1)
+                && (remain == -1)){
+            qDebug() << "  click comfirm " << total;
+            last_select_total = total;
+        }
+
+    }else if(last_select_total != -1){
+        //決定が押されて艦隊選択になっているはず
+        qDebug() << "  select fleet and start.";
+        if(gameScreen.isClickExpeditionStartButton(game_pos)){
+            //開始ボタンを押した
+            qDebug() << "    click start";
+            //艦隊番号確認
+            int fleet_no = gameScreen.getExpeditionFleetNo();
+            //設定を投げる
+            if(m_timerDialog != NULL){
+                m_timerDialog->updateTimerSetting(1, fleet_no, last_select_total, last_select_total);
+            }
+            //クリア
+            last_select_total = -1;
+        }
+    }else{
+        last_click_fleet_no = -1;
+        last_select_total = -1;
+    }
+}
 
 //Webページに関連する設定をする
 void MainWindow::Private::setWebSettings()
@@ -996,15 +1197,22 @@ void MainWindow::Private::setWebSettings()
     }
     //WebViewの設定（キャッシュ）
     QNetworkDiskCache *cache = new QNetworkDiskCache(q);
-    cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    cache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation)+CACHE_LOCATION_SUFFIX);
     cache->setMaximumCacheSize(1073741824); //about 1024MB
     ui.webView->page()->networkAccessManager()->setCache(cache);
     ui.tabWidget->setCache(cache);
+    //古いキャッシュフォルダを削除
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
+    if(dir.exists()){
+        dir.removeRecursively();
+    }
 
     QWebSettings *websetting = QWebSettings::globalSettings();
     //JavaScript関連設定
     websetting->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
     websetting->setAttribute(QWebSettings::JavascriptCanCloseWindows, true);
+    websetting->setAttribute(QWebSettings::PluginsEnabled, true);
+    websetting->setAttribute(QWebSettings::JavascriptEnabled, true);
     //フォント設定
 #if defined(Q_OS_WIN32)
 //    websetting->setFontFamily(QWebSettings::StandardFont, "ＭＳ Ｐゴシック");
@@ -1021,6 +1229,7 @@ void MainWindow::Private::setWebSettings()
     websetting->setFontFamily(QWebSettings::FixedFont, "Osaka");
 #else
 #endif
+    QNetworkProxyFactory::setUseSystemConfiguration(true);
     updateProxyConfiguration();
 }
 //ダイアログの作成をする
@@ -1043,6 +1252,47 @@ void MainWindow::Private::makeDialog()
                                                 , fdd_msg_list  //説明文言リスト
                                                 , &settings
                                                 , q);
+}
+//戦果報告の表示位置
+void MainWindow::Private::setButtleResultPosition()
+{
+    SettingsDialog::ButtleResultPosition position = static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt());
+
+    switch(position){
+    case SettingsDialog::LeftTop:
+        ui.additionalInfoHSpacerLeft->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerTop->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui.additionalInfoHSpacerRight->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerBottom->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        break;
+    default:
+    case SettingsDialog::RightTop:
+        ui.additionalInfoHSpacerLeft->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerTop->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui.additionalInfoHSpacerRight->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerBottom->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        break;
+    case SettingsDialog::LeftBottom:
+        ui.additionalInfoHSpacerLeft->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerTop->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        ui.additionalInfoHSpacerRight->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerBottom->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        break;
+    case SettingsDialog::RightBottom:
+        ui.additionalInfoHSpacerLeft->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerTop->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        ui.additionalInfoHSpacerRight->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerBottom->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
+        break;
+    case SettingsDialog::Center:
+        ui.additionalInfoHSpacerLeft->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerTop->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        ui.additionalInfoHSpacerRight->changeSize(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        ui.additionalInfoVSpacerBottom->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        break;
+    }
+    //変更反映
+    ui.additionalInfoLayout->invalidate();
 }
 
 
@@ -1072,10 +1322,6 @@ MainWindow::MainWindow(QWidget *parent, bool not_use_cookie)
         d->ui.exit->setShortcut(QKeySequence(QStringLiteral("Ctrl+Q")));
     }
 
-    //設定
-    QNetworkProxyFactory::setUseSystemConfiguration(true);
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::PluginsEnabled, true);
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::JavascriptEnabled, true);
     //SSLエラー
     connect(d->ui.webView->page()->networkAccessManager(),
             SIGNAL(sslErrors(QNetworkReply*, const QList<QSslError> & )),

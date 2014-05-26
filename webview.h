@@ -34,7 +34,7 @@ public:
 
     bool gameExists() const;
     QRect getGameRect() const;
-    QImage capture();
+    QImage capture(bool adjustScrollPosition = true);
 
     ViewMode viewMode() const;
 
@@ -50,9 +50,11 @@ signals:
     void viewModeChanged(ViewMode viewMode);
     void gameSizeFactorChanged(qreal factor);
     void error(const QString &message);
+    void mousePressed(QMouseEvent *event);
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
+    void mousePressEvent(QMouseEvent * event);
 
 private slots:
     void openLinkInNewTab();

@@ -40,6 +40,12 @@ class TimerData : public QObject
     Q_PROPERTY(bool tweetFinished READ tweetFinished WRITE setTweetFinished NOTIFY tweetFinishedChanged)
     Q_PROPERTY(QString alarmSoundPath READ alarmSoundPath WRITE setAlarmSoundPath NOTIFY alarmSoundPathChanged)
     Q_PROPERTY(qreal alarmSoundVolume READ alarmSoundVolume WRITE setAlarmSoundVolume NOTIFY alarmSoundVolumeChanged)
+    Q_PROPERTY(QString lastUpdateDate READ lastUpdateDate WRITE setLastUpdateDate NOTIFY lastUpdateDateChanged)
+
+    //折りたたみ
+    Q_PROPERTY(bool dockingClose READ dockingClose WRITE setDockingClose NOTIFY dockingCloseChanged)
+    Q_PROPERTY(bool expeditionClose READ expeditionClose WRITE setExpeditionClose NOTIFY expeditionCloseChanged)
+    Q_PROPERTY(bool constructionClose READ constructionClose WRITE setConstructionClose NOTIFY constructionCloseChanged)
 
 public:
     explicit TimerData(QObject *parent = 0);
@@ -89,6 +95,17 @@ public:
         return dest;
     }
 
+    QString lastUpdateDate() const;
+    void setLastUpdateDate(const QString &lastUpdateDate);
+
+    //折りたたみ系
+    bool dockingClose() const;
+    void setDockingClose(bool dockingClose);
+    bool expeditionClose() const;
+    void setExpeditionClose(bool expeditionClose);
+    bool constructionClose() const;
+    void setConstructionClose(bool constructionClose);
+
 signals:
     void dockingTimeChanged(const QList<qreal> &set);
     void dockingStartChanged(const QList<qreal> &start);
@@ -105,6 +122,11 @@ signals:
     void tweetFinishedChanged();
     void alarmSoundPathChanged();
     void alarmSoundVolumeChanged();
+    void lastUpdateDateChanged();
+
+    void dockingCloseChanged();
+    void expeditionCloseChanged();
+    void constructionCloseChanged();
 public slots:
 
 private:
@@ -124,6 +146,13 @@ private:
     bool m_tweetFinished;       //時間になったらつぶやくか
     QString m_alarmSoundPath;   //アラーム音のパス
     qreal m_alarmSoundVolume;   //アラーム音量
+
+    QString m_lastUpdateDate;   //データの更新日
+
+    //折りたたみ
+    bool m_dockingClose;
+    bool m_expeditionClose;
+    bool m_constructionClose;
 };
 
 #endif // TIMERDATA_H

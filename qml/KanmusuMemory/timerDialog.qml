@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,9 @@ import "js/HttpAccess.js" as Http
 Rectangle {
     id: root
     color: "#f0f0f0"
+    width: timerArea.width + 20
+    height: timerArea.height + 20
+onWidthChanged: console.debug("root:" + width)
 
     property real d0set: 0
     property real d0start: 0
@@ -35,8 +38,11 @@ Rectangle {
 
 
     Component.onCompleted: {
-//        console.debug("start download timer data")
-        Http.requestHttp("", "GET", "http://relog.xii.jp/download/kancolle/data/timerselectguide.json", true, responseHttp)
+        updateFromInternet()
+
+        dockingTitle.itemClose = timerData.dockingClose
+        expeditionTitle.itemClose = timerData.expeditionClose
+        constructionTitle.itemClose = timerData.constructionClose
     }
 
     OperatingSystem {
@@ -61,34 +67,85 @@ Rectangle {
         onTriggered: updateAll()
     }
 
-    function responseHttp(oj){
-        var data = JSON.parse(oj.responseText)
-        var i
+    //主にC++からtimerDataのプロパティが変更された時の対応
+    Connections {
+        target: timerData
+
+        onTweetFinishedChanged: {
+            tweetFinishedCheckbox.checked = timerData.tweetFinished
+        }
+
+        onExpeditionTimeChanged: {
+            for(var i=0; i<expedition.count; i++){
+                expedition.itemAt(i).setTime = set[i]
+            }
+        }
+        onExpeditionStartChanged: {
+            for(var i=0; i<expedition.count; i++){
+                expedition.itemAt(i).startTime = start[i]
+            }
+        }
+        //C++から動作状況が更新されたら
+        onExpeditionRunningChanged: {
+            for(var i=0; i<expedition.count; i++){
+                if((running[i] == true) && (expedition.itemAt(i).running == false)){
+                    expedition.itemAt(i).restart()
+                }
+            }
+        }
+    }
+
+    //C++から止める
+    function stop(kind, index){
+        switch(kind){
+        case 0:
+            docking.itemAt(index).stop()
+            break
+        case 1:
+            expedition.itemAt(index).stop()
+            break
+        case 2:
+            construction.itemAt(index).stop()
+            break
+        default:
+            break
+        }
+    }
+
+    function updateFromInternet(){
+//        console.debug("start update timer data " + timerData.lastUpdateDate)
+
         var local_path = file.getWritablePath() + "/timerselectguide.json"
         var local_data = ""
 
         if(file.exists(local_path)){
             local_data = JSON.parse(file.readTextFile(local_path))
 
-            if(data.serial > local_data.serial){
-//                console.debug("use new download data")
-                //新しいのをダウンロードしたので保存
-                file.writeTextFile(local_path, oj.responseText)
-
-                //表示用データと入れ替える
-                viewTimerSelectGuide(data)
+            if(timerData.lastUpdateDate > local_data.serial){
+//                console.debug(" download update data")
+                Http.requestHttp("", "GET", "http://relog.xii.jp/download/kancolle/data/timerselectguide.json", true, responseHttp)
             }else{
 //                console.debug("use local data")
                 //ローカルのデータを表示
                 viewTimerSelectGuide(local_data)
             }
         }else{
-//            console.debug("use download data")
-            //新しいのをダウンロードしたので保存
-            file.writeTextFile(local_path, oj.responseText)
-            //ダウンロードしたデータを表示
-            viewTimerSelectGuide(data)
+//            console.debug(" download update data")
+            Http.requestHttp("", "GET", "http://relog.xii.jp/download/kancolle/data/timerselectguide.json", true, responseHttp)
         }
+
+    }
+
+    function responseHttp(oj){
+        var data = JSON.parse(oj.responseText)
+        var i
+        var local_path = file.getWritablePath() + "/timerselectguide.json"
+        var local_data = ""
+
+        //新しいのをダウンロードしたので保存
+        file.writeTextFile(local_path, oj.responseText)
+        //表示用データと入れ替える
+        viewTimerSelectGuide(data)
     }
 
     //タイマーのガイド情報をモデルに設定する
@@ -151,20 +208,25 @@ Rectangle {
 
     Column {
         id: timerArea
-        anchors.centerIn: parent
+        anchors.horizontalCenter: parent.horizontalCenter
 
         Item { width: 5; height: 5 }
         //入渠
-        Text {
-            text: qsTr("Docking")
-            font.pointSize: 16
+        TimerGroupTitle {
+            id: dockingTitle
+            caption: qsTr("Docking")
+            onItemCloseChanged: timerData.dockingClose = itemClose
         }
-        GroupBox {
+        TimerGroupBox {
+            id: dockingGroup
+            itemClose: dockingTitle.itemClose
             Column {
                 Repeater {
                     id: docking
                     model: timerData.dockingTime.length
                     delegate: TimerItem {
+                        id: timerItem
+                        enabled: !dockingTitle.itemClose //開閉
                         heightScale: os.type == OperatingSystem.Linux ? 1.1 : 1.3
                         setTime: timerData.dockingTime[index]              //指定時間
                         startTime: timerData.dockingStart[index]          //開始時間
@@ -186,16 +248,20 @@ Rectangle {
         }
         Item { width: 5; height: 5 }
         //遠征
-        Text {
-            text: qsTr("Expedition")
-            font.pointSize: 16
+        TimerGroupTitle {
+            id: expeditionTitle
+            caption: qsTr("Expedition")
+            onItemCloseChanged: timerData.expeditionClose = itemClose
         }
-        GroupBox {
+        TimerGroupBox {
+            id: expeditionGroup
+            itemClose: expeditionTitle.itemClose
             Column {
                 Repeater {
                     id: expedition
                     model: timerData.expeditionTime.length
                     delegate: TimerItem {
+                        enabled: !expeditionTitle.itemClose
                         heightScale: os.type == OperatingSystem.Linux ? 1.1 : 1.3
                         setTime: timerData.expeditionTime[index]          //指定時間
                         startTime: timerData.expeditionStart[index]      //開始時間
@@ -219,16 +285,20 @@ Rectangle {
         }
         Item { width: 5; height: 5 }
         //建造
-        Text {
-            text: qsTr("Construction")
-            font.pointSize: 16
+        TimerGroupTitle {
+            id: constructionTitle
+            caption: qsTr("Construction")
+            onItemCloseChanged: timerData.constructionClose = itemClose
         }
-        GroupBox {
+        TimerGroupBox {
+            id: constructionGroup
+            itemClose: constructionTitle.itemClose
             Column {
                 Repeater {
                     id: construction
                     model: timerData.constructionTime.length
                     delegate: TimerItem {
+                        enabled: !constructionTitle.itemClose
                         heightScale: os.type == OperatingSystem.Linux ? 1.1 : 1.3
                         setTime: timerData.constructionTime[index]          //指定時間
                         startTime: timerData.constructionStart[index]      //開始時間
@@ -248,13 +318,15 @@ Rectangle {
                 }
             }
         }
-        Item { width: 5; height: 5 }
+        Item { width: 5; height: 10 }
         CheckBox {
+            id: tweetFinishedCheckbox
             anchors.left: parent.left
             anchors.leftMargin: 10
             text: qsTr("tweet a time-out")
             checked: timerData.tweetFinished    //このバインドは初期値をもらうだけ
-            onCheckedChanged: timerData.tweetFinished = checked
+//            onCheckedChanged: timerData.tweetFinished = checked
+            onClicked: timerData.tweetFinished = checked
         }
     }
     //ダイアログ開く

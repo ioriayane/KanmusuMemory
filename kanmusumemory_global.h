@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
 #define KANMEMO_NAME "KanmusuMemory"
 #define KANMEMO_NAME_FAV "KanmusuMemoryFav"
 #define KANMEMO_PROJECT "KanmemoProject"
-#define KANMEMO_VERSION "0.11"
-#define KANMEMO_VERSION_CODE 12
+#define KANMEMO_VERSION "0.14"
+#define KANMEMO_VERSION_CODE 15
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
     << "@task_jp"\
@@ -30,7 +30,12 @@
     << "@nowsprinting"\
     << "@EnderAlice"\
     << "@hermit4"\
+    << "@Kaikias_lys"\
     )
+
+//キャシュの内容がQtのバージョンで互換性が無いみたいなので
+//標準のパスに↓の文字列を追加したフォルダにする
+#define CACHE_LOCATION_SUFFIX       "2"
 
 //設定ファイル
 //#define SETTING_FILE_NAME       "settings.ini"
@@ -51,6 +56,10 @@
 #define SETTING_GENERAL_USE_COOKIE          "use_cookie"
 #define SETTING_GENERAL_DISABLE_CONTEXT_MENU    "disable_context_menu"
 #define SETTING_GENERAL_DISABLE_EXIT        "disable_exit"
+#define SETTING_GENERAL_VIEW_BUTTLE_RESULT  "view_buttle_result"
+#define SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY  "view_buttle_result_opacity"
+#define SETTING_GENERAL_BUTTLE_RESULT_POSITION  "buttle_result_position"
+#define SETTING_GENERAL_TIMER_AUTO_START    "timer_auto_start"
 //設定：ウインドウ位置
 #define SETTING_MAINWINDOW          "mainwindow"
 #define SETTING_TIMERDIALOG         "timerdialog"
@@ -72,6 +81,9 @@
 #define SETTING_TIMER_CONSTRUCTION_START    "constructionStart"
 #define SETTING_TIMER_CONSTRUCTION_RUNNING  "constructionRunning"
 #define SETTING_TIMER_TWEETFINISHED         "tweetFinished"
+#define SETTING_TIMER_DOCKING_CLOSE         "dockingClose"
+#define SETTING_TIMER_EXPEDITION_CLOSE      "expeditionClose"
+#define SETTING_TIMER_CONSTRUCTION_CLOSE    "constructionClose"
 //設定：タブ関連
 #define SETTING_TAB                         "tab"
 #define SETTING_TAB_OPEN_PAGES              "openPages"
@@ -143,5 +155,59 @@
 #define HOME_PORT_RECT_CAPTURE  (QRect(300, 3, 490, 4))
 #define ADMIRAL_RECT_HEADER     (QRect(124, 8, 146, 18))
 #define HQ_LEVEL_RECT_HEADER    (QRect(392, 13, 88, 18))
+
+//戦闘
+#define BUTTLE_RECT1            (QRect(0, 0, 400, 15))
+#define BUTTLE_RECT2            (QRect(400, 365, 400, 15))
+//昼戦
+#define BUTTLE_DAYTIME_CHECK_COLOR1     (qRgb(65 , 164 , 209))
+#define BUTTLE_DAYTIME_CHECK_COLOR2     (qRgb(104 , 157 , 176))
+//夜戦
+#define BUTTLE_NIGHT_CHECK_COLOR1     (qRgb(46 , 140 , 182))
+#define BUTTLE_NIGHT_CHECK_COLOR2     (qRgb(63 , 88 , 100))
+
+//戦果画面
+#define BUTTLE_RESULT_CHECK_COLOR1      (qRgb(30, 50, 52)) //左上のタイトル
+#define BUTTLE_RESULT_RECT1             (QRect(0, 10, 300, 60))
+#define BUTTLE_RESULT_CHECK_COLOR2      (qRgb(199, 199, 201))  //真ん中の白い線
+#define BUTTLE_RESULT_RECT2             (QRect(394, 77, 4, 370))
+//大破判定
+#define BUTTLE_RESULT_MAJOR_DAMAGE_CHECK_COLOR (qRgb(27, 15, 14))
+#define BUTTLE_RESULT_MAJOR_DAMAGE_RECT        (QRect(110, 0, 50, 40))
+//進撃or撤退
+#define BUTTLE_GO_OR_BACK_CHECK_COLOR   (qRgb(80, 164, 196))
+#define BUTTLE_GO_OR_BACK_RECT          (QRect(200, 180, 400, 120))
+#define BUTTLE_GO_BUTTON_RECT           (QRect(220, 190, 150, 110))
+#define BUTTLE_BACK_BUTTON_RECT         (QRect(435, 190, 150, 110))
+//羅針盤を回す
+#define BUTTLE_COMPASS_CHECK_COLOR      (qRgb(51 , 24 , 24))
+#define BUTTLE_COMPASS_RECT             (QRect(380, 140, 40, 100))
+
+//遠征画面
+#define EXPEDITION_CHECK_COLOR          (qRgb(179, 154, 118))
+#define EXPEDITION_RECT                 (QRect(305, 100, 250, 25))
+//遠征項目領域
+#define EXPEDITION_ITEM1_RECT           (QRect(117, 158, 440, 30))
+#define EXPEDITION_ITEM2_RECT           (QRect(117, 188, 440, 30))
+#define EXPEDITION_ITEM3_RECT           (QRect(117, 218, 440, 30))
+#define EXPEDITION_ITEM4_RECT           (QRect(117, 248, 440, 30))
+#define EXPEDITION_ITEM5_RECT           (QRect(117, 278, 440, 30))
+#define EXPEDITION_ITEM6_RECT           (QRect(117, 308, 440, 30))
+#define EXPEDITION_ITEM7_RECT           (QRect(117, 338, 440, 30))
+#define EXPEDITION_ITEM8_RECT           (QRect(117, 368, 440, 30))
+
+#define EXPEDITION_ITEM_COMFIRM_RECT    (QRect(626, 424, 104, 40))      //遠征の項目決定ボタンの位置
+#define EXPEDITION_ITEM_START_RECT      (QRect(546, 424, 167, 43))      //遠征開始ボタン
+#define EXPEDITION_ITEM_START_OUT_RECT  (QRect(0, 0,0, 0))   //遠征出発の有効エリア（コレを外れると戻る）
+
+//遠征開始時の艦隊番号
+#define EXPEDITION_SELECT_FLEET_2_RECT  (QRect(381, 108, 23, 20))
+#define EXPEDITION_SELECT_FLEET_3_RECT  (QRect(411, 108, 23, 20))
+#define EXPEDITION_SELECT_FLEET_4_RECT  (QRect(441, 108, 23, 20))
+#define EXPEDITION_SELECT_FLEET_RECT    (QRect(381, 108, 84, 21))
+
+//遠征開始ボタン
+#define EXPEDITION_START_BUTTON_RECT    (QRect(546, 424, 167, 43))
+#define EXPEDITION_START_BUTTON_COLOR   (qRgb(210 , 157 , 90))
 
 #endif // KANMUSUMEMORY_GLOBAL_H

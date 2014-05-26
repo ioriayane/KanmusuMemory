@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,8 +41,38 @@ TimerDialog::TimerDialog(QWidget *parent
     ui->setupUi(this);
 
     connect(&m_timer, SIGNAL(timeout()), this, SLOT(timeout()));
+    connect(&m_timerdata, &TimerData::tweetFinishedChanged, [this](){
+        if(m_settings != NULL){
+            m_settings->beginGroup(QStringLiteral(SETTING_TIMER));
+            m_settings->setValue(QStringLiteral(SETTING_TIMER_TWEETFINISHED), m_timerdata.tweetFinished());
+            m_settings->endGroup();
+        }
+    });
 
     loadSettings();
+
+    //QMLの読み込み
+    m_viewer = new QtQuick2ApplicationViewer(windowHandle());
+    connect(m_viewer->engine(), SIGNAL(quit()), this, SLOT(closeQml()));
+    //C++のデータをQML側へ公開
+    m_viewer->rootContext()->setContextProperty("timerData", &m_timerdata);
+    //QML設定して表示
+    m_viewer->setResizeMode(QQuickView::SizeViewToRootObject);
+    m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/timerDialog.qml"));
+    ui->layout->addWidget(QWidget::createWindowContainer(m_viewer, this));
+    //サイズ調節
+//    QSize contentSize = m_viewer->rootObject()->childrenRect().toRect().size() + QSize(DIALOG_MARGIN,DIALOG_MARGIN);
+//    setMinimumSize(contentSize);
+//    setMaximumSize(contentSize);
+    QSize size = QSize(m_viewer->rootObject()->width(), m_viewer->rootObject()->height());
+//    setMinimumSize(size);
+    setMaximumSize(size);
+    connect(m_viewer->rootObject(), &QQuickItem::widthChanged, [this](){
+        resize(m_viewer->rootObject()->width(), height());
+    });
+    connect(m_viewer->rootObject(), &QQuickItem::heightChanged, [this](){
+        resize(m_viewer->rootObject()->width(), m_viewer->rootObject()->height());
+    });
 
     m_timer.start(10000);
 }
@@ -68,20 +98,6 @@ void TimerDialog::resizeEvent(QResizeEvent *event)
 void TimerDialog::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event);
-    if(m_viewer == NULL){
-        m_viewer = new QtQuick2ApplicationViewer(windowHandle());
-        connect(m_viewer->engine(), SIGNAL(quit()), this, SLOT(closeQml()));
-
-        //C++のデータをQML側へ公開
-        m_viewer->rootContext()->setContextProperty("timerData", &m_timerdata);
-
-        //QML設定して表示
-        m_viewer->setSource(QUrl("qrc:///qml/KanmusuMemory/timerDialog.qml"));
-        m_viewer->show();
-        QSize contentSize = m_viewer->rootObject()->childrenRect().toRect().size() + QSize(DIALOG_MARGIN,DIALOG_MARGIN);
-        setMinimumSize(contentSize);
-        setMaximumSize(contentSize);
-    }
 }
 
 
@@ -151,6 +167,45 @@ void TimerDialog::timeout()
 
 }
 
+QString TimerDialog::lastTimerSelectGuideUpdateDate() const
+{
+    return m_timerdata.lastUpdateDate();
+}
+
+void TimerDialog::setLastTimerSelectGuideUpdateDate(const QString &lastTimerSelectGuideUpdateDate)
+{
+    m_timerdata.setLastUpdateDate(lastTimerSelectGuideUpdateDate);
+}
+
+//タイマーの設定時間を更新する
+void TimerDialog::updateTimerSetting(const int kind, const int fleet_no, const qint64 remain, const qint64 total)
+{
+    qint64 now = QDateTime::currentMSecsSinceEpoch();
+    int index = fleet_no - 2;
+
+    if(index < 0)   index = 0;
+    if(index >= 3)  index = 2;
+
+    if(m_viewer != NULL){
+        QMetaObject::invokeMethod(m_viewer->rootObject(), "stop"
+                                  , Q_ARG(QVariant, QVariant::fromValue(kind))
+                                  , Q_ARG(QVariant, QVariant::fromValue(index)));
+    }
+    m_timerdata.setTime(kind, index, total);
+    m_timerdata.setStartTime(kind, index, now - (total - remain));
+    m_timerdata.setRunning(kind, index, true);
+}
+
+const bool TimerDialog::tweetFinished() const
+{
+    return m_timerdata.tweetFinished();
+}
+void TimerDialog::setTweetFinished(bool tweet)
+{
+    m_timerdata.setTweetFinished(tweet);
+}
+
+
 //時間が来ているかチェックする
 bool TimerDialog::checkKanmemoTimerTimeout(qint64 settime, qint64 starttime)
 {
@@ -204,7 +259,7 @@ void TimerDialog::tweetTimerMessage(const QStringList &messages)
         for(int i=0; i<messages.length(); i++){
             QString temp = messages[i];
 
-            if((message.length() + temp.length()) >= 120){
+            if((message.length() + temp.length()) >= 110){
                 //文字数オーバー一旦送信
                 message.append(QStringLiteral("%1").arg(QDateTime::currentDateTime().toString(QStringLiteral("MM/dd hh:mm"))));
                 //                qDebug() << message.length() << "," << message;
@@ -219,7 +274,8 @@ void TimerDialog::tweetTimerMessage(const QStringList &messages)
                 message.append(temp + "\n ");
             }
         }
-        message.append(QStringLiteral("%1").arg(QDateTime::currentDateTime().toString(QStringLiteral("MM/dd hh:mm"))));
+        message.append(QStringLiteral("%1 %2").arg(QDateTime::currentDateTime().toString(QStringLiteral("MM/dd hh:mm")))
+                       .arg(tr("#kanmemo")));
         //        qDebug() << message.length() << "," << message;
         QVariantMap map;
         map.insert("status", message);
@@ -258,6 +314,11 @@ void TimerDialog::loadSettings()
                                   .arg(QCoreApplication::applicationDirPath()));
 #endif
     m_timerdata.setAlarmSoundVolume(0.4);
+
+    //折りたたみ
+    m_timerdata.setDockingClose(m_settings->value(QStringLiteral(SETTING_TIMER_DOCKING_CLOSE), false).toBool());
+    m_timerdata.setExpeditionClose(m_settings->value(QStringLiteral(SETTING_TIMER_EXPEDITION_CLOSE), false).toBool());
+    m_timerdata.setConstructionClose(m_settings->value(QStringLiteral(SETTING_TIMER_CONSTRUCTION_CLOSE), false).toBool());
     m_settings->endGroup();
 
 
@@ -288,6 +349,10 @@ void TimerDialog::saveSettings()
     m_settings->setValue(QStringLiteral(SETTING_TIMER_CONSTRUCTION_RUNNING), TimerData::toList<QVariant, bool>(m_timerdata.constructionRunning()));
     //つぶやくか
     m_settings->setValue(QStringLiteral(SETTING_TIMER_TWEETFINISHED), m_timerdata.tweetFinished());
+    //折りたたみ
+    m_settings->setValue(QStringLiteral(SETTING_TIMER_DOCKING_CLOSE), m_timerdata.dockingClose());
+    m_settings->setValue(QStringLiteral(SETTING_TIMER_EXPEDITION_CLOSE), m_timerdata.expeditionClose());
+    m_settings->setValue(QStringLiteral(SETTING_TIMER_CONSTRUCTION_CLOSE), m_timerdata.constructionClose());
     m_settings->endGroup();
 
     //ウインドウの位置を保存

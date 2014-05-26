@@ -18,6 +18,8 @@
 
 #include <QtCore/QObject>
 
+#include "recognizeinfo.h"
+
 class WebView;
 
 class GameScreen : public QObject
@@ -36,7 +38,13 @@ public:
         CustomizeScreen,
         SupplyScreen,
         RepairScreen,
-        FactoryScreen
+        FactoryScreen,
+        DaytimeButtleScreen,        //昼間戦闘画面
+        NightButtleScreen,          //夜戦画面
+        ButtleResultScreen,         //戦果画面
+        GoOrBackScreen,             //進撃or撤退画面
+        TurnCompassScreen,          //羅針盤を回す画面
+        ExpeditionScreen            //遠征選択画面
     };
 
     enum PartType {
@@ -54,9 +62,15 @@ public:
         WaitLonger = 1500
     };
 
-    explicit GameScreen(const QImage &image, QObject *parent = 0);
+    explicit GameScreen(const QImage &image, RecognizeInfo *recogExpediInfo = NULL, QObject *parent = 0);
     ScreenType screenType() const;
     bool isVisible(PartType partType) const;
+    bool isContainMajorDamageShip() const;
+
+    int getClickExpeditionItemFleetNo(const QPointF &pos) const;
+    void getExpeditionTime(qint64 *total, qint64 *remain);
+    int getExpeditionFleetNo() const;
+    bool isClickExpeditionStartButton(const QPointF &pos) const;
 
 public slots:
     void click(WebView *webView, PartType partType, WaitInterval waitInterval = WaitNormal);

@@ -37,6 +37,7 @@ private:
 
 public:
     ViewMode viewMode;
+    QRect defaultRect;
 
 private:
     QHash<QString, QString> naviApp;
@@ -47,7 +48,6 @@ private:
     QHash<QString, QString> embed;
     QHash<QString, QString> sectionWrap;
     QHash<QString, QString> globalNavi;
-    QRect defaultRect;
 
     bool setElementProperty(QWebElement &element, QHash<QString, QString> &properties, QHash<QString, QString> &backup);
 };
@@ -395,9 +395,6 @@ bool WebView::gameExists() const
 //ゲームの領域を調べる
 QRect WebView::getGameRect() const
 {
-    //スクロール位置は破壊される
-    //表示位置を一番上へ強制移動
-    page()->mainFrame()->setScrollPosition(QPoint(0, 0));
     //フレームを取得
     QWebFrame *frame = page()->mainFrame();
     if (frame->childFrames().isEmpty()) {
@@ -421,28 +418,58 @@ QRect WebView::getGameRect() const
 }
 
 //ゲーム画面をキャプチャ
-QImage WebView::capture()
+QImage WebView::capture(bool adjustScrollPosition)
 {
     QImage ret;
+    QImage temp;
 
     //スクロール位置の保存
     QPoint currentPos = page()->mainFrame()->scrollPosition();
+    //表示位置を一番上へ強制移動
+    if(adjustScrollPosition){
+        page()->mainFrame()->setScrollPosition(QPoint(0, 0));
+    }
+
     QRect geometry = getGameRect();
     if (!geometry.isValid()) {
         emit error(tr("failed find target"));
         goto finally;
     }
 
+    if(!adjustScrollPosition){
+        geometry.moveTo(geometry.x() - currentPos.x(), geometry.y() - currentPos.y());
+    }
+
     {
-        ret = QImage(geometry.size(), QImage::Format_ARGB32);
+        QRect image_geo(geometry);
+        if(d->defaultRect.isValid()){
+            if(image_geo.width() != d->defaultRect.width() || image_geo.height() != d->defaultRect.height()){
+                image_geo.setWidth(d->defaultRect.width());
+                image_geo.setHeight(d->defaultRect.height());
+            }
+        }
+
+        ret = QImage(image_geo.size(), QImage::Format_ARGB32);  //最終形
+        temp = QImage(geometry.size(), QImage::Format_ARGB32);  //Webviewのコピー
+
         QPainter painter(&ret);
-        //全体を描画
-        render(&painter, QPoint(0,0), geometry);
+        QPainter painterTemp(&temp);
+
+        if(image_geo.width() != geometry.width() || image_geo.height() != geometry.height()){
+            //テンポラリに全体を描画
+            render(&painterTemp, QPoint(0,0), geometry);
+            painter.drawImage(0, 0, temp.scaled(image_geo.width(), image_geo.height(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+        }else{
+            //そのまま本番に描画
+            render(&painter, QPoint(0,0), geometry);
+        }
     }
 
 finally:
     //スクロールの位置を戻す
-    page()->mainFrame()->setScrollPosition(currentPos);
+    if(adjustScrollPosition){
+        page()->mainFrame()->setScrollPosition(currentPos);
+    }
     return ret;
 }
 
@@ -479,6 +506,12 @@ void WebView::contextMenuEvent(QContextMenuEvent *event)
         return;
     }
     QWebView::contextMenuEvent(event);
+}
+//WebViewへのクリックイベント
+void WebView::mousePressEvent(QMouseEvent *event)
+{
+    emit mousePressed(event);
+    QWebView::mousePressEvent(event);
 }
 //タブで開くのトリガー
 void WebView::openLinkInNewTab()

@@ -23,5 +23,26 @@
         <file>qml/KanmusuMemory/fleetDetailDialog.qml</file>
         <file>qml/KanmusuMemory/images/noimage.png</file>
         <file>qml/KanmusuMemory/ImageGrid.qml</file>
+        <file>resources/ButtleResultBackgroundBlue.png</file>
+        <file>resources/ButtleResultBackgroundRed.png</file>
+        <file>resources/MajorDamageMask.png</file>
+        <file>resources/CompassMask.png</file>
+        <file>resources/ButtleResultBackgroundTrans.png</file>
+        <file>resources/NumberGuide0.png</file>
+        <file>resources/NumberGuide1.png</file>
+        <file>resources/NumberGuide2.png</file>
+        <file>resources/NumberGuide3.png</file>
+        <file>resources/NumberGuide4.png</file>
+        <file>resources/NumberGuide5.png</file>
+        <file>resources/NumberGuide6.png</file>
+        <file>resources/NumberGuide7.png</file>
+        <file>resources/NumberGuide8.png</file>
+        <file>resources/NumberGuide9.png</file>
+        <file>resources/FlagGuide2.png</file>
+        <file>resources/FlagGuide3.png</file>
+        <file>resources/FlagGuide4.png</file>
+        <file>qml/KanmusuMemory/images/triangle.png</file>
+        <file>qml/KanmusuMemory/TimerGroupBox.qml</file>
+        <file>qml/KanmusuMemory/TimerGroupTitle.qml</file>
     </qresource>
 </RCC>

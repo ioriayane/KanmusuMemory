@@ -25,6 +25,14 @@ class SettingsDialog : public QDialog
 public:
     explicit SettingsDialog(QWidget *parent = 0);
 
+    enum ButtleResultPosition {
+        LeftTop = 0
+        , RightTop = 1
+        , LeftBottom = 2
+        , RightBottom = 3
+        , Center = 4
+    };
+
     const QString &savePath() const;
     bool unusedTwitter() const;
     bool savePng() const;
@@ -36,6 +44,11 @@ public:
     bool useCookie() const;
     bool disableContextMenu() const;
     bool disableExitShortcut() const;
+    bool viewButtleResult() const;
+    ButtleResultPosition buttleResultPosition() const;
+    qreal buttleResultOpacity() const;
+    bool timerAutoStart() const;
+    bool tweetFinished() const;
 
     static QString selectSavePath(QWidget *parent, const QString &currentPath);
 
@@ -51,6 +64,11 @@ public slots:
     void setUseCookie(bool use);
     void setDisableContextMenu(bool disable);
     void setDisableExitShortcut(bool disable);
+    void setViewButtleResult(bool view);
+    void setButtleResultPosition(ButtleResultPosition position);
+    void setButtleResultOpacity(qreal opacity);
+    void setTimerAutoStart(bool start);
+    void setTweetFinished(bool tweet);
 
 signals:
     void savePathChanged(const QString &savePath);
@@ -64,6 +82,11 @@ signals:
     void useCookieChanged(bool use);
     void disableContextMenuChanged(bool disable);
     void disableExitShortcutChanged(bool disable);
+    void viewButtleResultChanged(bool view);
+    void buttleResultPositionChanged(ButtleResultPosition position);
+    void buttleResultOpacityChanged(qreal opacity);
+    void timerAutoStartChanged(bool start);
+    void tweetFinishedChanged(bool tweet);
 
 private:
     class Private;
