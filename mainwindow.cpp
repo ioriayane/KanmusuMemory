@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,7 +132,9 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     ui.viewButtleResult->setVisible(false);
     setButtleResultPosition();
 
+    ///////////////////////////////////////////////////////////////
     //メニュー
+    ///////////////////////////////////////////////////////////////
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
     connect(ui.actionCaptureAndEdit, &QAction::triggered, [this]() { captureGame(true); });
 #ifndef DISABLE_CATALOG_AND_DETAIL_FLEET
@@ -187,6 +189,18 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
         ui.toolBar->setVisible(ui.actionViewToolBar->isChecked());
     });
 
+
+    ///////////////////////////////////////////////////////////////
+    //録画
+    ///////////////////////////////////////////////////////////////
+    connect(ui.actionRecord, &QAction::triggered, [this]() {
+        ui.recordLayout->setEnabled();
+    });
+
+    ///////////////////////////////////////////////////////////////
+    //ブラウザ
+    ///////////////////////////////////////////////////////////////
+
     //フルスクリーン
     q->addAction(ui.actionFullScreen);
     connect(ui.actionFullScreen, &QAction::triggered, [this]() {
@@ -213,6 +227,11 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     //崩れるのでなし
     ui.actionZoom050->setVisible(false);
     ui.actionZoom075->setVisible(false);
+
+
+    ///////////////////////////////////////////////////////////////
+    //ウインドウ
+    ///////////////////////////////////////////////////////////////
 
     //ウインドウ分割
     connect(ui.actionSplitWindow, &QAction::triggered, [this]() {
@@ -286,6 +305,12 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
             return;
         ui.tabWidget->nextTab();
     });
+
+
+    ///////////////////////////////////////////////////////////////
+    //WebView
+    ///////////////////////////////////////////////////////////////
+
     //WebViewをクリック
     connect(ui.webView, &WebView::mousePressed, [this](QMouseEvent *event) {
         //艦隊の被弾状況を調べる
@@ -317,6 +342,11 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
 
+
+    ///////////////////////////////////////////////////////////////
+    //お気に入り
+    ///////////////////////////////////////////////////////////////
+
     //お気に入りの読込み
     m_favorite.load(ui.favorite, true);
     //お気に入りを選択した
@@ -333,6 +363,11 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     connect(&m_favorite, &FavoriteMenu::downloadFinished, [this]() {
         m_favorite.load(ui.favorite);
     });
+
+
+    ///////////////////////////////////////////////////////////////
+    //アップデート
+    ///////////////////////////////////////////////////////////////
 
     //アップデートの確認をする
     m_updateInfoDialog->CheckUpdate();

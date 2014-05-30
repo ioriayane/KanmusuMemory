@@ -24,7 +24,8 @@ SOURCES += main.cpp\
     fleetdetaildialog.cpp \
     recordingthread.cpp \
     recognizeinfo.cpp \
-    audiorecorder.cpp
+    audiorecorder.cpp \
+    recordingdialog.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -47,7 +48,8 @@ HEADERS  += mainwindow.h \
     recordingthread.h \
     numberguide.h \
     recognizeinfo.h \
-    audiorecorder.h
+    audiorecorder.h \
+    recordingdialog.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \
@@ -58,7 +60,8 @@ FORMS    += mainwindow.ui \
     imageeditdialog.ui \
     webpageform.ui \
     updateinfodialog.ui \
-    fleetdetaildialog.ui
+    fleetdetaildialog.ui \
+    recordingdialog.ui
 
 
 include(qtquick/qtquick.pri)

@@ -22,7 +22,11 @@ RecordingThread::RecordingThread(QObject *parent) :
     m_audio.setEncodingSettings(audioSettings);
     m_audio.moveToThread(&m_recordThread);
 
-
+    //テンポラリ
+    setTempPath(QString("%1/%2/%3")
+                .arg(QStandardPaths::writableLocation(QStandardPaths::TempLocation))
+                .arg(KANMEMO_PROJECT)
+                .arg("recording"));
 
     //タイマー
     m_timer = new QTimer(this);
@@ -60,9 +64,6 @@ RecordingThread::RecordingThread(QObject *parent) :
     //録音の状態変化
     connect(&m_audio, &QAudioRecorder::statusChanged, [this](QMediaRecorder::Status status){
         qDebug() << "QAudioRecorder::statusChanged " << status << "," << QString::number(m_et.elapsed()) << "," << m_audio.duration();
-        if(status == QMediaRecorder::RecordingStatus){
-            m_state = Recording;
-        }
     });
 
 
@@ -95,7 +96,6 @@ void RecordingThread::startRecording()
 
     //タイマー開始
     m_stop = false;
-    m_state = Wait;
     m_timer->start(static_cast<int>(1000.0/fps()));
 }
 //録画終了
@@ -106,7 +106,6 @@ void RecordingThread::stopRecording()
     //タイマー停止
     m_timer->stop();
     m_stop = true;
-    m_state = Stop;
 
     qDebug() << "stop recording timer:" << m_recordingCounter;
 
@@ -303,15 +302,7 @@ unsigned long RecordingThread::getRecordingCounter()
 QString RecordingThread::getTempPath()
 {
     QString path;
-
-    if(tempPath().isEmpty()){
-        path = QString("%1/%2/%3")
-                .arg(QStandardPaths::writableLocation(QStandardPaths::TempLocation))
-                .arg(KANMEMO_PROJECT)
-                .arg("recording");
-    }else{
-        path = tempPath();
-    }
+    path = tempPath();
     //なければつくる
     QDir dir(path);
     if(!dir.exists())

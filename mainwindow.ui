@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
+    <width>1075</width>
     <height>660</height>
    </rect>
   </property>
@@ -46,130 +46,267 @@
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="QWidget" name="verticalLayoutWidget">
-       <layout class="QVBoxLayout" name="verticalLayout">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="WebView" name="webView" native="true">
-          <property name="minimumSize">
-           <size>
-            <width>800</width>
-            <height>480</height>
-           </size>
-          </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <property name="leftMargin">
-            <number>5</number>
-           </property>
-           <property name="topMargin">
-            <number>5</number>
-           </property>
-           <property name="rightMargin">
-            <number>20</number>
-           </property>
-           <property name="bottomMargin">
-            <number>10</number>
-           </property>
-           <item>
-            <layout class="QGridLayout" name="additionalInfoLayout">
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="WebView" name="webView" native="true">
+            <property name="minimumSize">
+             <size>
+              <width>800</width>
+              <height>480</height>
+             </size>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <property name="leftMargin">
+              <number>5</number>
+             </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>5</number>
              </property>
              <property name="rightMargin">
-              <number>0</number>
+              <number>20</number>
              </property>
-             <property name="horizontalSpacing">
-              <number>6</number>
+             <property name="bottomMargin">
+              <number>10</number>
              </property>
-             <item row="1" column="0">
-              <spacer name="additionalInfoHSpacerLeft">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
+             <item>
+              <layout class="QGridLayout" name="additionalInfoLayout">
+               <property name="topMargin">
+                <number>0</number>
                </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
+               <property name="rightMargin">
+                <number>0</number>
                </property>
-              </spacer>
-             </item>
-             <item row="1" column="1">
-              <widget class="QLabel" name="viewButtleResult">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+               <property name="horizontalSpacing">
+                <number>6</number>
                </property>
-               <property name="minimumSize">
-                <size>
-                 <width>340</width>
-                 <height>220</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="pixmap">
-                <pixmap resource="KanmusuMemory.qrc">:/resources/ButtleResultBackgroundBlue.png</pixmap>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="1">
-              <spacer name="additionalInfoVSpacerBottom">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Expanding</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="1" column="2">
-              <spacer name="additionalInfoHSpacerRight">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeType">
-                <enum>QSizePolicy::Expanding</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item row="0" column="1">
-              <spacer name="additionalInfoVSpacerTop">
-               <property name="orientation">
-                <enum>Qt::Vertical</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-              </spacer>
+               <item row="1" column="0">
+                <spacer name="additionalInfoHSpacerLeft">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLabel" name="viewButtleResult">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>340</width>
+                   <height>220</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="pixmap">
+                  <pixmap resource="KanmusuMemory.qrc">:/resources/ButtleResultBackgroundBlue.png</pixmap>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <spacer name="additionalInfoVSpacerBottom">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Expanding</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="1" column="2">
+                <spacer name="additionalInfoHSpacerRight">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeType">
+                  <enum>QSizePolicy::Expanding</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item row="0" column="1">
+                <spacer name="additionalInfoVSpacerTop">
+                 <property name="orientation">
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>0</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
              </item>
             </layout>
-           </item>
-          </layout>
-         </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="QProgressBar" name="progressBar">
+            <property name="value">
+             <number>0</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
-         <widget class="QProgressBar" name="progressBar">
-          <property name="value">
-           <number>0</number>
+         <layout class="QVBoxLayout" name="recordLayout">
+          <property name="topMargin">
+           <number>10</number>
           </property>
-         </widget>
+          <item>
+           <widget class="QPushButton" name="recordSettingButton">
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Record start/stop</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset resource="KanmusuMemory.qrc">
+              <normaloff>:/resources/RecordButton1.png</normaloff>
+              <normalon>:/resources/RecordButton2.png</normalon>:/resources/RecordButton1.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="recordingTimeLabel">
+            <property name="maximumSize">
+             <size>
+              <width>75</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>00:00</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="recordStatusLabel">
+            <property name="maximumSize">
+             <size>
+              <width>75</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>9</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Ready</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="recordButton">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Record settings ...</string>
+            </property>
+            <property name="text">
+             <string notr="true"/>
+            </property>
+            <property name="icon">
+             <iconset resource="KanmusuMemory.qrc">
+              <normaloff>:/resources/RecordSettingButton.png</normaloff>:/resources/RecordSettingButton.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>22</width>
+              <height>22</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
        </layout>
       </widget>
@@ -202,7 +339,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
+     <width>1075</width>
      <height>21</height>
     </rect>
    </property>
@@ -217,6 +354,9 @@
     <addaction name="captureCatalog"/>
     <addaction name="captureFleetDetail"/>
     <addaction name="captureFleetList"/>
+    <addaction name="separator"/>
+    <addaction name="actionRecord"/>
+    <addaction name="actionRecordPreferences"/>
     <addaction name="separator"/>
     <addaction name="preferences"/>
     <addaction name="separator"/>
@@ -610,6 +750,16 @@
   <action name="actionClearCookies">
    <property name="text">
     <string>Clear Cookies</string>
+   </property>
+  </action>
+  <action name="actionRecord">
+   <property name="text">
+    <string>Record</string>
+   </property>
+  </action>
+  <action name="actionRecordPreferences">
+   <property name="text">
+    <string>Record Preferences ...</string>
    </property>
   </action>
  </widget>

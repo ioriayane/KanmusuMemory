@@ -33,9 +33,11 @@ public:
     ~RecordingThread();
 
     enum RecordingState {
-        Stop
+        Ready
+        , Stop
         , Wait
         , Recording
+        , Convert
     };
 
     void startRecording();
@@ -80,8 +82,6 @@ private:
     QString m_audioInputName;           //オーディオ録音するデバイス名
     AudioRecorder m_audio;              //オーディオ録音
     QThread m_recordThread;             //録音を別スレッドにする
-
-    RecordingState m_state;             //状態
 
     bool m_stop;
     QMutex m_mutex;
