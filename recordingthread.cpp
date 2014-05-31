@@ -71,6 +71,8 @@ RecordingThread::RecordingThread(QObject *parent) :
     m_recordThread.start(QThread::TimeCriticalPriority);
 //    m_recordThread.setPriority(QThread::TimeCriticalPriority);
 
+    //状態変更
+    setStatus(Ready);
 }
 
 RecordingThread::~RecordingThread()
@@ -83,6 +85,9 @@ RecordingThread::~RecordingThread()
 void RecordingThread::startRecording()
 {
     qDebug() << "start recording timer " << m_et.elapsed();
+
+    //状態変更
+    setStatus(Recording);
 
     //クリア
     clearCaptureFiles();
@@ -101,6 +106,9 @@ void RecordingThread::startRecording()
 //録画終了
 void RecordingThread::stopRecording()
 {
+    //状態変更
+    setStatus(Convert);
+
     //録音停止
     m_audio.stop();
     //タイマー停止
@@ -192,18 +200,34 @@ void RecordingThread::processFinished(int exitCode, QProcess::ExitStatus exitSta
     QByteArray output = m_process.readAllStandardError();
     QString str = QString::fromLocal8Bit( output );
     qDebug() << ">" << str;
+
+    //状態変更
+    setStatus(Ready);
 }
 //プロセスエラー
 void RecordingThread::processError(QProcess::ProcessError error)
 {
     qDebug() << "RecordingThread::processError " << error;
 
+    //状態変更
+    setStatus(Ready);
 }
 //録音エラー
 void RecordingThread::audioRecordingError(QMediaRecorder::Error error)
 {
     qDebug() << "Recording Audio Error:" << error;
 }
+RecordingThread::RecordingStatus RecordingThread::status() const
+{
+    return m_status;
+}
+void RecordingThread::setStatus(const RecordingStatus &status)
+{
+    if(m_status == status)  return;
+    m_status = status;
+    emit statusChanged(status);
+}
+
 //オーディオ録音するデバイス名
 QString RecordingThread::audioInputName() const
 {
@@ -290,8 +314,11 @@ void RecordingThread::convert()
     }
     qDebug() << args_str;
 
-    m_process.start(toolPath(), args);
-
+    if(m_process.state() == QProcess::NotRunning){
+        m_process.start(toolPath(), args);
+    }else{
+        qDebug() << "not start convert process.(ffmpeg)";
+    }
 }
 //最新のカウンタを取得
 unsigned long RecordingThread::getRecordingCounter()

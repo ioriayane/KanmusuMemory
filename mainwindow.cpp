@@ -87,7 +87,7 @@ private:
     void setButtleResultPosition(); //戦果報告の表示位置
 
     void maskImage(QImage *img, const QRect &rect);
-    QString makeFileName(const QString &format) const;
+    QString makeFileName(const QString &format, bool isfull = true) const;
     QString makeTempFileName(const QString &format) const;
     void clickGame(QPoint pos, bool wait_little = false);
     QString combineImage(QStringList file_list, int item_width, int item_height, int columns);
@@ -133,7 +133,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     setButtleResultPosition();
 
     ///////////////////////////////////////////////////////////////
-    //メニュー
+    /// メニュー
     ///////////////////////////////////////////////////////////////
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
     connect(ui.actionCaptureAndEdit, &QAction::triggered, [this]() { captureGame(true); });
@@ -143,15 +143,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
 #else
     //艦隊詳細
     connect(ui.captureFleetDetail, &QAction::triggered, [this](){
-//        openManualCaptureFleetDetail();
-
-        recordingThread.setToolPath(QStringLiteral("D:\\ffmpeg\\bin\\ffmpeg.exe"));
-        recordingThread.setToolParam(QStringLiteral("-r %1 -i %2 -vcodec libx264 -qscale:v 0 %3"));
-        recordingThread.setSavePath(QStringLiteral("d:\\temp\\kancolle.mp4"));
-        recordingThread.setAudioInputName(recordingThread.audioInputNames().at(0));
-        recordingThread.setFps(20);
-        recordingThread.setWebView(ui.webView);
-        recordingThread.startRecording();
+        openManualCaptureFleetDetail();
     });
     connect(m_fleetDetailDialog, &FleetDetailDialog::finishedCaptureImages, [this](FleetDetailDialog::NextOperationType next, QStringList file_list, int item_width, int item_height, int columns){
         finishManualCaptureFleetDetail(next, file_list, item_width, item_height, columns);
@@ -191,14 +183,58 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
 
 
     ///////////////////////////////////////////////////////////////
-    //録画
+    /// 録画
     ///////////////////////////////////////////////////////////////
+
+    //起動時は必ず非表示
+    ui.recordLayout->setVisible(false);
+    //録画
     connect(ui.actionRecord, &QAction::triggered, [this]() {
-        ui.recordLayout->setEnabled();
+        ui.recordLayout->setVisible(!ui.recordLayout->isVisible());
+    });
+    //録画設定
+    connect(ui.actionRecordPreferences, &QAction::triggered, [this](){
+
+    });
+    connect(ui.recordPreferencesButton, &QPushButton::clicked, [this](bool checked){
+
+    });
+    //録画開始停止
+    connect(ui.recordButton, &QPushButton::clicked, [this](bool checked){
+        qDebug() << "click record button";
+        if(recordingThread.status() == RecordingThread::Ready){
+            recordingThread.setToolPath(QStringLiteral("D:\\ffmpeg\\bin\\ffmpeg.exe"));
+            recordingThread.setToolParam(QStringLiteral("-r %1 -i %2 -vcodec libx264 -qscale:v 0 %3"));
+            recordingThread.setSavePath(QStringLiteral("d:\\temp\\rec\\") + makeFileName("mp4", false));
+            recordingThread.setAudioInputName(recordingThread.audioInputNames().at(0));
+            recordingThread.setFps(20);
+            recordingThread.setWebView(ui.webView);
+            recordingThread.startRecording();
+        }else if(recordingThread.status() == RecordingThread::Recording){
+            recordingThread.stopRecording();
+        }else{
+        }
+    });
+    //録画の状態変化
+    connect(&recordingThread, &RecordingThread::statusChanged, [this](RecordingThread::RecordingStatus status){
+        switch(status){
+        case RecordingThread::Ready:
+            ui.recordStatusLabel->setText("Ready");
+            break;
+        case RecordingThread::Recording:
+            ui.recordStatusLabel->setText("Recording");
+            break;
+        case RecordingThread::Convert:
+            ui.recordStatusLabel->setText("Convert");
+            break;
+        default:
+            ui.recordStatusLabel->setText("Error");
+            break;
+        }
     });
 
     ///////////////////////////////////////////////////////////////
-    //ブラウザ
+    /// ブラウザ
     ///////////////////////////////////////////////////////////////
 
     //フルスクリーン
@@ -230,7 +266,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
 
 
     ///////////////////////////////////////////////////////////////
-    //ウインドウ
+    /// ウインドウ
     ///////////////////////////////////////////////////////////////
 
     //ウインドウ分割
@@ -308,7 +344,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
 
 
     ///////////////////////////////////////////////////////////////
-    //WebView
+    /// WebView
     ///////////////////////////////////////////////////////////////
 
     //WebViewをクリック
@@ -344,7 +380,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
 
 
     ///////////////////////////////////////////////////////////////
-    //お気に入り
+    /// お気に入り
     ///////////////////////////////////////////////////////////////
 
     //お気に入りの読込み
@@ -366,7 +402,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
 
 
     ///////////////////////////////////////////////////////////////
-    //アップデート
+    /// アップデート
     ///////////////////////////////////////////////////////////////
 
     //アップデートの確認をする
@@ -415,12 +451,18 @@ void MainWindow::Private::maskImage(QImage *img, const QRect &rect)
 }
 
 //ファイル名を作成する
-QString MainWindow::Private::makeFileName(const QString &format) const
+QString MainWindow::Private::makeFileName(const QString &format, bool isfull) const
 {
-    return QStringLiteral("%1/kanmusu_%2.%3")
-            .arg(settings.value(QStringLiteral("path")).toString())
-            .arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")))
-            .arg(format.toLower());
+    if(isfull){
+        return QStringLiteral("%1/kanmusu_%2.%3")
+                .arg(settings.value(QStringLiteral("path")).toString())
+                .arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")))
+                .arg(format.toLower());
+    }else{
+        return QStringLiteral("kanmusu_%1.%2")
+                .arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")))
+                .arg(format.toLower());
+    }
 }
 //テンポラリのファイル名を作成する
 QString MainWindow::Private::makeTempFileName(const QString &format) const

@@ -32,10 +32,10 @@ public:
     explicit RecordingThread(QObject *parent = 0);
     ~RecordingThread();
 
-    enum RecordingState {
+    enum RecordingStatus {
         Ready
-        , Stop
-        , Wait
+//        , Stop
+//        , Wait
         , Recording
         , Convert
     };
@@ -60,14 +60,19 @@ public:
     void setAudioInputName(const QString &audioInputName);
     QStringList audioInputNames() const;
 
+    RecordingStatus status() const;
+    void setStatus(const RecordingStatus &status);
+
 signals:
     void audioRecord(const QUrl& dest, const QString& src);
-//    void audioRecordStop();
+    //    void audioRecordStop();
+    void statusChanged(RecordingStatus status);
 
 public slots:
     void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void processError(QProcess::ProcessError error);
     void audioRecordingError(QMediaRecorder::Error error);
+
 private:
     WebView *m_webView;
     QTimer *m_timer;
@@ -82,6 +87,8 @@ private:
     QString m_audioInputName;           //オーディオ録音するデバイス名
     AudioRecorder m_audio;              //オーディオ録音
     QThread m_recordThread;             //録音を別スレッドにする
+
+    RecordingStatus m_status;            //スレッドの状態
 
     bool m_stop;
     QMutex m_mutex;
