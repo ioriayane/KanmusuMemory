@@ -11,6 +11,7 @@ RecordingThread::RecordingThread(QObject *parent) :
   , m_webView(NULL)
   , m_timer(NULL)
   , m_recordingCounter(0)
+  , m_process()
   , m_audio()
   , m_recordThread(this)
   , m_stop(true)
@@ -47,10 +48,8 @@ RecordingThread::RecordingThread(QObject *parent) :
         }
     });
 
-    //スレッド終了
-    connect(this, &QThread::finished, [this](){
-//        qDebug() << "finish thread " << m_state;
-    });
+    //録画スレッド終了からの変換
+    connect(this, &RecordingThread::finished, this, &RecordingThread::recordFinished, Qt::QueuedConnection);
 
     //プロセスが終了した
     connect(&m_process, SIGNAL(finished(int, QProcess::ExitStatus)), this, SLOT(processFinished(int, QProcess::ExitStatus)) );
@@ -90,7 +89,6 @@ void RecordingThread::startRecording()
     setStatus(Recording);
 
     //クリア
-    clearCaptureFiles();
     m_recordingCounter = 0;
     m_SaveDataList.clear();
     m_et.start();
@@ -117,28 +115,15 @@ void RecordingThread::stopRecording()
 
     qDebug() << "stop recording timer:" << m_recordingCounter;
 
-    //終了を待つ
-    if(isRunning()) wait();
-
-    //残骸チェック
-    foreach (SaveData data, m_SaveDataList) {
-        qDebug() << "remnant:" << data.image.isNull() << "," << data.path;
-    }
-
-    //変換
-    convert();
-
-    //デバッグ計測
-    qint64 pt = 0;
-    foreach (qint64 t, m_interval) {
-        qDebug() << t << "(" << (t-pt) << ")";
-        pt = t;
-    }
 }
 //保存フォルダ（テンポラリの中身をクリア）
 void RecordingThread::clearCaptureFiles()
 {
     QDir dir(getTempPath());
+    QStringList nameFilters;
+    nameFilters << "*.jpg";
+    dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks | QDir::NoDotAndDotDot);
+    dir.setNameFilters(nameFilters);
     QFileInfoList list = dir.entryInfoList();
     //ファイルを消す
     for(int i=0; i<list.length(); i++){
@@ -192,6 +177,27 @@ void RecordingThread::setToolParam(const QString &toolParam)
     m_toolParam = toolParam;
 }
 
+//録画終了
+void RecordingThread::recordFinished()
+{
+    qDebug() << "finish thread ";
+
+    //残骸チェック
+    foreach (SaveData data, m_SaveDataList) {
+        qDebug() << "remnant:" << data.image.isNull() << "," << data.path;
+    }
+
+    //変換
+    convert();
+
+    //デバッグ計測
+    qint64 pt = 0;
+    foreach (qint64 t, m_interval) {
+        qDebug() << t << "(" << (t-pt) << ")";
+        pt = t;
+    }
+
+}
 //プロセス終了
 void RecordingThread::processFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
@@ -227,6 +233,7 @@ void RecordingThread::setStatus(const RecordingStatus &status)
     m_status = status;
     emit statusChanged(status);
 }
+
 
 //オーディオ録音するデバイス名
 QString RecordingThread::audioInputName() const
@@ -354,13 +361,16 @@ void RecordingThread::run()
 {
     qDebug() << "start recoding thread " << QString::number(m_et.elapsed());
 
+    //前のデータを消す
+    qDebug() << "clear data in previous";
+    clearCaptureFiles();
+
     //録画
     bool empty;
     qreal frame_time = 1000.0 / fps();
     qint64 elapse;
-
+    //フレームのカウント
     unsigned long count = 0;
-    //デバッグ
     unsigned long timer_time = 0;
     qint64 start_offset_time = m_SaveDataList.first().elapse;
     qDebug() << "start_offset_time:" << start_offset_time;

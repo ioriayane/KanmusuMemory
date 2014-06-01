@@ -69,6 +69,7 @@ signals:
     void statusChanged(RecordingStatus status);
 
 public slots:
+    void recordFinished();
     void processFinished(int exitCode, QProcess::ExitStatus exitStatus);
     void processError(QProcess::ProcessError error);
     void audioRecordingError(QMediaRecorder::Error error);
