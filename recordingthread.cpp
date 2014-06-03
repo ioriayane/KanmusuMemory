@@ -105,7 +105,7 @@ void RecordingThread::startRecording()
 void RecordingThread::stopRecording()
 {
     //状態変更
-    setStatus(Convert);
+    setStatus(Saving);
 
     //録音停止
     m_audio.stop();
@@ -129,6 +129,34 @@ void RecordingThread::clearCaptureFiles()
     for(int i=0; i<list.length(); i++){
         QFile::remove(list[i].filePath());
     }
+}
+//準備OKか
+bool RecordingThread::isSettingValid()
+{
+    QFileInfo save(savePath());
+
+    if(!QFile::exists(save.dir().absolutePath())){
+        return false;
+    }else if(!QFile::exists(tempPath())){
+        return false;
+    }else if(!QFile::exists(toolPath())){
+        return false;
+    }else if(fps() < 10 || 30 < fps()){
+        return false;
+    }else{
+        QStringList s = audioInputNames();
+        bool ok = false;
+        foreach (QString s1, s) {
+            if(s1.compare(audioInputName()) == 0){
+                ok = true;
+                break;
+            }
+        }
+        if(!ok){
+            return false;
+        }
+    }
+    return true;
 }
 
 WebView *RecordingThread::webView() const
@@ -181,6 +209,9 @@ void RecordingThread::setToolParam(const QString &toolParam)
 void RecordingThread::recordFinished()
 {
     qDebug() << "finish thread ";
+
+    //状態変更
+    setStatus(Convert);
 
     //残骸チェック
     foreach (SaveData data, m_SaveDataList) {

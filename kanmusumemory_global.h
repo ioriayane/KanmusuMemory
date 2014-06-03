@@ -94,6 +94,14 @@
 #define SETTING_UPDATE_CHECK                "updateCheck"
 #define SETTING_UPDATE_CHECK_HIDE           "hideUntilNextUpdate"
 #define SETTING_UPDATE_CHECK_HIDE_VERSION   "hideUntilNextUpdateVersion"
+//設定：録画
+#define SETTING_RECORD                      "record"
+#define SETTING_RECORD_FPS                  "fps"
+#define SETTING_RECORD_AUDIO_SOURCE         "audioSource"
+#define SETTING_RECORD_SAVE_PATH            "savePath"
+#define SETTING_RECORD_TOOL_PATH            "toolPath"
+#define SETTING_RECORD_TEMP_PATH            "tempPath"
+#define SETTING_RECORD_DONT_VIEW_BUTTLE     "dontViewButtleResult"
 
 //お気に入り
 //#define FAV_FILE_NAME                       "favorite.ini"

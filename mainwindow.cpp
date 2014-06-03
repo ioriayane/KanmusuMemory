@@ -28,6 +28,7 @@
 #include "webpageform.h"
 #include "favoritemenu.h"
 #include "recordingthread.h"
+#include "recordingdialog.h"
 #include "kanmusumemory_global.h"
 
 #include <QtCore/QDate>
@@ -67,6 +68,7 @@ public:
     void openTweetDialog(const QString &path, bool force = false);      //ツイートダイアログを開く
     void openMemoryDialog();
     void openSettingDialog();
+    void openRecordSettingDialog();
     void updateProxyConfiguration();
     void openAboutDialog();
     void openImageEditDialog(const QString &path, const QString &tempPath, const QString &editPath);
@@ -102,6 +104,7 @@ private:
     FleetDetailDialog *m_fleetDetailDialog;
     FavoriteMenu m_favorite;
     RecordingThread recordingThread;
+    bool dontViewButtleResult;          //録画中は戦績表示しない
 
 public:
     Ui::MainWindow ui;
@@ -194,20 +197,44 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     });
     //録画設定
     connect(ui.actionRecordPreferences, &QAction::triggered, [this](){
-
+        openRecordSettingDialog();
     });
     connect(ui.recordPreferencesButton, &QPushButton::clicked, [this](bool checked){
-
+        Q_UNUSED(checked);
+        openRecordSettingDialog();
     });
     //録画開始停止
     connect(ui.recordButton, &QPushButton::clicked, [this](bool checked){
         qDebug() << "click record button";
-        if(recordingThread.status() == RecordingThread::Ready){
-            recordingThread.setToolPath(QStringLiteral("D:\\ffmpeg\\bin\\ffmpeg.exe"));
-            recordingThread.setToolParam(QStringLiteral("-r %1 -i %2 -vcodec libx264 -qscale:v 0 %3"));
-            recordingThread.setSavePath(QStringLiteral("d:\\temp\\rec\\") + makeFileName("mp4", false));
-            recordingThread.setAudioInputName(recordingThread.audioInputNames().at(0));
-            recordingThread.setFps(20);
+        Q_UNUSED(checked);
+
+        settings.beginGroup(SETTING_RECORD);
+        recordingThread.setFps(settings.value(SETTING_RECORD_FPS, 20).toInt());
+        recordingThread.setAudioInputName(settings.value(SETTING_RECORD_AUDIO_SOURCE).toString());
+        QString save(settings.value(SETTING_RECORD_SAVE_PATH, QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)).toString());
+        if(save.right(1).compare("/") != 0){
+            save += "/";
+        }
+        recordingThread.setSavePath(save + makeFileName("mp4", false));
+        recordingThread.setToolPath(settings.value(SETTING_RECORD_TOOL_PATH, "ffmpeg").toString());
+        recordingThread.setTempPath(settings.value(SETTING_RECORD_TEMP_PATH, recordingThread.tempPath()).toString());
+        dontViewButtleResult = settings.value(SETTING_RECORD_DONT_VIEW_BUTTLE, true).toBool();
+        settings.endGroup();
+
+        if(!recordingThread.isSettingValid()){
+            QMessageBox::warning(q, "warning", "Please input recording settings.");
+            openRecordSettingDialog();
+
+        }else if(!ui.webView->gameExists()){
+            ui.statusBar->showMessage(tr("failed to started recording."), STATUS_BAR_MSG_TIME);
+
+        }else if(recordingThread.status() == RecordingThread::Ready){
+//            recordingThread.setToolPath(QStringLiteral("D:\\ffmpeg\\bin\\ffmpeg.exe"));
+//            recordingThread.setToolParam(QStringLiteral("-r %1 -i %2 -vcodec libx264 -qscale:v 0 %3"));
+//            recordingThread.setSavePath(QStringLiteral("d:\\temp\\rec\\") + makeFileName("mp4", false));
+//            recordingThread.setAudioInputName(recordingThread.audioInputNames().at(0));
+//            recordingThread.setFps(20);
+
             recordingThread.setWebView(ui.webView);
             recordingThread.startRecording();
         }else if(recordingThread.status() == RecordingThread::Recording){
@@ -223,6 +250,9 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
             break;
         case RecordingThread::Recording:
             ui.recordStatusLabel->setText("Recording");
+            break;
+        case RecordingThread::Saving:
+            ui.recordingTimeLabel->setText("Saving");
             break;
         case RecordingThread::Convert:
             ui.recordStatusLabel->setText("Convert");
@@ -684,6 +714,41 @@ void MainWindow::Private::openSettingDialog()
         }
     }
 }
+//録画の設定ダイアログを開く
+void MainWindow::Private::openRecordSettingDialog()
+{
+    RecordingDialog dlg(q);
+
+    settings.beginGroup(SETTING_RECORD);
+    dlg.setFps(settings.value(SETTING_RECORD_FPS, 20).toInt());
+    dlg.setAudioSource(settings.value(SETTING_RECORD_AUDIO_SOURCE, recordingThread.audioInputNames().at(0)).toString());
+    dlg.setSavePath(settings.value(SETTING_RECORD_SAVE_PATH, QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)).toString());
+    dlg.setToolPath(settings.value(SETTING_RECORD_TOOL_PATH, "ffmpeg").toString());
+    dlg.setTempPath(settings.value(SETTING_RECORD_TEMP_PATH, recordingThread.tempPath()).toString());
+    dlg.setDontViewButtleResult(settings.value(SETTING_RECORD_DONT_VIEW_BUTTLE, true).toBool());
+    settings.endGroup();
+
+    dlg.setDefaultFps(20);
+    dlg.setDefaultAudioSource(recordingThread.audioInputNames().at(0));
+    dlg.setDefaultSavePath(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
+    dlg.setDefaultToolPath("ffmpeg");
+    dlg.setDefaultTempPath(recordingThread.tempPath());
+    dlg.setDefaultDontViewButtleResult(true);
+
+    if(dlg.exec()){
+        settings.beginGroup(SETTING_RECORD);
+        settings.setValue(SETTING_RECORD_FPS, dlg.fps());
+        settings.setValue(SETTING_RECORD_AUDIO_SOURCE, dlg.audioSource());
+        settings.setValue(SETTING_RECORD_SAVE_PATH, dlg.savePath());
+        settings.setValue(SETTING_RECORD_TOOL_PATH, dlg.toolPath());
+        settings.setValue(SETTING_RECORD_TEMP_PATH, dlg.tempPath());
+        settings.setValue(SETTING_RECORD_DONT_VIEW_BUTTLE, dlg.dontViewButtleResult());
+        settings.endGroup();
+
+        dontViewButtleResult = dlg.dontViewButtleResult();
+    }
+
+}
 //Update proxy setting.
 void MainWindow::Private::updateProxyConfiguration()
 {
@@ -1110,6 +1175,10 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
 {
     if(!settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool()
             || q->isFullScreen()){
+        return;
+    }
+    if(dontViewButtleResult && recordingThread.status() == RecordingThread::Recording){
+        //録画中は表示しないがONで録画中
         return;
     }
     qreal opacity = settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal();

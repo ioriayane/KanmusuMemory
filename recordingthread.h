@@ -37,12 +37,14 @@ public:
 //        , Stop
 //        , Wait
         , Recording
+        , Saving
         , Convert
     };
 
     void startRecording();
     void stopRecording();
     void clearCaptureFiles();
+    bool isSettingValid();
 
     WebView *webView() const;
     void setWebView(WebView *webView);
