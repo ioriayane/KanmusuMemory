@@ -5,31 +5,26 @@
     <name>AboutDialog</name>
     <message>
         <location filename="../aboutdialog.ui" line="+14"/>
-        <location filename="../ui_aboutdialog.h" line="+146"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
         <location line="+34"/>
-        <location filename="../ui_aboutdialog.h" line="+1"/>
         <source>KanMemo -Kanmusu Memory-</source>
         <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../ui_aboutdialog.h" line="+1"/>
         <source>Version : </source>
         <translation>Version : </translation>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../ui_aboutdialog.h" line="+1"/>
         <source>Qt</source>
         <translation></translation>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../ui_aboutdialog.h" line="+1"/>
         <source>Copyright &amp;copy; 2013-2014 KanMemo Project.</source>
         <translation></translation>
     </message>
@@ -43,7 +38,6 @@
     </message>
     <message>
         <location line="+10"/>
-        <location filename="../ui_aboutdialog.h" line="+1"/>
         <source>1
 2</source>
         <translation>1</translation>
@@ -88,7 +82,6 @@
     <name>FleetDetailDialog</name>
     <message>
         <location filename="../fleetdetaildialog.ui" line="+14"/>
-        <location filename="../ui_fleetdetaildialog.h" line="+47"/>
         <source>Fleet Detail</source>
         <translation>艦隊詳細</translation>
     </message>
@@ -97,7 +90,6 @@
     <name>ImageEditDialog</name>
     <message>
         <location filename="../imageeditdialog.ui" line="+14"/>
-        <location filename="../ui_imageeditdialog.h" line="+47"/>
         <source>Image editing</source>
         <translation>思い出の編集</translation>
     </message>
@@ -116,7 +108,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+289"/>
+        <location filename="../mainwindow.cpp" line="+401"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -130,7 +122,7 @@
         <translation type="obsolete">艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+100"/>
+        <location line="+116"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
@@ -138,29 +130,29 @@
         <location line="+32"/>
         <location line="+13"/>
         <location line="+34"/>
-        <location line="+417"/>
+        <location line="+452"/>
         <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-530"/>
+        <location line="-565"/>
         <location line="+13"/>
-        <location line="+452"/>
+        <location line="+487"/>
         <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-512"/>
+        <location line="-547"/>
         <location line="+17"/>
-        <location line="+369"/>
+        <location line="+404"/>
         <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-471"/>
+        <location line="-506"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -170,7 +162,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+195"/>
+        <location line="+230"/>
         <source>Fleet Detail</source>
         <translation>艦隊詳細</translation>
     </message>
@@ -224,7 +216,12 @@ Please wait while a cup of coffee.</source>
         <translation>編成画面で船の詳細画面を表示してキャプチャーしてください。</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-585"/>
+        <source>failed to started recording.</source>
+        <translation>録画を開始できませんでした。</translation>
+    </message>
+    <message>
+        <location line="+586"/>
         <location line="+27"/>
         <source>The following buttons appear when you capture.</source>
         <translation>キャプチャーすると次のボタンが表示されます。</translation>
@@ -236,7 +233,7 @@ Please wait while a cup of coffee.</source>
         <translation>完了するとキャプチャーした画像を結合します。</translation>
     </message>
     <message>
-        <location line="+694"/>
+        <location line="+698"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -245,7 +242,6 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location filename="../mainwindow.ui" line="+20"/>
-        <location filename="../ui_mainwindow.h" line="+372"/>
         <source>Kan Memo -KanMusu Memory-</source>
         <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
@@ -254,26 +250,22 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">about:blank</translation>
     </message>
     <message>
-        <location line="+191"/>
-        <location filename="../ui_mainwindow.h" line="+79"/>
+        <location line="+345"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
+        <location line="+19"/>
         <source>&amp;Browser</source>
         <translation>ブラウザ(&amp;B)</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Zoom</source>
         <translation>拡大・縮小</translation>
     </message>
     <message>
         <location line="+25"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Help</source>
         <translation>ヘルプ(&amp;H)</translation>
     </message>
@@ -283,387 +275,346 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>F&amp;avorite</source>
         <translation>お気に入り(&amp;A)</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Tool</source>
         <translation>ツール(&amp;T)</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Window</source>
         <translation>ウインドウ(&amp;W)</translation>
     </message>
     <message>
         <location line="+16"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>toolBar</source>
         <translation>toolBar</translation>
     </message>
     <message>
         <location line="+18"/>
-        <location filename="../ui_mainwindow.h" line="-85"/>
         <source>&amp;Exit</source>
         <translation>終了(&amp;E)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Capture</source>
         <translation>思い出を残す(F5)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+2"/>
         <source>Capture(F5)</source>
         <translation>思い出を残す(F5)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+2"/>
         <source>F5</source>
         <translation>F5</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Reload</source>
         <translation>再読み込み(&amp;R)</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Adjust KanColle position</source>
         <translation>艦これの場所を探す(&amp;A)</translation>
     </message>
     <message>
         <location line="+3"/>
         <location line="+166"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
-        <location line="+51"/>
         <source>Ctrl+F</source>
         <translation>Ctrl+F</translation>
     </message>
     <message>
         <location line="-158"/>
-        <location filename="../ui_mainwindow.h" line="-50"/>
         <source>&amp;View memories</source>
         <translation>思い出を表示(F6)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+2"/>
         <source>View memories(F6)</source>
         <translation>思い出を表示(F6)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+2"/>
         <source>F6</source>
         <translation>F6</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Preferences ...</source>
         <translation>設定...(&amp;P)</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;About</source>
         <translation>艦メモについて(&amp;A)</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Timer</source>
         <translation>お知らせタイマー(F7)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+2"/>
         <source>Timer(F7)</source>
         <translation>お知らせタイマー(F7)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+2"/>
         <source>F7</source>
         <translation>F7</translation>
     </message>
     <message>
         <location line="+5"/>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
-        <location line="+2"/>
         <source>captureCatalog</source>
         <translation>図鑑を作成する</translation>
     </message>
     <message>
         <location line="+5"/>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+2"/>
-        <location line="+2"/>
         <source>captureFleetDetail</source>
         <translation>艦隊詳細を作成(F9)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+2"/>
         <source>F9</source>
         <translation>F9</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Return to Kan Colle</source>
         <translation>艦これへ戻る(&amp;B)</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Full screen</source>
         <translation>フルスクリーン(&amp;F)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+2"/>
         <source>Full screen(Ctrl+Enter)</source>
         <translation>フルスクリーン(Ctrl+Enter)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+2"/>
         <source>Ctrl+Return</source>
         <translation>Ctrl+Return</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Clear Access Cache</source>
         <translation>キャッシュをクリア(&amp;C)</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Capture and Edit</source>
         <translation>思い出を編集して残す(Ctrl+F5)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Ctrl+F5</source>
         <translation>Ctrl+F5</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Split window</source>
         <translation>ウインドウ分割</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Add tab</source>
         <translation>タブを追加</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Ctrl+T</source>
         <translation>Ctrl+T</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Remove tab</source>
         <translation>タブを削除</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Ctrl+W</source>
         <translation>Ctrl+W</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Reload tab</source>
         <translation>タブを再読み込み</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Ctrl+R</source>
         <translation>Ctrl+R</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Tab Switch Prev</source>
         <translation>前のタブへ移動</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Ctrl+Shift+Tab</source>
         <translation>Ctrl+Shift+Tab</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Tab Switch Next</source>
         <translation>次のタブへ移動</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Ctrl+Tab</source>
         <translation>Ctrl+Tab</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Tab Switch Prev2</source>
         <translation>前のタブへ移動</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Ctrl+PgUp</source>
         <translation>Ctrl+PgUp</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Tab Switch Next2</source>
         <translation>次のタブへ移動</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Ctrl+PgDown</source>
         <translation>Ctrl+PgDown</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Add</source>
         <translation>追加</translation>
     </message>
     <message>
         <location line="+5"/>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
-        <location line="+2"/>
         <source>Find in tab</source>
         <translation>タブの中を検索</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../ui_mainwindow.h" line="+3"/>
         <source>&amp;Update</source>
         <translation>更新を確認する(&amp;U)</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>75%</source>
         <translation>75%</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>100%</source>
         <translation>100%</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>50%</source>
         <translation>50%</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>125%</source>
         <translation>125%</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>150%</source>
         <translation>150%</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>175%</source>
         <translation>175%</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>200%</source>
         <translation>200%</translation>
     </message>
     <message>
         <location line="+11"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>View tool bar</source>
         <translation>ツールバーを表示する</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>captureFleetList</source>
         <translation>艦隊リストを作成(F10)</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>F10</source>
         <translation>F10</translation>
     </message>
     <message>
+        <location line="+30"/>
+        <source>Record</source>
+        <translation>思い出を動画で残す</translation>
+    </message>
+    <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
+        <source>Record Preferences ...</source>
+        <translation>録画設定...</translation>
+    </message>
+    <message>
+        <location line="-512"/>
+        <location line="+482"/>
         <source>-</source>
         <translation></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
+        <location line="-538"/>
+        <source>Record start/stop</source>
+        <translation>録画(開始/停止)</translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>00:00</source>
+        <translation>00:00</translation>
+    </message>
+    <message>
+        <location line="+62"/>
+        <source>Record settings ...</source>
+        <translation>録画設定...</translation>
+    </message>
+    <message>
+        <location line="+446"/>
         <source>&amp;Vertical split</source>
         <translation>上下に分割(&amp;V)</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Horizontal split</source>
         <translation>左右に分割(&amp;H)</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Disable split</source>
         <translation>分割を解除(&amp;D)</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Clear Cookies</source>
         <translation>Cookieをクリア</translation>
     </message>
@@ -676,16 +627,89 @@ Do you want to continue on an understanding of the security risk?
     <name>MemoryDialog</name>
     <message>
         <location filename="../memorydialog.ui" line="+14"/>
-        <location filename="../ui_memorydialog.h" line="+47"/>
         <source>Tweet by selecting the memories</source>
         <translation>思い出を選択してつぶやく</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingDialog</name>
+    <message>
+        <location filename="../recordingdialog.ui" line="+14"/>
+        <source>Dialog</source>
+        <translation>録画設定</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>FPS</source>
+        <translation>FPS</translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>(10-30 fps)</source>
+        <translation>(10～30fps)</translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Audio Source</source>
+        <translation>音源</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>ffmpeg Path</source>
+        <translation>ffmpegパス</translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <location line="+27"/>
+        <location line="+40"/>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+    <message>
+        <location line="-58"/>
+        <source>Save Path</source>
+        <translation>思い出の保存先</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Temp Path</source>
+        <translation>一時フォルダ</translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source>Default</source>
+        <translation>元に戻す</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Don&apos;t view buttle result when recording.</source>
+        <translation>録画中は戦果報告画面のコピーを表示しない。</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Buttle result</source>
+        <translation>戦果報告</translation>
+    </message>
+    <message>
+        <location filename="../recordingdialog.cpp" line="+76"/>
+        <source>Select save folder</source>
+        <translation>思い出を保存するフォルダを選択してください。</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Select ffmpeg</source>
+        <translation>ffmpegを選択してください</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Temp save folder</source>
+        <translation>録画用の一時ファイルを保存するフォルダを選択して下さい</translation>
     </message>
 </context>
 <context>
     <name>SettingsDialog</name>
     <message>
         <location filename="../settingsdialog.ui" line="+14"/>
-        <location filename="../ui_settingsdialog.h" line="+329"/>
         <source>Preferences ..</source>
         <translation>設定</translation>
     </message>
@@ -699,109 +723,91 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+15"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>Pictures path</source>
         <translation>思い出の保存先</translation>
     </message>
     <message>
         <location line="+15"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
         <location line="+22"/>
-        <location filename="../ui_settingsdialog.h" line="+2"/>
         <source>Unused Twitter</source>
         <translation>ツイッター連携を使用しない</translation>
     </message>
     <message>
         <location line="+40"/>
-        <location filename="../ui_settingsdialog.h" line="+3"/>
         <source>Auto Start (Provisional)</source>
         <translation>遠征の時間を自動取得して開始する（仮）</translation>
     </message>
     <message>
         <location line="+84"/>
-        <location filename="../ui_settingsdialog.h" line="+11"/>
         <source>Position</source>
         <translation>表示位置</translation>
     </message>
     <message>
         <location line="+78"/>
-        <location filename="../ui_settingsdialog.h" line="+11"/>
         <source>Browser:</source>
         <translation>ブラウザ</translation>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>Use Cookie(need to restart the Kanmemo)</source>
         <translation>Cookieを使用する（艦メモの再起動が必要です）</translation>
     </message>
     <message>
         <location line="+24"/>
-        <location filename="../ui_settingsdialog.h" line="+2"/>
         <source>Proxy:</source>
         <translation>プロキシ設定</translation>
     </message>
     <message>
         <location line="+16"/>
-        <location filename="../ui_settingsdialog.h" line="+2"/>
         <source>Proxy host:</source>
         <translation>プロキシサーバー</translation>
     </message>
     <message>
         <location line="+14"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>Proxy port:</source>
         <translation>プロキシポート</translation>
     </message>
     <message>
         <location line="+32"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>Timer</source>
         <translation>お知らせタイマー</translation>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>Tweet a time-out</source>
         <translation>時間になったらツイッターでお知らせする</translation>
     </message>
     <message>
         <location line="-229"/>
-        <location filename="../ui_settingsdialog.h" line="-27"/>
         <source>Opacity</source>
         <translation>不透明度</translation>
     </message>
     <message>
         <location line="+11"/>
-        <location filename="../ui_settingsdialog.h" line="+3"/>
         <source>100%</source>
         <translation>100%</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>75%</source>
         <translation>75%</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>50%</source>
         <translation>50%</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>25%</source>
         <translation>25%</translation>
     </message>
     <message>
         <location line="-45"/>
-        <location filename="../ui_settingsdialog.h" line="-8"/>
         <source>Buttle result</source>
         <translation>戦果報告</translation>
     </message>
@@ -812,74 +818,61 @@ Do you want to continue on an understanding of the security risk?
     <message>
         <location line="+77"/>
         <location line="+12"/>
-        <location filename="../ui_settingsdialog.h" line="+14"/>
-        <location line="+5"/>
         <source>RightTop</source>
         <translation>右上</translation>
     </message>
     <message>
         <location line="-5"/>
-        <location filename="../ui_settingsdialog.h" line="-6"/>
         <source>LeftTop</source>
         <translation>左上</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location filename="../ui_settingsdialog.h" line="+2"/>
         <source>LeftBottom</source>
         <translation>左下</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>RightBottom</source>
         <translation>右下</translation>
     </message>
     <message>
         <location line="+5"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>Center</source>
         <translation>中心</translation>
     </message>
     <message>
         <location line="+61"/>
-        <location filename="../ui_settingsdialog.h" line="+6"/>
         <source>Disable coontext menu</source>
         <translation>コンテキストメニューを表示しない。</translation>
     </message>
     <message>
         <location line="-31"/>
-        <location filename="../ui_settingsdialog.h" line="-3"/>
         <source>Disable exit(Ctrl+Q) shortcut</source>
         <translation>終了ショートカット(Ctrl+Q)を使用しない。</translation>
     </message>
     <message>
         <location line="-127"/>
-        <location filename="../ui_settingsdialog.h" line="-19"/>
         <source>View buttle result</source>
         <translation>戦果報告画面のコピーを表示する</translation>
     </message>
     <message>
         <location line="+179"/>
-        <location filename="../ui_settingsdialog.h" line="+24"/>
         <source>Enable</source>
         <translation>プロキシ設定を有効にする</translation>
     </message>
     <message>
         <location line="-253"/>
-        <location filename="../ui_settingsdialog.h" line="-30"/>
         <source>Save in PNG format.</source>
         <translation>画像をPNG形式で保存する（標準はJPEG）</translation>
     </message>
     <message>
         <location line="+26"/>
-        <location filename="../ui_settingsdialog.h" line="+2"/>
         <source>Mask Admiral name</source>
         <translation>提督名を消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
         <location line="+13"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>Mask HQ level</source>
         <translation>艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
     </message>
@@ -962,7 +955,6 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location filename="../timerdialog.ui" line="+14"/>
-        <location filename="../ui_timerdialog.h" line="+47"/>
         <source>Timer</source>
         <translation>お知らせタイマー</translation>
     </message>
@@ -1019,8 +1011,6 @@ Do you want to continue on an understanding of the security risk?
     <message>
         <location filename="../tweetdialog.ui" line="+14"/>
         <location line="+124"/>
-        <location filename="../ui_tweetdialog.h" line="+174"/>
-        <location line="+7"/>
         <source>Tweet</source>
         <translation>つぶやく</translation>
     </message>
@@ -1042,43 +1032,36 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+10"/>
-        <location filename="../ui_tweetdialog.h" line="+1"/>
         <source>Close</source>
         <translation>閉じる</translation>
     </message>
     <message>
         <location line="-23"/>
-        <location filename="../ui_tweetdialog.h" line="-2"/>
         <source>140</source>
         <translation>140</translation>
     </message>
     <message>
         <location line="-27"/>
-        <location filename="../ui_tweetdialog.h" line="-1"/>
         <source>Reauthize</source>
         <translation>再認証</translation>
     </message>
     <message>
         <location line="-29"/>
-        <location filename="../ui_tweetdialog.h" line="-2"/>
         <source>name</source>
         <translation></translation>
     </message>
     <message>
         <location line="+7"/>
-        <location filename="../ui_tweetdialog.h" line="+1"/>
         <source>@screen_name</source>
         <translation></translation>
     </message>
     <message>
         <location line="+120"/>
-        <location filename="../ui_tweetdialog.h" line="-3"/>
         <source>tweet</source>
         <translation>つぶやく</translation>
     </message>
     <message>
         <location line="+3"/>
-        <location filename="../ui_tweetdialog.h" line="+1"/>
         <source>Ctrl+Return</source>
         <translation>Ctrl+Return</translation>
     </message>
@@ -1121,31 +1104,26 @@ Do you want to continue on an understanding of the security risk?
     <name>UpdateInfoDialog</name>
     <message>
         <location filename="../updateinfodialog.ui" line="+14"/>
-        <location filename="../ui_updateinfodialog.h" line="+150"/>
         <source>Update Information</source>
         <translation>更新情報</translation>
     </message>
     <message>
         <location line="+15"/>
-        <location filename="../ui_updateinfodialog.h" line="+1"/>
         <source>The update was found.</source>
         <translation>更新が見つかりました。</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location filename="../ui_updateinfodialog.h" line="+1"/>
         <source>New Version:</source>
         <translation>新バージョン</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location filename="../ui_updateinfodialog.h" line="+1"/>
         <source>0.1</source>
         <translation>0.1</translation>
     </message>
     <message>
         <location line="+22"/>
-        <location filename="../ui_updateinfodialog.h" line="+1"/>
         <source>Download URL:</source>
         <translation>ダウンロードURL:</translation>
     </message>
@@ -1153,21 +1131,16 @@ Do you want to continue on an understanding of the security risk?
         <location line="+7"/>
         <location line="+16"/>
         <location line="+23"/>
-        <location filename="../ui_updateinfodialog.h" line="+1"/>
-        <location line="+1"/>
-        <location line="+2"/>
         <source>url</source>
         <translation></translation>
     </message>
     <message>
         <location line="-7"/>
-        <location filename="../ui_updateinfodialog.h" line="-1"/>
         <source>Detail information:</source>
         <translation>更新情報:</translation>
     </message>
     <message>
         <location line="+35"/>
-        <location filename="../ui_updateinfodialog.h" line="+2"/>
         <source>Hide until next update.</source>
         <translation>次回の更新まで非表示にする。</translation>
     </message>
@@ -1186,13 +1159,11 @@ Do you want to continue on an understanding of the security risk?
     <name>WebPageForm</name>
     <message>
         <location filename="../webpageform.ui" line="+14"/>
-        <location filename="../ui_webpageform.h" line="+156"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
         <location line="+119"/>
-        <location filename="../ui_webpageform.h" line="+6"/>
         <source>Search</source>
         <translation>検索</translation>
     </message>

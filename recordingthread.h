@@ -64,11 +64,14 @@ public:
 
     RecordingStatus status() const;
     void setStatus(const RecordingStatus &status);
+    qint64 duration() const;
+    void setDuration(const qint64 &duration);
 
 signals:
     void audioRecord(const QUrl& dest, const QString& src);
     //    void audioRecordStop();
     void statusChanged(RecordingStatus status);
+    void durationChanged(const qint64 &duration);
 
 public slots:
     void recordFinished();
@@ -90,6 +93,9 @@ private:
     QString m_audioInputName;           //オーディオ録音するデバイス名
     AudioRecorder m_audio;              //オーディオ録音
     QThread m_recordThread;             //録音を別スレッドにする
+
+    qint64 m_start_offset_time;         //計測開始から1枚目の画像までの時間
+    qint64 m_duration;                  //経過時間
 
     RecordingStatus m_status;            //スレッドの状態
 

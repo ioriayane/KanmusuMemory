@@ -46,6 +46,14 @@ RecordingThread::RecordingThread(QObject *parent) :
         if(!isRunning()){
             start();
         }
+
+        //経過時間
+        if(m_start_offset_time > 0){
+            qint64 n = m_et.elapsed() - m_start_offset_time;
+            if((n - duration()) > 500){
+                setDuration(m_et.elapsed() - m_start_offset_time);
+            }
+        }
     });
 
     //録画スレッド終了からの変換
@@ -92,6 +100,8 @@ void RecordingThread::startRecording()
     m_recordingCounter = 0;
     m_SaveDataList.clear();
     m_et.start();
+    m_start_offset_time = -1;
+    setDuration(0);
 
     //録音開始
     QString audio_path = getTempAudioPath();
@@ -254,6 +264,18 @@ void RecordingThread::audioRecordingError(QMediaRecorder::Error error)
 {
     qDebug() << "Recording Audio Error:" << error;
 }
+qint64 RecordingThread::duration() const
+{
+    return m_duration;
+}
+
+void RecordingThread::setDuration(const qint64 &duration)
+{
+    if(m_duration == duration)  return;
+    m_duration = duration;
+    emit durationChanged(m_duration);
+}
+
 RecordingThread::RecordingStatus RecordingThread::status() const
 {
     return m_status;
@@ -403,8 +425,8 @@ void RecordingThread::run()
     //フレームのカウント
     unsigned long count = 0;
     unsigned long timer_time = 0;
-    qint64 start_offset_time = m_SaveDataList.first().elapse;
-    qDebug() << "start_offset_time:" << start_offset_time;
+    m_start_offset_time = m_SaveDataList.first().elapse;
+    qDebug() << "start_offset_time:" << m_start_offset_time;
 
     m_mutex.lock();
     empty = m_SaveDataList.isEmpty();
@@ -415,7 +437,7 @@ void RecordingThread::run()
         save(data, count++);
 
         timer_time = (count-1)*1000/fps();
-        elapse = data.elapse - start_offset_time;
+        elapse = data.elapse - m_start_offset_time;
 //        qDebug() << count << " , " << timer_time << "-" << elapse << "=" << (timer_time - elapse)
 //                 << " : " << data.duration << "-" << elapse << "=" << (data.duration - elapse);
 
@@ -436,7 +458,7 @@ void RecordingThread::run()
         if(!empty){
             //保存しようとしているフレームの理論時間
             timer_time = (count-1)*1000/fps();
-            elapse = data.elapse - start_offset_time;
+            elapse = data.elapse - m_start_offset_time;
             //理論時間とのズレが1フレームより大きい間補間する
             while(abs(timer_time - elapse) > frame_time){
                 //保存
@@ -444,7 +466,7 @@ void RecordingThread::run()
 
                 //保存しようとしているフレームの理論時間
                 timer_time = (count-1)*1000/fps();
-                elapse = data.elapse - start_offset_time;
+                elapse = data.elapse - m_start_offset_time;
 
                 //保存した時間
 //                qDebug() << count << " , " << timer_time << "-" << elapse << "=" << (timer_time - elapse)

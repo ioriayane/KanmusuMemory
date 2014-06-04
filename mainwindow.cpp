@@ -252,7 +252,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
             ui.recordStatusLabel->setText("Recording");
             break;
         case RecordingThread::Saving:
-            ui.recordingTimeLabel->setText("Saving");
+            ui.recordStatusLabel->setText("Saving");
             break;
         case RecordingThread::Convert:
             ui.recordStatusLabel->setText("Convert");
@@ -261,6 +261,12 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
             ui.recordStatusLabel->setText("Error");
             break;
         }
+    });
+    //録画時間
+    connect(&recordingThread, &RecordingThread::durationChanged, [this](const qint64 &duration){
+        long min = (duration / 1000) / 60;
+        long sec = (duration / 1000) % 60;
+        ui.recordingTimeLabel->setText(QString("%1:%2").arg(min, 2, 10, QLatin1Char('0')).arg(sec, 2, 10, QLatin1Char('0')));
     });
 
     ///////////////////////////////////////////////////////////////
