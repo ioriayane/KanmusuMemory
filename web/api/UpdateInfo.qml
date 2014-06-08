@@ -36,5 +36,6 @@ QtObject {
     ]
     property string lastFavoriteData: "2014050600"
     property string lastTimerSelectGuide: "2014031400"
+    property string lastRecognizeInfo: "2014060600"
 }
 

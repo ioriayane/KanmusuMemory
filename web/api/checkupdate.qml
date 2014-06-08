@@ -28,6 +28,7 @@ Json {
         , "message" : message
         , "last-favorite" : lastFavoriteData
         , "last-timer" : lastTimerSelectGuide
+        , "last-recognize" : lastRecognizeInfo
     }
 
     UpdateInfo {
@@ -43,6 +44,7 @@ Json {
 
     property string lastFavoriteData: info.lastFavoriteData
     property string lastTimerSelectGuide: info.lastTimerSelectGuide
+    property string lastRecognizeInfo: info.lastRecognizeInfo
 
     property string version: ""
     property int versionCode: 0
