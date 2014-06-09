@@ -382,7 +382,7 @@ int GameScreen::Private::numberMatching(const QImage &image, const QRect &rect, 
             qDebug() << "  makuro";
             break;
         }else if(qRed(rgb) < guideList.at(m).border){
-            qDebug() <<  QString("  %1:match(%2)").arg(guideList.at(m).number).arg(qRed(rgb));
+            qDebug() <<  QString("  %1:match(%2<%3)").arg(guideList.at(m).number).arg(qRed(rgb)).arg(guideList.at(m).border);
             ret = guideList.at(m).number;
             match_count++;
             break;

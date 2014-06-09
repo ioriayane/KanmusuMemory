@@ -1,0 +1,64 @@
+{
+"_comment" : "serialは日付+二桁連番で更新されてるか判断する"
+,"serial" : "2014060800"
+,"itemRect" : 
+[
+  { "x": 117, "y": 158, "width": 440, "height": 30 }
+, { "x": 117, "y": 188, "width": 440, "height": 30 }
+, { "x": 117, "y": 218, "width": 440, "height": 30 }
+, { "x": 117, "y": 248, "width": 440, "height": 30 }
+, { "x": 117, "y": 278, "width": 440, "height": 30 }
+, { "x": 117, "y": 308, "width": 440, "height": 30 }
+, { "x": 117, "y": 338, "width": 440, "height": 30 }
+, { "x": 117, "y": 368, "width": 440, "height": 30 }
+]
+, "numberGuide" :
+[
+  { "path": ":/resources/NumberGuide0.png", "number": 0, "border": 10 }
+, { "path": ":/resources/NumberGuide4.png", "number": 4, "border": 14 }
+, { "path": ":/resources/NumberGuide1.png", "number": 1, "border": 10 }
+, { "path": ":/resources/NumberGuide2.png", "number": 2, "border": 10 }
+, { "path": ":/resources/NumberGuide3.png", "number": 3, "border": 10 }
+, { "path": ":/resources/NumberGuide5.png", "number": 5, "border": 11 }
+, { "path": ":/resources/NumberGuide6.png", "number": 6, "border": 10 }
+, { "path": ":/resources/NumberGuide7.png", "number": 7, "border": 14 }
+, { "path": ":/resources/NumberGuide9.png", "number": 9, "border": 10 }
+, { "path": ":/resources/NumberGuide8.png", "number": 8, "border": 14 }
+]
+, "remainTimeRect" : 
+[
+  { "x": 722, "y": 387, "width": 9, "height": 13 }
+, { "x": 731, "y": 387, "width": 9, "height": 13 }
+, { "x": 745, "y": 387, "width": 9, "height": 13 }
+, { "x": 754, "y": 387, "width": 9, "height": 13 }
+, { "x": 767, "y": 387, "width": 9, "height": 13 }
+, { "x": 776, "y": 387, "width": 9, "height": 13 }
+]
+, "totalTimeRect" : 
+[
+  { "x": 725, "y": 265, "width": 9, "height": 13 }
+, { "x": 734, "y": 265, "width": 9, "height": 13 }
+, { "x": 747, "y": 265, "width": 9, "height": 13 }
+, { "x": 756, "y": 265, "width": 9, "height": 13 }
+, { "x": 770, "y": 265, "width": 9, "height": 13 }
+, { "x": 779, "y": 265, "width": 9, "height": 13 }
+]
+
+, "flagGuide" : 
+[
+  { "path": ":/resources/FlagGuide2.png", "number": 2, "border": 5}
+, { "path": ":/resources/FlagGuide3.png", "number": 3, "border": 5}
+, { "path": ":/resources/FlagGuide4.png", "number": 4, "border": 5}
+]
+, "flagRect" : 
+[
+  { "x": 517, "y": 163, "width": 23, "height": 20 }
+, { "x": 517, "y": 193, "width": 23, "height": 20 }
+, { "x": 517, "y": 223, "width": 23, "height": 20 }
+, { "x": 517, "y": 253, "width": 23, "height": 20 }
+, { "x": 517, "y": 283, "width": 23, "height": 20 }
+, { "x": 517, "y": 313, "width": 23, "height": 20 }
+, { "x": 517, "y": 343, "width": 23, "height": 20 }
+, { "x": 517, "y": 373, "width": 23, "height": 20 }
+]
+}

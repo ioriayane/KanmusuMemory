@@ -54,6 +54,7 @@
 #define KEY_MESSAGE             QStringLiteral("message")
 #define KEY_FAV_UPDATE          QStringLiteral("last-favorite")
 #define KEY_TIMER_UPDATE        QStringLiteral("last-timer")
+#define KEY_RECOGNIZE_UPDATE    QStringLiteral("last-recognize")
 
 
 UpdateInfoDialog::UpdateInfoDialog(QWidget *parent
@@ -145,6 +146,8 @@ void UpdateInfoDialog::CheckUpdate()
             setLastFavoriteUpdateDate(json.object().value(KEY_FAV_UPDATE).toString("2010010100"));
             //タイマーの更新確認
             setLastTimerSelectGuideUpdateDate(json.object().value(KEY_TIMER_UPDATE).toString("2010010100"));
+            //画像認識情報の更新確認
+            setLastRecognizeInfoUpdateDate(json.object().value(KEY_RECOGNIZE_UPDATE).toString("2010010100"));
 
             //非表示確認
             if(isHide(m_newVersionCode) && !m_force){
@@ -233,6 +236,17 @@ void UpdateInfoDialog::setLastTimerSelectGuideUpdateDate(const QString &lastTime
     m_lastTimerSelectGuideUpdateDate = lastTimerSelectGuideUpdateDate;
     emit lastTimerSelectGuideUpdateDateChanged(lastTimerSelectGuideUpdateDate);
 }
+QString UpdateInfoDialog::lastRecognizeInfoUpdateDate() const
+{
+    return m_lastRecognizeInfoUpdateDate;
+}
+
+void UpdateInfoDialog::setLastRecognizeInfoUpdateDate(const QString &lastRecognizeInfoUpdateDate)
+{
+    m_lastRecognizeInfoUpdateDate = lastRecognizeInfoUpdateDate;
+    emit lastRecognizeInfoUpdateDateChanged(lastRecognizeInfoUpdateDate);
+}
+
 
 
 //非表示か確認

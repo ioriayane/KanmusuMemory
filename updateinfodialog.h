@@ -37,13 +37,15 @@ public:
 
     QString lastFavoriteUpdateDate() const;
     void setLastFavoriteUpdateDate(const QString &lastFavoriteUpdateDate);
-
     QString lastTimerSelectGuideUpdateDate() const;
     void setLastTimerSelectGuideUpdateDate(const QString &lastTimerSelectGuideUpdateDate);
+    QString lastRecognizeInfoUpdateDate() const;
+    void setLastRecognizeInfoUpdateDate(const QString &lastRecognizeInfoUpdateDate);
 
 signals:
     void lastFavoriteUpdateDateChanged(const QString &lastFavoriteUpdateDate);
     void lastTimerSelectGuideUpdateDateChanged(const QString &lastTimerSelectGuideUpdateDate);
+    void lastRecognizeInfoUpdateDateChanged(const QString &lastRecognizeInfoUpdateDate);
 
 private:
     Ui::UpdateInfoDialog *ui;
@@ -55,6 +57,7 @@ private:
 
     QString m_lastFavoriteUpdateDate;
     QString m_lastTimerSelectGuideUpdateDate;
+    QString m_lastRecognizeInfoUpdateDate;
 
     bool isHide(int checkVersion);
 };

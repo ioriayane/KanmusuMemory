@@ -27,6 +27,8 @@
 #include "gamescreen.h"
 #include "webpageform.h"
 #include "favoritemenu.h"
+#include "recognizeinfo.h"
+#include "numberguide.h"
 #include "kanmusumemory_global.h"
 
 #include <QtCore/QDate>
@@ -100,6 +102,7 @@ private:
     UpdateInfoDialog *m_updateInfoDialog;
     FleetDetailDialog *m_fleetDetailDialog;
     FavoriteMenu m_favorite;
+    RecognizeInfo m_recognizeInfo;
 
 public:
     Ui::MainWindow ui;
@@ -118,6 +121,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     , trayIcon(QIcon(":/resources/KanmusuMemory32.png"))
     , m_favorite(q)
     , notUseCookie(not_use_cookie)
+    , m_recognizeInfo(q)
 {
     ui.setupUi(q);
 
@@ -129,6 +133,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     //戦績報告を非表示
     ui.viewButtleResult->setVisible(false);
     setButtleResultPosition();
+
 
     //メニュー
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
@@ -330,6 +335,17 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     connect(m_updateInfoDialog, &UpdateInfoDialog::lastTimerSelectGuideUpdateDateChanged, [this](const QString &lastTimerSelectGuideUpdateDate){
         m_timerDialog->setLastTimerSelectGuideUpdateDate(lastTimerSelectGuideUpdateDate);
     });
+    //アップデート確認の情報を元に画像解析情報のアップデート
+    connect(m_updateInfoDialog, &UpdateInfoDialog::lastRecognizeInfoUpdateDateChanged, [this](const QString &lastRecognizeInfoUpdateDate){
+        m_recognizeInfo.updateFromInternet(lastRecognizeInfoUpdateDate);
+    });
+
+    //画像解析系の設定を保持するクラス
+    m_recognizeInfo.load();
+    //アップデート確認
+    connect(&m_recognizeInfo, &RecognizeInfo::downloadFinished, [this](){
+        m_recognizeInfo.load();
+    });
 
     //通知アイコン
 #ifdef Q_OS_WIN
@@ -399,7 +415,7 @@ void MainWindow::Private::captureGame(bool andEdit)
         return;
     }
 
-    GameScreen gameScreen(img);
+    GameScreen gameScreen(img, &m_recognizeInfo);
     if (gameScreen.isVisible(GameScreen::HeaderPart)) {
         //提督名をマスク
         if(settings.value(SETTING_GENERAL_MASK_ADMIRAL_NAME, false).toBool()) {
@@ -919,7 +935,7 @@ void MainWindow::Private::captureFleetDetail()
     resultImg.fill(Qt::transparent);
     QPainter painter(&resultImg);
 
-    GameScreen gameScreen(ui.webView->capture());
+    GameScreen gameScreen(ui.webView->capture(), &m_recognizeInfo);
     if (!gameScreen.isVisible(GameScreen::Ship1Part))
     {
         ui.statusBar->showMessage(tr("not in organization"), STATUS_BAR_MSG_TIME);
@@ -1030,7 +1046,7 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
         return;
     }
 
-    GameScreen gameScreen(img);
+    GameScreen gameScreen(img, &m_recognizeInfo);
     switch(gameScreen.screenType()){
     case GameScreen::ButtleResultScreen:
         if(!ui.viewButtleResult->isVisible() || force){
@@ -1111,7 +1127,7 @@ void MainWindow::Private::checkExpeditionRemainTime(const QPointF &pos)
     //0:item選択
     //1:item決定押した
     //2:遠征開始を押した（元画面に戻ってくる）
-    GameScreen gameScreen(img);
+    GameScreen gameScreen(img, &m_recognizeInfo);
     if(gameScreen.screenType() == GameScreen::ExpeditionScreen){
 
         qDebug() << "Expedition";
