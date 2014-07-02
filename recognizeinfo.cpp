@@ -199,7 +199,7 @@ void RecognizeInfo::load()
     }
 }
 
-void RecognizeInfo::setRectList(QList<QRect> *list, QJsonArray &array)
+void RecognizeInfo::setRectList(QList<QRect> *list, const QJsonArray &array)
 {
     list->clear();
     for(int i=0; i<array.count(); i++){
@@ -211,7 +211,7 @@ void RecognizeInfo::setRectList(QList<QRect> *list, QJsonArray &array)
     }
 }
 
-void RecognizeInfo::setGuideList(QList<NumberGuide> *list, QJsonArray &array)
+void RecognizeInfo::setGuideList(QList<NumberGuide> *list, const QJsonArray &array)
 {
     list->clear();
     for(int i=0; i<array.count(); i++){
