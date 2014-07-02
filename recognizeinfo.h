@@ -44,8 +44,8 @@ public:
 
 
     void load();
-    void setRectList(QList<QRect> *list, QJsonArray &array);
-    void setGuideList(QList<NumberGuide> *list, QJsonArray &array);
+    void setRectList(QList<QRect> *list, const QJsonArray &array);
+    void setGuideList(QList<NumberGuide> *list, const QJsonArray &array);
 signals:
     void downloadFinished();
 
