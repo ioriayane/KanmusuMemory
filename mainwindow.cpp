@@ -238,6 +238,8 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
 //            recordingThread.setAudioInputName(recordingThread.audioInputNames().at(0));
 //            recordingThread.setFps(20);
 
+            ui.recordButton->setChecked(true);
+
             //ミュートする
             m_timerDialog->setAlarmMute(muteTimerSound);
 
@@ -249,6 +251,8 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
             recordingThread.stopRecording();
             //ミュート解除
             m_timerDialog->setAlarmMute(false);
+            //ボタンの表示
+//            ui.recordButton->set;
         }else{
         }
     });
