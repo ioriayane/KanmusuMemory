@@ -46,6 +46,8 @@ public:
     void clearCaptureFiles();
     bool isSettingValid();
 
+    QString getTempPath();
+
     WebView *webView() const;
     void setWebView(WebView *webView);
     QString savePath() const;
@@ -66,6 +68,9 @@ public:
     void setStatus(const RecordingStatus &status);
     qint64 duration() const;
     void setDuration(const qint64 &duration);
+
+    qint32 soundOffset() const;
+    void setSoundOffset(const qint32 &soundOffset);
 
 signals:
     void audioRecord(const QUrl& dest, const QString& src);
@@ -88,6 +93,10 @@ private:
     QString m_toolPath;                 //動画にするツールのパス
     QString m_toolParam;                //動画にするツールのパラメータ
     qreal m_fps;                        //フレームレート
+    qint32 m_soundOffset;               //音ズレ調整用のフレーム数
+                                        //  正：動画に対して音が後ろへ行く。つまり動画の最初を捨てる
+                                        //  負：動画に対して音が前へ行く。つまり動画の頭が水増しされる
+    qint32 m_soundOffsetCount;          //どれくらい音ズレ調整したかのカウンタ
 
     QProcess m_process;                 //動画にするツールを動かす
     QString m_audioInputName;           //オーディオ録音するデバイス名
@@ -109,7 +118,6 @@ private:
     void capture(unsigned long count);
     void convert();
     unsigned long getRecordingCounter();
-    QString getTempPath();
     QString getTempAudioPath();
 
 protected:

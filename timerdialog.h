@@ -48,6 +48,8 @@ public:
     const bool tweetFinished() const;
     void setTweetFinished(bool tweet);
 
+    void setAlarmMute(bool mute);
+
 protected:
     virtual void resizeEvent(QResizeEvent *event);
     virtual void showEvent(QShowEvent *event);

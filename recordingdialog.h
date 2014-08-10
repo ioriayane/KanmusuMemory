@@ -20,7 +20,9 @@ public:
     QString savePath() const;
     QString toolPath() const;
     QString tempPath() const;
+    int soundOffset() const;
     bool dontViewButtleResult() const;
+    bool muteNotificationSound() const;
 
     QString defaultSavePath() const;
     void setDefaultSavePath(const QString &defaultSavePath);
@@ -32,8 +34,15 @@ public:
     void setDefaultFps(int defaultFps);
     QString defaultAudioSource() const;
     void setDefaultAudioSource(const QString &defaultAudioSource);
+
+    int defaultSoundOffset() const;
+    void setDefaultSoundOffset(int defaultSoundOffset);
+
     bool defaultDontViewButtleResult() const;
     void setDefaultDontViewButtleResult(bool defaultDontViewButtleResult);
+    bool defaultMuteNotificationSound() const;
+    void setDefaultMuteNotificationSound(bool defaultMuteNotificationSound);
+
 
 public slots:
     void setFps(int value);
@@ -41,7 +50,9 @@ public slots:
     void setSavePath(const QString &value);
     void setToolPath(const QString &value);
     void setTempPath(const QString &value);
+    void setSoundOffset(int offset);
     void setDontViewButtleResult(bool dontViewButtleResult);
+    void setMuteNotificationSound(bool mute);
 
 signals:
     void fpsChanged(int fps);
@@ -49,7 +60,9 @@ signals:
     void savePathChanged(const QString &path);
     void toolPathChanged(const QString &path);
     void tempPathChanged(const QString &path);
+    void soundOffsetChanged(int offset);
     void dontViewButtleResultChanged(bool dont);
+    void muteNotificationSoundChanged(bool mute);
 
 private:
     class Private;
@@ -60,7 +73,9 @@ private:
     QString m_defaultTempPath;
     int m_defaultFps;
     QString m_defaultAudioSource;
+    int m_defaultSoundOffset;
     bool m_defaultDontViewButtleResult;
+    bool m_defaultMuteNotificationSound;
 };
 
 #endif // RECORDINGDIALOG_H

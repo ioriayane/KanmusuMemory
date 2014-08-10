@@ -56,6 +56,7 @@ onWidthChanged: console.debug("root:" + width)
         id: sound
         volume: timerData.alarmSoundVolume
         source: os.pathPrefix + timerData.alarmSoundPath
+        muted: timerData.alarmMute
     }
 
     Timer {

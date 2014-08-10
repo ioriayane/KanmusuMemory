@@ -102,6 +102,7 @@ void RecordingThread::startRecording()
     m_et.start();
     m_start_offset_time = -1;
     setDuration(0);
+    m_soundOffsetCount = 0;
 
     //録音開始
     QString audio_path = getTempAudioPath();
@@ -264,6 +265,17 @@ void RecordingThread::audioRecordingError(QMediaRecorder::Error error)
 {
     qDebug() << "Recording Audio Error:" << error;
 }
+//音ズレ調整用
+qint32 RecordingThread::soundOffset() const
+{
+    return m_soundOffset;
+}
+void RecordingThread::setSoundOffset(const qint32 &soundOffset)
+{
+    qDebug() << "set Sound offset:" << soundOffset;
+    m_soundOffset = soundOffset;
+}
+
 qint64 RecordingThread::duration() const
 {
     return m_duration;
@@ -481,7 +493,44 @@ void RecordingThread::run()
 
 void RecordingThread::save(SaveData &data, unsigned long count)
 {
-    QString path = QString("%1/kanmemo_%2.jpg").arg(getTempPath()).arg(count, 6, 10, QChar('0'));
+    QString path;
+
+    //音ズレ調整で画像を作ったり、消したり
+    if(soundOffset() > 0){
+        //音を後ろにずらす（画像を消す）
+        if(m_soundOffsetCount < soundOffset()){
+            //消す
+            qDebug() << "sound offset(plus):" << m_soundOffsetCount << "/" << soundOffset();
+            m_soundOffsetCount++;
+
+            ///////////////////////
+            /// returnしてるから注意！
+            ///////////////////////
+            return;
+        }else{
+            count -= soundOffset();
+        }
+    }else if(soundOffset() < 0){
+        //音を前にずらす（画像を水増し）
+        if(count == 0){
+            qDebug() << "sound offset(minus):" + soundOffset();
+            for(int i=0; i<(-1 * soundOffset()); i++){
+                path = QString("%1/kanmemo_%2.jpg").arg(getTempPath()).arg(i, 6, 10, QChar('0'));
+                if(data.image.isNull()){
+                    qDebug() << "list data is null(offset)";
+                }else if(data.image.save(path, "jpg")){
+                    //ok
+                }else{
+                    //ng
+                    qDebug() << "failed save(offset)";
+                }
+            }
+        }
+        count += -1 * soundOffset();     //値がマイナスなので
+    }else{
+    }
+
+    path = QString("%1/kanmemo_%2.jpg").arg(getTempPath()).arg(count, 6, 10, QChar('0'));
     if(data.image.isNull()){
         qDebug() << "list data is null";
     }else if(data.image.save(path, "jpg")){

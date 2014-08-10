@@ -23,7 +23,9 @@ public:
     QString savePath;
     QString toolPath;
     QString tempPath;
+    int soundOffset;
     bool dontViewButtleResult;
+    bool muteNotificationSound;
 };
 
 
@@ -51,7 +53,9 @@ RecordingDialog::Private::Private(RecordingDialog *parent)
         savePath = ui.savePathEdit->text();
         toolPath = ui.toolPathEdit->text();
         tempPath = ui.tempPathEdit->text();
+        soundOffset = ui.soundOffsetSpinBox->value();
         dontViewButtleResult = ui.dontViewButtleResultCheckBox->isChecked();
+        muteNotificationSound = ui.muteNotificationSoundCheckBox->isChecked();
 
         q->accept();
     });
@@ -65,7 +69,9 @@ RecordingDialog::Private::Private(RecordingDialog *parent)
     connect(q, &RecordingDialog::savePathChanged, ui.savePathEdit, &QLineEdit::setText);
     connect(q, &RecordingDialog::toolPathChanged, ui.toolPathEdit, &QLineEdit::setText);
     connect(q, &RecordingDialog::tempPathChanged, ui.tempPathEdit, &QLineEdit::setText);
+    connect(q, &RecordingDialog::soundOffsetChanged, ui.soundOffsetSpinBox, &QSpinBox::setValue);
     connect(q, &RecordingDialog::dontViewButtleResultChanged, ui.dontViewButtleResultCheckBox, &QCheckBox::setChecked);
+    connect(q, &RecordingDialog::muteNotificationSoundChanged, ui.muteNotificationSoundCheckBox, &QCheckBox::setChecked);
 
     //保存パスの参照ボタン
     connect(ui.selectSavePathButton, &QToolButton::clicked, [this]() {
@@ -117,7 +123,9 @@ RecordingDialog::Private::Private(RecordingDialog *parent)
         ui.savePathEdit->setText(q->defaultSavePath());
         ui.toolPathEdit->setText(q->defaultToolPath());
         ui.tempPathEdit->setText(q->defaultTempPath());
+        ui.soundOffsetSpinBox->setValue(q->defaultSoundOffset());
         ui.dontViewButtleResultCheckBox->setChecked(q->defaultDontViewButtleResult());
+        ui.muteNotificationSoundCheckBox->setChecked(q->defaultMuteNotificationSound());
     });
 }
 
@@ -182,6 +190,11 @@ QString RecordingDialog::tempPath() const
 {
     return d->tempPath;
 }
+
+int RecordingDialog::soundOffset() const
+{
+    return d->soundOffset;
+}
 void RecordingDialog::setTempPath(const QString &value)
 {
     if(d->tempPath.compare(value) == 0) return;
@@ -189,9 +202,21 @@ void RecordingDialog::setTempPath(const QString &value)
     emit tempPathChanged(value);
 }
 
+void RecordingDialog::setSoundOffset(int offset)
+{
+    if(d->soundOffset == offset)    return;
+    d->soundOffset = offset;
+    emit soundOffsetChanged(offset);
+}
+
 bool RecordingDialog::dontViewButtleResult() const
 {
     return d->dontViewButtleResult;
+}
+
+bool RecordingDialog::muteNotificationSound() const
+{
+    return d->muteNotificationSound;
 }
 void RecordingDialog::setDontViewButtleResult(bool dontViewButtleResult)
 {
@@ -199,6 +224,31 @@ void RecordingDialog::setDontViewButtleResult(bool dontViewButtleResult)
     d->dontViewButtleResult = dontViewButtleResult;
     emit dontViewButtleResultChanged(dontViewButtleResult);
 }
+
+void RecordingDialog::setMuteNotificationSound(bool mute)
+{
+    if(d->muteNotificationSound == mute)    return;
+    d->muteNotificationSound = mute;
+    emit muteNotificationSoundChanged(mute);
+}
+int RecordingDialog::defaultSoundOffset() const
+{
+    return m_defaultSoundOffset;
+}
+void RecordingDialog::setDefaultSoundOffset(int defaultSoundOffset)
+{
+    m_defaultSoundOffset = defaultSoundOffset;
+}
+
+bool RecordingDialog::defaultMuteNotificationSound() const
+{
+    return m_defaultMuteNotificationSound;
+}
+void RecordingDialog::setDefaultMuteNotificationSound(bool defaultMuteNotificationSound)
+{
+    m_defaultMuteNotificationSound = defaultMuteNotificationSound;
+}
+
 
 bool RecordingDialog::defaultDontViewButtleResult() const
 {

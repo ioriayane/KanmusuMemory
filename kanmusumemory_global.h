@@ -101,7 +101,9 @@
 #define SETTING_RECORD_SAVE_PATH            "savePath"
 #define SETTING_RECORD_TOOL_PATH            "toolPath"
 #define SETTING_RECORD_TEMP_PATH            "tempPath"
+#define SETTING_RECORD_SOUND_OFFSET         "soundOffset"
 #define SETTING_RECORD_DONT_VIEW_BUTTLE     "dontViewButtleResult"
+#define SETTING_RECORD_MUTE_TIMER_SOUND     "muteNotificationSound"
 
 //お気に入り
 //#define FAV_FILE_NAME                       "favorite.ini"

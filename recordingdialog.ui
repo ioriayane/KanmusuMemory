@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>214</height>
+    <width>421</width>
+    <height>264</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -202,21 +202,21 @@
        </item>
       </layout>
      </item>
-     <item row="6" column="1">
+     <item row="8" column="1">
       <widget class="QDialogButtonBox" name="buttonBox">
        <property name="standardButtons">
         <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
        </property>
       </widget>
      </item>
-     <item row="6" column="0">
+     <item row="8" column="0">
       <widget class="QPushButton" name="defaultButton">
        <property name="text">
         <string>Default</string>
        </property>
       </widget>
      </item>
-     <item row="5" column="1">
+     <item row="6" column="1">
       <widget class="QCheckBox" name="dontViewButtleResultCheckBox">
        <property name="text">
         <string>Don't view buttle result when recording.</string>
@@ -226,12 +226,54 @@
        </property>
       </widget>
      </item>
-     <item row="5" column="0">
+     <item row="6" column="0">
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>Buttle result</string>
        </property>
       </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Timer</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="QCheckBox" name="muteNotificationSoundCheckBox">
+       <property name="text">
+        <string>Mute timer notification sound.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Sound offset</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QSpinBox" name="soundOffsetSpinBox">
+         <property name="minimum">
+          <number>-300</number>
+         </property>
+         <property name="maximum">
+          <number>300</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Shifts in frame when combining sound and image.</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </item>

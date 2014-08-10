@@ -105,6 +105,7 @@ private:
     FavoriteMenu m_favorite;
     RecordingThread recordingThread;
     bool dontViewButtleResult;          //録画中は戦績表示しない
+    bool muteTimerSound;                //録画中はミュート
 
 public:
     Ui::MainWindow ui;
@@ -218,7 +219,9 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
         recordingThread.setSavePath(save + makeFileName("mp4", false));
         recordingThread.setToolPath(settings.value(SETTING_RECORD_TOOL_PATH, "ffmpeg").toString());
         recordingThread.setTempPath(settings.value(SETTING_RECORD_TEMP_PATH, recordingThread.tempPath()).toString());
+        recordingThread.setSoundOffset(settings.value(SETTING_RECORD_SOUND_OFFSET, 0).toInt());
         dontViewButtleResult = settings.value(SETTING_RECORD_DONT_VIEW_BUTTLE, true).toBool();
+        muteTimerSound = settings.value(SETTING_RECORD_MUTE_TIMER_SOUND, true).toBool();
         settings.endGroup();
 
         if(!recordingThread.isSettingValid()){
@@ -235,10 +238,17 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
 //            recordingThread.setAudioInputName(recordingThread.audioInputNames().at(0));
 //            recordingThread.setFps(20);
 
+            //ミュートする
+            m_timerDialog->setAlarmMute(muteTimerSound);
+
+            //録音開始
             recordingThread.setWebView(ui.webView);
             recordingThread.startRecording();
         }else if(recordingThread.status() == RecordingThread::Recording){
+            //録音停止
             recordingThread.stopRecording();
+            //ミュート解除
+            m_timerDialog->setAlarmMute(false);
         }else{
         }
     });
@@ -268,6 +278,8 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
         long sec = (duration / 1000) % 60;
         ui.recordingTimeLabel->setText(QString("%1:%2").arg(min, 2, 10, QLatin1Char('0')).arg(sec, 2, 10, QLatin1Char('0')));
     });
+    //録画のテンポラリフォルダ作成
+    recordingThread.getTempPath();  //呼べば無ければ作られる
 
     ///////////////////////////////////////////////////////////////
     /// ブラウザ
@@ -731,7 +743,9 @@ void MainWindow::Private::openRecordSettingDialog()
     dlg.setSavePath(settings.value(SETTING_RECORD_SAVE_PATH, QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)).toString());
     dlg.setToolPath(settings.value(SETTING_RECORD_TOOL_PATH, "ffmpeg").toString());
     dlg.setTempPath(settings.value(SETTING_RECORD_TEMP_PATH, recordingThread.tempPath()).toString());
+    dlg.setSoundOffset(settings.value(SETTING_RECORD_SOUND_OFFSET, 0).toInt());
     dlg.setDontViewButtleResult(settings.value(SETTING_RECORD_DONT_VIEW_BUTTLE, true).toBool());
+    dlg.setMuteNotificationSound(settings.value(SETTING_RECORD_MUTE_TIMER_SOUND, true).toBool());
     settings.endGroup();
 
     dlg.setDefaultFps(20);
@@ -739,7 +753,9 @@ void MainWindow::Private::openRecordSettingDialog()
     dlg.setDefaultSavePath(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
     dlg.setDefaultToolPath("ffmpeg");
     dlg.setDefaultTempPath(recordingThread.tempPath());
+    dlg.setDefaultSoundOffset(0);
     dlg.setDefaultDontViewButtleResult(true);
+    dlg.setDefaultMuteNotificationSound(true);
 
     if(dlg.exec()){
         settings.beginGroup(SETTING_RECORD);
@@ -748,7 +764,9 @@ void MainWindow::Private::openRecordSettingDialog()
         settings.setValue(SETTING_RECORD_SAVE_PATH, dlg.savePath());
         settings.setValue(SETTING_RECORD_TOOL_PATH, dlg.toolPath());
         settings.setValue(SETTING_RECORD_TEMP_PATH, dlg.tempPath());
+        settings.setValue(SETTING_RECORD_SOUND_OFFSET, dlg.soundOffset());
         settings.setValue(SETTING_RECORD_DONT_VIEW_BUTTLE, dlg.dontViewButtleResult());
+        settings.setValue(SETTING_RECORD_MUTE_TIMER_SOUND, dlg.muteNotificationSound());
         settings.endGroup();
 
         dontViewButtleResult = dlg.dontViewButtleResult();
