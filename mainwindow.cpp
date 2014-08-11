@@ -252,7 +252,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
             //ミュート解除
             m_timerDialog->setAlarmMute(false);
             //ボタンの表示
-//            ui.recordButton->set;
+            ui.recordButton->setChecked(false);
         }else{
         }
     });
