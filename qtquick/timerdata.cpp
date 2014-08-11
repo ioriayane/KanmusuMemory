@@ -33,6 +33,7 @@ TimerData::TimerData(QObject *parent) :
     m_constructionRunning << 0 << 0 << 0 << 0;
 
     m_tweetFinished = false;
+    m_alarmMute = false;
 }
 
 void TimerData::setTime(const int &kind, const int &index, const qreal &time)
@@ -300,6 +301,7 @@ void TimerData::setAlarmSoundVolume(const qreal &volume)
     m_alarmSoundVolume = volume;
     emit alarmSoundVolumeChanged();
 }
+
 QString TimerData::lastUpdateDate() const
 {
     return m_lastUpdateDate;
@@ -310,6 +312,19 @@ void TimerData::setLastUpdateDate(const QString &lastUpdateDate)
     m_lastUpdateDate = lastUpdateDate;
     emit lastUpdateDateChanged();
 }
+
+bool TimerData::alarmMute() const
+{
+    return m_alarmMute;
+}
+void TimerData::setAlarmMute(bool alarmMute)
+{
+    if(m_alarmMute == alarmMute)    return;
+    m_alarmMute = alarmMute;
+    emit alarmMuteChanged();
+}
+
+
 bool TimerData::dockingClose() const
 {
     return m_dockingClose;
@@ -343,6 +358,7 @@ void TimerData::setConstructionClose(bool constructionClose)
     m_constructionClose = constructionClose;
     emit constructionCloseChanged();
 }
+
 
 
 

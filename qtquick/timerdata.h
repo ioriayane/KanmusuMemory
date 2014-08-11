@@ -41,6 +41,7 @@ class TimerData : public QObject
     Q_PROPERTY(QString alarmSoundPath READ alarmSoundPath WRITE setAlarmSoundPath NOTIFY alarmSoundPathChanged)
     Q_PROPERTY(qreal alarmSoundVolume READ alarmSoundVolume WRITE setAlarmSoundVolume NOTIFY alarmSoundVolumeChanged)
     Q_PROPERTY(QString lastUpdateDate READ lastUpdateDate WRITE setLastUpdateDate NOTIFY lastUpdateDateChanged)
+    Q_PROPERTY(bool alarmMute READ alarmMute WRITE setAlarmMute NOTIFY alarmMuteChanged)
 
     //折りたたみ
     Q_PROPERTY(bool dockingClose READ dockingClose WRITE setDockingClose NOTIFY dockingCloseChanged)
@@ -81,6 +82,8 @@ public:
     void setAlarmSoundPath(const QString &path);
     const qreal &alarmSoundVolume() const;
     void setAlarmSoundVolume(const qreal &volume);
+    bool alarmMute() const;
+    void setAlarmMute(bool alarmMute);
 
     static QList<qreal> toRealList(const QList<QVariant> src);
     static QList<bool> toBoolList(const QList<QVariant> src);
@@ -106,6 +109,7 @@ public:
     bool constructionClose() const;
     void setConstructionClose(bool constructionClose);
 
+
 signals:
     void dockingTimeChanged(const QList<qreal> &set);
     void dockingStartChanged(const QList<qreal> &start);
@@ -123,6 +127,7 @@ signals:
     void alarmSoundPathChanged();
     void alarmSoundVolumeChanged();
     void lastUpdateDateChanged();
+    void alarmMuteChanged();
 
     void dockingCloseChanged();
     void expeditionCloseChanged();
@@ -143,11 +148,12 @@ private:
     QList<qreal> m_constructionStart;
     QList<bool> m_constructionRunning;
 
+    //設定
     bool m_tweetFinished;       //時間になったらつぶやくか
     QString m_alarmSoundPath;   //アラーム音のパス
     qreal m_alarmSoundVolume;   //アラーム音量
-
     QString m_lastUpdateDate;   //データの更新日
+    bool m_alarmMute;           //アラームの音をミュート
 
     //折りたたみ
     bool m_dockingClose;

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,8 @@
 #include "gamescreen.h"
 #include "webpageform.h"
 #include "favoritemenu.h"
+#include "recordingthread.h"
+#include "recordingdialog.h"
 #include "recognizeinfo.h"
 #include "numberguide.h"
 #include "kanmusumemory_global.h"
@@ -68,6 +70,7 @@ public:
     void openTweetDialog(const QString &path, bool force = false);      //ツイートダイアログを開く
     void openMemoryDialog();
     void openSettingDialog();
+    void openRecordSettingDialog();
     void updateProxyConfiguration();
     void openAboutDialog();
     void openImageEditDialog(const QString &path, const QString &tempPath, const QString &editPath);
@@ -88,7 +91,7 @@ private:
     void setButtleResultPosition(); //戦果報告の表示位置
 
     void maskImage(QImage *img, const QRect &rect);
-    QString makeFileName(const QString &format) const;
+    QString makeFileName(const QString &format, bool isfull = true) const;
     QString makeTempFileName(const QString &format) const;
     void clickGame(QPoint pos, bool wait_little = false);
     QString combineImage(QStringList file_list, int item_width, int item_height, int columns);
@@ -102,6 +105,9 @@ private:
     UpdateInfoDialog *m_updateInfoDialog;
     FleetDetailDialog *m_fleetDetailDialog;
     FavoriteMenu m_favorite;
+    RecordingThread recordingThread;
+    bool dontViewButtleResult;          //録画中は戦績表示しない
+    bool muteTimerSound;                //録画中はミュート
     RecognizeInfo m_recognizeInfo;
 
 public:
@@ -134,8 +140,9 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     ui.viewButtleResult->setVisible(false);
     setButtleResultPosition();
 
-
-    //メニュー
+    ///////////////////////////////////////////////////////////////
+    /// メニュー
+    ///////////////////////////////////////////////////////////////
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
     connect(ui.actionCaptureAndEdit, &QAction::triggered, [this]() { captureGame(true); });
 #ifndef DISABLE_CATALOG_AND_DETAIL_FLEET
@@ -143,7 +150,9 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     connect(ui.captureFleetDetail, &QAction::triggered, [this](){ captureFleetDetail(); });
 #else
     //艦隊詳細
-    connect(ui.captureFleetDetail, &QAction::triggered, [this](){ openManualCaptureFleetDetail(); });
+    connect(ui.captureFleetDetail, &QAction::triggered, [this](){
+        openManualCaptureFleetDetail();
+    });
     connect(m_fleetDetailDialog, &FleetDetailDialog::finishedCaptureImages, [this](FleetDetailDialog::NextOperationType next, QStringList file_list, int item_width, int item_height, int columns){
         finishManualCaptureFleetDetail(next, file_list, item_width, item_height, columns);
     });
@@ -153,7 +162,10 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     });
 #endif
     //艦隊リスト
-    connect(ui.captureFleetList, &QAction::triggered, [this](){ openManualCaptureFleetList(); });
+    connect(ui.captureFleetList, &QAction::triggered, [this](){
+        recordingThread.stopRecording();
+//        openManualCaptureFleetList();
+    });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
     connect(ui.actionReturn_to_Kan_Colle, &QAction::triggered, [this]() {
@@ -176,6 +188,110 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     connect(ui.actionViewToolBar, &QAction::changed, [this](){
         ui.toolBar->setVisible(ui.actionViewToolBar->isChecked());
     });
+
+
+    ///////////////////////////////////////////////////////////////
+    /// 録画
+    ///////////////////////////////////////////////////////////////
+
+    //起動時は必ず非表示
+    ui.recordLayout->setVisible(false);
+    //録画
+    connect(ui.actionRecord, &QAction::triggered, [this]() {
+        ui.recordLayout->setVisible(!ui.recordLayout->isVisible());
+    });
+    //録画設定
+    connect(ui.actionRecordPreferences, &QAction::triggered, [this](){
+        openRecordSettingDialog();
+    });
+    connect(ui.recordPreferencesButton, &QPushButton::clicked, [this](bool checked){
+        Q_UNUSED(checked);
+        openRecordSettingDialog();
+    });
+    //録画開始停止
+    connect(ui.recordButton, &QPushButton::clicked, [this](bool checked){
+        qDebug() << "click record button";
+        Q_UNUSED(checked);
+
+        settings.beginGroup(SETTING_RECORD);
+        recordingThread.setFps(settings.value(SETTING_RECORD_FPS, 20).toInt());
+        recordingThread.setAudioInputName(settings.value(SETTING_RECORD_AUDIO_SOURCE).toString());
+        QString save(settings.value(SETTING_RECORD_SAVE_PATH, QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)).toString());
+        if(save.right(1).compare("/") != 0){
+            save += "/";
+        }
+        recordingThread.setSavePath(save + makeFileName("mp4", false));
+        recordingThread.setToolPath(settings.value(SETTING_RECORD_TOOL_PATH, "ffmpeg").toString());
+        recordingThread.setTempPath(settings.value(SETTING_RECORD_TEMP_PATH, recordingThread.tempPath()).toString());
+        recordingThread.setSoundOffset(settings.value(SETTING_RECORD_SOUND_OFFSET, 0).toInt());
+        dontViewButtleResult = settings.value(SETTING_RECORD_DONT_VIEW_BUTTLE, true).toBool();
+        muteTimerSound = settings.value(SETTING_RECORD_MUTE_TIMER_SOUND, true).toBool();
+        settings.endGroup();
+
+        if(!recordingThread.isSettingValid()){
+            QMessageBox::warning(q, "warning", "Please input recording settings.");
+            openRecordSettingDialog();
+
+        }else if(!ui.webView->gameExists()){
+            ui.statusBar->showMessage(tr("failed to started recording."), STATUS_BAR_MSG_TIME);
+
+        }else if(recordingThread.status() == RecordingThread::Ready){
+//            recordingThread.setToolPath(QStringLiteral("D:\\ffmpeg\\bin\\ffmpeg.exe"));
+//            recordingThread.setToolParam(QStringLiteral("-r %1 -i %2 -vcodec libx264 -qscale:v 0 %3"));
+//            recordingThread.setSavePath(QStringLiteral("d:\\temp\\rec\\") + makeFileName("mp4", false));
+//            recordingThread.setAudioInputName(recordingThread.audioInputNames().at(0));
+//            recordingThread.setFps(20);
+
+            ui.recordButton->setChecked(true);
+
+            //ミュートする
+            m_timerDialog->setAlarmMute(muteTimerSound);
+
+            //録音開始
+            recordingThread.setWebView(ui.webView);
+            recordingThread.startRecording();
+        }else if(recordingThread.status() == RecordingThread::Recording){
+            //録音停止
+            recordingThread.stopRecording();
+            //ミュート解除
+            m_timerDialog->setAlarmMute(false);
+            //ボタンの表示
+            ui.recordButton->setChecked(false);
+        }else{
+        }
+    });
+    //録画の状態変化
+    connect(&recordingThread, &RecordingThread::statusChanged, [this](RecordingThread::RecordingStatus status){
+        switch(status){
+        case RecordingThread::Ready:
+            ui.recordStatusLabel->setText("Ready");
+            break;
+        case RecordingThread::Recording:
+            ui.recordStatusLabel->setText("Recording");
+            break;
+        case RecordingThread::Saving:
+            ui.recordStatusLabel->setText("Saving");
+            break;
+        case RecordingThread::Convert:
+            ui.recordStatusLabel->setText("Convert");
+            break;
+        default:
+            ui.recordStatusLabel->setText("Error");
+            break;
+        }
+    });
+    //録画時間
+    connect(&recordingThread, &RecordingThread::durationChanged, [this](const qint64 &duration){
+        long min = (duration / 1000) / 60;
+        long sec = (duration / 1000) % 60;
+        ui.recordingTimeLabel->setText(QString("%1:%2").arg(min, 2, 10, QLatin1Char('0')).arg(sec, 2, 10, QLatin1Char('0')));
+    });
+    //録画のテンポラリフォルダ作成
+    recordingThread.getTempPath();  //呼べば無ければ作られる
+
+    ///////////////////////////////////////////////////////////////
+    /// ブラウザ
+    ///////////////////////////////////////////////////////////////
 
     //フルスクリーン
     q->addAction(ui.actionFullScreen);
@@ -203,6 +319,11 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     //崩れるのでなし
     ui.actionZoom050->setVisible(false);
     ui.actionZoom075->setVisible(false);
+
+
+    ///////////////////////////////////////////////////////////////
+    /// ウインドウ
+    ///////////////////////////////////////////////////////////////
 
     //ウインドウ分割
     connect(ui.actionSplitWindow, &QAction::triggered, [this]() {
@@ -276,6 +397,12 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
             return;
         ui.tabWidget->nextTab();
     });
+
+
+    ///////////////////////////////////////////////////////////////
+    /// WebView
+    ///////////////////////////////////////////////////////////////
+
     //WebViewをクリック
     connect(ui.webView, &WebView::mousePressed, [this](QMouseEvent *event) {
         //艦隊の被弾状況を調べる
@@ -307,6 +434,11 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     //WebViewの読込み状態
     connect(ui.webView, &QWebView::loadProgress, ui.progressBar, &QProgressBar::setValue);
 
+
+    ///////////////////////////////////////////////////////////////
+    /// お気に入り
+    ///////////////////////////////////////////////////////////////
+
     //お気に入りの読込み
     m_favorite.load(ui.favorite, true);
     //お気に入りを選択した
@@ -323,6 +455,11 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     connect(&m_favorite, &FavoriteMenu::downloadFinished, [this]() {
         m_favorite.load(ui.favorite);
     });
+
+
+    ///////////////////////////////////////////////////////////////
+    /// アップデート
+    ///////////////////////////////////////////////////////////////
 
     //アップデートの確認をする
     m_updateInfoDialog->CheckUpdate();
@@ -381,12 +518,18 @@ void MainWindow::Private::maskImage(QImage *img, const QRect &rect)
 }
 
 //ファイル名を作成する
-QString MainWindow::Private::makeFileName(const QString &format) const
+QString MainWindow::Private::makeFileName(const QString &format, bool isfull) const
 {
-    return QStringLiteral("%1/kanmusu_%2.%3")
-            .arg(settings.value(QStringLiteral("path")).toString())
-            .arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")))
-            .arg(format.toLower());
+    if(isfull){
+        return QStringLiteral("%1/kanmusu_%2.%3")
+                .arg(settings.value(QStringLiteral("path")).toString())
+                .arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")))
+                .arg(format.toLower());
+    }else{
+        return QStringLiteral("kanmusu_%1.%2")
+                .arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")))
+                .arg(format.toLower());
+    }
 }
 //テンポラリのファイル名を作成する
 QString MainWindow::Private::makeTempFileName(const QString &format) const
@@ -607,6 +750,47 @@ void MainWindow::Private::openSettingDialog()
             ui.exit->setShortcut(QKeySequence(QStringLiteral("Ctrl+Q")));
         }
     }
+}
+//録画の設定ダイアログを開く
+void MainWindow::Private::openRecordSettingDialog()
+{
+    RecordingDialog dlg(q);
+
+    settings.beginGroup(SETTING_RECORD);
+    dlg.setFps(settings.value(SETTING_RECORD_FPS, 20).toInt());
+    dlg.setAudioSource(settings.value(SETTING_RECORD_AUDIO_SOURCE, recordingThread.audioInputNames().at(0)).toString());
+    dlg.setSavePath(settings.value(SETTING_RECORD_SAVE_PATH, QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)).toString());
+    dlg.setToolPath(settings.value(SETTING_RECORD_TOOL_PATH, "ffmpeg").toString());
+    dlg.setTempPath(settings.value(SETTING_RECORD_TEMP_PATH, recordingThread.tempPath()).toString());
+    dlg.setSoundOffset(settings.value(SETTING_RECORD_SOUND_OFFSET, 0).toInt());
+    dlg.setDontViewButtleResult(settings.value(SETTING_RECORD_DONT_VIEW_BUTTLE, true).toBool());
+    dlg.setMuteNotificationSound(settings.value(SETTING_RECORD_MUTE_TIMER_SOUND, true).toBool());
+    settings.endGroup();
+
+    dlg.setDefaultFps(20);
+    dlg.setDefaultAudioSource(recordingThread.audioInputNames().at(0));
+    dlg.setDefaultSavePath(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
+    dlg.setDefaultToolPath("ffmpeg");
+    dlg.setDefaultTempPath(recordingThread.tempPath());
+    dlg.setDefaultSoundOffset(0);
+    dlg.setDefaultDontViewButtleResult(true);
+    dlg.setDefaultMuteNotificationSound(true);
+
+    if(dlg.exec()){
+        settings.beginGroup(SETTING_RECORD);
+        settings.setValue(SETTING_RECORD_FPS, dlg.fps());
+        settings.setValue(SETTING_RECORD_AUDIO_SOURCE, dlg.audioSource());
+        settings.setValue(SETTING_RECORD_SAVE_PATH, dlg.savePath());
+        settings.setValue(SETTING_RECORD_TOOL_PATH, dlg.toolPath());
+        settings.setValue(SETTING_RECORD_TEMP_PATH, dlg.tempPath());
+        settings.setValue(SETTING_RECORD_SOUND_OFFSET, dlg.soundOffset());
+        settings.setValue(SETTING_RECORD_DONT_VIEW_BUTTLE, dlg.dontViewButtleResult());
+        settings.setValue(SETTING_RECORD_MUTE_TIMER_SOUND, dlg.muteNotificationSound());
+        settings.endGroup();
+
+        dontViewButtleResult = dlg.dontViewButtleResult();
+    }
+
 }
 //Update proxy setting.
 void MainWindow::Private::updateProxyConfiguration()
@@ -1034,6 +1218,10 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
 {
     if(!settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool()
             || q->isFullScreen()){
+        return;
+    }
+    if(dontViewButtleResult && recordingThread.status() == RecordingThread::Recording){
+        //録画中は表示しないがONで録画中
         return;
     }
     qreal opacity = settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal();

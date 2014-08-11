@@ -22,7 +22,10 @@ SOURCES += main.cpp\
     updateinfodialog.cpp \
     webpage.cpp \
     fleetdetaildialog.cpp \
-    recognizeinfo.cpp
+    recordingthread.cpp \
+    recognizeinfo.cpp \
+    audiorecorder.cpp \
+    recordingdialog.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -42,8 +45,11 @@ HEADERS  += mainwindow.h \
     updateinfodialog.h \
     webpage.h \
     fleetdetaildialog.h \
+    recordingthread.h \
     numberguide.h \
-    recognizeinfo.h
+    recognizeinfo.h \
+    audiorecorder.h \
+    recordingdialog.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \
@@ -54,7 +60,8 @@ FORMS    += mainwindow.ui \
     imageeditdialog.ui \
     webpageform.ui \
     updateinfodialog.ui \
-    fleetdetaildialog.ui
+    fleetdetaildialog.ui \
+    recordingdialog.ui
 
 
 include(qtquick/qtquick.pri)

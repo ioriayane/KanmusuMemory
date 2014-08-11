@@ -116,7 +116,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+289"/>
+        <location filename="../mainwindow.cpp" line="+432"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -130,7 +130,7 @@
         <translation type="obsolete">艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+100"/>
+        <location line="+127"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
@@ -138,29 +138,29 @@
         <location line="+32"/>
         <location line="+13"/>
         <location line="+34"/>
-        <location line="+417"/>
+        <location line="+458"/>
         <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-530"/>
+        <location line="-571"/>
         <location line="+13"/>
-        <location line="+452"/>
+        <location line="+493"/>
         <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-512"/>
+        <location line="-553"/>
         <location line="+17"/>
-        <location line="+369"/>
+        <location line="+410"/>
         <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-471"/>
+        <location line="-512"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -170,7 +170,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+195"/>
+        <location line="+236"/>
         <source>Fleet Detail</source>
         <translation>艦隊詳細</translation>
     </message>
@@ -224,7 +224,12 @@ Please wait while a cup of coffee.</source>
         <translation>編成画面で船の詳細画面を表示してキャプチャーしてください。</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-615"/>
+        <source>failed to started recording.</source>
+        <translation>録画を開始できませんでした。</translation>
+    </message>
+    <message>
+        <location line="+616"/>
         <location line="+27"/>
         <source>The following buttons appear when you capture.</source>
         <translation>キャプチャーすると次のボタンが表示されます。</translation>
@@ -236,7 +241,7 @@ Please wait while a cup of coffee.</source>
         <translation>完了するとキャプチャーした画像を結合します。</translation>
     </message>
     <message>
-        <location line="+694"/>
+        <location line="+698"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -245,7 +250,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location filename="../mainwindow.ui" line="+20"/>
-        <location filename="../ui_mainwindow.h" line="+372"/>
+        <location filename="../ui_mainwindow.h" line="+460"/>
         <source>Kan Memo -KanMusu Memory-</source>
         <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
@@ -254,13 +259,13 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">about:blank</translation>
     </message>
     <message>
-        <location line="+191"/>
-        <location filename="../ui_mainwindow.h" line="+79"/>
+        <location line="+351"/>
+        <location filename="../ui_mainwindow.h" line="+90"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+19"/>
         <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Browser</source>
         <translation>ブラウザ(&amp;B)</translation>
@@ -307,7 +312,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+18"/>
-        <location filename="../ui_mainwindow.h" line="-85"/>
+        <location filename="../ui_mainwindow.h" line="-96"/>
         <source>&amp;Exit</source>
         <translation>終了(&amp;E)</translation>
     </message>
@@ -638,14 +643,46 @@ Do you want to continue on an understanding of the security risk?
         <translation>F10</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../ui_mainwindow.h" line="+1"/>
-        <source>-</source>
-        <translation></translation>
+        <location line="+30"/>
+        <location filename="../ui_mainwindow.h" line="+6"/>
+        <source>Record</source>
+        <translation>思い出を動画で残す</translation>
     </message>
     <message>
         <location line="+5"/>
         <location filename="../ui_mainwindow.h" line="+1"/>
+        <source>Record Preferences ...</source>
+        <translation>録画設定...</translation>
+    </message>
+    <message>
+        <location line="-512"/>
+        <location line="+482"/>
+        <location filename="../ui_mainwindow.h" line="-6"/>
+        <location line="+13"/>
+        <source>-</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location line="-544"/>
+        <location filename="../ui_mainwindow.h" line="-4"/>
+        <source>Record start/stop</source>
+        <translation>録画(開始/停止)</translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <location filename="../ui_mainwindow.h" line="+3"/>
+        <source>00:00</source>
+        <translation>00:00</translation>
+    </message>
+    <message>
+        <location line="+62"/>
+        <location filename="../ui_mainwindow.h" line="+3"/>
+        <source>Record settings ...</source>
+        <translation>録画設定...</translation>
+    </message>
+    <message>
+        <location line="+446"/>
+        <location filename="../ui_mainwindow.h" line="-14"/>
         <source>&amp;Vertical split</source>
         <translation>上下に分割(&amp;V)</translation>
     </message>
@@ -679,6 +716,118 @@ Do you want to continue on an understanding of the security risk?
         <location filename="../ui_memorydialog.h" line="+47"/>
         <source>Tweet by selecting the memories</source>
         <translation>思い出を選択してつぶやく</translation>
+    </message>
+</context>
+<context>
+    <name>RecordingDialog</name>
+    <message>
+        <location filename="../recordingdialog.ui" line="+14"/>
+        <location filename="../ui_recordingdialog.h" line="+266"/>
+        <source>Dialog</source>
+        <translation>録画設定</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <location filename="../ui_recordingdialog.h" line="+1"/>
+        <source>FPS</source>
+        <translation>FPS</translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <location filename="../ui_recordingdialog.h" line="+1"/>
+        <source>(10-30 fps)</source>
+        <translation>(10～30fps)</translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <location filename="../ui_recordingdialog.h" line="+1"/>
+        <source>Audio Source</source>
+        <translation>音源</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <location filename="../ui_recordingdialog.h" line="+1"/>
+        <source>ffmpeg Path</source>
+        <translation>ffmpegパス</translation>
+    </message>
+    <message>
+        <location line="+30"/>
+        <location line="+27"/>
+        <location line="+40"/>
+        <location filename="../ui_recordingdialog.h" line="+1"/>
+        <location line="+2"/>
+        <location line="+2"/>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+    <message>
+        <location line="-58"/>
+        <location filename="../ui_recordingdialog.h" line="-3"/>
+        <source>Save Path</source>
+        <translation>思い出の保存先</translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <location filename="../ui_recordingdialog.h" line="+2"/>
+        <source>Temp Path</source>
+        <translation>一時フォルダ</translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <location filename="../ui_recordingdialog.h" line="+2"/>
+        <source>Default</source>
+        <translation>元に戻す</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location filename="../ui_recordingdialog.h" line="+1"/>
+        <source>Don&apos;t view buttle result when recording.</source>
+        <translation>録画中は戦果報告画面のコピーを表示しない。</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <location filename="../ui_recordingdialog.h" line="+1"/>
+        <source>Buttle result</source>
+        <translation>戦果報告</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location filename="../ui_recordingdialog.h" line="+1"/>
+        <source>Timer</source>
+        <translation>お知らせタイマー</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location filename="../ui_recordingdialog.h" line="+1"/>
+        <source>Mute timer notification sound.</source>
+        <translation>録画中はお知らせタイマーの通知音を消す。</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location filename="../ui_recordingdialog.h" line="+1"/>
+        <source>Sound offset</source>
+        <translation>音ズレ修正</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <location filename="../ui_recordingdialog.h" line="+1"/>
+        <source>Shifts in frame when combining sound and image.</source>
+        <translation>動画のフレーム単位で音の開始位置をズラす。</translation>
+    </message>
+    <message>
+        <location filename="../recordingdialog.cpp" line="+82"/>
+        <source>Select save folder</source>
+        <translation>思い出を保存するフォルダを選択してください。</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Select ffmpeg</source>
+        <translation>ffmpegを選択してください</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Temp save folder</source>
+        <translation>録画用の一時ファイルを保存するフォルダを選択して下さい</translation>
     </message>
 </context>
 <context>
@@ -896,7 +1045,7 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">ダイアログ</translation>
     </message>
     <message>
-        <location filename="../timerdialog.cpp" line="+115"/>
+        <location filename="../timerdialog.cpp" line="+123"/>
         <source>1st</source>
         <translation>１</translation>
     </message>
@@ -978,12 +1127,14 @@ Do you want to continue on an understanding of the security risk?
         <translation>%1ドックでの建造が終わる頃です。</translation>
     </message>
     <message>
-        <location line="+79"/>
+        <location line="+83"/>
         <source>KanMemo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+22"/>
+        <location line="+18"/>
+        <location line="+14"/>
         <source>#kanmemo</source>
         <translation>#艦メモ通知</translation>
     </message>
@@ -1199,7 +1350,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>次回の更新まで非表示にする。</translation>
     </message>
     <message>
-        <location filename="../updateinfodialog.cpp" line="+179"/>
+        <location filename="../updateinfodialog.cpp" line="+182"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
@@ -1323,7 +1474,7 @@ Do you want to continue on an understanding of the security risk?
 <context>
     <name>timerDialog</name>
     <message>
-        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+220"/>
+        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+221"/>
         <source>Docking</source>
         <translation>入渠</translation>
     </message>
@@ -1343,12 +1494,12 @@ Do you want to continue on an understanding of the security risk?
         <translation>時間になったらツイッターでお知らせする</translation>
     </message>
     <message>
-        <location line="-51"/>
+        <location line="-52"/>
         <source></source>
         <translation></translation>
     </message>
     <message>
-        <location line="+205"/>
+        <location line="+206"/>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>

@@ -55,6 +55,7 @@ Rectangle {
         id: sound
         volume: timerData.alarmSoundVolume
         source: os.pathPrefix + timerData.alarmSoundPath
+        muted: timerData.alarmMute
     }
 
     Timer {

@@ -19,8 +19,8 @@
 #define KANMEMO_NAME "KanmusuMemory"
 #define KANMEMO_NAME_FAV "KanmusuMemoryFav"
 #define KANMEMO_PROJECT "KanmemoProject"
-#define KANMEMO_VERSION "0.14"
-#define KANMEMO_VERSION_CODE 15
+#define KANMEMO_VERSION "0.15 beta"
+#define KANMEMO_VERSION_CODE 16
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
     << "@task_jp"\
@@ -94,6 +94,16 @@
 #define SETTING_UPDATE_CHECK                "updateCheck"
 #define SETTING_UPDATE_CHECK_HIDE           "hideUntilNextUpdate"
 #define SETTING_UPDATE_CHECK_HIDE_VERSION   "hideUntilNextUpdateVersion"
+//設定：録画
+#define SETTING_RECORD                      "record"
+#define SETTING_RECORD_FPS                  "fps"
+#define SETTING_RECORD_AUDIO_SOURCE         "audioSource"
+#define SETTING_RECORD_SAVE_PATH            "savePath"
+#define SETTING_RECORD_TOOL_PATH            "toolPath"
+#define SETTING_RECORD_TEMP_PATH            "tempPath"
+#define SETTING_RECORD_SOUND_OFFSET         "soundOffset"
+#define SETTING_RECORD_DONT_VIEW_BUTTLE     "dontViewButtleResult"
+#define SETTING_RECORD_MUTE_TIMER_SOUND     "muteNotificationSound"
 
 //お気に入り
 //#define FAV_FILE_NAME                       "favorite.ini"

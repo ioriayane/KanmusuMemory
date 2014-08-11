@@ -248,6 +248,11 @@ void TimerDialog::setTweetFinished(bool tweet)
     m_timerdata.setTweetFinished(tweet);
 }
 
+void TimerDialog::setAlarmMute(bool mute)
+{
+    m_timerdata.setAlarmMute(mute);
+}
+
 
 //時間が来ているかチェックする
 bool TimerDialog::checkKanmemoTimerTimeout(qint64 settime, qint64 starttime)
