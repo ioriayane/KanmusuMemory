@@ -116,7 +116,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+413"/>
+        <location filename="../mainwindow.cpp" line="+432"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -130,7 +130,7 @@
         <translation type="obsolete">艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+116"/>
+        <location line="+127"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
@@ -224,12 +224,12 @@ Please wait while a cup of coffee.</source>
         <translation>編成画面で船の詳細画面を表示してキャプチャーしてください。</translation>
     </message>
     <message>
-        <location line="-600"/>
+        <location line="-615"/>
         <source>failed to started recording.</source>
         <translation>録画を開始できませんでした。</translation>
     </message>
     <message>
-        <location line="+601"/>
+        <location line="+616"/>
         <location line="+27"/>
         <source>The following buttons appear when you capture.</source>
         <translation>キャプチャーすると次のボタンが表示されます。</translation>
@@ -250,7 +250,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location filename="../mainwindow.ui" line="+20"/>
-        <location filename="../ui_mainwindow.h" line="+458"/>
+        <location filename="../ui_mainwindow.h" line="+460"/>
         <source>Kan Memo -KanMusu Memory-</source>
         <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
@@ -259,7 +259,7 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">about:blank</translation>
     </message>
     <message>
-        <location line="+345"/>
+        <location line="+351"/>
         <location filename="../ui_mainwindow.h" line="+90"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
@@ -663,13 +663,13 @@ Do you want to continue on an understanding of the security risk?
         <translation></translation>
     </message>
     <message>
-        <location line="-538"/>
+        <location line="-544"/>
         <location filename="../ui_mainwindow.h" line="-4"/>
         <source>Record start/stop</source>
         <translation>録画(開始/停止)</translation>
     </message>
     <message>
-        <location line="+35"/>
+        <location line="+41"/>
         <location filename="../ui_mainwindow.h" line="+3"/>
         <source>00:00</source>
         <translation>00:00</translation>
@@ -1045,67 +1045,96 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">ダイアログ</translation>
     </message>
     <message>
-        <location filename="../timerdialog.cpp" line="+114"/>
+        <location filename="../timerdialog.cpp" line="+123"/>
         <source>1st</source>
-        <translation>第１</translation>
+        <translation>１</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>2nd</source>
-        <translation>第２</translation>
+        <translation>２</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>3rd</source>
-        <translation>第３</translation>
+        <translation>３</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>4th</source>
-        <translation>第４</translation>
+        <translation>４</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>5th</source>
-        <translation>第５</translation>
+        <translation>５</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>6th</source>
-        <translation>第６</translation>
+        <translation>６</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>7th</source>
-        <translation>第７</translation>
+        <translation>７</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>8th</source>
-        <translation>第８</translation>
+        <translation>８</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
+        <source>It is time that Kanmusu is up from the </source>
+        <translation>第</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source> bath.</source>
+        <translation>ドックの艦娘さんがお風呂から上がる頃です</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>It is time the </source>
+        <translation>第</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source> Fleet is returned.</source>
+        <translation>艦隊が遠征から帰る頃です</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>It is time the Kanmusu of </source>
+        <translation>第</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source> dock is completed.</source>
+        <translation>ドックでの建造が終わる頃です</translation>
+    </message>
+    <message>
         <source>It is time that Kanmusu is up from the %1 bath.</source>
         <translation>%1ドックの艦娘さんがお風呂から上がる頃です。</translation>
     </message>
     <message>
-        <location line="+14"/>
         <source>It is time the %1 Fleet is returned.</source>
         <translation>%1艦隊が遠征から帰る頃です。</translation>
     </message>
     <message>
-        <location line="+13"/>
         <source>It is time the Kanmusu of %1 dock is completed.</source>
         <translation>%1ドックでの建造が終わる頃です。</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+83"/>
         <source>KanMemo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+22"/>
+        <location line="+18"/>
+        <location line="+14"/>
         <source>#kanmemo</source>
         <translation>#艦メモ通知</translation>
     </message>
@@ -1321,7 +1350,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>次回の更新まで非表示にする。</translation>
     </message>
     <message>
-        <location filename="../updateinfodialog.cpp" line="+172"/>
+        <location filename="../updateinfodialog.cpp" line="+182"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
@@ -1445,7 +1474,7 @@ Do you want to continue on an understanding of the security risk?
 <context>
     <name>timerDialog</name>
     <message>
-        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+218"/>
+        <location filename="../qml/KanmusuMemory/timerDialog.qml" line="+221"/>
         <source>Docking</source>
         <translation>入渠</translation>
     </message>
@@ -1465,12 +1494,12 @@ Do you want to continue on an understanding of the security risk?
         <translation>時間になったらツイッターでお知らせする</translation>
     </message>
     <message>
-        <location line="-49"/>
+        <location line="-52"/>
         <source></source>
         <translation></translation>
     </message>
     <message>
-        <location line="+203"/>
+        <location line="+206"/>
         <location line="+1"/>
         <location line="+1"/>
         <location line="+1"/>

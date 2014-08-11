@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,6 +54,7 @@
 #define KEY_MESSAGE             QStringLiteral("message")
 #define KEY_FAV_UPDATE          QStringLiteral("last-favorite")
 #define KEY_TIMER_UPDATE        QStringLiteral("last-timer")
+#define KEY_RECOGNIZE_UPDATE    QStringLiteral("last-recognize")
 
 
 UpdateInfoDialog::UpdateInfoDialog(QWidget *parent
@@ -140,6 +141,15 @@ void UpdateInfoDialog::CheckUpdate()
 
             //バージョンコード
             m_newVersionCode = static_cast<int>(json.object().value(KEY_NEW_VERSION_CODE).toDouble());
+
+            //お気に入りの更新確認
+            setLastFavoriteUpdateDate(json.object().value(KEY_FAV_UPDATE).toString("2010010100"));
+            //タイマーの更新確認
+            setLastTimerSelectGuideUpdateDate(json.object().value(KEY_TIMER_UPDATE).toString("2010010100"));
+            //画像認識情報の更新確認
+            setLastRecognizeInfoUpdateDate(json.object().value(KEY_RECOGNIZE_UPDATE).toString("2010010100"));
+
+            //非表示確認
             if(isHide(m_newVersionCode) && !m_force){
                 m_force = true; //1度通ったらはユーザー操作なので強制表示
                 return; //非表示
@@ -174,12 +184,6 @@ void UpdateInfoDialog::CheckUpdate()
                                      , QMessageBox::Yes);
             }
             m_force = true; //1度通ったらはユーザー操作なので強制表示
-
-
-            //お気に入りの更新確認
-            setLastFavoriteUpdateDate(json.object().value(KEY_FAV_UPDATE).toString("2010010100"));
-            //タイマーの更新確認
-            setLastTimerSelectGuideUpdateDate(json.object().value(KEY_TIMER_UPDATE).toString("2010010100"));
         }
     });
     //プロキシ
@@ -197,12 +201,18 @@ void UpdateInfoDialog::CheckUpdate()
             net->setProxy(QNetworkProxy::NoProxy);
         }
     }
+
+    //リクエスト作成
+    QNetworkRequest req;
+    req.setUrl(QUrl(CHECK_UPDATE_URL
+               .arg(KANMEMO_VERSION)
+               .arg(KANMEMO_VERSION_CODE)
+               .arg(os_num)
+               .arg(QLocale::system().name())));
+    req.setRawHeader("User-Agent", QString("KanmusuMemory %1").arg(KANMEMO_VERSION).toLatin1());
+
     //アクセス開始
-    net->get(QNetworkRequest(CHECK_UPDATE_URL
-                             .arg(KANMEMO_VERSION)
-                             .arg(KANMEMO_VERSION_CODE)
-                             .arg(os_num)
-                             .arg(QLocale::system().name())));
+    net->get(req);
 }
 QString UpdateInfoDialog::lastFavoriteUpdateDate() const
 {
@@ -211,7 +221,7 @@ QString UpdateInfoDialog::lastFavoriteUpdateDate() const
 
 void UpdateInfoDialog::setLastFavoriteUpdateDate(const QString &lastFavoriteUpdateDate)
 {
-    if(m_lastFavoriteUpdateDate == lastFavoriteUpdateDate)  return;
+//    if(m_lastFavoriteUpdateDate.compare(lastFavoriteUpdateDate))  return;
     m_lastFavoriteUpdateDate = lastFavoriteUpdateDate;
     emit lastFavoriteUpdateDateChanged(lastFavoriteUpdateDate);
 }
@@ -226,6 +236,17 @@ void UpdateInfoDialog::setLastTimerSelectGuideUpdateDate(const QString &lastTime
     m_lastTimerSelectGuideUpdateDate = lastTimerSelectGuideUpdateDate;
     emit lastTimerSelectGuideUpdateDateChanged(lastTimerSelectGuideUpdateDate);
 }
+QString UpdateInfoDialog::lastRecognizeInfoUpdateDate() const
+{
+    return m_lastRecognizeInfoUpdateDate;
+}
+
+void UpdateInfoDialog::setLastRecognizeInfoUpdateDate(const QString &lastRecognizeInfoUpdateDate)
+{
+    m_lastRecognizeInfoUpdateDate = lastRecognizeInfoUpdateDate;
+    emit lastRecognizeInfoUpdateDateChanged(lastRecognizeInfoUpdateDate);
+}
+
 
 
 //非表示か確認

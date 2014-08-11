@@ -64,6 +64,8 @@ private:
     QSystemTrayIcon *m_trayIcon;
     QSettings *m_settings;
 
+    QStringList m_tweetMessageList;
+
     //ツイッター関連
     OAuth m_oauth;
     Status m_status;

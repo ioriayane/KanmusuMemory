@@ -16,6 +16,7 @@
 #ifndef RECOGNIZEINFO_H
 #define RECOGNIZEINFO_H
 
+#include <QDate>
 #include <QObject>
 #include "numberguide.h"
 
@@ -30,25 +31,26 @@ public:
 
     QList<QRect> itemRectList() const;
     void setItemRectList(const QList<QRect> &itemRectList);
-
     QList<NumberGuide> flagGuideList() const;
     void setFlagGuideList(const QList<NumberGuide> &flagGuideList);
-
     QList<QRect> flagRectList() const;
     void setFlagRectList(const QList<QRect> &flagRectList);
-
     QList<NumberGuide> numberGuideList() const;
     void setNumberGuideList(const QList<NumberGuide> &numberGuideList);
-
     QList<QRect> remainTimeRectList() const;
     void setRemainTimeRectList(const QList<QRect> &remainTimeRectList);
-
     QList<QRect> totalTimeRectList() const;
     void setTotalTimeRectList(const QList<QRect> &totalTimeRectList);
 
+
+    void load();
+    void setRectList(QList<QRect> *list, const QJsonArray &array);
+    void setGuideList(QList<NumberGuide> *list, const QJsonArray &array);
 signals:
+    void downloadFinished();
 
 public slots:
+    void updateFromInternet(const QString &lastUpdateDate);
 
 
 private:
@@ -60,6 +62,8 @@ private:
     QList<NumberGuide> m_numberGuideList;   //数字のガイド
     QList<QRect> m_remainTimeRectList;      //遠征の残り時間
     QList<QRect> m_totalTimeRectList;       //遠征のトータル時間
+
+    QDate m_currentLoadedDate;              //現在読み込んでるデータの作成日
 
 };
 

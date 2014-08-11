@@ -48,6 +48,14 @@ TimerDialog::TimerDialog(QWidget *parent
             m_settings->endGroup();
         }
     });
+    connect(&m_status, &Status::loadingChanged, [this](bool loading) {
+        if(loading){
+            //送信中
+        }else{
+            //終わった
+            tweetTimerMessage(QStringList());
+        }
+    });
 
     loadSettings();
 
@@ -109,12 +117,13 @@ void TimerDialog::closeQml()
 //全体のカウント処理
 void TimerDialog::timeout()
 {
+    QString message;
     QStringList messages;
     QStringList numbername;
     numbername << tr("1st") << tr("2nd") << tr("3rd") << tr("4th") << tr("5th") << tr("6th") << tr("7th") << tr("8th");
 
     //入渠
-
+    message = "";
     for(int i=0; i<m_timerdata.dockingRunning().length(); i++){
         if(m_timerdata.dockingRunning()[i]){
             //            qDebug() << i << ":set=" << m_timerdata.dockingTime()[i]
@@ -125,12 +134,24 @@ void TimerDialog::timeout()
                 m_timerdata.setRunning(0, i, false);
 
                 //メッセージ追加
-                messages.append(tr("It is time that Kanmusu is up from the %1 bath.").arg(numbername[i]));
+                if(message.length() == 0){
+                    message = tr("It is time that Kanmusu is up from the ");
+                }else{
+                    message.append(",");
+                }
+                message.append(numbername[i]);
+//                messages.append(tr("It is time that Kanmusu is up from the %1 bath.").arg(numbername[i]));
                 //                messages.append(tr("ドック%1の艦娘がお風呂から上がる頃です。").arg(i+1));
             }
         }
     }
+    if(message.length() > 0){
+        message.append(tr(" bath."));
+        messages.append(message);
+    }
+
     //遠征
+    message = "";
     for(int i=0; i<m_timerdata.expeditionRunning().length(); i++){
         if(m_timerdata.expeditionRunning()[i]){
             if(checkKanmemoTimerTimeout(m_timerdata.expeditionTime()[i]
@@ -139,11 +160,23 @@ void TimerDialog::timeout()
                 m_timerdata.setRunning(1, i, false);
 
                 //メッセージ追加
-                messages.append(tr("It is time the %1 Fleet is returned.").arg(numbername[i+1]));
+                if(message.length() == 0){
+                    message = tr("It is time the ");
+                }else{
+                    message.append(",");
+                }
+                message.append(numbername[i+1]);
+//                messages.append(tr("It is time the %1 Fleet is returned.").arg(numbername[i+1]));
             }
         }
     }
+    if(message.length() > 0){
+        message.append(tr(" Fleet is returned."));
+        messages.append(message);
+    }
+
     //建造
+    message = "";
     for(int i=0; i<m_timerdata.constructionRunning().length(); i++){
         if(m_timerdata.constructionRunning()[i]){
             if(checkKanmemoTimerTimeout(m_timerdata.constructionTime()[i]
@@ -152,9 +185,19 @@ void TimerDialog::timeout()
                 m_timerdata.setRunning(2, i, false);
 
                 //メッセージ追加
-                messages.append(tr("It is time the Kanmusu of %1 dock is completed.").arg(numbername[i]));
+                if(message.length() == 0){
+                    message = tr("It is time the Kanmusu of ");
+                }else{
+                    message.append(",");
+                }
+                message.append(numbername[i]);
+//                messages.append(tr("It is time the Kanmusu of %1 dock is completed.").arg(numbername[i]));
             }
         }
+    }
+    if(message.length() > 0){
+        message.append(tr(" dock is completed."));
+        messages.append(message);
     }
 
     if(messages.length() > 0){
@@ -256,35 +299,60 @@ void TimerDialog::tweetTimerMessage(const QStringList &messages)
     m_oauth.user_id(m_settings->value(SETTING_GENERAL_USER_ID, "").toString());
     m_oauth.screen_name(m_settings->value(SETTING_GENERAL_SCREEN_NAME, "").toString());
 
+    int tweet_len_limit = 140;
+    tweet_len_limit -= m_oauth.screen_name().length() + 2;
+    tweet_len_limit -= tr("#kanmemo").length();
+    tweet_len_limit -= 12 + 1 + 1 + 1 + messages.length();
+
+    qDebug() << "tweet len limit=" << tweet_len_limit;
+
     if(m_oauth.state() == OAuth::Authorized){
-        qDebug() << "認証済み";
         QString message;
 
-        message = "@" + m_oauth.screen_name() + " ";
-        for(int i=0; i<messages.length(); i++){
-            QString temp = messages[i];
+        if(messages.length() > 0){
+            //キューに登録したいメッセージがあれば登録
+            message = "@" + m_oauth.screen_name() + " ";
+            for(int i=0; i<messages.length(); i++){
+                QString temp = messages[i];
 
-            if((message.length() + temp.length()) >= 110){
-                //文字数オーバー一旦送信
-                message.append(QStringLiteral("%1").arg(QDateTime::currentDateTime().toString(QStringLiteral("MM/dd hh:mm"))));
-                //                qDebug() << message.length() << "," << message;
-                QVariantMap map;
-                map.insert("status", message);
-                m_status.statusesUpdate(map);
+                if((message.length() + temp.length() + 1) >= tweet_len_limit){
+                    //文字数オーバー一旦送信
+                    message.append(QStringLiteral("%1 %2")
+                                   .arg(QDateTime::currentDateTime().toString(QStringLiteral("MM/dd hh:mm")))
+                                   .arg(tr("#kanmemo")));
+                    //                qDebug() << message.length() << "," << message;
+                    //リストに貯めこむ
+                    //qDebug() << "tweet1:" << message;
+                    m_tweetMessageList.append(message);
 
-                //消す
-                message = "@" + m_oauth.screen_name() + " ";
-                message.append(temp + "\n ");
-            }else{
+                    //消す
+                    message = "@" + m_oauth.screen_name() + " ";
+                }
+                //連結
                 message.append(temp + "\n ");
             }
+            message.append(QStringLiteral("%1 %2")
+                           .arg(QDateTime::currentDateTime().toString(QStringLiteral("MM/dd hh:mm")))
+                           .arg(tr("#kanmemo")));
+            //        qDebug() << message.length() << "," << message;
+
+            //リストに貯めこむ
+            //qDebug() << "tweet2:" << message;
+            m_tweetMessageList.append(message);
         }
-        message.append(QStringLiteral("%1 %2").arg(QDateTime::currentDateTime().toString(QStringLiteral("MM/dd hh:mm")))
-                       .arg(tr("#kanmemo")));
-        //        qDebug() << message.length() << "," << message;
-        QVariantMap map;
-        map.insert("status", message);
-        m_status.statusesUpdate(map);
+
+        if(m_status.loading()){
+            qDebug() << "now tweeting (timer dialog)";
+        }else if(!m_tweetMessageList.isEmpty()){
+            //リストから取り出してつぶやく
+            qDebug() << "tweet:" << m_tweetMessageList.first();
+            QVariantMap map;
+            map.insert("status", m_tweetMessageList.first());
+            m_status.statusesUpdate(map);
+            m_tweetMessageList.removeFirst();   //消す
+        }else{
+            qDebug() << "tweet list empty";
+        }
     }
 }
 

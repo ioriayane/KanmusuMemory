@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,13 +37,15 @@ public:
 
     QString lastFavoriteUpdateDate() const;
     void setLastFavoriteUpdateDate(const QString &lastFavoriteUpdateDate);
-
     QString lastTimerSelectGuideUpdateDate() const;
     void setLastTimerSelectGuideUpdateDate(const QString &lastTimerSelectGuideUpdateDate);
+    QString lastRecognizeInfoUpdateDate() const;
+    void setLastRecognizeInfoUpdateDate(const QString &lastRecognizeInfoUpdateDate);
 
 signals:
     void lastFavoriteUpdateDateChanged(const QString &lastFavoriteUpdateDate);
     void lastTimerSelectGuideUpdateDateChanged(const QString &lastTimerSelectGuideUpdateDate);
+    void lastRecognizeInfoUpdateDateChanged(const QString &lastRecognizeInfoUpdateDate);
 
 private:
     Ui::UpdateInfoDialog *ui;
@@ -55,6 +57,7 @@ private:
 
     QString m_lastFavoriteUpdateDate;
     QString m_lastTimerSelectGuideUpdateDate;
+    QString m_lastRecognizeInfoUpdateDate;
 
     bool isHide(int checkVersion);
 };
