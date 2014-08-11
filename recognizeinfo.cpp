@@ -98,6 +98,24 @@ RecognizeInfo::RecognizeInfo(QObject *parent) :
     m_flagRectList.append(QRect(517, 343, 23, 20));
     m_flagRectList.append(QRect(517, 373, 23, 20));
 
+
+    /////////////////////////////////////////////////////////////
+    /// 戦果報告画面
+    /////////////////////////////////////////////////////////////
+    m_buttleResultRect1 = BUTTLE_RESULT_RECT1;
+    m_buttleResultCheckColor1 = BUTTLE_RESULT_CHECK_COLOR1;
+    m_buttleResultRect2 = BUTTLE_RESULT_RECT2;
+    m_buttleResultCheckColor2 = BUTTLE_RESULT_CHECK_COLOR2;
+    m_buttleResultFleetChangeRect = BUTTLE_RESULT_FLEET_CHANGE_RECT;
+    //大破判定
+    m_buttleResultMajorDamageCheckColor = BUTTLE_RESULT_MAJOR_DAMAGE_CHECK_COLOR;
+    m_buttleResultMajorDamageRect = BUTTLE_RESULT_MAJOR_DAMAGE_RECT;
+    //進撃or撤退
+    m_buttleGoOrBackCheckColor = BUTTLE_GO_OR_BACK_CHECK_COLOR;
+    m_buttleGoOrBackRect = BUTTLE_GO_OR_BACK_RECT;
+    //羅針盤を回す
+    m_buttleCompassCheckColor = BUTTLE_COMPASS_CHECK_COLOR;
+    m_buttleCompassRect = BUTTLE_COMPASS_RECT;
 }
 
 
@@ -190,6 +208,38 @@ void RecognizeInfo::load()
         setRectList(&m_flagRectList, json.object().value("flagRect").toArray());
 
 
+        //戦果報告画面
+        m_buttleResultRect1 = setRect(json.object().value("buttleResultRect1").toObject());
+        m_buttleResultCheckColor1 = setColor(json.object().value("buttleResultCheckColor1").toObject());
+        m_buttleResultRect2 = setRect(json.object().value("buttleResultRect2").toObject());
+        m_buttleResultCheckColor2 = setColor(json.object().value("buttleResultCheckColor2").toObject());
+        //戦果報告画面の艦隊切り替わりを判定する因子
+        m_buttleResultFleetChangeRect = setRect(json.object().value("buttleResultFleetChangeRect").toObject());
+        //大破判定
+        m_buttleResultMajorDamageCheckColor = setColor(json.object().value("buttleResultMajorDamageCheckColor").toObject());
+        m_buttleResultMajorDamageRect = setRect(json.object().value("buttleResultMajorDamageRect").toObject());
+        //進撃or撤退
+        m_buttleGoOrBackCheckColor = setColor(json.object().value("buttleGoOrBackCheckColor").toObject());
+        m_buttleGoOrBackRect = setRect(json.object().value("buttleGoOrBackRect").toObject());
+        //羅針盤を回す
+    //    #define BUTTLE_COMPASS_CHECK_COLOR      (qRgb(51 , 24 , 24))
+    //    #define BUTTLE_COMPASS_RECT             (QRect(380, 140, 40, 100))
+        m_buttleCompassCheckColor = setColor(json.object().value("buttleCompassCheckColor").toObject());
+        m_buttleCompassRect = setRect(json.object().value("buttleCompassRect").toObject());
+
+        qDebug() << "m_buttleResultRect1 " << m_buttleResultRect1;
+        qDebug() << "m_buttleResultCheckColor1 " << qRed(m_buttleResultCheckColor1) << "," << qGreen(m_buttleResultCheckColor1) << "," << qBlue(m_buttleResultCheckColor1);
+        qDebug() << "m_buttleResultRect2 " << m_buttleResultRect2;
+        qDebug() << "m_buttleResultCheckColor2 " << qRed(m_buttleResultCheckColor2) << "," << qGreen(m_buttleResultCheckColor2) << "," << qBlue(m_buttleResultCheckColor2);
+        qDebug() << "m_buttleResultFleetChangeRect " << m_buttleResultFleetChangeRect;
+        qDebug() << "m_buttleResultMajorDamageCheckColor " << qRed(m_buttleResultMajorDamageCheckColor) << "," << qGreen(m_buttleResultMajorDamageCheckColor) << "," << qBlue(m_buttleResultMajorDamageCheckColor);
+        qDebug() << "m_buttleResultMajorDamageRect " << m_buttleResultMajorDamageRect;
+
+        qDebug() << "m_buttleGoOrBackCheckColor " << qRed(m_buttleGoOrBackCheckColor) << "," << qGreen(m_buttleGoOrBackCheckColor) << "," << qBlue(m_buttleGoOrBackCheckColor);
+        qDebug() << "m_buttleGoOrBackRect " << m_buttleGoOrBackRect;
+        qDebug() << "m_buttleCompassCheckColor " << qRed(m_buttleCompassCheckColor) << "," << qGreen(m_buttleCompassCheckColor) << "," << qBlue(m_buttleCompassCheckColor);
+        qDebug() << "m_buttleCompassRect " << m_buttleCompassRect;
+
         //現状のデータの日付を保存
         m_currentLoadedDate = QDate::fromString(json.object().value("serial").toString().left(8), "yyyyMMdd");
 //        qDebug() << json.object().value("serial").toString().left(8);
@@ -197,6 +247,18 @@ void RecognizeInfo::load()
 //        qDebug() << "today =" << QDate::currentDate() << "," << QDate::currentDate().toJulianDay();
 
     }
+}
+
+QRgb RecognizeInfo::setColor(const QJsonObject &object)
+{
+    return qRgba(object.value("red").toInt(), object.value("green").toInt(), object.value("blue").toInt()
+                , object.value("alpha").toInt());
+}
+
+QRect RecognizeInfo::setRect(const QJsonObject &object)
+{
+    return QRect(object.value("x").toDouble(), object.value("y").toDouble()
+                 , object.value("width").toDouble(), object.value("height").toDouble());
 }
 
 void RecognizeInfo::setRectList(QList<QRect> *list, const QJsonArray &array)
@@ -281,3 +343,115 @@ void RecognizeInfo::updateFromInternet(const QString &lastUpdateDate)
     net->get(req);
 
 }
+QRect RecognizeInfo::buttleCompassRect() const
+{
+    return m_buttleCompassRect;
+}
+
+void RecognizeInfo::setButtleCompassRect(const QRect &buttleCompassRect)
+{
+    m_buttleCompassRect = buttleCompassRect;
+}
+
+QRgb RecognizeInfo::buttleCompassCheckColor() const
+{
+    return m_buttleCompassCheckColor;
+}
+
+void RecognizeInfo::setButtleCompassCheckColor(const QRgb &buttleCompassCheckColor)
+{
+    m_buttleCompassCheckColor = buttleCompassCheckColor;
+}
+
+
+
+QRect RecognizeInfo::buttleGoOrBackRect() const
+{
+    return m_buttleGoOrBackRect;
+}
+
+void RecognizeInfo::setButtleGoOrBackRect(const QRect &buttleGoOrBackRect)
+{
+    m_buttleGoOrBackRect = buttleGoOrBackRect;
+}
+
+QRgb RecognizeInfo::buttleGoOrBackCheckColor() const
+{
+    return m_buttleGoOrBackCheckColor;
+}
+
+void RecognizeInfo::setButtleGoOrBackCheckColor(const QRgb &buttleGoOrBackCheckColor)
+{
+    m_buttleGoOrBackCheckColor = buttleGoOrBackCheckColor;
+}
+
+QRect RecognizeInfo::buttleResultMajorDamageRect() const
+{
+    return m_buttleResultMajorDamageRect;
+}
+
+void RecognizeInfo::setButtleResultMajorDamageRect(const QRect &buttleResultMajorDamageRect)
+{
+    m_buttleResultMajorDamageRect = buttleResultMajorDamageRect;
+}
+
+QRgb RecognizeInfo::buttleResultMajorDamageCheckColor() const
+{
+    return m_buttleResultMajorDamageCheckColor;
+}
+
+void RecognizeInfo::setButtleResultMajorDamageCheckColor(const QRgb &buttleResultMajorDamageCheckColor)
+{
+    m_buttleResultMajorDamageCheckColor = buttleResultMajorDamageCheckColor;
+}
+
+QRgb RecognizeInfo::buttleResultCheckColor2() const
+{
+    return m_buttleResultCheckColor2;
+}
+
+void RecognizeInfo::setButtleResultCheckColor2(const QRgb &buttleResultCheckColor2)
+{
+    m_buttleResultCheckColor2 = buttleResultCheckColor2;
+}
+
+QRect RecognizeInfo::buttleResultRect2() const
+{
+    return m_buttleResultRect2;
+}
+
+void RecognizeInfo::setButtleResultRect2(const QRect &buttleResultRect2)
+{
+    m_buttleResultRect2 = buttleResultRect2;
+}
+
+QRgb RecognizeInfo::buttleResultCheckColor1() const
+{
+    return m_buttleResultCheckColor1;
+}
+
+void RecognizeInfo::setButtleResultCheckColor1(const QRgb &buttleResultCheckColor1)
+{
+    m_buttleResultCheckColor1 = buttleResultCheckColor1;
+}
+
+QRect RecognizeInfo::buttleResultRect1() const
+{
+    return m_buttleResultRect1;
+}
+
+void RecognizeInfo::setButtleResultRect1(const QRect &buttleResultRect1)
+{
+    m_buttleResultRect1 = buttleResultRect1;
+}
+
+QRect RecognizeInfo::buttleResultFleetChangeRect() const
+{
+    return m_buttleResultFleetChangeRect;
+}
+
+void RecognizeInfo::setButtleResultFleetChangeRect(const QRect &buttleResultFleetChangeRect)
+{
+    m_buttleResultFleetChangeRect = buttleResultFleetChangeRect;
+}
+

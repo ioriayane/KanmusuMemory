@@ -1,6 +1,6 @@
 {
 "_comment" : "serialは日付+二桁連番で更新されてるか判断する"
-,"serial" : "2014060800"
+,"serial" : "2014081100"
 ,"itemRect" : 
 [
   { "x": 117, "y": 158, "width": 440, "height": 30 }
@@ -61,4 +61,18 @@
 , { "x": 517, "y": 343, "width": 23, "height": 20 }
 , { "x": 517, "y": 373, "width": 23, "height": 20 }
 ]
+, "buttleResultFleetChangeRect": { "x": 246, "y": 189, "width": 63, "height": 40 }
+, "buttleResultRect1": { "x": 0, "y": 10, "width": 300, "height": 60 }
+, "buttleResultCheckColor1": {"red": 30, "green": 50, "blue": 52, "alpha": 255 }
+, "buttleResultRect2": { "x": 394, "y": 77, "width": 4, "height": 370 }
+, "buttleResultCheckColor2": {"red": 199, "green": 199, "blue": 201, "alpha": 255 }
+, "buttleResultMajorDamageRect": { "x": 110, "y": 0, "width": 50, "height": 40 }
+, "buttleResultMajorDamageCheckColor": {"red": 27, "green": 15, "blue": 14, "alpha": 255 }
+, "buttleGoOrBackCheckColor": {"red": 80, "green": 164, "blue": 196, "alpha": 255 }
+, "buttleGoOrBackRect": { "x": 200, "y": 180, "width": 400, "height": 120 }
+, "buttleGoButtonRect": { "x": 220, "y": 190, "width": 150, "height": 110 }
+, "buttleBackButtonRect": { "x": 435, "y": 190, "width": 150, "height": 110 }
+
+, "buttleCompassCheckColor": {"red": 51, "green": 24, "blue": 24, "alpha": 255 }
+, "buttleCompassRect": { "x": 380, "y": 140, "width": 40, "height": 100 }
 }

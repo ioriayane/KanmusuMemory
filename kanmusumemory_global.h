@@ -181,14 +181,14 @@
 #define BUTTLE_RESULT_RECT1             (QRect(0, 10, 300, 60))
 #define BUTTLE_RESULT_CHECK_COLOR2      (qRgb(199, 199, 201))  //真ん中の白い線
 #define BUTTLE_RESULT_RECT2             (QRect(394, 77, 4, 370))
+//大破判定のページ切り替え（第1と第2）
+#define BUTTLE_RESULT_FLEET_CHANGE_RECT     (QRect(246, 189, 63, 40))
 //大破判定
 #define BUTTLE_RESULT_MAJOR_DAMAGE_CHECK_COLOR (qRgb(27, 15, 14))
 #define BUTTLE_RESULT_MAJOR_DAMAGE_RECT        (QRect(110, 0, 50, 40))
 //進撃or撤退
 #define BUTTLE_GO_OR_BACK_CHECK_COLOR   (qRgb(80, 164, 196))
 #define BUTTLE_GO_OR_BACK_RECT          (QRect(200, 180, 400, 120))
-#define BUTTLE_GO_BUTTON_RECT           (QRect(220, 190, 150, 110))
-#define BUTTLE_BACK_BUTTON_RECT         (QRect(435, 190, 150, 110))
 //羅針盤を回す
 #define BUTTLE_COMPASS_CHECK_COLOR      (qRgb(51 , 24 , 24))
 #define BUTTLE_COMPASS_RECT             (QRect(380, 140, 40, 100))
