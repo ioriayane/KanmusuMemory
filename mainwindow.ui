@@ -140,7 +140,7 @@
                 </spacer>
                </item>
                <item row="1" column="1">
-                <layout class="QVBoxLayout" name="verticalLayout_6">
+                <layout class="QVBoxLayout" name="buttleResultLayout">
                  <property name="spacing">
                   <number>0</number>
                  </property>

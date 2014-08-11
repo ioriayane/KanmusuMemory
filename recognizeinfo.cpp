@@ -222,23 +222,11 @@ void RecognizeInfo::load()
         m_buttleGoOrBackCheckColor = setColor(json.object().value("buttleGoOrBackCheckColor").toObject());
         m_buttleGoOrBackRect = setRect(json.object().value("buttleGoOrBackRect").toObject());
         //羅針盤を回す
-    //    #define BUTTLE_COMPASS_CHECK_COLOR      (qRgb(51 , 24 , 24))
-    //    #define BUTTLE_COMPASS_RECT             (QRect(380, 140, 40, 100))
         m_buttleCompassCheckColor = setColor(json.object().value("buttleCompassCheckColor").toObject());
         m_buttleCompassRect = setRect(json.object().value("buttleCompassRect").toObject());
 
-        qDebug() << "m_buttleResultRect1 " << m_buttleResultRect1;
-        qDebug() << "m_buttleResultCheckColor1 " << qRed(m_buttleResultCheckColor1) << "," << qGreen(m_buttleResultCheckColor1) << "," << qBlue(m_buttleResultCheckColor1);
-        qDebug() << "m_buttleResultRect2 " << m_buttleResultRect2;
-        qDebug() << "m_buttleResultCheckColor2 " << qRed(m_buttleResultCheckColor2) << "," << qGreen(m_buttleResultCheckColor2) << "," << qBlue(m_buttleResultCheckColor2);
-        qDebug() << "m_buttleResultFleetChangeRect " << m_buttleResultFleetChangeRect;
-        qDebug() << "m_buttleResultMajorDamageCheckColor " << qRed(m_buttleResultMajorDamageCheckColor) << "," << qGreen(m_buttleResultMajorDamageCheckColor) << "," << qBlue(m_buttleResultMajorDamageCheckColor);
-        qDebug() << "m_buttleResultMajorDamageRect " << m_buttleResultMajorDamageRect;
-
-        qDebug() << "m_buttleGoOrBackCheckColor " << qRed(m_buttleGoOrBackCheckColor) << "," << qGreen(m_buttleGoOrBackCheckColor) << "," << qBlue(m_buttleGoOrBackCheckColor);
-        qDebug() << "m_buttleGoOrBackRect " << m_buttleGoOrBackRect;
-        qDebug() << "m_buttleCompassCheckColor " << qRed(m_buttleCompassCheckColor) << "," << qGreen(m_buttleCompassCheckColor) << "," << qBlue(m_buttleCompassCheckColor);
-        qDebug() << "m_buttleCompassRect " << m_buttleCompassRect;
+//        qDebug() << "m_buttleCompassCheckColor " << qRed(m_buttleCompassCheckColor) << "," << qGreen(m_buttleCompassCheckColor) << "," << qBlue(m_buttleCompassCheckColor);
+//        qDebug() << "m_buttleCompassRect " << m_buttleCompassRect;
 
         //現状のデータの日付を保存
         m_currentLoadedDate = QDate::fromString(json.object().value("serial").toString().left(8), "yyyyMMdd");

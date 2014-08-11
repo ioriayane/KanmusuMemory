@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 #define SETTINGSDIALOG_H
 
 #include <QDialog>
+#include <QBoxLayout>
 
 class SettingsDialog : public QDialog
 {
@@ -46,6 +47,7 @@ public:
     bool disableExitShortcut() const;
     bool viewButtleResult() const;
     ButtleResultPosition buttleResultPosition() const;
+    QBoxLayout::Direction buttleResultDirection() const;
     qreal buttleResultOpacity() const;
     bool timerAutoStart() const;
     bool tweetFinished() const;
@@ -66,6 +68,7 @@ public slots:
     void setDisableExitShortcut(bool disable);
     void setViewButtleResult(bool view);
     void setButtleResultPosition(ButtleResultPosition position);
+    void setButtleResultDirection(QBoxLayout::Direction direction);
     void setButtleResultOpacity(qreal opacity);
     void setTimerAutoStart(bool start);
     void setTweetFinished(bool tweet);
@@ -84,6 +87,7 @@ signals:
     void disableExitShortcutChanged(bool disable);
     void viewButtleResultChanged(bool view);
     void buttleResultPositionChanged(ButtleResultPosition position);
+    void buttleResultDirectionChanged(QBoxLayout::Direction direction);
     void buttleResultOpacityChanged(qreal opacity);
     void timerAutoStartChanged(bool start);
     void tweetFinishedChanged(bool tweet);

@@ -72,7 +72,6 @@
 , "buttleGoOrBackRect": { "x": 200, "y": 180, "width": 400, "height": 120 }
 , "buttleGoButtonRect": { "x": 220, "y": 190, "width": 150, "height": 110 }
 , "buttleBackButtonRect": { "x": 435, "y": 190, "width": 150, "height": 110 }
-
 , "buttleCompassCheckColor": {"red": 51, "green": 24, "blue": 24, "alpha": 255 }
 , "buttleCompassRect": { "x": 380, "y": 140, "width": 40, "height": 100 }
 }

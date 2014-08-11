@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 KanMemo Project.
+ * Copyright 2013-2014 KanMemo Project.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ public:
     bool disableExitShortcut;
     bool viewButtleResult;
     SettingsDialog::ButtleResultPosition buttleResultPosition;
+    QBoxLayout::Direction buttleResultDirection;
     qreal buttleResultOpacity;
     bool timerAutoStart;
     bool tweetFinished;
@@ -88,6 +89,11 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         case 2:     buttleResultOpacity = 0.5;          break;
         case 3:     buttleResultOpacity = 0.25;         break;
         default:    buttleResultOpacity = 1.0;          break;
+        }
+        switch(ui.buttleResultDirectionComboBox->currentIndex()){
+        case 0:     buttleResultDirection = QBoxLayout::LeftToRight;    break;
+        case 1:     buttleResultDirection = QBoxLayout::TopToBottom;    break;
+        default:    buttleResultDirection = QBoxLayout::TopToBottom;    break;
         }
 
         timerAutoStart = ui.timerAutoStartCheckBox->isChecked();
@@ -141,6 +147,15 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         }else{
             ui.buttleResultOpacityComboBox->setCurrentIndex(0);
         }
+    });
+    connect(q, &SettingsDialog::buttleResultDirectionChanged, [this](QBoxLayout::Direction direction){
+        int dir = 0;
+        switch(direction){
+        case QBoxLayout::LeftToRight:   dir = 0;    break;
+        case QBoxLayout::TopToBottom:   dir = 1;    break;
+        default:                        dir = 1;    break;
+        }
+        ui.buttleResultDirectionComboBox->setCurrentIndex(dir);
     });
     connect(q, &SettingsDialog::timerAutoStartChanged, ui.timerAutoStartCheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::tweetFinishedChanged, ui.tweetFinishedCheckBox, &QCheckBox::setChecked);
@@ -279,6 +294,11 @@ SettingsDialog::ButtleResultPosition SettingsDialog::buttleResultPosition() cons
     return d->buttleResultPosition;
 }
 
+QBoxLayout::Direction SettingsDialog::buttleResultDirection() const
+{
+    return d->buttleResultDirection;
+}
+
 qreal SettingsDialog::buttleResultOpacity() const
 {
     return d->buttleResultOpacity;
@@ -334,6 +354,13 @@ void SettingsDialog::setButtleResultPosition(SettingsDialog::ButtleResultPositio
     if(d->buttleResultPosition == position) return;
     d->buttleResultPosition = position;
     emit buttleResultPositionChanged(position);
+}
+
+void SettingsDialog::setButtleResultDirection(QBoxLayout::Direction direction)
+{
+    if(d->buttleResultDirection == direction) return;
+    d->buttleResultDirection = direction;
+    emit buttleResultDirectionChanged(direction);
 }
 
 void SettingsDialog::setButtleResultOpacity(qreal opacity)

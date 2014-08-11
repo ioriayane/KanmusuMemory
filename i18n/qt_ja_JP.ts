@@ -116,7 +116,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+432"/>
+        <location filename="../mainwindow.cpp" line="+423"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -241,7 +241,7 @@ Please wait while a cup of coffee.</source>
         <translation>完了するとキャプチャーした画像を結合します。</translation>
     </message>
     <message>
-        <location line="+698"/>
+        <location line="+712"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -250,7 +250,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location filename="../mainwindow.ui" line="+20"/>
-        <location filename="../ui_mainwindow.h" line="+460"/>
+        <location filename="../ui_mainwindow.h" line="+477"/>
         <source>Kan Memo -KanMusu Memory-</source>
         <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
@@ -259,8 +259,8 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">about:blank</translation>
     </message>
     <message>
-        <location line="+351"/>
-        <location filename="../ui_mainwindow.h" line="+90"/>
+        <location line="+380"/>
+        <location filename="../ui_mainwindow.h" line="+91"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
@@ -312,7 +312,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+18"/>
-        <location filename="../ui_mainwindow.h" line="-96"/>
+        <location filename="../ui_mainwindow.h" line="-97"/>
         <source>&amp;Exit</source>
         <translation>終了(&amp;E)</translation>
     </message>
@@ -658,7 +658,7 @@ Do you want to continue on an understanding of the security risk?
         <location line="-512"/>
         <location line="+482"/>
         <location filename="../ui_mainwindow.h" line="-6"/>
-        <location line="+13"/>
+        <location line="+14"/>
         <source>-</source>
         <translation></translation>
     </message>
@@ -682,7 +682,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <location line="+446"/>
-        <location filename="../ui_mainwindow.h" line="-14"/>
+        <location filename="../ui_mainwindow.h" line="-15"/>
         <source>&amp;Vertical split</source>
         <translation>上下に分割(&amp;V)</translation>
     </message>
@@ -834,7 +834,7 @@ Do you want to continue on an understanding of the security risk?
     <name>SettingsDialog</name>
     <message>
         <location filename="../settingsdialog.ui" line="+14"/>
-        <location filename="../ui_settingsdialog.h" line="+329"/>
+        <location filename="../ui_settingsdialog.h" line="+353"/>
         <source>Preferences ..</source>
         <translation>設定</translation>
     </message>
@@ -919,8 +919,28 @@ Do you want to continue on an understanding of the security risk?
         <translation>時間になったらツイッターでお知らせする</translation>
     </message>
     <message>
-        <location line="-229"/>
-        <location filename="../ui_settingsdialog.h" line="-27"/>
+        <location line="+9"/>
+        <location filename="../ui_settingsdialog.h" line="+1"/>
+        <source>Direction</source>
+        <translation>表示方向</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location line="+12"/>
+        <location filename="../ui_settingsdialog.h" line="+4"/>
+        <location line="+2"/>
+        <source>TopToBottom</source>
+        <translation>縦（上から下）</translation>
+    </message>
+    <message>
+        <location line="-5"/>
+        <location filename="../ui_settingsdialog.h" line="-3"/>
+        <source>LeftToRight</source>
+        <translation>横（左から右）</translation>
+    </message>
+    <message>
+        <location line="-252"/>
+        <location filename="../ui_settingsdialog.h" line="-31"/>
         <source>Opacity</source>
         <translation>不透明度</translation>
     </message>
@@ -1033,7 +1053,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
-        <location filename="../settingsdialog.cpp" line="+174"/>
+        <location filename="../settingsdialog.cpp" line="+189"/>
         <source>Select save folder</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>

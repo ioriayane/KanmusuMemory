@@ -703,6 +703,7 @@ void MainWindow::Private::openSettingDialog()
     dlg.setDisableExitShortcut(settings.value(SETTING_GENERAL_DISABLE_EXIT, DISABLE_EXIT_DEFAULT).toBool());
     dlg.setViewButtleResult(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool());
     dlg.setButtleResultPosition(static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt()));
+    dlg.setButtleResultDirection(static_cast<QBoxLayout::Direction>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_DIRECTION), 2).toInt()));
     dlg.setButtleResultOpacity(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal());
     dlg.setTimerAutoStart(settings.value(QStringLiteral(SETTING_GENERAL_TIMER_AUTO_START), true).toBool());
     settings.beginGroup(QStringLiteral(SETTING_TIMER));
@@ -724,6 +725,7 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_DISABLE_EXIT, dlg.disableExitShortcut());
         settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT, dlg.viewButtleResult());
         settings.setValue(SETTING_GENERAL_BUTTLE_RESULT_POSITION, static_cast<int>(dlg.buttleResultPosition()));
+        settings.setValue(SETTING_GENERAL_BUTTLE_RESULT_DIRECTION, static_cast<int>(dlg.buttleResultDirection()));
         settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY, dlg.buttleResultOpacity());
         settings.setValue(SETTING_GENERAL_TIMER_AUTO_START, dlg.timerAutoStart());
 
@@ -731,9 +733,6 @@ void MainWindow::Private::openSettingDialog()
         ui.viewButtleResult->setVisible(ui.viewButtleResult->isVisible() & dlg.viewButtleResult());
         ui.viewButtleResult2->setVisible(ui.viewButtleResult2->isVisible() & dlg.viewButtleResult());
         setButtleResultPosition();
-        if(ui.viewButtleResult->isVisible()){
-            checkMajorDamageShip(QPointF(0,0), true);
-        }
 
         //タイマーの時間でつぶやく
         if(m_timerDialog != NULL){
@@ -1246,21 +1245,6 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
     case GameScreen::ButtleResultScreen:
         if(!ui.viewButtleResult->isVisible() || force){
             //非表示→表示
-//            QImage background;
-//            if(gameScreen.isContainMajorDamageShip()){
-//                //大破が含まれるっぽい
-//                background.load(":/resources/ButtleResultBackgroundRed.png");
-//            }else{
-//                background.load(":/resources/ButtleResultBackgroundBlue.png");
-//            }
-//            QImage buttle(":/resources/ButtleResultBackgroundTrans.png");
-//            QPainter painter(&buttle);
-//            painter.setOpacity(opacity);
-//            painter.drawImage(0, 0, background);
-//            painter.drawImage(20, 20, img.scaled(300, 180, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-//            ui.viewButtleResult->setPixmap(QPixmap::fromImage(buttle));
-//            ui.viewButtleResult->setWindowOpacity(0.5);
-//            ui.viewButtleResult->setVisible(true);
             viewMajorDamageShip(img, gameScreen, ui.viewButtleResult);
 
             //現在の艦隊因子を保存
@@ -1271,7 +1255,7 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
                 viewMajorDamageShip(img, gameScreen, ui.viewButtleResult2);
             }
         }
-        qDebug() << "current fleet facotr:" << currentFleetFactor << "," << gameScreen.getCurrentFleetFactor();
+//        qDebug() << "current fleet facotr:" << currentFleetFactor << "," << gameScreen.getCurrentFleetFactor();
         break;
 
     case GameScreen::GoOrBackScreen:
@@ -1473,7 +1457,12 @@ void MainWindow::Private::makeDialog()
 void MainWindow::Private::setButtleResultPosition()
 {
     SettingsDialog::ButtleResultPosition position = static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt());
+    QBoxLayout::Direction direction = static_cast<QBoxLayout::Direction>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_DIRECTION), 2).toInt());
 
+    //方向
+    ui.buttleResultLayout->setDirection(direction);
+
+    //位置
     switch(position){
     case SettingsDialog::LeftTop:
         ui.additionalInfoHSpacerLeft->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);
