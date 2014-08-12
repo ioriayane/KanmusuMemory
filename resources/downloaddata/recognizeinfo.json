@@ -92,6 +92,6 @@
 , { "x": 205, "y": 375, "width": 24, "height": 26 }
 , { "x": 205, "y": 420, "width": 24, "height": 26 }
 ]
-, "buttleResultCharExistColor": {"red": 255, "green": 255, "blue": 255, "alpha": 255, "border": 200 }
-, "m_buttleResultCharExistBinBorder": 180
+, "buttleResultCharExistColor": {"red": 255, "green": 255, "blue": 255, "alpha": 255, "border": 250 }
+, "buttleResultCharExistBinBorder": 180
 }

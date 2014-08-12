@@ -34,7 +34,7 @@ public:
     Private(const QImage &image, GameScreen *parent, RecognizeInfo *recognizeInfo);
     bool isVisible(PartType partType) const;
     void click(WebView *webView, GameScreen::PartType partType, GameScreen::WaitInterval waitInterval);
-    bool isContainMajorDamageShip() const;
+    bool isContainMajorDamageShip();
     bool checkTurnCompassScreen() const;
     bool isChangedCurrentFleet(QRgb prevFactor) const;
 
@@ -190,23 +190,26 @@ void GameScreen::Private::click(WebView *webView, GameScreen::PartType partType,
     }
 }
 //戦果報告画面で大破が含まれるか
-bool GameScreen::Private::isContainMajorDamageShip() const
+bool GameScreen::Private::isContainMajorDamageShip()
 {
     bool ret = false;
     if(screenType == GameScreen::ButtleResultScreen){
-        qDebug() << " Buttle Result";
+//        qDebug() << " Buttle Result";
 
         QImage mask_image(":/resources/MajorDamageMask.png");
         QImage imagework(mask_image);
         QPainter painter(&imagework);
+        QImage imageBin(image);
+
+        //2値化
+        imageBinarization(&imageBin, imageBin.rect(), recognizeInfo->buttleResultCharExistBinBorder(), qRgb(255,255,255), qRgb(0,0,0));
+
         int i = 0;
         foreach (QRect rect, recognizeInfo->buttleResultCharRectList()) {
             //艦娘バナーがあるか
-//            if(fuzzyCompare(color(recognizeInfo->buttleResultCharRectList().at(i))
-//                            , recognizeInfo->buttleResultCharExistColor().rgb
-//                            , recognizeInfo->buttleResultCharExistColor().border)){
-            if( qAbs(qRed(color(recognizeInfo->buttleResultCharRectList().at(i))) - qRed(recognizeInfo->buttleResultCharExistColor().rgb))
-                    < recognizeInfo->buttleResultCharExistColor().border ){
+            if(fuzzyCompare(color(imageBin, recognizeInfo->buttleResultCharRectList().at(i))
+                            , recognizeInfo->buttleResultCharExistColor().rgb
+                            , recognizeInfo->buttleResultCharExistColor().border)){
                 //あったので判定
                 painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
                 painter.drawImage(0, 0, mask_image);
@@ -219,15 +222,16 @@ bool GameScreen::Private::isContainMajorDamageShip() const
 
                 ret |= fuzzyCompare(color(imagework, recognizeInfo->buttleResultMajorDamageRect()), recognizeInfo->buttleResultMajorDamageCheckColor(), 5);
 
-                QRgb rgb = color(recognizeInfo->buttleResultCharRectList().at(i));
-                qDebug() << " exist:" << i << "  color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
-                         << "/" << qRed(recognizeInfo->buttleResultCharExistColor().rgb) << "," << qGreen(recognizeInfo->buttleResultCharExistColor().rgb) << "," << qBlue(recognizeInfo->buttleResultCharExistColor().rgb)
-                            << "/" << recognizeInfo->buttleResultCharExistColor().border;
-            }else{
-                QRgb rgb = color(recognizeInfo->buttleResultCharRectList().at(i));
-                qDebug() << " not exist:" << i << "  color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
-                            << "/" << qRed(recognizeInfo->buttleResultCharExistColor().rgb) << "," << qGreen(recognizeInfo->buttleResultCharExistColor().rgb) << "," << qBlue(recognizeInfo->buttleResultCharExistColor().rgb)
-                               << "/" << recognizeInfo->buttleResultCharExistColor().border;
+//                QRgb rgb = color(imageBin, recognizeInfo->buttleResultCharRectList().at(i));
+//                qDebug() << " exist:" << i << "  color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
+//                         << "/" << qRed(recognizeInfo->buttleResultCharExistColor().rgb) << "," << qGreen(recognizeInfo->buttleResultCharExistColor().rgb) << "," << qBlue(recognizeInfo->buttleResultCharExistColor().rgb)
+//                            << "/" << recognizeInfo->buttleResultCharExistColor().border;
+//            }else{
+//                QRgb rgb = color(imageBin, recognizeInfo->buttleResultCharRectList().at(i));
+//                qDebug() << " not exist:" << i << "  color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
+//                            << "/" << qRed(recognizeInfo->buttleResultCharExistColor().rgb) << "," << qGreen(recognizeInfo->buttleResultCharExistColor().rgb) << "," << qBlue(recognizeInfo->buttleResultCharExistColor().rgb)
+//                               << "/" << recognizeInfo->buttleResultCharExistColor().border;
+
             }
             i++;
         }
