@@ -1239,7 +1239,7 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
         return;
     }
 
-    static QRgb currentFleetFactor = qRgb(0,0,0);
+    static QRgb prevFleetFactor = qRgb(0,0,0);
     GameScreen gameScreen(img, &m_recognizeInfo);
     switch(gameScreen.screenType()){
     case GameScreen::ButtleResultScreen:
@@ -1248,11 +1248,15 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
             viewMajorDamageShip(img, gameScreen, ui.viewButtleResult);
 
             //現在の艦隊因子を保存
-            currentFleetFactor = gameScreen.getCurrentFleetFactor();
+            prevFleetFactor = gameScreen.getCurrentFleetFactor();
         }else{
+            //こっちはタイミングで真っ黒になるので撮り直しOK
+
             //既に表示してるので艦隊が切り替わったか（連合艦隊のとき）
-            if(currentFleetFactor != gameScreen.getCurrentFleetFactor()){
+            QRgb currentFleetFactor = gameScreen.getCurrentFleetFactor();
+            if(prevFleetFactor != currentFleetFactor){
                 viewMajorDamageShip(img, gameScreen, ui.viewButtleResult2);
+                prevFleetFactor = currentFleetFactor;
             }
         }
 //        qDebug() << "current fleet facotr:" << currentFleetFactor << "," << gameScreen.getCurrentFleetFactor();
