@@ -23,6 +23,22 @@
 //設定をダウンロードしてくる機能
 //DLデータはQsettingsつかう？JSON？
 
+class QRgbEx
+{
+public:
+    QRgbEx(){
+        rgb = qRgb(255,255,255);
+        border = 0x20;
+    }
+    QRgbEx(QRgb rgb, int border){
+        this->rgb = rgb;
+        this->border = border;
+    }
+
+    QRgb rgb;
+    int border;
+};
+
 class RecognizeInfo : public QObject
 {
     Q_OBJECT
@@ -44,6 +60,7 @@ public:
 
     void load();
     QRgb setColor(const QJsonObject &object);
+    int setColorBorder(const QJsonObject &object);
     QRect setRect(const QJsonObject &object);
     void setRectList(QList<QRect> *list, const QJsonArray &array);
     void setGuideList(QList<NumberGuide> *list, const QJsonArray &array);
@@ -74,6 +91,15 @@ public:
     void setButtleCompassCheckColor(const QRgb &buttleCompassCheckColor);
     QRect buttleCompassRect() const;
     void setButtleCompassRect(const QRect &buttleCompassRect);
+
+    QList<QRect> buttleResultCharRectList() const;
+    void setButtleResultCharRectList(const QList<QRect> &buttleResultCharRectList);
+
+    QRgbEx buttleResultCharExistColor() const;
+    void setButtleResultCharExistColor(const QRgbEx &buttleResultCharExistColor);
+
+    int buttleResultCharExistBinBorder() const;
+    void setButtleResultCharExistBinBorder(int buttleResultCharExistBinBorder);
 
 signals:
     void downloadFinished();
@@ -107,6 +133,12 @@ private:
     //羅針盤を回す
     QRgb m_buttleCompassCheckColor;
     QRect m_buttleCompassRect;
+    //艦娘バナーの位置
+    QList<QRect> m_buttleResultCharRectList;
+    //艦娘バナーがあるか（艦数判定）
+    QList<QRect> m_buttleResultCharExistRectList;   //バナーごとの位置
+    QRgbEx m_buttleResultCharExistColor;            //色判定用
+    int m_buttleResultCharExistBinBorder;           //2値化するときのしきい値
 
     QDate m_currentLoadedDate;              //現在読み込んでるデータの作成日
 

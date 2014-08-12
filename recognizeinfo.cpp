@@ -116,6 +116,24 @@ RecognizeInfo::RecognizeInfo(QObject *parent) :
     //羅針盤を回す
     m_buttleCompassCheckColor = BUTTLE_COMPASS_CHECK_COLOR;
     m_buttleCompassRect = BUTTLE_COMPASS_RECT;
+
+    //艦娘バナーの位置
+    m_buttleResultCharRectList.append(QRect(196, 189, 160, 40));
+    m_buttleResultCharRectList.append(QRect(196, 234, 160, 40));
+    m_buttleResultCharRectList.append(QRect(196, 279, 160, 40));
+    m_buttleResultCharRectList.append(QRect(196, 324, 160, 40));
+    m_buttleResultCharRectList.append(QRect(196, 369, 160, 40));
+    m_buttleResultCharRectList.append(QRect(196, 414, 160, 40));
+    //艦娘バナーがあるか（艦数判定）
+    m_buttleResultCharExistRectList.append(QRect(205, 195, 24, 26));
+    m_buttleResultCharExistRectList.append(QRect(205, 240, 24, 26));
+    m_buttleResultCharExistRectList.append(QRect(205, 285, 24, 26));
+    m_buttleResultCharExistRectList.append(QRect(205, 330, 24, 26));
+    m_buttleResultCharExistRectList.append(QRect(205, 375, 24, 26));
+    m_buttleResultCharExistRectList.append(QRect(205, 420, 24, 26));
+    m_buttleResultCharExistColor.rgb = qRgb(255, 255, 255);
+    m_buttleResultCharExistColor.border = 200;
+    m_buttleResultCharExistBinBorder = 180;
 }
 
 
@@ -225,6 +243,14 @@ void RecognizeInfo::load()
         m_buttleCompassCheckColor = setColor(json.object().value("buttleCompassCheckColor").toObject());
         m_buttleCompassRect = setRect(json.object().value("buttleCompassRect").toObject());
 
+        //艦娘バナーの位置
+        setRectList(&m_buttleResultCharRectList, json.object().value("buttleResultCharRectList").toArray());
+        //艦娘バナーがあるか（艦数判定）
+        setRectList(&m_buttleResultCharExistRectList, json.object().value("buttleResultCharExistRectList").toArray());
+        m_buttleResultCharExistColor.rgb = setColor(json.object().value("buttleResultCharExistColor").toObject());
+        m_buttleResultCharExistColor.border = setColorBorder(json.object().value("buttleResultCharExistColor").toObject());
+        m_buttleResultCharExistBinBorder = json.object().value("buttleResultCharExistBinBorder").toInt();
+
 //        qDebug() << "m_buttleCompassCheckColor " << qRed(m_buttleCompassCheckColor) << "," << qGreen(m_buttleCompassCheckColor) << "," << qBlue(m_buttleCompassCheckColor);
 //        qDebug() << "m_buttleCompassRect " << m_buttleCompassRect;
 
@@ -240,7 +266,12 @@ void RecognizeInfo::load()
 QRgb RecognizeInfo::setColor(const QJsonObject &object)
 {
     return qRgba(object.value("red").toInt(), object.value("green").toInt(), object.value("blue").toInt()
-                , object.value("alpha").toInt());
+                 , object.value("alpha").toInt());
+}
+
+int RecognizeInfo::setColorBorder(const QJsonObject &object)
+{
+    return object.value("border").toInt();
 }
 
 QRect RecognizeInfo::setRect(const QJsonObject &object)
@@ -331,6 +362,36 @@ void RecognizeInfo::updateFromInternet(const QString &lastUpdateDate)
     net->get(req);
 
 }
+int RecognizeInfo::buttleResultCharExistBinBorder() const
+{
+    return m_buttleResultCharExistBinBorder;
+}
+
+void RecognizeInfo::setButtleResultCharExistBinBorder(int buttleResultCharExistBinBorder)
+{
+    m_buttleResultCharExistBinBorder = buttleResultCharExistBinBorder;
+}
+
+QRgbEx RecognizeInfo::buttleResultCharExistColor() const
+{
+    return m_buttleResultCharExistColor;
+}
+
+void RecognizeInfo::setButtleResultCharExistColor(const QRgbEx &buttleResultCharExistColor)
+{
+    m_buttleResultCharExistColor = buttleResultCharExistColor;
+}
+
+QList<QRect> RecognizeInfo::buttleResultCharRectList() const
+{
+    return m_buttleResultCharRectList;
+}
+
+void RecognizeInfo::setButtleResultCharRectList(const QList<QRect> &buttleResultCharRectList)
+{
+    m_buttleResultCharRectList = buttleResultCharRectList;
+}
+
 QRect RecognizeInfo::buttleCompassRect() const
 {
     return m_buttleCompassRect;

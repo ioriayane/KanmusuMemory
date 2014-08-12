@@ -74,4 +74,24 @@
 , "buttleBackButtonRect": { "x": 435, "y": 190, "width": 150, "height": 110 }
 , "buttleCompassCheckColor": {"red": 51, "green": 24, "blue": 24, "alpha": 255 }
 , "buttleCompassRect": { "x": 380, "y": 140, "width": 40, "height": 100 }
+, "buttleResultCharRectList" : 
+[
+  { "x": 196, "y": 189, "width": 160, "height": 40 }
+, { "x": 196, "y": 234, "width": 160, "height": 40 }
+, { "x": 196, "y": 279, "width": 160, "height": 40 }
+, { "x": 196, "y": 324, "width": 160, "height": 40 }
+, { "x": 196, "y": 369, "width": 160, "height": 40 }
+, { "x": 196, "y": 414, "width": 160, "height": 40 }
+]
+, "buttleResultCharExistRectList" : 
+[
+  { "x": 205, "y": 195, "width": 24, "height": 26 }
+, { "x": 205, "y": 240, "width": 24, "height": 26 }
+, { "x": 205, "y": 285, "width": 24, "height": 26 }
+, { "x": 205, "y": 330, "width": 24, "height": 26 }
+, { "x": 205, "y": 375, "width": 24, "height": 26 }
+, { "x": 205, "y": 420, "width": 24, "height": 26 }
+]
+, "buttleResultCharExistColor": {"red": 255, "green": 255, "blue": 255, "alpha": 255, "border": 200 }
+, "m_buttleResultCharExistBinBorder": 180
 }
