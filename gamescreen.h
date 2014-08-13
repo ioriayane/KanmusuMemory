@@ -66,6 +66,8 @@ public:
     ScreenType screenType() const;
     bool isVisible(PartType partType) const;
     bool isContainMajorDamageShip() const;
+    QRgb getCurrentFleetFactor() const;
+    bool isChangedCurrentFleet(QRgb prevFactor);
 
     int getClickExpeditionItemFleetNo(const QPointF &pos) const;
     void getExpeditionTime(qint64 *total, qint64 *remain);

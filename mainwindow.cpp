@@ -82,6 +82,7 @@ public:
     void setFullScreen();
     void setGameSize(qreal factor);
     void checkMajorDamageShip(const QPointF &pos, bool force = false);
+    void viewMajorDamageShip(const QImage &img, const GameScreen &gameScreen, QLabel *label);
     void checkExpeditionRemainTime(const QPointF &pos);
 
     QList<int> bakSplitterSizes;    //幅のサイズ保存用にとっておく。（非表示だと0になってしまうから）
@@ -138,6 +139,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
 
     //戦績報告を非表示
     ui.viewButtleResult->setVisible(false);
+    ui.viewButtleResult2->setVisible(false);
     setButtleResultPosition();
 
     ///////////////////////////////////////////////////////////////
@@ -700,7 +702,9 @@ void MainWindow::Private::openSettingDialog()
     dlg.setDisableContextMenu(settings.value(SETTING_GENERAL_DISABLE_CONTEXT_MENU, false).toBool());
     dlg.setDisableExitShortcut(settings.value(SETTING_GENERAL_DISABLE_EXIT, DISABLE_EXIT_DEFAULT).toBool());
     dlg.setViewButtleResult(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool());
+    dlg.setOperatingCombinedFleet(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_COMBINED), true).toBool());
     dlg.setButtleResultPosition(static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt()));
+    dlg.setButtleResultDirection(static_cast<QBoxLayout::Direction>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_DIRECTION), 2).toInt()));
     dlg.setButtleResultOpacity(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal());
     dlg.setTimerAutoStart(settings.value(QStringLiteral(SETTING_GENERAL_TIMER_AUTO_START), true).toBool());
     settings.beginGroup(QStringLiteral(SETTING_TIMER));
@@ -721,16 +725,16 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_DISABLE_CONTEXT_MENU, dlg.disableContextMenu());
         settings.setValue(SETTING_GENERAL_DISABLE_EXIT, dlg.disableExitShortcut());
         settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT, dlg.viewButtleResult());
+        settings.setValue(SETTING_GENERAL_BUTTLE_RESULT_COMBINED, dlg.operatingCombinedFleet());
         settings.setValue(SETTING_GENERAL_BUTTLE_RESULT_POSITION, static_cast<int>(dlg.buttleResultPosition()));
+        settings.setValue(SETTING_GENERAL_BUTTLE_RESULT_DIRECTION, static_cast<int>(dlg.buttleResultDirection()));
         settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY, dlg.buttleResultOpacity());
         settings.setValue(SETTING_GENERAL_TIMER_AUTO_START, dlg.timerAutoStart());
 
         //戦果報告の表示位置などを更新
         ui.viewButtleResult->setVisible(ui.viewButtleResult->isVisible() & dlg.viewButtleResult());
+        ui.viewButtleResult2->setVisible(ui.viewButtleResult2->isVisible() & dlg.viewButtleResult());
         setButtleResultPosition();
-        if(ui.viewButtleResult->isVisible()){
-            checkMajorDamageShip(QPointF(0,0), true);
-        }
 
         //タイマーの時間でつぶやく
         if(m_timerDialog != NULL){
@@ -1224,79 +1228,95 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
         //録画中は表示しないがONで録画中
         return;
     }
-    qreal opacity = settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal();
+//    qreal opacity = settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal();
 
-    bool old = ui.viewButtleResult->isVisible();
+    bool old1 = ui.viewButtleResult->isVisible();
+    bool old2 = ui.viewButtleResult2->isVisible();
     ui.viewButtleResult->setVisible(false);
+    ui.viewButtleResult2->setVisible(false);
     QImage img = ui.webView->capture(false);
-    ui.viewButtleResult->setVisible(old);
+    ui.viewButtleResult->setVisible(old1);
+    ui.viewButtleResult2->setVisible(old2);
     if(img.isNull()){
         return;
     }
 
+    static QRgb prevFleetFactor = qRgb(0,0,0);
     GameScreen gameScreen(img, &m_recognizeInfo);
     switch(gameScreen.screenType()){
     case GameScreen::ButtleResultScreen:
         if(!ui.viewButtleResult->isVisible() || force){
             //非表示→表示
-            QImage background;
-            if(gameScreen.isContainMajorDamageShip()){
-                //大破が含まれるっぽい
-                background.load(":/resources/ButtleResultBackgroundRed.png");
-            }else{
-                background.load(":/resources/ButtleResultBackgroundBlue.png");
+            viewMajorDamageShip(img, gameScreen, ui.viewButtleResult);
+
+            //現在の艦隊因子を保存
+            prevFleetFactor = gameScreen.getCurrentFleetFactor();
+        }else{
+            //こっちはタイミングで真っ黒になるので撮り直しOK
+
+            //連合艦隊運用設定ONのときだけ
+            if(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_COMBINED), true).toBool()){
+                //既に表示してるので艦隊が切り替わったか（連合艦隊のとき）
+                QRgb currentFleetFactor = gameScreen.getCurrentFleetFactor();
+                if(prevFleetFactor != currentFleetFactor){
+                    viewMajorDamageShip(img, gameScreen, ui.viewButtleResult2);
+                    prevFleetFactor = currentFleetFactor;
+                }
             }
-            QImage buttle(":/resources/ButtleResultBackgroundTrans.png");
-            QPainter painter(&buttle);
-            painter.setOpacity(opacity);
-            painter.drawImage(0, 0, background);
-            painter.drawImage(20, 20, img.scaled(300, 180, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-            ui.viewButtleResult->setPixmap(QPixmap::fromImage(buttle));
-            ui.viewButtleResult->setWindowOpacity(0.5);
-            ui.viewButtleResult->setVisible(true);
         }
+//        qDebug() << "current fleet facotr:" << currentFleetFactor << "," << gameScreen.getCurrentFleetFactor();
         break;
 
     case GameScreen::GoOrBackScreen:
     {
         //進撃or撤退
         QRect game_rect = ui.webView->getGameRect();
-#if 0
-        //思ったより当たり判定でかいからボタン単位は面倒なだけ
-        QRect go_rect(game_rect.x() + BUTTLE_GO_BUTTON_RECT.x()
-                      , game_rect.y() + BUTTLE_GO_BUTTON_RECT.y()
-                      , BUTTLE_GO_BUTTON_RECT.width()
-                      , BUTTLE_GO_BUTTON_RECT.height());
-        QRect back_rect(game_rect.x() + BUTTLE_BACK_BUTTON_RECT.x()
-                        , game_rect.y() + BUTTLE_BACK_BUTTON_RECT.y()
-                        , BUTTLE_BACK_BUTTON_RECT.width()
-                        , BUTTLE_BACK_BUTTON_RECT.height());
-        if(go_rect.contains(pos.x(), pos.y()) || back_rect.contains(pos.x(), pos.y())){
-#else
-        QRect button_rect(game_rect.x() + BUTTLE_GO_OR_BACK_RECT.x()
-                          , game_rect.y() + BUTTLE_GO_OR_BACK_RECT.y()
-                          , BUTTLE_GO_OR_BACK_RECT.width()
-                          , BUTTLE_GO_OR_BACK_RECT.height());
+        QRect button_rect(game_rect.x() + m_recognizeInfo.buttleGoOrBackRect().x()
+                          , game_rect.y() + m_recognizeInfo.buttleGoOrBackRect().y()
+                          , m_recognizeInfo.buttleGoOrBackRect().width()
+                          , m_recognizeInfo.buttleGoOrBackRect().height());
         if(button_rect.contains(pos.x(), pos.y())){
-#endif
-        //判定範囲内をクリックしてたら消す
+            //判定範囲内をクリックしてたら消す
             ui.viewButtleResult->setVisible(false);
+            ui.viewButtleResult2->setVisible(false);
         }
         break;
     }
     case GameScreen::TurnCompassScreen:
         //羅針盤を回す
         ui.viewButtleResult->setVisible(false);
+        ui.viewButtleResult2->setVisible(false);
         break;
 
     default:
         if(gameScreen.isVisible(GameScreen::HeaderPart)){
             //ヘッダーが表示されてたら母港画面
             ui.viewButtleResult->setVisible(false);
+            ui.viewButtleResult2->setVisible(false);
         }
         break;
     }
 
+}
+//戦果報告画面のコピーを表示
+void MainWindow::Private::viewMajorDamageShip(const QImage &img, const GameScreen &gameScreen, QLabel *label)
+{
+    qreal opacity = settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal();
+    QImage background;
+    if(gameScreen.isContainMajorDamageShip()){
+        //大破が含まれるっぽい
+        background.load(":/resources/ButtleResultBackgroundRed.png");
+    }else{
+        background.load(":/resources/ButtleResultBackgroundBlue.png");
+    }
+    QImage buttle(":/resources/ButtleResultBackgroundTrans.png");
+    QPainter painter(&buttle);
+    painter.setOpacity(opacity);
+    painter.drawImage(0, 0, background);
+    painter.drawImage(20, 20, img.scaled(300, 180, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    label->setPixmap(QPixmap::fromImage(buttle));
+    label->setWindowOpacity(0.5);
+    label->setVisible(true);
 }
 //遠征の残り時間を調べる
 void MainWindow::Private::checkExpeditionRemainTime(const QPointF &pos)
@@ -1446,7 +1466,12 @@ void MainWindow::Private::makeDialog()
 void MainWindow::Private::setButtleResultPosition()
 {
     SettingsDialog::ButtleResultPosition position = static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt());
+    QBoxLayout::Direction direction = static_cast<QBoxLayout::Direction>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_DIRECTION), 2).toInt());
 
+    //方向
+    ui.buttleResultLayout->setDirection(direction);
+
+    //位置
     switch(position){
     case SettingsDialog::LeftTop:
         ui.additionalInfoHSpacerLeft->changeSize(0, 0, QSizePolicy::Minimum, QSizePolicy::Minimum);

@@ -34,8 +34,10 @@ public:
     Private(const QImage &image, GameScreen *parent, RecognizeInfo *recognizeInfo);
     bool isVisible(PartType partType) const;
     void click(WebView *webView, GameScreen::PartType partType, GameScreen::WaitInterval waitInterval);
-    bool isContainMajorDamageShip() const;
+    bool isContainMajorDamageShip();
     bool checkTurnCompassScreen() const;
+    bool isChangedCurrentFleet(QRgb prevFactor) const;
+
 
     int getClickExpeditionItemFleetNo(const QPointF &pos);
     void getExpeditionTime(qint64 *total, qint64 *remain);
@@ -61,6 +63,7 @@ private:
 
 public:
     GameScreen::ScreenType screenType;
+    QRgb currentFleetFactor;        //戦果報告画面で現在の艦隊を示す因子（次に取得したときに比較して使う）
 };
 
 GameScreen::Private::Private(const QImage &image, GameScreen *parent, RecognizeInfo *recogExpediInfo)
@@ -86,10 +89,12 @@ void GameScreen::Private::detectScreenType()
         //カタログ画面か
         setScreenType(CatalogScreen);
 
-    }else if(fuzzyCompare(color(BUTTLE_RESULT_RECT1), BUTTLE_RESULT_CHECK_COLOR1, 0x10)
-             && fuzzyCompare(color(BUTTLE_RESULT_RECT2), BUTTLE_RESULT_CHECK_COLOR2, 0x10)) {
+    }else if(fuzzyCompare(color(recognizeInfo->buttleResultRect1()), recognizeInfo->buttleResultCheckColor1(), 0x10)
+             && fuzzyCompare(color(recognizeInfo->buttleResultRect2()), recognizeInfo->buttleResultCheckColor2(), 0x10)) {
         //戦果画面
         setScreenType(ButtleResultScreen);
+        //現在の艦隊因子の保存
+        currentFleetFactor = color(this->recognizeInfo->buttleResultFleetChangeRect());
 
 #if 0
     }else if(fuzzyCompare(color(BUTTLE_RECT1), BUTTLE_DAYTIME_CHECK_COLOR1, 10)
@@ -109,7 +114,7 @@ void GameScreen::Private::detectScreenType()
 //                     << qRed(rgb2) << "," << qGreen(rgb2) << "," << qBlue(rgb2);
         setScreenType(NightButtleScreen);
 #endif
-    }else if(fuzzyCompare(color(BUTTLE_GO_OR_BACK_RECT), BUTTLE_GO_OR_BACK_CHECK_COLOR)){
+    }else if(fuzzyCompare(color(recognizeInfo->buttleGoOrBackRect()), recognizeInfo->buttleGoOrBackCheckColor())){
         //戦闘後（進撃・撤退）選択画面
         setScreenType(GoOrBackScreen);
 
@@ -185,27 +190,50 @@ void GameScreen::Private::click(WebView *webView, GameScreen::PartType partType,
     }
 }
 //戦果報告画面で大破が含まれるか
-bool GameScreen::Private::isContainMajorDamageShip() const
+bool GameScreen::Private::isContainMajorDamageShip()
 {
     bool ret = false;
     if(screenType == GameScreen::ButtleResultScreen){
 //        qDebug() << " Buttle Result";
-        int y[] = {189, 234, 279, 324, 369, 414};
 
         QImage mask_image(":/resources/MajorDamageMask.png");
         QImage imagework(mask_image);
         QPainter painter(&imagework);
-        for(int yi=0; yi<6; yi++){
-            painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-            painter.drawImage(0, 0, mask_image);
-            painter.setCompositionMode(QPainter::RasterOp_SourceAndDestination);
-            painter.drawImage(0, 0, image, 196, y[yi]);
+        QImage imageBin(image);
 
-//            QRgb rgb = color(imagework, BUTTLE_RESULT_MAJOR_DAMAGE_RECT);
-//            qDebug() << yi << "  color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
-//                     << ":" << fuzzyCompare(color(imagework, BUTTLE_RESULT_MAJOR_DAMAGE_RECT), BUTTLE_RESULT_MAJOR_DAMAGE_CHECK_COLOR, 5);
+        //2値化
+        imageBinarization(&imageBin, imageBin.rect(), recognizeInfo->buttleResultCharExistBinBorder(), qRgb(255,255,255), qRgb(0,0,0));
 
-            ret |= fuzzyCompare(color(imagework, BUTTLE_RESULT_MAJOR_DAMAGE_RECT), BUTTLE_RESULT_MAJOR_DAMAGE_CHECK_COLOR, 5);
+        int i = 0;
+        foreach (QRect rect, recognizeInfo->buttleResultCharRectList()) {
+            //艦娘バナーがあるか
+            if(fuzzyCompare(color(imageBin, recognizeInfo->buttleResultCharRectList().at(i))
+                            , recognizeInfo->buttleResultCharExistColor().rgb
+                            , recognizeInfo->buttleResultCharExistColor().border)){
+                //あったので判定
+                painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+                painter.drawImage(0, 0, mask_image);
+                painter.setCompositionMode(QPainter::RasterOp_SourceAndDestination);
+                painter.drawImage(0, 0, image, rect.x(), rect.y());
+
+                ////            QRgb rgb = color(imagework, BUTTLE_RESULT_MAJOR_DAMAGE_RECT);
+                ////            qDebug() << yi << "  color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
+                ////                     << ":" << fuzzyCompare(color(imagework, BUTTLE_RESULT_MAJOR_DAMAGE_RECT), BUTTLE_RESULT_MAJOR_DAMAGE_CHECK_COLOR, 5);
+
+                ret |= fuzzyCompare(color(imagework, recognizeInfo->buttleResultMajorDamageRect()), recognizeInfo->buttleResultMajorDamageCheckColor(), 5);
+
+//                QRgb rgb = color(imageBin, recognizeInfo->buttleResultCharRectList().at(i));
+//                qDebug() << " exist:" << i << "  color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
+//                         << "/" << qRed(recognizeInfo->buttleResultCharExistColor().rgb) << "," << qGreen(recognizeInfo->buttleResultCharExistColor().rgb) << "," << qBlue(recognizeInfo->buttleResultCharExistColor().rgb)
+//                            << "/" << recognizeInfo->buttleResultCharExistColor().border;
+//            }else{
+//                QRgb rgb = color(imageBin, recognizeInfo->buttleResultCharRectList().at(i));
+//                qDebug() << " not exist:" << i << "  color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
+//                            << "/" << qRed(recognizeInfo->buttleResultCharExistColor().rgb) << "," << qGreen(recognizeInfo->buttleResultCharExistColor().rgb) << "," << qBlue(recognizeInfo->buttleResultCharExistColor().rgb)
+//                               << "/" << recognizeInfo->buttleResultCharExistColor().border;
+
+            }
+            i++;
         }
     }
     return ret;
@@ -216,12 +244,17 @@ bool GameScreen::Private::checkTurnCompassScreen() const
     QImage imagework(":/resources/CompassMask.png");
     QPainter painter(&imagework);
     painter.setCompositionMode(QPainter::RasterOp_SourceAndDestination);
-    painter.drawImage(0, 0, image, BUTTLE_COMPASS_RECT.x(), BUTTLE_COMPASS_RECT.y());
+    painter.drawImage(0, 0, image, recognizeInfo->buttleCompassRect().x(), recognizeInfo->buttleCompassRect().y());
 
 //    QRgb rgb = color(imagework, QRect(0, 0, imagework.width(), imagework.height()));
 //    qDebug() << "compass color:" << qRed(rgb) << "," << qGreen(rgb) << "," << qBlue(rgb)
 //             << ":" << fuzzyCompare(color(imagework, QRect(0, 0, imagework.width(), imagework.height())), BUTTLE_COMPASS_CHECK_COLOR, 5);
-    return fuzzyCompare(color(imagework, QRect(0, 0, imagework.width(), imagework.height())), BUTTLE_COMPASS_CHECK_COLOR, 5);
+    return fuzzyCompare(color(imagework, QRect(0, 0, imagework.width(), imagework.height())), recognizeInfo->buttleCompassCheckColor(), 5);
+}
+//戦果報告画面の艦隊が切り替わったか
+bool GameScreen::Private::isChangedCurrentFleet(QRgb prevFactor) const
+{
+    return fuzzyCompare(color(BUTTLE_RESULT_FLEET_CHANGE_RECT), prevFactor, 0x1);
 }
 //遠征画面でクリックしたアイテムの出撃艦隊番号
 int GameScreen::Private::getClickExpeditionItemFleetNo(const QPointF &pos)
@@ -438,6 +471,16 @@ bool GameScreen::isVisible(GameScreen::PartType partType) const
 bool GameScreen::isContainMajorDamageShip() const
 {
     return d->isContainMajorDamageShip();
+}
+//戦果報告画面で現在の艦隊を示す因子
+QRgb GameScreen::getCurrentFleetFactor() const
+{
+    return d->currentFleetFactor;
+}
+//戦果報告画面で艦隊が切り替わったか判定
+bool GameScreen::isChangedCurrentFleet(QRgb prevFactor)
+{
+    return d->isChangedCurrentFleet(prevFactor);
 }
 //遠征画面でどのアイテムをクリックしたか
 int GameScreen::getClickExpeditionItemFleetNo(const QPointF &pos) const
