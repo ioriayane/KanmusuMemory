@@ -136,9 +136,9 @@ if($OS eq "win"){
 
 	# Qtのディレクトリ
 	if($PTRSIZE_NAME eq "x86"){
-		$QTDIR="C:\\Qt\\Qt5.2.1vs12-32\\5.2.1\\msvc2012\\";
+		$QTDIR="C:\\Qt\\Qt5.3.1vs13-32\\5.3\\msvc2013\\";
 	}else{
-		$QTDIR="C:\\Qt\\Qt5.2.1vs12-64\\5.2.1\\msvc2012_64\\";
+		$QTDIR="C:\\Qt\\Qt5.3.1vs13-64\\5.3\\msvc2013_64\\";
 	}
 	# Qtのバイナリの場所
 	$QTBIN="bin\\";
@@ -150,8 +150,8 @@ if($OS eq "win"){
 	$QTPLUGINS="plugins\\";
 
 	# 環境に依存したファイル
-	@PLATFORM_LIBS=("C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\VC\\redist\\" . $PTRSIZE_NAME . "\\Microsoft.VC110.CRT\\msvcp110.dll"
-				  , "C:\\Program Files (x86)\\Microsoft Visual Studio 11.0\\VC\\redist\\" . $PTRSIZE_NAME . "\\Microsoft.VC110.CRT\\msvcr110.dll"
+	@PLATFORM_LIBS=("C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\redist\\" . $PTRSIZE_NAME . "\\Microsoft.VC120.CRT\\msvcp120.dll"
+				  , "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\redist\\" . $PTRSIZE_NAME . "\\Microsoft.VC120.CRT\\msvcr120.dll"
 #				  , "..\\ssl_dll\\". $PTRSIZE_NAME . "\\libssl32.dll"
 				  , "..\\ssl_dll\\". $PTRSIZE_NAME . "\\libeay32.dll"
 				  , "..\\ssl_dll\\". $PTRSIZE_NAME . "\\ssleay32.dll"
@@ -160,9 +160,9 @@ if($OS eq "win"){
 
 	# 環境ごとのコマンドの設定
 	if($PTRSIZE_NAME eq "x86"){
-		$MAKE="c:\\qt\\Qt5.2.1vs12-32\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
+		$MAKE="c:\\qt\\Qt5.3.1vs13-32\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
 	}else{
-		$MAKE="c:\\qt\\Qt5.2.1vs12-64\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
+		$MAKE="c:\\qt\\Qt5.3.1vs13-64\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
 	}
 	$CP="copy";						# 単品コピー
 	$COPY="xcopy /S /E /I /Y";		# 複数コピー
@@ -180,16 +180,11 @@ if($OS eq "win"){
 		, "dsengine.dll"		#mediaservice
 		);
 
-	# 名称の修正
-	@temp = ();
-	foreach $name (@QT_MODULE_LIBRARY){
-		push(@temp, $name . ".dll");
-	}
-	@QT_MODULE_LIBRARY = @temp;
+	#自動で追加されるのでクリア
+	@QT_MODULE_LIBRARY = ();
 
 	# 追加（不足分）
 	push(@QT_MODULE_LIBRARY, "Qt0TwitterAPI.dll");
-	push(@QT_MODULE_LIBRARY, "Qt5MultimediaQuick_p.dll");
 
 }elsif($OS eq "ubuntu"){
 	################################################
@@ -210,9 +205,9 @@ if($OS eq "win"){
 
 	# Qtのディレクトリ
 	if($PTRSIZE == 32){
-		$QTDIR="~/Qt5.2.1/5.2.1/gcc/";
+		$QTDIR="~/Qt5.3.1/5.3/gcc/";
 	}else{
-		$QTDIR="~/Qt5.2.1/5.2.1/gcc_64/";
+		$QTDIR="~/Qt5.3.1/5.3/gcc_64/";
 	}
 	# Qtのバイナリの場所
 	$QTBIN="bin/";
@@ -249,7 +244,7 @@ if($OS eq "win"){
 	@temp = ();
 	foreach $name (@QT_MODULE_LIBRARY){
 		push(@temp, "lib" . $name . ".so.5");
-		push(@temp, "lib" . $name . ".so.5.2.1");
+		push(@temp, "lib" . $name . ".so.5.3.1");
 	}
 	@QT_MODULE_LIBRARY = @temp;
     
@@ -377,8 +372,9 @@ if($OS eq "win"){
 @libs=@QT_MODULE_LIBRARY;
 $lib_dir=$QTLIB;
 foreach $lib (@libs) {
-	system("$COPY $QTDIR$lib_dir$lib$libext $OUTDIR$OUTDIRLIB");
+	system("$COPY $QTDIR$lib_dir$lib $OUTDIR$OUTDIRLIB");
 }
+
 
 ##################################
 #setup platform depend files
