@@ -57,6 +57,7 @@
 #define SETTING_GENERAL_DISABLE_CONTEXT_MENU    "disable_context_menu"
 #define SETTING_GENERAL_DISABLE_EXIT        "disable_exit"
 #define SETTING_GENERAL_VIEW_BUTTLE_RESULT  "view_buttle_result"
+#define SETTING_GENERAL_BUTTLE_RESULT_COMBINED "buttle_result_combined"
 #define SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY  "view_buttle_result_opacity"
 #define SETTING_GENERAL_BUTTLE_RESULT_POSITION  "buttle_result_position"
 #define SETTING_GENERAL_BUTTLE_RESULT_DIRECTION "buttle_result_direction"

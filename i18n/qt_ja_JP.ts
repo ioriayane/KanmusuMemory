@@ -138,29 +138,29 @@
         <location line="+32"/>
         <location line="+13"/>
         <location line="+34"/>
-        <location line="+458"/>
+        <location line="+460"/>
         <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-571"/>
+        <location line="-573"/>
         <location line="+13"/>
-        <location line="+493"/>
+        <location line="+495"/>
         <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-553"/>
+        <location line="-555"/>
         <location line="+17"/>
-        <location line="+410"/>
+        <location line="+412"/>
         <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-512"/>
+        <location line="-514"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -170,7 +170,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+236"/>
+        <location line="+238"/>
         <source>Fleet Detail</source>
         <translation>艦隊詳細</translation>
     </message>
@@ -224,12 +224,12 @@ Please wait while a cup of coffee.</source>
         <translation>編成画面で船の詳細画面を表示してキャプチャーしてください。</translation>
     </message>
     <message>
-        <location line="-615"/>
+        <location line="-617"/>
         <source>failed to started recording.</source>
         <translation>録画を開始できませんでした。</translation>
     </message>
     <message>
-        <location line="+616"/>
+        <location line="+618"/>
         <location line="+27"/>
         <source>The following buttons appear when you capture.</source>
         <translation>キャプチャーすると次のボタンが表示されます。</translation>
@@ -241,7 +241,7 @@ Please wait while a cup of coffee.</source>
         <translation>完了するとキャプチャーした画像を結合します。</translation>
     </message>
     <message>
-        <location line="+712"/>
+        <location line="+719"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -834,7 +834,7 @@ Do you want to continue on an understanding of the security risk?
     <name>SettingsDialog</name>
     <message>
         <location filename="../settingsdialog.ui" line="+14"/>
-        <location filename="../ui_settingsdialog.h" line="+353"/>
+        <location filename="../ui_settingsdialog.h" line="+365"/>
         <source>Preferences ..</source>
         <translation>設定</translation>
     </message>
@@ -939,8 +939,20 @@ Do you want to continue on an understanding of the security risk?
         <translation>横（左から右）</translation>
     </message>
     <message>
-        <location line="-252"/>
-        <location filename="../ui_settingsdialog.h" line="-31"/>
+        <location line="+28"/>
+        <location filename="../ui_settingsdialog.h" line="+4"/>
+        <source>Operating a combined fleet.</source>
+        <translation>随伴護衛艦隊（連合艦隊）のコピーを表示する</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location filename="../ui_settingsdialog.h" line="+1"/>
+        <source>Other</source>
+        <translation>その他</translation>
+    </message>
+    <message>
+        <location line="-287"/>
+        <location filename="../ui_settingsdialog.h" line="-36"/>
         <source>Opacity</source>
         <translation>不透明度</translation>
     </message>
@@ -1053,7 +1065,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
-        <location filename="../settingsdialog.cpp" line="+189"/>
+        <location filename="../settingsdialog.cpp" line="+192"/>
         <source>Select save folder</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>

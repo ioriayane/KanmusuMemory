@@ -44,6 +44,7 @@ public:
     bool disableContextMenu;
     bool disableExitShortcut;
     bool viewButtleResult;
+    bool operatingCombinedFleet;
     SettingsDialog::ButtleResultPosition buttleResultPosition;
     QBoxLayout::Direction buttleResultDirection;
     qreal buttleResultOpacity;
@@ -74,6 +75,7 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         disableContextMenu = ui.disableContextMenu->isChecked();
         disableExitShortcut = ui.disableExitShortcut->isChecked();
         viewButtleResult = ui.viewButtleResultCheckBox->isChecked();
+        operatingCombinedFleet = ui.operatingCombinedFleetCheckBox->isChecked();
 
         switch(ui.buttleResultPositionComboBox->currentIndex()){
         case 0:     buttleResultPosition = LeftTop;     break;
@@ -123,6 +125,7 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
     connect(q, &SettingsDialog::disableContextMenuChanged, ui.disableContextMenu, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::disableExitShortcutChanged, ui.disableExitShortcut, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::viewButtleResultChanged, ui.viewButtleResultCheckBox, &QCheckBox::setChecked);
+    connect(q, &SettingsDialog::operatingCombinedFleetChanged, ui.operatingCombinedFleetCheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::buttleResultPositionChanged, [this](ButtleResultPosition position){
         int index = 1;
         switch(position){
@@ -289,6 +292,11 @@ bool SettingsDialog::viewButtleResult() const
     return d->viewButtleResult;
 }
 
+bool SettingsDialog::operatingCombinedFleet() const
+{
+    return d->operatingCombinedFleet;
+}
+
 SettingsDialog::ButtleResultPosition SettingsDialog::buttleResultPosition() const
 {
     return d->buttleResultPosition;
@@ -347,6 +355,13 @@ void SettingsDialog::setViewButtleResult(bool view)
     if(d->viewButtleResult == view) return;
     d->viewButtleResult = view;
     emit viewButtleResultChanged(view);
+}
+
+void SettingsDialog::setOperatingCombinedFleet(bool operate)
+{
+    if(d->operatingCombinedFleet == operate)    return;
+    d->operatingCombinedFleet = operate;
+    emit operatingCombinedFleetChanged(operate);
 }
 
 void SettingsDialog::setButtleResultPosition(SettingsDialog::ButtleResultPosition position)

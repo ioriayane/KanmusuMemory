@@ -46,6 +46,7 @@ public:
     bool disableContextMenu() const;
     bool disableExitShortcut() const;
     bool viewButtleResult() const;
+    bool operatingCombinedFleet() const;
     ButtleResultPosition buttleResultPosition() const;
     QBoxLayout::Direction buttleResultDirection() const;
     qreal buttleResultOpacity() const;
@@ -67,6 +68,7 @@ public slots:
     void setDisableContextMenu(bool disable);
     void setDisableExitShortcut(bool disable);
     void setViewButtleResult(bool view);
+    void setOperatingCombinedFleet(bool operate);
     void setButtleResultPosition(ButtleResultPosition position);
     void setButtleResultDirection(QBoxLayout::Direction direction);
     void setButtleResultOpacity(qreal opacity);
@@ -86,6 +88,7 @@ signals:
     void disableContextMenuChanged(bool disable);
     void disableExitShortcutChanged(bool disable);
     void viewButtleResultChanged(bool view);
+    void operatingCombinedFleetChanged(bool operate);
     void buttleResultPositionChanged(ButtleResultPosition position);
     void buttleResultDirectionChanged(QBoxLayout::Direction direction);
     void buttleResultOpacityChanged(qreal opacity);

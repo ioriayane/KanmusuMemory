@@ -702,6 +702,7 @@ void MainWindow::Private::openSettingDialog()
     dlg.setDisableContextMenu(settings.value(SETTING_GENERAL_DISABLE_CONTEXT_MENU, false).toBool());
     dlg.setDisableExitShortcut(settings.value(SETTING_GENERAL_DISABLE_EXIT, DISABLE_EXIT_DEFAULT).toBool());
     dlg.setViewButtleResult(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT), true).toBool());
+    dlg.setOperatingCombinedFleet(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_COMBINED), true).toBool());
     dlg.setButtleResultPosition(static_cast<SettingsDialog::ButtleResultPosition>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_POSITION), 1).toInt()));
     dlg.setButtleResultDirection(static_cast<QBoxLayout::Direction>(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_DIRECTION), 2).toInt()));
     dlg.setButtleResultOpacity(settings.value(QStringLiteral(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY), 0.75).toReal());
@@ -724,6 +725,7 @@ void MainWindow::Private::openSettingDialog()
         settings.setValue(SETTING_GENERAL_DISABLE_CONTEXT_MENU, dlg.disableContextMenu());
         settings.setValue(SETTING_GENERAL_DISABLE_EXIT, dlg.disableExitShortcut());
         settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT, dlg.viewButtleResult());
+        settings.setValue(SETTING_GENERAL_BUTTLE_RESULT_COMBINED, dlg.operatingCombinedFleet());
         settings.setValue(SETTING_GENERAL_BUTTLE_RESULT_POSITION, static_cast<int>(dlg.buttleResultPosition()));
         settings.setValue(SETTING_GENERAL_BUTTLE_RESULT_DIRECTION, static_cast<int>(dlg.buttleResultDirection()));
         settings.setValue(SETTING_GENERAL_VIEW_BUTTLE_RESULT_OPACITY, dlg.buttleResultOpacity());
@@ -1252,11 +1254,14 @@ void MainWindow::Private::checkMajorDamageShip(const QPointF &pos, bool force)
         }else{
             //こっちはタイミングで真っ黒になるので撮り直しOK
 
-            //既に表示してるので艦隊が切り替わったか（連合艦隊のとき）
-            QRgb currentFleetFactor = gameScreen.getCurrentFleetFactor();
-            if(prevFleetFactor != currentFleetFactor){
-                viewMajorDamageShip(img, gameScreen, ui.viewButtleResult2);
-                prevFleetFactor = currentFleetFactor;
+            //連合艦隊運用設定ONのときだけ
+            if(settings.value(QStringLiteral(SETTING_GENERAL_BUTTLE_RESULT_COMBINED), true).toBool()){
+                //既に表示してるので艦隊が切り替わったか（連合艦隊のとき）
+                QRgb currentFleetFactor = gameScreen.getCurrentFleetFactor();
+                if(prevFleetFactor != currentFleetFactor){
+                    viewMajorDamageShip(img, gameScreen, ui.viewButtleResult2);
+                    prevFleetFactor = currentFleetFactor;
+                }
             }
         }
 //        qDebug() << "current fleet facotr:" << currentFleetFactor << "," << gameScreen.getCurrentFleetFactor();
