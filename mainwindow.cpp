@@ -165,8 +165,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
 #endif
     //艦隊リスト
     connect(ui.captureFleetList, &QAction::triggered, [this](){
-        recordingThread.stopRecording();
-//        openManualCaptureFleetList();
+        openManualCaptureFleetList();
     });
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
