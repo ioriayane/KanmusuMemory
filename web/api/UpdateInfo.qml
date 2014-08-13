@@ -17,25 +17,25 @@ import QtQml 2.0
 
 QtObject {
 
-    property string version: "0.14"
-    property int versionCode: 15
+    property string version: "0.15"
+    property int versionCode: 16
     //最新版のダウンロードURL（複数あるときは「|」で区切る
     property variant downloadUrl: [
-        "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.14-win-x86.zip"    // Win 32bit
-        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.14-win-x86-64.zip"     // Win 64bit
-        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.14-mac.dmg"     // Mac 32bit
-        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.14-mac.dmg"     // Mac 64bit
-        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.14-ubuntu-x86.zip"
-        + "|http://relog.xii.jp/download/kancolle/kanmusumemory-0.14-ubuntu-x86.deb" //Linux 32bit
-        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.14-ubuntu-x86-64.zip"
-        + "|http://relog.xii.jp/download/kancolle/kanmusumemory-0.14-ubuntu-x86-64.deb" //Linux 64bit
+        "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15-win-x86.zip"    // Win 32bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15-win-x86-64.zip"     // Win 64bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15-mac.dmg"     // Mac 32bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15-mac.dmg"     // Mac 64bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15-ubuntu-x86.zip"
+        + "|http://relog.xii.jp/download/kancolle/kanmusumemory-0.15-ubuntu-x86.deb" //Linux 32bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15-ubuntu-x86-64.zip"
+        + "|http://relog.xii.jp/download/kancolle/kanmusumemory-0.15-ubuntu-x86-64.deb" //Linux 64bit
     ]
     property string webpageUrl: "http://relog.xii.jp/mt5r/2013/08/post-349.html"
-    property variant message: ["- Add function to fold the contents of the announcement timer dialog.\n- Add a hash tag to tweet announcement timer.\n- Also added to the configuration dialog of the ship setting to the entire note as to whether or not Tweet by notice timer.\n- A problem was fixed that increases each time the dialog Notice timer is re-open."
-        , "・お知らせタイマーダイアログの内容を折りたたむ機能追加\n・お知らせタイマーのつぶやきにハッシュタグを追加\n・お知らせタイマーでつぶやくかどうかの設定を艦メモ全体の設定ダイアログにも追加\n・お知らせタイマーのダイアログが開き直すたびに大きくなる不具合の修正\n"             //日本語の説明
+    property variant message: ["- Union fleet corresponding veterans report screen.\n- Recording function added.\n- some bug fix."
+        , "・戦果報告画面の連合艦隊対応\n・録画機能追加\n・戦果報告画面で艦隊の編成数が少くて飛鷹改二がMVPを取ったときの背景絵の袴の裾に反応して大破を誤認する不具合の修正\n・画像認識系の処理を一部見直し"             //日本語の説明
     ]
     property string lastFavoriteData: "2014050600"
     property string lastTimerSelectGuide: "2014031400"
-    property string lastRecognizeInfo: "2014060600"
+    property string lastRecognizeInfo: "2014081100"
 }
 
