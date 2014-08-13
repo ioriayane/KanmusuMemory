@@ -32,7 +32,7 @@ QtObject {
     ]
     property string webpageUrl: "http://relog.xii.jp/mt5r/2013/08/post-349.html"
     property variant message: ["- Union fleet corresponding veterans report screen.\n- Recording function added.\n- some bug fix."
-        , "・戦果報告画面の連合艦隊対応\n・録画機能追加\n・戦果報告画面で艦隊の編成数が少くて飛鷹改二がMVPを取ったときの背景絵の袴の裾に反応して大破を誤認する不具合の修正\n・画像認識系の処理を一部見直し"             //日本語の説明
+        , "・戦果報告画面の連合艦隊対応\n・録画機能追加\n・戦果報告画面で艦隊の編成数が少くて飛鷹改がMVPを取ったときの背景絵の袴の裾に反応して大破を誤認する不具合の修正\n・画像認識系の処理を一部見直し"             //日本語の説明
     ]
     property string lastFavoriteData: "2014050600"
     property string lastTimerSelectGuide: "2014031400"
