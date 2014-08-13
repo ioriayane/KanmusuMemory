@@ -1,7 +1,7 @@
 #ifndef AUDIORECORDER_H
 #define AUDIORECORDER_H
 
-#include <QAudioRecorder>
+#include <QtMultimedia/QAudioRecorder>
 
 class AudioRecorder : public QAudioRecorder
 {

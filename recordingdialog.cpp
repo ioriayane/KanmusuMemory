@@ -3,7 +3,7 @@
 
 #include <QFile>
 #include <QMessageBox>
-#include <QAudioRecorder>
+#include <QtMultimedia/QAudioRecorder>
 #include <QFileDialog>
 #include <QToolButton>
 

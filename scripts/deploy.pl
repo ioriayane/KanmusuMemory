@@ -254,12 +254,12 @@ if($OS eq "win"){
 
 	push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0");
 	push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0.1.0");
-	push(@QT_MODULE_LIBRARY, "libicudata.so.51");
-	push(@QT_MODULE_LIBRARY, "libicudata.so.51.1");
-	push(@QT_MODULE_LIBRARY, "libicui18n.so.51");
-	push(@QT_MODULE_LIBRARY, "libicui18n.so.51.1");
-	push(@QT_MODULE_LIBRARY, "libicuuc.so.51");
-	push(@QT_MODULE_LIBRARY, "libicuuc.so.51.1");
+	push(@QT_MODULE_LIBRARY, "libicudata.so.52");
+	push(@QT_MODULE_LIBRARY, "libicudata.so.52.1");
+	push(@QT_MODULE_LIBRARY, "libicui18n.so.52");
+	push(@QT_MODULE_LIBRARY, "libicui18n.so.52.1");
+	push(@QT_MODULE_LIBRARY, "libicuuc.so.52");
+	push(@QT_MODULE_LIBRARY, "libicuuc.so.52.1");
 	push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1");
 	push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1.0.0");
 
