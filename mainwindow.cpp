@@ -551,9 +551,12 @@ void MainWindow::Private::captureGame(bool andEdit)
 
     //戦績報告のプレビューを一時的に消してキャプチャー
     bool old_buttle_result = ui.viewButtleResult->isVisible();
+    bool old_buttle_result2 = ui.viewButtleResult2->isVisible();
     ui.viewButtleResult->setVisible(false);
+    ui.viewButtleResult2->setVisible(false);
     QImage img = ui.webView->capture();
     ui.viewButtleResult->setVisible(old_buttle_result);
+    ui.viewButtleResult2->setVisible(old_buttle_result2);
     if (img.isNull()){
         ui.statusBar->showMessage(tr("failed capture image"), STATUS_BAR_MSG_TIME);
         return;
