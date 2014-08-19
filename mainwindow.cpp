@@ -302,6 +302,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
             q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
         }else if(ui.webView->gameExists()){
             //フルスクリーンじゃなくてゲームがある
+            ui.recordLayout->setVisible(false);
             setSplitWindowVisiblity(false);
             q->setWindowState(q->windowState() ^ Qt::WindowFullScreen);
         }else{

@@ -17,22 +17,22 @@ import QtQml 2.0
 
 QtObject {
 
-    property string version: "0.15"
-    property int versionCode: 16
+    property string version: "0.15.1"
+    property int versionCode: 17
     //最新版のダウンロードURL（複数あるときは「|」で区切る
     property variant downloadUrl: [
-        "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15-win-x86.zip"    // Win 32bit
-        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15-win-x86-64.zip"     // Win 64bit
-        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15-mac.dmg"     // Mac 32bit
-        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15-mac.dmg"     // Mac 64bit
-        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15-ubuntu-x86.zip"
-        + "|http://relog.xii.jp/download/kancolle/kanmusumemory-0.15-ubuntu-x86.deb" //Linux 32bit
-        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15-ubuntu-x86-64.zip"
-        + "|http://relog.xii.jp/download/kancolle/kanmusumemory-0.15-ubuntu-x86-64.deb" //Linux 64bit
+        "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15.1-win-x86.zip"    // Win 32bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15.1-win-x86-64.zip"     // Win 64bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15.1-mac.dmg"     // Mac 32bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15.1-mac.dmg"     // Mac 64bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15.1-ubuntu-x86.zip"
+        + "|http://relog.xii.jp/download/kancolle/kanmusumemory-0.15.1-ubuntu-x86.deb" //Linux 32bit
+        , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15.1-ubuntu-x86-64.zip"
+        + "|http://relog.xii.jp/download/kancolle/kanmusumemory-0.15.1-ubuntu-x86-64.deb" //Linux 64bit
     ]
     property string webpageUrl: "http://relog.xii.jp/mt5r/2013/08/post-349.html"
-    property variant message: ["- Union fleet corresponding veterans report screen.\n- Recording function added.\n- some bug fix."
-        , "・戦果報告画面の連合艦隊対応\n・録画機能追加\n・戦果報告画面で艦隊の編成数が少くて飛鷹改がMVPを取ったときの背景絵の袴の裾に反応して大破を誤認する不具合の修正\n・画像認識系の処理を一部見直し"             //日本語の説明
+    property variant message: ["- bug fix."
+        , "・連合艦隊時の戦果方向のコピー（2つ目）がスクリーンショットに映り込む不具合の修正"             //日本語の説明
     ]
     property string lastFavoriteData: "2014050600"
     property string lastTimerSelectGuide: "2014031400"
