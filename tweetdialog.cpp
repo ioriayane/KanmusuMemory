@@ -22,7 +22,7 @@
 #include <QtTwitterAPI/oauth.h>
 #include <QtTwitterAPI/status.h>
 
-#include "../KanmusuMemoryTwitter/twitterinfo.h"
+#include "twitterinfo.h"
 
 class TweetDialog::Private
 {

@@ -38,3 +38,6 @@ Thumbs.db
 # Mac OS X
 .DS_Store
 KanmusuMemory.app/
+
+# Twitter Consumer Key and Secret
+twitterinfo.h
