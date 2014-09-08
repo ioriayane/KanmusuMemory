@@ -31,7 +31,7 @@ Html {
 
     Head {
         Meta { charset: "utf-8" }
-        Title { text: "KanmusuMemory Update check History" }
+        Title { text: "ShiroMemory Update check History" }
     }
     
     Body {

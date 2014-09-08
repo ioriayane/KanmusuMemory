@@ -60,7 +60,7 @@ void FileListFilterModel::update()
         if(year != pre_year || month != pre_month || date != pre_date){
 //            qDebug() << fileInfo.fileName() << "," << year << month << date;
             beginInsertRows(QModelIndex(), rowCount(), rowCount());
-            m_fileListFilter.append(FileListFilter(QString("kanmusu_%1-%2-%3*").arg(year).arg(month).arg(date)
+            m_fileListFilter.append(FileListFilter(QString("shiromusu_%1-%2-%3*").arg(year).arg(month).arg(date)
                                                    , QString("%1/%2/%3").arg(year).arg(month).arg(date)));
             endInsertRows();
         }

@@ -15,6 +15,7 @@
  */
 #include "settingsdialog.h"
 #include "ui_settingsdialog.h"
+#include "kanmusumemory_global.h"
 
 #include <QMessageBox>
 #include <QFileDialog>
@@ -66,37 +67,12 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
         savePath = ui.savePathEdit->text();
         unusedTwitter = ui.unusedTwittercheckBox->isChecked();
         savePng = ui.savePngCheckBox->isChecked();
-        maskAdmiralName = ui.maskAdmiralNameCheckBox->isChecked();
-        maskHqLevel = ui.maskHqLevelCheckBox->isChecked();
         proxyEnable = ui.proxyEnableCheckBox->isChecked();
         proxyHost = ui.proxyHost->text();
         proxyPort = ui.proxyPort->value();
         useCookie = ui.useCookieCheckBox->isChecked();
         disableContextMenu = ui.disableContextMenu->isChecked();
         disableExitShortcut = ui.disableExitShortcut->isChecked();
-        viewButtleResult = ui.viewButtleResultCheckBox->isChecked();
-        operatingCombinedFleet = ui.operatingCombinedFleetCheckBox->isChecked();
-
-        switch(ui.buttleResultPositionComboBox->currentIndex()){
-        case 0:     buttleResultPosition = LeftTop;     break;
-        case 1:     buttleResultPosition = RightTop;    break;
-        case 2:     buttleResultPosition = LeftBottom;  break;
-        case 3:     buttleResultPosition = RightBottom; break;
-        case 4:     buttleResultPosition = Center;      break;
-        default:    buttleResultPosition = RightTop;    break;
-        }
-        switch(ui.buttleResultOpacityComboBox->currentIndex()){
-        case 0:     buttleResultOpacity = 1.0;          break;
-        case 1:     buttleResultOpacity = 0.75;         break;
-        case 2:     buttleResultOpacity = 0.5;          break;
-        case 3:     buttleResultOpacity = 0.25;         break;
-        default:    buttleResultOpacity = 1.0;          break;
-        }
-        switch(ui.buttleResultDirectionComboBox->currentIndex()){
-        case 0:     buttleResultDirection = QBoxLayout::LeftToRight;    break;
-        case 1:     buttleResultDirection = QBoxLayout::TopToBottom;    break;
-        default:    buttleResultDirection = QBoxLayout::TopToBottom;    break;
-        }
 
         timerAutoStart = ui.timerAutoStartCheckBox->isChecked();
         tweetFinished = ui.tweetFinishedCheckBox->isChecked();
@@ -116,56 +92,24 @@ SettingsDialog::Private::Private(SettingsDialog *parent)
     connect(q, &SettingsDialog::savePathChanged, ui.savePathEdit, &QLineEdit::setText);
     connect(q, &SettingsDialog::unusedTwitterChanged, ui.unusedTwittercheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::savePngChanged, ui.savePngCheckBox, &QCheckBox::setChecked);
-    connect(q, &SettingsDialog::maskAdmiralNameChanged, ui.maskAdmiralNameCheckBox, &QCheckBox::setChecked);
-    connect(q, &SettingsDialog::maskHqLevelChanged, ui.maskHqLevelCheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::proxyEnableChanged, ui.proxyEnableCheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::proxyHostChanged, ui.proxyHost, &QLineEdit::setText);
     connect(q, &SettingsDialog::proxyPortChanged, ui.proxyPort, &QSpinBox::setValue);
     connect(q, &SettingsDialog::useCookieChanged, ui.useCookieCheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::disableContextMenuChanged, ui.disableContextMenu, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::disableExitShortcutChanged, ui.disableExitShortcut, &QCheckBox::setChecked);
-    connect(q, &SettingsDialog::viewButtleResultChanged, ui.viewButtleResultCheckBox, &QCheckBox::setChecked);
-    connect(q, &SettingsDialog::operatingCombinedFleetChanged, ui.operatingCombinedFleetCheckBox, &QCheckBox::setChecked);
-    connect(q, &SettingsDialog::buttleResultPositionChanged, [this](ButtleResultPosition position){
-        int index = 1;
-        switch(position){
-        case LeftTop:       index = 0;  break;
-        case RightTop:      index = 1;  break;
-        case LeftBottom:    index = 2;  break;
-        case RightBottom:   index = 3;  break;
-        case Center:        index = 4;  break;
-        default:            index = 1;  break;
-        }
-        ui.buttleResultPositionComboBox->setCurrentIndex(index);
-    });
-    connect(q, &SettingsDialog::buttleResultOpacityChanged, [this](qreal opacity){
-        if(opacity > 0.999){    //1.0
-            ui.buttleResultOpacityComboBox->setCurrentIndex(0);
-        }else if(opacity > 0.749){  //0.75
-            ui.buttleResultOpacityComboBox->setCurrentIndex(1);
-        }else if(opacity > 0.499){  //0.5
-            ui.buttleResultOpacityComboBox->setCurrentIndex(2);
-        }else if(opacity > 0.249){  //0.25
-            ui.buttleResultOpacityComboBox->setCurrentIndex(3);
-        }else{
-            ui.buttleResultOpacityComboBox->setCurrentIndex(0);
-        }
-    });
-    connect(q, &SettingsDialog::buttleResultDirectionChanged, [this](QBoxLayout::Direction direction){
-        int dir = 0;
-        switch(direction){
-        case QBoxLayout::LeftToRight:   dir = 0;    break;
-        case QBoxLayout::TopToBottom:   dir = 1;    break;
-        default:                        dir = 1;    break;
-        }
-        ui.buttleResultDirectionComboBox->setCurrentIndex(dir);
-    });
     connect(q, &SettingsDialog::timerAutoStartChanged, ui.timerAutoStartCheckBox, &QCheckBox::setChecked);
     connect(q, &SettingsDialog::tweetFinishedChanged, ui.tweetFinishedCheckBox, &QCheckBox::setChecked);
 
     QSpinBox * portNum = ui.proxyPort;
     portNum->setMinimum(1);
     portNum->setMaximum(65535);
+
+#ifdef SHIROCOLLE_VERSION
+    ui.label_5->setVisible(false);
+    ui.timerAutoStartCheckBox->setVisible(false);
+    ui.tweetFinishedCheckBox->setVisible(false);
+#endif
 }
 
 SettingsDialog::SettingsDialog(QWidget *parent)

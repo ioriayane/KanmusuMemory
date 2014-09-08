@@ -34,7 +34,7 @@
 #include <QSettings>
 
 #define RECOGNIZE_INFO_DOWNLOAD_FILE      QString("%1/recognizeinfo.json").arg(QStandardPaths::writableLocation(QStandardPaths::DataLocation))
-#define RECOGNIZE_INFO_DOWNLOAD_URL       QUrl("http://relog.xii.jp/download/kancolle/data/recognizeinfo.json")
+#define RECOGNIZE_INFO_DOWNLOAD_URL       QUrl("http://relog.xii.jp/download/shirocolle/data/recognizeinfo.json")
 #define TO_VALUE(array_at, key) QJsonObject(array_at.toObject()).value(key)
 #define TO_STRING(array_at, key) QJsonObject(array_at.toObject()).value(key).toString()
 #define TO_DOUBLE(array_at, key) QJsonObject(array_at.toObject()).value(key).toDouble()
@@ -357,7 +357,7 @@ void RecognizeInfo::updateFromInternet(const QString &lastUpdateDate)
     //リクエスト作成
     QNetworkRequest req;
     req.setUrl(RECOGNIZE_INFO_DOWNLOAD_URL);
-    req.setRawHeader("User-Agent", QString("KanmusuMemory %1").arg(KANMEMO_VERSION).toLatin1());
+    req.setRawHeader("User-Agent", QString("ShiromusuMemory %1").arg(KANMEMO_VERSION).toLatin1());
     //アクセス開始
     net->get(req);
 

@@ -127,7 +127,7 @@ Rectangle {
 
             if(timerData.lastUpdateDate > local_data.serial){
                 console.debug(" download update data")
-                Http.requestHttp("", "GET", "http://relog.xii.jp/download/kancolle/data/timerselectguide.json", true, responseHttp)
+                Http.requestHttp("", "GET", "http://relog.xii.jp/download/shirocolle/data/timerselectguide.json", true, responseHttp)
             }else{
                 console.debug("use local data")
                 //ローカルのデータを表示
@@ -135,7 +135,7 @@ Rectangle {
             }
         }else{
             console.debug(" download update data")
-            Http.requestHttp("", "GET", "http://relog.xii.jp/download/kancolle/data/timerselectguide.json", true, responseHttp)
+            Http.requestHttp("", "GET", "http://relog.xii.jp/download/shirocolle/data/timerselectguide.json", true, responseHttp)
         }
 
     }

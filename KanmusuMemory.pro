@@ -1,5 +1,5 @@
 TEMPLATE = app
-TARGET = KanmusuMemory
+TARGET = ShiromusuMemory
 QT       += core gui network webkitwidgets twitterapi multimedia
 CONFIG += c++11
 

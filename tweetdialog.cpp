@@ -67,7 +67,7 @@ TweetDialog::Private::Private(TweetDialog *parent)
         ui.charCountLabel->setText(QString("%1").arg(117 - len));
         ui.tweetButton->setEnabled(len > 0);
     });
-    ui.tweetTextEdit->setPlainText(tr(" #kancolle"));
+    ui.tweetTextEdit->setPlainText(tr(" #shirocolle"));
 
     connect(ui.tweetButton, &QPushButton::clicked, [this]() {
         //認証済みか確認

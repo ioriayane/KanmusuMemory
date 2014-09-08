@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>438</width>
-    <height>520</height>
+    <height>339</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -68,208 +68,69 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QCheckBox" name="maskAdmiralNameCheckBox">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Mask Admiral name</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="1">
-      <widget class="QCheckBox" name="maskHqLevelCheckBox">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Mask HQ level</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="1">
       <widget class="Line" name="line_6">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
-     <item row="6" column="1">
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Timer</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
       <widget class="QCheckBox" name="timerAutoStartCheckBox">
        <property name="text">
         <string>Auto Start (Provisional)</string>
        </property>
       </widget>
      </item>
-     <item row="8" column="1">
+     <item row="5" column="1">
+      <widget class="QCheckBox" name="tweetFinishedCheckBox">
+       <property name="text">
+        <string>Tweet a time-out</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
       <widget class="Line" name="line_5">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
-     <item row="9" column="0">
-      <widget class="QLabel" name="label_3">
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_7">
        <property name="text">
-        <string>Buttle result</string>
+        <string>Other</string>
        </property>
       </widget>
      </item>
-     <item row="9" column="1">
-      <widget class="QCheckBox" name="viewButtleResultCheckBox">
-       <property name="text">
-        <string>View buttle result</string>
-       </property>
-      </widget>
-     </item>
-     <item row="11" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <property name="bottomMargin">
-        <number>0</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Opacity</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="buttleResultOpacityComboBox">
-         <property name="currentIndex">
-          <number>1</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>100%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>75%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>50%</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>25%</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-     <item row="12" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>Position</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="buttleResultPositionComboBox">
-         <property name="currentText">
-          <string>RightTop</string>
-         </property>
-         <property name="currentIndex">
-          <number>1</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>LeftTop</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>RightTop</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>LeftBottom</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>RightBottom</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Center</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-     <item row="14" column="1">
-      <widget class="Line" name="line_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="15" column="1">
+     <item row="7" column="1">
       <widget class="QCheckBox" name="disableExitShortcut">
        <property name="text">
         <string>Disable exit(Ctrl+Q) shortcut</string>
        </property>
       </widget>
      </item>
-     <item row="16" column="1">
+     <item row="8" column="1">
       <widget class="Line" name="line_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
-     <item row="17" column="0">
+     <item row="9" column="0">
       <widget class="QLabel" name="proxyHostLabel_3">
        <property name="text">
         <string>Browser:</string>
        </property>
       </widget>
      </item>
-     <item row="17" column="1">
+     <item row="9" column="1">
       <widget class="QCheckBox" name="useCookieCheckBox">
        <property name="text">
         <string>Use Cookie(need to restart the Kanmemo)</string>
@@ -279,35 +140,35 @@
        </property>
       </widget>
      </item>
-     <item row="18" column="1">
+     <item row="10" column="1">
       <widget class="QCheckBox" name="disableContextMenu">
        <property name="text">
         <string>Disable coontext menu</string>
        </property>
       </widget>
      </item>
-     <item row="19" column="1">
+     <item row="11" column="1">
       <widget class="Line" name="line">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
       </widget>
      </item>
-     <item row="20" column="0">
+     <item row="12" column="0">
       <widget class="QLabel" name="proxyHostLabel_2">
        <property name="text">
         <string>Proxy:</string>
        </property>
       </widget>
      </item>
-     <item row="20" column="1">
+     <item row="12" column="1">
       <widget class="QCheckBox" name="proxyEnableCheckBox">
        <property name="text">
         <string>Enable</string>
        </property>
       </widget>
      </item>
-     <item row="21" column="1">
+     <item row="13" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_5">
        <item>
         <widget class="QLabel" name="proxyHostLabel">
@@ -321,7 +182,7 @@
        </item>
       </layout>
      </item>
-     <item row="22" column="1">
+     <item row="14" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QLabel" name="proxyPortLabel">
@@ -355,78 +216,6 @@
        </item>
       </layout>
      </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Timer</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="1">
-      <widget class="QCheckBox" name="tweetFinishedCheckBox">
-       <property name="text">
-        <string>Tweet a time-out</string>
-       </property>
-      </widget>
-     </item>
-     <item row="13" column="1">
-      <layout class="QHBoxLayout" name="horizontalLayout_6">
-       <item>
-        <widget class="QLabel" name="label_6">
-         <property name="text">
-          <string>Direction</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="buttleResultDirectionComboBox">
-         <property name="currentText">
-          <string>TopToBottom</string>
-         </property>
-         <property name="currentIndex">
-          <number>1</number>
-         </property>
-         <item>
-          <property name="text">
-           <string>LeftToRight</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>TopToBottom</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
-     </item>
-     <item row="10" column="1">
-      <widget class="QCheckBox" name="operatingCombinedFleetCheckBox">
-       <property name="text">
-        <string>Operating a combined fleet.</string>
-       </property>
-      </widget>
-     </item>
-     <item row="15" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>Other</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
@@ -443,7 +232,6 @@
   <tabstop>selectPathButton</tabstop>
   <tabstop>savePngCheckBox</tabstop>
   <tabstop>unusedTwittercheckBox</tabstop>
-  <tabstop>maskAdmiralNameCheckBox</tabstop>
   <tabstop>proxyHost</tabstop>
   <tabstop>proxyPort</tabstop>
   <tabstop>buttonBox</tabstop>

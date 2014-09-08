@@ -17,8 +17,8 @@ import QtQml 2.0
 
 QtObject {
 
-    property string version: "0.15.1"
-    property int versionCode: 17
+    property string version: "0.1.0"
+    property int versionCode: 1
     //最新版のダウンロードURL（複数あるときは「|」で区切る
     property variant downloadUrl: [
         "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15.1-win-x86.zip"    // Win 32bit
@@ -30,12 +30,12 @@ QtObject {
         , "http://relog.xii.jp/download/kancolle/KanmusuMemory-0.15.1-ubuntu-x86-64.zip"
         + "|http://relog.xii.jp/download/kancolle/kanmusumemory-0.15.1-ubuntu-x86-64.deb" //Linux 64bit
     ]
-    property string webpageUrl: "http://relog.xii.jp/mt5r/2013/08/post-349.html"
-    property variant message: ["- bug fix."
-        , "・連合艦隊時の戦果方向のコピー（2つ目）がスクリーンショットに映り込む不具合の修正"             //日本語の説明
+    property string webpageUrl: "http://relog.xii.jp/"
+    property variant message: ["- new."
+        , "・new"             //日本語の説明
     ]
-    property string lastFavoriteData: "2014050600"
-    property string lastTimerSelectGuide: "2014031400"
-    property string lastRecognizeInfo: "2014081100"
+    property string lastFavoriteData: "2014090800"
+    property string lastTimerSelectGuide: "2013031400"
+    property string lastRecognizeInfo: "2013081100"
 }
 

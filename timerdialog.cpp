@@ -81,8 +81,9 @@ TimerDialog::TimerDialog(QWidget *parent
     connect(m_viewer->rootObject(), &QQuickItem::heightChanged, [this](){
         resize(m_viewer->rootObject()->width(), m_viewer->rootObject()->height());
     });
-
+#ifndef SHIROCOLLE_VERSION
     m_timer.start(10000);
+#endif
 }
 
 TimerDialog::~TimerDialog()

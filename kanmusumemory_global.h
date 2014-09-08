@@ -16,11 +16,13 @@
 #ifndef KANMUSUMEMORY_GLOBAL_H
 #define KANMUSUMEMORY_GLOBAL_H
 
-#define KANMEMO_NAME "KanmusuMemory"
-#define KANMEMO_NAME_FAV "KanmusuMemoryFav"
-#define KANMEMO_PROJECT "KanmemoProject"
-#define KANMEMO_VERSION "0.15.1"
-#define KANMEMO_VERSION_CODE 17
+#define SHIROCOLLE_VERSION
+
+#define KANMEMO_NAME "ShiromusuMemory"
+#define KANMEMO_NAME_FAV "ShiromusuMemoryFav"
+#define KANMEMO_PROJECT "ShiromemoProject"
+#define KANMEMO_VERSION "0.1.0"
+#define KANMEMO_VERSION_CODE 1
 #define KANMEMO_DEVELOPERS (QStringList() \
     << "@IoriAYANE"\
     << "@task_jp"\

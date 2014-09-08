@@ -93,7 +93,7 @@ Rectangle {
             //ファイル一覧をモデルで取得
             model: FileListFilterModel {
                 id: fileListFilterModel
-                nameFilters: ["kanmusu_*.png", "kanmusu_*.jpg"]
+                nameFilters: ["shiromusu_*.png", "shiromusu_*.jpg"]
                 onNameFiltersChanged: folder = memoryPath
             }
             //個々のレイアウト

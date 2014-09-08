@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ja_JP">
+<TS version="2.1" language="ja_JP">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -10,10 +10,14 @@
         <translation>艦メモ</translation>
     </message>
     <message>
+        <source>KanMemo -Kanmusu Memory-</source>
+        <translation type="vanished">艦メモ ～艦娘メモリーズ～</translation>
+    </message>
+    <message>
         <location line="+34"/>
         <location filename="../ui_aboutdialog.h" line="+1"/>
-        <source>KanMemo -Kanmusu Memory-</source>
-        <translation>艦メモ ～艦娘メモリーズ～</translation>
+        <source>ShiroMemo -Shiromusu Memory-</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+32"/>
@@ -30,8 +34,8 @@
     <message>
         <location line="+7"/>
         <location filename="../ui_aboutdialog.h" line="+1"/>
-        <source>Copyright &amp;copy; 2013-2014 KanMemo Project.</source>
-        <translation></translation>
+        <source>Copyright &amp;copy; 2014 ShiroMemo Project.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Copyright 2013 KanMemo Project.</source>
@@ -116,7 +120,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+423"/>
+        <location filename="../mainwindow.cpp" line="+434"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -130,7 +134,7 @@
         <translation type="obsolete">艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+127"/>
+        <location line="+132"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
@@ -224,12 +228,12 @@ Please wait while a cup of coffee.</source>
         <translation>編成画面で船の詳細画面を表示してキャプチャーしてください。</translation>
     </message>
     <message>
-        <location line="-617"/>
+        <location line="-625"/>
         <source>failed to started recording.</source>
         <translation>録画を開始できませんでした。</translation>
     </message>
     <message>
-        <location line="+618"/>
+        <location line="+626"/>
         <location line="+27"/>
         <source>The following buttons appear when you capture.</source>
         <translation>キャプチャーすると次のボタンが表示されます。</translation>
@@ -249,18 +253,16 @@ Do you want to continue on an understanding of the security risk?
 以下のエラーが発生しています。アクセスを継続しますか？</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="+20"/>
-        <location filename="../ui_mainwindow.h" line="+477"/>
         <source>Kan Memo -KanMusu Memory-</source>
-        <translation>艦メモ ～艦娘メモリーズ～</translation>
+        <translation type="vanished">艦メモ ～艦娘メモリーズ～</translation>
     </message>
     <message>
         <source>about:blank</source>
         <translation type="obsolete">about:blank</translation>
     </message>
     <message>
-        <location line="+380"/>
-        <location filename="../ui_mainwindow.h" line="+91"/>
+        <location filename="../mainwindow.ui" line="+400"/>
+        <location filename="../ui_mainwindow.h" line="+568"/>
         <source>&amp;File</source>
         <translation>ファイル(&amp;F)</translation>
     </message>
@@ -663,8 +665,14 @@ Do you want to continue on an understanding of the security risk?
         <translation></translation>
     </message>
     <message>
-        <location line="-544"/>
-        <location filename="../ui_mainwindow.h" line="-4"/>
+        <location line="-764"/>
+        <location filename="../ui_mainwindow.h" line="-87"/>
+        <source>Shiro Memo -ShiroMusu Memory-</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+220"/>
+        <location filename="../ui_mainwindow.h" line="+83"/>
         <source>Record start/stop</source>
         <translation>録画(開始/停止)</translation>
     </message>
@@ -834,7 +842,7 @@ Do you want to continue on an understanding of the security risk?
     <name>SettingsDialog</name>
     <message>
         <location filename="../settingsdialog.ui" line="+14"/>
-        <location filename="../ui_settingsdialog.h" line="+365"/>
+        <location filename="../ui_settingsdialog.h" line="+248"/>
         <source>Preferences ..</source>
         <translation>設定</translation>
     </message>
@@ -865,20 +873,18 @@ Do you want to continue on an understanding of the security risk?
         <translation>ツイッター連携を使用しない</translation>
     </message>
     <message>
-        <location line="+40"/>
-        <location filename="../ui_settingsdialog.h" line="+3"/>
+        <location line="+21"/>
+        <location filename="../ui_settingsdialog.h" line="+2"/>
         <source>Auto Start (Provisional)</source>
         <translation>遠征の時間を自動取得して開始する（仮）</translation>
     </message>
     <message>
-        <location line="+84"/>
-        <location filename="../ui_settingsdialog.h" line="+11"/>
         <source>Position</source>
-        <translation>表示位置</translation>
+        <translation type="vanished">表示位置</translation>
     </message>
     <message>
-        <location line="+78"/>
-        <location filename="../ui_settingsdialog.h" line="+11"/>
+        <location line="+42"/>
+        <location filename="../ui_settingsdialog.h" line="+4"/>
         <source>Browser:</source>
         <translation>ブラウザ</translation>
     </message>
@@ -907,124 +913,90 @@ Do you want to continue on an understanding of the security risk?
         <translation>プロキシポート</translation>
     </message>
     <message>
-        <location line="+32"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
+        <location line="-110"/>
+        <location filename="../ui_settingsdialog.h" line="-11"/>
         <source>Timer</source>
         <translation>お知らせタイマー</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
+        <location line="+14"/>
+        <location filename="../ui_settingsdialog.h" line="+2"/>
         <source>Tweet a time-out</source>
         <translation>時間になったらツイッターでお知らせする</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>Direction</source>
-        <translation>表示方向</translation>
+        <translation type="vanished">表示方向</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <location line="+12"/>
-        <location filename="../ui_settingsdialog.h" line="+4"/>
-        <location line="+2"/>
         <source>TopToBottom</source>
-        <translation>縦（上から下）</translation>
+        <translation type="vanished">縦（上から下）</translation>
     </message>
     <message>
-        <location line="-5"/>
-        <location filename="../ui_settingsdialog.h" line="-3"/>
         <source>LeftToRight</source>
-        <translation>横（左から右）</translation>
+        <translation type="vanished">横（左から右）</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <location filename="../ui_settingsdialog.h" line="+4"/>
         <source>Operating a combined fleet.</source>
-        <translation>随伴護衛艦隊（連合艦隊）のコピーを表示する</translation>
+        <translation type="vanished">随伴護衛艦隊（連合艦隊）のコピーを表示する</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+14"/>
         <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>Other</source>
         <translation>その他</translation>
     </message>
     <message>
-        <location line="-287"/>
-        <location filename="../ui_settingsdialog.h" line="-36"/>
         <source>Opacity</source>
-        <translation>不透明度</translation>
+        <translation type="vanished">不透明度</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <location filename="../ui_settingsdialog.h" line="+3"/>
         <source>100%</source>
-        <translation>100%</translation>
+        <translation type="vanished">100%</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>75%</source>
-        <translation>75%</translation>
+        <translation type="vanished">75%</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>50%</source>
-        <translation>50%</translation>
+        <translation type="vanished">50%</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>25%</source>
-        <translation>25%</translation>
+        <translation type="vanished">25%</translation>
     </message>
     <message>
-        <location line="-45"/>
-        <location filename="../ui_settingsdialog.h" line="-8"/>
         <source>Buttle result</source>
-        <translation>戦果報告</translation>
+        <translation type="vanished">戦果報告</translation>
     </message>
     <message>
         <source>Position of buttle result</source>
         <translation type="obsolete">戦果報告の表示位置</translation>
     </message>
     <message>
-        <location line="+77"/>
-        <location line="+12"/>
-        <location filename="../ui_settingsdialog.h" line="+14"/>
-        <location line="+5"/>
         <source>RightTop</source>
-        <translation>右上</translation>
+        <translation type="vanished">右上</translation>
     </message>
     <message>
-        <location line="-5"/>
-        <location filename="../ui_settingsdialog.h" line="-6"/>
         <source>LeftTop</source>
-        <translation>左上</translation>
+        <translation type="vanished">左上</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <location filename="../ui_settingsdialog.h" line="+2"/>
         <source>LeftBottom</source>
-        <translation>左下</translation>
+        <translation type="vanished">左下</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>RightBottom</source>
-        <translation>右下</translation>
+        <translation type="vanished">右下</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>Center</source>
-        <translation>中心</translation>
+        <translation type="vanished">中心</translation>
     </message>
     <message>
-        <location line="+61"/>
-        <location filename="../ui_settingsdialog.h" line="+6"/>
+        <location line="+38"/>
+        <location filename="../ui_settingsdialog.h" line="+4"/>
         <source>Disable coontext menu</source>
         <translation>コンテキストメニューを表示しない。</translation>
     </message>
@@ -1035,37 +1007,31 @@ Do you want to continue on an understanding of the security risk?
         <translation>終了ショートカット(Ctrl+Q)を使用しない。</translation>
     </message>
     <message>
-        <location line="-127"/>
-        <location filename="../ui_settingsdialog.h" line="-19"/>
         <source>View buttle result</source>
-        <translation>戦果報告画面のコピーを表示する</translation>
+        <translation type="vanished">戦果報告画面のコピーを表示する</translation>
     </message>
     <message>
-        <location line="+179"/>
-        <location filename="../ui_settingsdialog.h" line="+24"/>
+        <location line="+52"/>
+        <location filename="../ui_settingsdialog.h" line="+5"/>
         <source>Enable</source>
         <translation>プロキシ設定を有効にする</translation>
     </message>
     <message>
-        <location line="-253"/>
-        <location filename="../ui_settingsdialog.h" line="-30"/>
+        <location line="-114"/>
+        <location filename="../ui_settingsdialog.h" line="-11"/>
         <source>Save in PNG format.</source>
         <translation>画像をPNG形式で保存する（標準はJPEG）</translation>
     </message>
     <message>
-        <location line="+26"/>
-        <location filename="../ui_settingsdialog.h" line="+2"/>
         <source>Mask Admiral name</source>
-        <translation>提督名を消す（母港画面のヘッダのみ）</translation>
+        <translation type="vanished">提督名を消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
-        <location line="+13"/>
-        <location filename="../ui_settingsdialog.h" line="+1"/>
         <source>Mask HQ level</source>
-        <translation>艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
+        <translation type="vanished">艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
-        <location filename="../settingsdialog.cpp" line="+192"/>
+        <location filename="../settingsdialog.cpp" line="+136"/>
         <source>Select save folder</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -1077,7 +1043,7 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">ダイアログ</translation>
     </message>
     <message>
-        <location filename="../timerdialog.cpp" line="+123"/>
+        <location filename="../timerdialog.cpp" line="+124"/>
         <source>1st</source>
         <translation>１</translation>
     </message>
@@ -1148,15 +1114,15 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <source>It is time that Kanmusu is up from the %1 bath.</source>
-        <translation>%1ドックの艦娘さんがお風呂から上がる頃です。</translation>
+        <translation type="vanished">%1ドックの艦娘さんがお風呂から上がる頃です。</translation>
     </message>
     <message>
         <source>It is time the %1 Fleet is returned.</source>
-        <translation>%1艦隊が遠征から帰る頃です。</translation>
+        <translation type="vanished">%1艦隊が遠征から帰る頃です。</translation>
     </message>
     <message>
         <source>It is time the Kanmusu of %1 dock is completed.</source>
-        <translation>%1ドックでの建造が終わる頃です。</translation>
+        <translation type="vanished">%1ドックでの建造が終わる頃です。</translation>
     </message>
     <message>
         <location line="+83"/>
@@ -1297,9 +1263,13 @@ Do you want to continue on an understanding of the security risk?
         <translation type="obsolete">%1で、つぶやく</translation>
     </message>
     <message>
-        <location filename="../tweetdialog.cpp" line="+70"/>
         <source> #kancolle</source>
-        <translation> #艦これ</translation>
+        <translation type="vanished"> #艦これ</translation>
+    </message>
+    <message>
+        <location filename="../tweetdialog.cpp" line="+70"/>
+        <source> #shirocolle</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+13"/>

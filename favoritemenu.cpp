@@ -32,7 +32,7 @@
 #include <QDebug>
 
 #define FAVORITE_DOWNLOAD_FILE      QString("%1/favoritedata.json").arg(QStandardPaths::writableLocation(QStandardPaths::DataLocation))
-#define FAVORITE_DOWNLOAD_URL       QUrl("http://relog.xii.jp/download/kancolle/data/favoritedata.json")
+#define FAVORITE_DOWNLOAD_URL       QUrl("http://relog.xii.jp/download/shirocolle/data/favoritedata.json")
 #define TO_VALUE(array_at, key) QJsonObject(array_at.toObject()).value(key)
 #define TO_STRING(array_at, key) QJsonObject(array_at.toObject()).value(key).toString()
 #define TO_ARRAY(array_at) (QJsonObject(array_at.toObject()).value("array").toArray())
@@ -139,7 +139,7 @@ void FavoriteMenu::updateFromInternet(const QString &lastUpdateDate)
     //リクエスト作成
     QNetworkRequest req;
     req.setUrl(FAVORITE_DOWNLOAD_URL);
-    req.setRawHeader("User-Agent", QString("KanmusuMemory %1").arg(KANMEMO_VERSION).toLatin1());
+    req.setRawHeader("User-Agent", QString("ShiromusuMemory %1").arg(KANMEMO_VERSION).toLatin1());
     //アクセス開始
     net->get(req);
 }

@@ -19,9 +19,9 @@ import me.qtquick.Database 0.1
 
 Database {
     id: db
-    connectionName: 'KanmusuMemory'
+    connectionName: 'ShiromusuMemory'
     type: "QSQLITE"
-    databaseName: onMemory ? ":memory:" : "/home/iori/silk-build/share/silk/db/KanmusuMemory.db"
+    databaseName: onMemory ? ":memory:" : "/home/iori/silk-build/share/silk/db/ShiromusuMemory.db"
 
     property bool onMemory: false
     property alias tableModel: history

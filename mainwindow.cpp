@@ -147,6 +147,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     ///////////////////////////////////////////////////////////////
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
     connect(ui.actionCaptureAndEdit, &QAction::triggered, [this]() { captureGame(true); });
+#ifndef SHIROCOLLE_VERSION
 #ifndef DISABLE_CATALOG_AND_DETAIL_FLEET
     connect(ui.captureCatalog, &QAction::triggered, [this](){ captureCatalog(); });
     connect(ui.captureFleetDetail, &QAction::triggered, [this](){ captureFleetDetail(); });
@@ -167,6 +168,10 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     connect(ui.captureFleetList, &QAction::triggered, [this](){
         openManualCaptureFleetList();
     });
+#else
+    ui.captureFleetDetail->setVisible(false);
+    ui.captureFleetList->setVisible(false);
+#endif  //Shirocolle
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
     connect(ui.actionReturn_to_Kan_Colle, &QAction::triggered, [this]() {
@@ -180,7 +185,11 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     //画像リスト
     connect(ui.viewMemory, &QAction::triggered, [this]() { openMemoryDialog(); });
     //通知タイマー
+#ifndef SHIROCOLLE_VERSION
     connect(ui.notificationTimer, &QAction::triggered, [this]() { m_timerDialog->show(); });
+#else
+    ui.notificationTimer->setVisible(false);
+#endif
     //設定ダイアログ表示
     connect(ui.preferences, &QAction::triggered, [this]() { openSettingDialog(); });
     //アバウト
@@ -405,6 +414,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     /// WebView
     ///////////////////////////////////////////////////////////////
 
+#ifndef SHIROCOLLE_VERSION
     //WebViewをクリック
     connect(ui.webView, &WebView::mousePressed, [this](QMouseEvent *event) {
         //艦隊の被弾状況を調べる
@@ -412,6 +422,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
         //遠征の残り時間を調べる
         checkExpeditionRemainTime(event->localPos());
     });
+#endif
 
     //WebViewの読込み開始
     connect(ui.webView, &QWebView::loadStarted, [this](){
@@ -479,12 +490,14 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
         m_recognizeInfo.updateFromInternet(lastRecognizeInfoUpdateDate);
     });
 
+#ifndef SHIROCOLLE_VERSION
     //画像解析系の設定を保持するクラス
     m_recognizeInfo.load();
     //アップデート確認
     connect(&m_recognizeInfo, &RecognizeInfo::downloadFinished, [this](){
         m_recognizeInfo.load();
     });
+#endif
 
     //通知アイコン
 #ifdef Q_OS_WIN
@@ -523,12 +536,12 @@ void MainWindow::Private::maskImage(QImage *img, const QRect &rect)
 QString MainWindow::Private::makeFileName(const QString &format, bool isfull) const
 {
     if(isfull){
-        return QStringLiteral("%1/kanmusu_%2.%3")
+        return QStringLiteral("%1/shiromusu_%2.%3")
                 .arg(settings.value(QStringLiteral("path")).toString())
                 .arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")))
                 .arg(format.toLower());
     }else{
-        return QStringLiteral("kanmusu_%1.%2")
+        return QStringLiteral("shiromusu_%1.%2")
                 .arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")))
                 .arg(format.toLower());
     }
@@ -536,7 +549,7 @@ QString MainWindow::Private::makeFileName(const QString &format, bool isfull) co
 //テンポラリのファイル名を作成する
 QString MainWindow::Private::makeTempFileName(const QString &format) const
 {
-    return QStringLiteral("%1/kanmusu_temp%2.%3")
+    return QStringLiteral("%1/shiromusu_temp%2.%3")
             .arg(QDir::tempPath())
             .arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd_hh-mm-ss-zzz")))
             .arg(format.toLower());

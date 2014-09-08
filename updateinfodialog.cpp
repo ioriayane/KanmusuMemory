@@ -30,7 +30,7 @@
 
 #include <QDebug>
 
-#define CHECK_UPDATE_URL    QString("http://157.7.154.101/kanmemo/api/checkupdate.qml?version=%1+versioncode=%2+os=%3+lang=%4")
+#define CHECK_UPDATE_URL    QString("http://157.7.154.101/shiromemo/api/checkupdate.qml?version=%1+versioncode=%2+os=%3+lang=%4")
 
 // OS number define
 // 0: Windows(32bit)
@@ -209,7 +209,7 @@ void UpdateInfoDialog::CheckUpdate()
                .arg(KANMEMO_VERSION_CODE)
                .arg(os_num)
                .arg(QLocale::system().name())));
-    req.setRawHeader("User-Agent", QString("KanmusuMemory %1").arg(KANMEMO_VERSION).toLatin1());
+    req.setRawHeader("User-Agent", QString("ShiromusuMemory %1").arg(KANMEMO_VERSION).toLatin1());
 
     //アクセス開始
     net->get(req);

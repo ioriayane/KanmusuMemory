@@ -45,7 +45,7 @@
           </font>
          </property>
          <property name="text">
-          <string>KanMemo -Kanmusu Memory-</string>
+          <string>ShiroMemo -Shiromusu Memory-</string>
          </property>
         </widget>
        </item>
@@ -91,7 +91,7 @@
            <item>
             <widget class="QLabel" name="label_3">
              <property name="text">
-              <string>Copyright &amp;copy; 2013-2014 KanMemo Project.</string>
+              <string>Copyright &amp;copy; 2014 ShiroMemo Project.</string>
              </property>
              <property name="textFormat">
               <enum>Qt::RichText</enum>

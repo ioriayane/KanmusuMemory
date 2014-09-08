@@ -1,115 +1,21 @@
 {
 "_comment" : "serialは日付+二桁連番で更新されてるか判断する"
-,"serial" : "2013091600"
+,"serial" : "2014031400"
 ,"docking" : 
 [
   { "hour": 0, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
 , { "hour": 0, "minute": 30, "second": 0, "msg1": "", "msg2": "" }
 , { "hour": 0, "minute": 45, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 1, "minute": 0, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 1, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 1, "minute": 30, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 1, "minute": 45, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 2, "minute": 0, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 2, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 2, "minute": 30, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 2, "minute": 45, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 3, "minute": 0, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 3, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 3, "minute": 30, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 3, "minute": 45, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 4, "minute": 0, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 4, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 4, "minute": 30, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 4, "minute": 45, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 5, "minute": 0, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 5, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 5, "minute": 30, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 5, "minute": 45, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 6, "minute": 0, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 6, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 6, "minute": 30, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 6, "minute": 45, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 7, "minute": 0, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 7, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 7, "minute": 30, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 7, "minute": 45, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 8, "minute": 0, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 8, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 8, "minute": 30, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 8, "minute": 45, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 9, "minute": 0, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 9, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 9, "minute": 30, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 9, "minute": 45, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 10, "minute": 0, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 10, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 10, "minute": 30, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 10, "minute": 45, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 11, "minute": 0, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 11, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 11, "minute": 30, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 11, "minute": 45, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 12, "minute": 0, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 12, "minute": 15, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 12, "minute": 30, "second": 0, "msg1": "", "msg2": "" }
-, { "hour": 12, "minute": 45, "second": 0, "msg1": "", "msg2": "" }
 ]
 , "expedition" :
 [
-  {"hour": 0, "minute": 15, "second": 0, "msg1": "Guardian Office waters", "msg2": "1 Practice voyage", "page": 0 }
-, {"hour": 0, "minute": 30, "second": 0, "msg1": "Guardian Office waters", "msg2": "2 Long-distance voyage practice", "page": 0 }
-, {"hour": 0, "minute": 20, "second": 0, "msg1": "Guardian Office waters", "msg2": "3 Security mission", "page": 0 }
-, {"hour": 0, "minute": 50, "second": 0, "msg1": "Guardian Office waters", "msg2": "4 Antisubmarine security mission", "page": 0 }
-, {"hour": 1, "minute": 30, "second": 0, "msg1": "Guardian Office waters", "msg2": "5 Marine escort mission", "page": 0 }
-, {"hour": 0, "minute": 40, "second": 0, "msg1": "Guardian Office waters", "msg2": "6 Air defense target practice", "page": 0 }
-, {"hour": 1, "minute": 0, "second": 0, "msg1": "Guardian Office waters", "msg2": "7 Naval review rehearsal", "page": 0 }
-, {"hour": 3, "minute": 0, "second": 0, "msg1": "Guardian Office waters", "msg2": "8 Naval review", "page": 0 }
-
-, {"hour": 4, "minute": 0, "second": 0, "msg1": "Nansei Islands waters", "msg2": "9 Tanker escort mission", "page": 1 }
-, {"hour": 1, "minute": 30, "second": 0, "msg1": "Nansei Islands waters", "msg2": "10 Reconnaissance in force mission", "page": 1 }
-, {"hour": 5, "minute": 0, "second": 0, "msg1": "Nansei Islands waters", "msg2": "11 Bauxite transport mission", "page": 1 }
-, {"hour": 8, "minute": 0, "second": 0, "msg1": "Nansei Islands waters", "msg2": "12 Resource transport mission", "page": 1 }
-, {"hour": 4, "minute": 0, "second": 0, "msg1": "Nansei Islands waters", "msg2": "13 Rat transport creating", "page": 1 }
-, {"hour": 6, "minute": 0, "second": 0, "msg1": "Nansei Islands waters", "msg2": "14 Siege naval brigade withdrawal strategy", "page": 1 }
-, {"hour": 12, "minute": 0, "second": 0, "msg1": "Nansei Islands waters", "msg2": "15 Decoy task force support operations", "page": 1 }
-, {"hour": 15, "minute": 0, "second": 0, "msg1": "Nansei Islands waters", "msg2": "16 Decisive battle fleet assistance strategy", "page": 1 }
-
-, {"hour": 0, "minute": 45, "second": 0, "msg1": "Northern waters", "msg2": "17 Enemy territory reconnaissance operations", "page": 2 }
-, {"hour": 5, "minute": 0, "second": 0, "msg1": "Northern waters", "msg2": "18 Air transport operations", "page": 2 }
-, {"hour": 6, "minute": 0, "second": 0, "msg1": "Northern waters", "msg2": "19 Northern issue strategy", "page": 2 }
-, {"hour": 2, "minute": 0, "second": 0, "msg1": "Northern waters", "msg2": "20 Submarine patrol", "page": 2 }
-
-, {"hour": 40, "minute": 0, "second": 0, "msg1": "Western waters", "msg2": "25 Trade destruction strategy", "page": 3 }
-, {"hour": 80, "minute": 0, "second": 0, "msg1": "Western waters", "msg2": "26 Enemy air raid home port strategy", "page": 3 }
-, {"hour": 20, "minute": 0, "second": 0, "msg1": "Western waters", "msg2": "27 Submarine destruction trade strategy", "page": 3 }
+  {"hour": 0, "minute": 15, "second": 0, "msg1": "", "msg2": "1", "page": 0 }
+, {"hour": 0, "minute": 30, "second": 0, "msg1": "", "msg2": "2", "page": 0 }
+, {"hour": 0, "minute": 20, "second": 0, "msg1": "", "msg2": "3", "page": 0 }
 ]
 , "construction" : 
 [
-  { "hour": 0, "minute": 18, "second": 0, "msg1": "Destroyer", "msg2": "Mutsuki" }
-, { "hour": 0, "minute": 20, "second": 0, "msg1": "Destroyer", "msg2": "Fubuki Ayanami Akatsuki Hatsuharu" }
-, { "hour": 0, "minute": 22, "second": 0, "msg1": "Destroyer", "msg2": "Siratsuyu Asashio" }
-, { "hour": 0, "minute": 24, "second": 0, "msg1": "Destroyer", "msg2": "Kagero Yukikaze" }
-, { "hour": 0, "minute": 30, "second": 0, "msg1": "Destroyer", "msg2": "Simakaze" }
-, { "hour": 1, "minute": 0, "second": 0, "msg1": "Light cruiser", "msg2": "Tenryu Kuma Nagara Sendai" }
-, { "hour": 1, "minute": 0, "second": 0, "msg1": "Heavy cruiser", "msg2": "Kodaka Aoba" }
-, { "hour": 1, "minute": 15, "second": 0, "msg1": "Light cruiser", "msg2": "Kinu Abukuma" }
-, { "hour": 1, "minute": 20, "second": 0, "msg1": "Heavy cruiser", "msg2": "Myoko" }
-, { "hour": 1, "minute": 22, "second": 0, "msg1": "Light cruiser", "msg2": "Yubari" }
-, { "hour": 1, "minute": 25, "second": 0, "msg1": "Heavy cruiser", "msg2": "Takao" }
-, { "hour": 1, "minute": 30, "second": 0, "msg1": "Heavy cruiser", "msg2": "Mogami Tone" }
-, { "hour": 2, "minute": 0, "second": 0, "msg1": "Light aircraft carrier", "msg2": "Hosyo" }
-, { "hour": 2, "minute": 20, "second": 0, "msg1": "Seaplane carrier", "msg2": "Chitose Chiyoda" }
-, { "hour": 2, "minute": 40, "second": 0, "msg1": "Light aircraft carrier", "msg2": "Syoho Zuiho" }
-, { "hour": 2, "minute": 50, "second": 0, "msg1": "Light aircraft carrier", "msg2": "Ryujo" }
-, { "hour": 3, "minute": 0, "second": 0, "msg1": "Light aircraft carrier", "msg2": "Hiyo Junyo" }
-, { "hour": 4, "minute": 0, "second": 0, "msg1": "Battleship", "msg2": "Kongo Hie Haruna Kirishima" }
-, { "hour": 4, "minute": 10, "second": 0, "msg1": "Regular aircraft carrier", "msg2": "Soryu Hiryu" }
-, { "hour": 4, "minute": 20, "second": 0, "msg1": "Battleship", "msg2": "Fuso Yamashiro" }
-, { "hour": 4, "minute": 20, "second": 0, "msg1": "Regular aircraft carrier", "msg2": "Kaga" }
-, { "hour": 4, "minute": 30, "second": 0, "msg1": "Battleship", "msg2": "Ise Hyuga" }
-, { "hour": 4, "minute": 30, "second": 0, "msg1": "Regular aircraft carrier", "msg2": "Akagi" }
-, { "hour": 5, "minute": 0, "second": 0, "msg1": "Battleship", "msg2": "Nagato Mutsu" }
-, { "hour": 6, "minute": 0, "second": 0, "msg1": "Regular aircraft carrier", "msg2": "Syokaku Zuikaku" }
+  { "hour": 0, "minute": 17, "second": 0, "msg1": "", "msg2": "" }
+, { "hour": 0, "minute": 18, "second": 0, "msg1": "", "msg2": "" }
 ]
 }

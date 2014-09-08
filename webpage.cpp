@@ -28,12 +28,12 @@ QString WebPage::userAgentForUrl(const QUrl &url) const
     QString ret = QWebPage::userAgentForUrl(url);
     if(isMoibleMode()){
 #if defined(Q_OS_WIN)
-        //            ret = QStringLiteral("Mozilla/5.0 (Windows Phone OS 7.5;) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
-        ret = QStringLiteral("Mozilla/5.0 (Linux; U; Android 4.1.1; ja-jp;) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
+        //            ret = QStringLiteral("Mozilla/5.0 (Windows Phone OS 7.5;) AppleWebKit/537.21 (KHTML, like Gecko) ShiromusuMemory Safari/537.21");
+        ret = QStringLiteral("Mozilla/5.0 (Linux; U; Android 4.1.1; ja-jp;) AppleWebKit/537.21 (KHTML, like Gecko) ShiromusuMemory Safari/537.21");
 #elif defined(Q_OS_LINUX)
-        ret = QStringLiteral("Mozilla/5.0 (Linux; U; Android 4.1.1; ja-jp;) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
+        ret = QStringLiteral("Mozilla/5.0 (Linux; U; Android 4.1.1; ja-jp;) AppleWebKit/537.21 (KHTML, like Gecko) ShiromusuMemory Safari/537.21");
 #elif defined(Q_OS_MAC)
-        ret = QStringLiteral("Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/537.21 (KHTML, like Gecko) KanmusuMemory Safari/537.21");
+        ret = QStringLiteral("Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/537.21 (KHTML, like Gecko) ShiromusuMemory Safari/537.21");
 #endif
     }
     return ret;
