@@ -123,11 +123,11 @@ if($OS eq "win"){
 	################################################
 
 	# 実行ファイル名
-	$EXENAME="KanmusuMemory.exe";
+	$EXENAME="ShiromusuMemory.exe";
 	# 実行ファイルができるディレクトリ
 	$EXEDIR="release\\";
 	# デプロイ先のディレクトリ
-	$OUTDIR='..\\KanmusuMemoryBin\\KanmusuMemory' . $PTRSIZE_NAME . '\\';
+	$OUTDIR='..\\KanmusuMemoryBin\\ShiromusuMemory' . $PTRSIZE_NAME . '\\';
 	$OUTDIRBIN="";
 	$OUTDIRLIB="";
 	# 言語ファイルを保存しているディレクトリ

@@ -47,5 +47,7 @@
         <file>resources/RecordButton1.png</file>
         <file>resources/RecordButton2.png</file>
         <file>resources/RecordSettingButton.png</file>
+        <file>resources/ShiromusuMemory80.png</file>
+        <file>resources/ShiromusuMemory32.png</file>
     </qresource>
 </RCC>

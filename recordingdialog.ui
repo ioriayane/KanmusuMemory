@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="KanmusuMemory.qrc">
+    <normaloff>:/resources/ShiromusuMemory32.png</normaloff>:/resources/ShiromusuMemory32.png</iconset>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_6">
    <item>
     <layout class="QFormLayout" name="formLayout_2">
@@ -279,6 +283,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="KanmusuMemory.qrc"/>
+ </resources>
  <connections/>
 </ui>

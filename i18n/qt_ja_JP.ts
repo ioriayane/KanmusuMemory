@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="ja_JP">
+<TS version="2.0" language="ja_JP">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -11,13 +11,13 @@
     </message>
     <message>
         <source>KanMemo -Kanmusu Memory-</source>
-        <translation type="vanished">艦メモ ～艦娘メモリーズ～</translation>
+        <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
     <message>
         <location line="+34"/>
         <location filename="../ui_aboutdialog.h" line="+1"/>
         <source>ShiroMemo -Shiromusu Memory-</source>
-        <translation type="unfinished"></translation>
+        <translation>城メモ ～城娘メモリーズ～</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -35,7 +35,7 @@
         <location line="+7"/>
         <location filename="../ui_aboutdialog.h" line="+1"/>
         <source>Copyright &amp;copy; 2014 ShiroMemo Project.</source>
-        <translation type="unfinished"></translation>
+        <translation>Copyright 2014 ShiroMemo Project.</translation>
     </message>
     <message>
         <source>Copyright 2013 KanMemo Project.</source>
@@ -254,7 +254,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <source>Kan Memo -KanMusu Memory-</source>
-        <translation type="vanished">艦メモ ～艦娘メモリーズ～</translation>
+        <translation>艦メモ ～艦娘メモリーズ～</translation>
     </message>
     <message>
         <source>about:blank</source>
@@ -390,7 +390,7 @@ Do you want to continue on an understanding of the security risk?
         <location line="+8"/>
         <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;About</source>
-        <translation>艦メモについて(&amp;A)</translation>
+        <translation>城メモについて(&amp;A)</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -433,13 +433,12 @@ Do you want to continue on an understanding of the security risk?
         <translation>F9</translation>
     </message>
     <message>
-        <location line="+5"/>
         <location filename="../ui_mainwindow.h" line="+1"/>
         <source>Return to Kan Colle</source>
         <translation>艦これへ戻る(&amp;B)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location filename="../mainwindow.ui" line="+10"/>
         <location filename="../ui_mainwindow.h" line="+1"/>
         <source>&amp;Full screen</source>
         <translation>フルスクリーン(&amp;F)</translation>
@@ -668,7 +667,7 @@ Do you want to continue on an understanding of the security risk?
         <location line="-764"/>
         <location filename="../ui_mainwindow.h" line="-87"/>
         <source>Shiro Memo -ShiroMusu Memory-</source>
-        <translation type="unfinished"></translation>
+        <translation>城メモ ～城娘メモリーズ～</translation>
     </message>
     <message>
         <location line="+220"/>
@@ -689,7 +688,12 @@ Do you want to continue on an understanding of the security risk?
         <translation>録画設定...</translation>
     </message>
     <message>
-        <location line="+446"/>
+        <location line="+255"/>
+        <source>Return to Shiro Colle</source>
+        <translation>城これへ戻る</translation>
+    </message>
+    <message>
+        <location line="+191"/>
         <location filename="../ui_mainwindow.h" line="-15"/>
         <source>&amp;Vertical split</source>
         <translation>上下に分割(&amp;V)</translation>
@@ -880,7 +884,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <source>Position</source>
-        <translation type="vanished">表示位置</translation>
+        <translation>表示位置</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -926,19 +930,19 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <source>Direction</source>
-        <translation type="vanished">表示方向</translation>
+        <translation>表示方向</translation>
     </message>
     <message>
         <source>TopToBottom</source>
-        <translation type="vanished">縦（上から下）</translation>
+        <translation>縦（上から下）</translation>
     </message>
     <message>
         <source>LeftToRight</source>
-        <translation type="vanished">横（左から右）</translation>
+        <translation>横（左から右）</translation>
     </message>
     <message>
         <source>Operating a combined fleet.</source>
-        <translation type="vanished">随伴護衛艦隊（連合艦隊）のコピーを表示する</translation>
+        <translation>随伴護衛艦隊（連合艦隊）のコピーを表示する</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -948,27 +952,27 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <source>Opacity</source>
-        <translation type="vanished">不透明度</translation>
+        <translation>不透明度</translation>
     </message>
     <message>
         <source>100%</source>
-        <translation type="vanished">100%</translation>
+        <translation>100%</translation>
     </message>
     <message>
         <source>75%</source>
-        <translation type="vanished">75%</translation>
+        <translation>75%</translation>
     </message>
     <message>
         <source>50%</source>
-        <translation type="vanished">50%</translation>
+        <translation>50%</translation>
     </message>
     <message>
         <source>25%</source>
-        <translation type="vanished">25%</translation>
+        <translation>25%</translation>
     </message>
     <message>
         <source>Buttle result</source>
-        <translation type="vanished">戦果報告</translation>
+        <translation>戦果報告</translation>
     </message>
     <message>
         <source>Position of buttle result</source>
@@ -976,23 +980,23 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <source>RightTop</source>
-        <translation type="vanished">右上</translation>
+        <translation>右上</translation>
     </message>
     <message>
         <source>LeftTop</source>
-        <translation type="vanished">左上</translation>
+        <translation>左上</translation>
     </message>
     <message>
         <source>LeftBottom</source>
-        <translation type="vanished">左下</translation>
+        <translation>左下</translation>
     </message>
     <message>
         <source>RightBottom</source>
-        <translation type="vanished">右下</translation>
+        <translation>右下</translation>
     </message>
     <message>
         <source>Center</source>
-        <translation type="vanished">中心</translation>
+        <translation>中心</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -1008,7 +1012,7 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <source>View buttle result</source>
-        <translation type="vanished">戦果報告画面のコピーを表示する</translation>
+        <translation>戦果報告画面のコピーを表示する</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -1024,11 +1028,11 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <source>Mask Admiral name</source>
-        <translation type="vanished">提督名を消す（母港画面のヘッダのみ）</translation>
+        <translation>提督名を消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
         <source>Mask HQ level</source>
-        <translation type="vanished">艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
+        <translation>艦隊司令部Levelを消す（母港画面のヘッダのみ）</translation>
     </message>
     <message>
         <location filename="../settingsdialog.cpp" line="+136"/>
@@ -1114,15 +1118,15 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <source>It is time that Kanmusu is up from the %1 bath.</source>
-        <translation type="vanished">%1ドックの艦娘さんがお風呂から上がる頃です。</translation>
+        <translation>%1ドックの艦娘さんがお風呂から上がる頃です。</translation>
     </message>
     <message>
         <source>It is time the %1 Fleet is returned.</source>
-        <translation type="vanished">%1艦隊が遠征から帰る頃です。</translation>
+        <translation>%1艦隊が遠征から帰る頃です。</translation>
     </message>
     <message>
         <source>It is time the Kanmusu of %1 dock is completed.</source>
-        <translation type="vanished">%1ドックでの建造が終わる頃です。</translation>
+        <translation>%1ドックでの建造が終わる頃です。</translation>
     </message>
     <message>
         <location line="+83"/>
@@ -1264,12 +1268,12 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <source> #kancolle</source>
-        <translation type="vanished"> #艦これ</translation>
+        <translation> #艦これ</translation>
     </message>
     <message>
         <location filename="../tweetdialog.cpp" line="+70"/>
         <source> #shirocolle</source>
-        <translation type="unfinished"></translation>
+        <translation>#城これ</translation>
     </message>
     <message>
         <location line="+13"/>

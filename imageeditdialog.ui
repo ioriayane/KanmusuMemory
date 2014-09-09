@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="KanmusuMemory.qrc">
-    <normaloff>:/resources/KanmusuMemory32.png</normaloff>:/resources/KanmusuMemory32.png</iconset>
+    <normaloff>:/resources/ShiromusuMemory32.png</normaloff>:/resources/ShiromusuMemory32.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="layout">
    <property name="spacing">

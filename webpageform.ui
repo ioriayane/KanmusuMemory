@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="KanmusuMemory.qrc">
+    <normaloff>:/resources/ShiromusuMemory32.png</normaloff>:/resources/ShiromusuMemory32.png</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
     <number>1</number>

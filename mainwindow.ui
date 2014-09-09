@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="KanmusuMemory.qrc">
-    <normaloff>:/resources/KanmusuMemory32.png</normaloff>:/resources/KanmusuMemory32.png</iconset>
+    <normaloff>:/resources/ShiromusuMemory32.png</normaloff>:/resources/ShiromusuMemory32.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -595,7 +595,7 @@
   </action>
   <action name="actionReturn_to_Kan_Colle">
    <property name="text">
-    <string>Return to Kan Colle</string>
+    <string>Return to Shiro Colle</string>
    </property>
   </action>
   <action name="actionFullScreen">

@@ -54,7 +54,7 @@
 #endif
 
 
-#define URL_KANCOLLE "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=854854/"
+#define URL_KANCOLLE "http://www.dmm.com/netgame/social/-/gadgets/=/app_id=149569/"
 
 #define SPLIT_WEBPAGE_INDEX     1       //分割ウインドウの通常ブラウザのインデックス
 

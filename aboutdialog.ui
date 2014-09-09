@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="KanmusuMemory.qrc">
-    <normaloff>:/resources/KanmusuMemory32.png</normaloff>:/resources/KanmusuMemory32.png</iconset>
+    <normaloff>:/resources/ShiromusuMemory32.png</normaloff>:/resources/ShiromusuMemory32.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
    <item>
@@ -29,7 +29,7 @@
         </sizepolicy>
        </property>
        <property name="pixmap">
-        <pixmap resource="KanmusuMemory.qrc">:/resources/KanmusuMemory80.png</pixmap>
+        <pixmap resource="KanmusuMemory.qrc">:/resources/ShiromusuMemory80.png</pixmap>
        </property>
       </widget>
      </item>
