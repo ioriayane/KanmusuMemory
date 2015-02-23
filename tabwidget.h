@@ -48,6 +48,9 @@ public:
     QNetworkDiskCache *cache() const;
     void setCache(QNetworkDiskCache *cache);
 
+    QNetworkAccessManager *networkAccessManager() const;
+    void setNetworkAccessManager(QNetworkAccessManager *networkAccessManager);
+
 signals:
     void updateFavorite();
 
@@ -58,6 +61,7 @@ private:
     bool m_saveOpenPage;
     bool m_openAndNewTab;
     QNetworkDiskCache *m_cache;
+    QNetworkAccessManager *m_networkAccessManager;
 };
 
 #endif // TABWIDGET_H

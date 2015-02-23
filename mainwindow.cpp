@@ -1418,6 +1418,8 @@ void MainWindow::Private::setWebSettings()
     if(dir.exists()){
         dir.removeRecursively();
     }
+    //ネットワークアクセスマネージャ共有
+    ui.tabWidget->setNetworkAccessManager(ui.webView->page()->networkAccessManager());
 
     QWebSettings *websetting = QWebSettings::globalSettings();
     //JavaScript関連設定

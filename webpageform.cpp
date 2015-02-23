@@ -214,7 +214,7 @@ WebPageForm::WebPageForm(QWidget *parent) :
     QWidget(parent),
     d(new Private(this)),
     m_mobileMode(true),
-    m_cache(NULL)
+    m_networkAccessManager(NULL)
 {
 
     d->setTab(reinterpret_cast<TabWidget *>(parent));
@@ -289,19 +289,19 @@ void WebPageForm::find()
         d->ui.findEdit->setFocus();
     }
 }
-//Webページ用のキャッシュ
-QNetworkDiskCache *WebPageForm::cache() const
-{
-    return m_cache;
-}
-void WebPageForm::setCache(QNetworkDiskCache *cache)
-{
-    if(m_cache != cache){
-        m_cache = cache;
 
-        d->ui.webView->page()->networkAccessManager()->setCache(m_cache);
+QNetworkAccessManager *WebPageForm::networkAccessManager() const
+{
+    return m_networkAccessManager;
+}
+void WebPageForm::setNetworkAccessManager(QNetworkAccessManager *networkAccessManager)
+{
+    if(m_networkAccessManager != networkAccessManager && networkAccessManager != NULL){
+        m_networkAccessManager = networkAccessManager;
+        d->ui.webView->page()->setNetworkAccessManager(m_networkAccessManager);
     }
 }
+
 
 
 
