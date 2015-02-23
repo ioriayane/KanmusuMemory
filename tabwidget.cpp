@@ -45,7 +45,7 @@ void TabWidget::Private::newTab(const QUrl &url, bool mobilemode)
 
     WebPageForm *web = new WebPageForm(q);
     web->setMobileMode(mobilemode);
-    web->setCache(q->cache());
+    web->setNetworkAccessManager(q->networkAccessManager());
     web->setUrl(url);
     q->addTab(web, QStringLiteral("(untitled)"));
     q->setCurrentWidget(web);
@@ -69,7 +69,7 @@ void TabWidget::Private::newTab(WebPage *webpage, bool mobilemode)
     WebPageForm *web = new WebPageForm(q);
     web->setMobileMode(mobilemode);
     web->setWebPage(webpage);
-    web->setCache(q->cache());
+    web->setNetworkAccessManager(q->networkAccessManager());
     q->addTab(web, QStringLiteral("(untitled)"));
     q->setCurrentWidget(web);
 
@@ -91,6 +91,7 @@ TabWidget::TabWidget(QWidget* parent)
     , m_saveOpenPage(true)
     , m_openAndNewTab(true)
     , m_cache(NULL)
+    , m_networkAccessManager(NULL)
 {
     connect(this, &QObject::destroyed, [this]() { delete d; });
 
@@ -249,5 +250,15 @@ void TabWidget::setCache(QNetworkDiskCache *cache)
 {
     m_cache = cache;
 }
+//
+QNetworkAccessManager *TabWidget::networkAccessManager() const
+{
+    return m_networkAccessManager;
+}
+void TabWidget::setNetworkAccessManager(QNetworkAccessManager *networkAccessManager)
+{
+    m_networkAccessManager = networkAccessManager;
+}
+
 
 
