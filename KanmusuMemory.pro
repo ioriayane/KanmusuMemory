@@ -25,7 +25,8 @@ SOURCES += main.cpp\
     recordingthread.cpp \
     recognizeinfo.cpp \
     audiorecorder.cpp \
-    recordingdialog.cpp
+    recordingdialog.cpp \
+    clickablelabel.cpp
 
 HEADERS  += mainwindow.h \
     tweetdialog.h \
@@ -49,7 +50,8 @@ HEADERS  += mainwindow.h \
     numberguide.h \
     recognizeinfo.h \
     audiorecorder.h \
-    recordingdialog.h
+    recordingdialog.h \
+    clickablelabel.h
 
 FORMS    += mainwindow.ui \
     tweetdialog.ui \

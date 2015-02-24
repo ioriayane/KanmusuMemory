@@ -21,7 +21,9 @@
 #include <QtWidgets/QInputDialog>
 #include <QtTwitterAPI/oauth.h>
 #include <QtTwitterAPI/status.h>
+#include <QPainter>
 
+#include "clickablelabel.h"
 #include "twitterinfo.h"
 
 class TweetDialog::Private
@@ -29,17 +31,38 @@ class TweetDialog::Private
 public:
     Private(TweetDialog *parent);
 
+    enum SendMethod {
+        None
+        , SinglePost
+        , MultiPost
+    };
+
 private:
     TweetDialog *q;
     Ui::TweetDialog ui;
 
+    bool existImages();
+    bool hitRemoveMark(const ClickableLabel *label, const QRect &rect, const QPoint &point);
+    void clickedRemoveMark(const ClickableLabel *label, int index, const QPoint &point);
+
+    SendMethod sendmethod;
+    QStringList mediaIds;
+    QList<QRect> previewImageRect;  //ぺけマークの当たり判定用
+
+public slots:
+    void updatePreviewImages(const QStringList &imagePathList);
+
 public:
+    bool sending() {   return sendmethod != SendMethod::None;  }
     OAuth oauth;
+    Status status;
     QString imagePath;
+    QStringList imagePathList;
 };
 
 TweetDialog::Private::Private(TweetDialog *parent)
     : q(parent)
+    , sendmethod(SendMethod::None)
 {
     ui.setupUi(q);
 
@@ -49,6 +72,14 @@ TweetDialog::Private::Private(TweetDialog *parent)
         qreal h = ui.screenshot->height();
         QPixmap pixmap(imagePath);
         ui.screenshot->setPixmap(pixmap.scaled(w, h, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    });
+
+    //表示画像変更
+    connect(q, &TweetDialog::imagePathListChanged, [this](const QStringList &imagePathList){
+        updatePreviewImages(imagePathList);
+        if(imagePathList.length() == 0){
+            q->reject();
+        }
     });
 
     //Ctrl+Enterで送信
@@ -69,31 +100,94 @@ TweetDialog::Private::Private(TweetDialog *parent)
     });
     ui.tweetTextEdit->setPlainText(tr(" #kancolle"));
 
+    //送信状態の変化
+    connect(&status, &Status::loadingChanged, [this](bool loading) {
+        if (loading) {
+            q->setEnabled(false);
+            ui.tweetButton->setText(tr("Sending"));
+        } else {
+            //完了
+            if(sendmethod == SendMethod::MultiPost){
+                //取得したIDを保存
+                mediaIds.append(status.data().value("media_id_string", "").toString());
+                qDebug() << "multipost:1.5:" << status.data().value("media_id_string", "").toString();
+                //次の動作
+                if(imagePathList.length() > 0){
+                    //次の画像
+                    qDebug() << "multipost:2+:" << imagePathList.front();
+                    sendmethod = SendMethod::MultiPost;
+                    QVariantMap map;
+                    map.insert("media", QStringList() << imagePathList.front());
+                    imagePathList.pop_front();
+                    status.mediaUpload(map);
+                }else{
+                    //全て投げたので呟く
+                    qDebug() << "multipost:3:" << mediaIds.join(',');
+                    sendmethod = SendMethod::SinglePost;
+                    QVariantMap map;
+                    map.insert("status", ui.tweetTextEdit->toPlainText());
+                    map.insert("media_ids", mediaIds.join(','));
+                    status.statusesUpdate(map);
+                }
+            }else{
+                //状態を戻す
+                imagePathList.clear();
+                mediaIds.clear();
+                ui.tweetTextEdit->setPlainText(tr(" #kancolle"));
+                q->setEnabled(true);
+                ui.tweetButton->setText(tr("Tweet"));
+                sendmethod = SendMethod::None;
+                //閉じる
+                q->accept();
+            }
+        }
+    });
+
+    //送信ボタン
     connect(ui.tweetButton, &QPushButton::clicked, [this]() {
         //認証済みか確認
         if (oauth.state() != OAuth::Authorized) return;
 
         //画像が指定されてるか
-        if(!QFile::exists(imagePath)) return;
+        if(!existImages())  return;
 
-        Status *status = new Status(q);
-        connect(status, &Status::loadingChanged, [this](bool loading) {
-            if (loading) {
-                q->setEnabled(false);
-                ui.tweetButton->setText(tr("Sending"));
-            } else {
-                //消す
-                q->accept();
-            }
-        });
-        QVariantMap map;
-        map.insert("status", ui.tweetTextEdit->toPlainText());
-        map.insert("media", QStringList() << imagePath);
-        status->statusesUpdate(map);
+        if(imagePathList.length() == 1){
+            //画像１枚の時
+            sendmethod = SendMethod::SinglePost;
+            QVariantMap map;
+            map.insert("status", ui.tweetTextEdit->toPlainText());
+            map.insert("media", QStringList() << imagePathList.front());
+            imagePathList.pop_front();
+            status.statusesUpdate(map);
+        }else{
+            //画像が複数の時
+            qDebug() << "multipost:1:" << imagePathList.front();
+            mediaIds.clear();
+            sendmethod = SendMethod::MultiPost;
+            QVariantMap map;
+            map.insert("media", QStringList() << imagePathList.front());
+            imagePathList.pop_front();
+            status.mediaUpload(map);
+        }
     });
 
+    //閉じるボタン
     connect(ui.closeButton, &QPushButton::clicked, [this]() {
-        q->close();
+        q->reject();
+    });
+
+    //プレビュー画像をクリック
+    connect(ui.screenshot, &ClickableLabel::released, [this](QMouseEvent *ev){
+        clickedRemoveMark(ui.screenshot, 0, ev->pos());
+    });
+    connect(ui.screenshot2, &ClickableLabel::released, [this](QMouseEvent *ev){
+        clickedRemoveMark(ui.screenshot2, 1, ev->pos());
+    });
+    connect(ui.screenshot3, &ClickableLabel::released, [this](QMouseEvent *ev){
+        clickedRemoveMark(ui.screenshot3, 2, ev->pos());
+    });
+    connect(ui.screenshot4, &ClickableLabel::released, [this](QMouseEvent *ev){
+        clickedRemoveMark(ui.screenshot4, 3, ev->pos());
     });
 
     //OAuth
@@ -120,7 +214,6 @@ TweetDialog::Private::Private(TweetDialog *parent)
         }
 
         ui.tweetButton->setEnabled(state == OAuth::Authorized);
-//        ui.reauthButton->setEnabled(state == OAuth::Authorized || state == OAuth::Unauthorized);
     });
     connect(&oauth, &OAuth::tokenChanged, q, &TweetDialog::tokenChanged);
     connect(&oauth, &OAuth::tokenSecretChanged, q, &TweetDialog::tokenSecretChanged);
@@ -139,6 +232,90 @@ TweetDialog::Private::Private(TweetDialog *parent)
     ui.name->setVisible(false);
     ui.avatar->setVisible(false);
     ui.tweetTextEdit->setFocus();
+}
+
+bool TweetDialog::Private::existImages()
+{
+    bool ret = true;
+    if(imagePathList.length() == 0){
+        ret = false;
+    }else{
+        foreach (QString path, imagePathList) {
+            if(!QFile::exists(path)){
+                ret = false;
+            }
+        }
+    }
+    return ret;
+}
+
+bool TweetDialog::Private::hitRemoveMark(const ClickableLabel *label, const QRect &rect, const QPoint &point)
+{
+    qDebug() << QString("hit? tw=%3,th=%4, iw=%5, ih=%6, x=%1, y=%2").arg(point.x()).arg(point.y())
+                .arg(label->width()).arg(label->height())
+                .arg(rect.width()).arg(rect.height());
+    qreal wc = label->width() / 2;
+    qreal image_right = wc + rect.width() / 2;
+    qreal mark_left = image_right - 24;
+    qreal hc = label->height() / 2;
+    qreal image_top = hc - rect.height() / 2;
+    qreal mark_bottom = image_top + 24;
+    qDebug() << QString("     wc=%1, image_right=%2, mark_left=%3, hc=%4, image_top=%5, mark_bottom=%6")
+                .arg(wc).arg(image_right).arg(mark_left).arg(hc).arg(image_top).arg(mark_bottom);
+    if(mark_left <= point.x() && point.x() <= image_right
+            && image_top <= point.y() && point.y() <= mark_bottom){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+void TweetDialog::Private::clickedRemoveMark(const ClickableLabel *label, int index, const QPoint &point)
+{
+    if(previewImageRect.length() > index){
+        if(hitRemoveMark(label, previewImageRect.at(index), point)){
+            q->removeImagePath(index);
+            qDebug() << "HIT " << index;
+        }
+    }
+}
+
+void TweetDialog::Private::updatePreviewImages(const QStringList &imagePathList)
+{
+    QLabel *screenshot[] = {ui.screenshot, ui.screenshot2, ui.screenshot3, ui.screenshot4};
+    QImage mark(":/resources/ImageRemoveMark.png");
+    qreal total_w = ui.gridLayout->contentsRect().width();
+    qreal total_h = ui.gridLayout->contentsRect().height();
+    qreal w;
+    qreal h;
+    previewImageRect.clear();
+    for(int i=0; i<4; i++){
+        if(imagePathList.length() > 1){
+            w = total_w / 2;
+        }else{
+            w = total_w;
+        }
+        if(imagePathList.length() == 2){
+            h = total_h;
+        }else{
+            h = w * 0.6;
+        }
+        if(i < imagePathList.length()){
+            QImage img(imagePathList.at(i));
+            QImage img2(img.scaled(w, h, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+            QPainter painter(&img2);
+            painter.drawImage(img2.width() - mark.width() - 1, 1, mark);
+            screenshot[i]->setFixedWidth(static_cast<int>(w));
+            screenshot[i]->setFixedHeight(static_cast<int>(h));
+            screenshot[i]->setMaximumSize(w, h);
+            screenshot[i]->setPixmap(QPixmap::fromImage(img2));
+            screenshot[i]->setVisible(true);
+            //ぺけマークの当たり判定用に保存しておく
+            previewImageRect.append(img2.rect());
+        }else{
+            screenshot[i]->setVisible(false);
+        }
+    }
 }
 
 TweetDialog::TweetDialog(QWidget *parent)
@@ -160,6 +337,9 @@ void TweetDialog::showEvent(QShowEvent *event)
             d->oauth.request_token();
     }
     QDialog::showEvent(event);
+
+    //最初は幅がとれないので
+    d->updatePreviewImages(d->imagePathList);
 }
 
 const QString &TweetDialog::imagePath() const
@@ -212,4 +392,35 @@ const QString &TweetDialog::screen_name() const
 void TweetDialog::screen_name(const QString &screen_name)
 {
    d->oauth.screen_name(screen_name);
+}
+
+const QStringList &TweetDialog::getImagePathList() const
+{
+    return d->imagePathList;
+}
+
+void TweetDialog::setImagePathList(const QStringList &value)
+{
+    d->imagePathList = value;
+    emit imagePathListChanged(value);
+}
+
+void TweetDialog::addImagePath(const QString &path)
+{
+    if(d->imagePathList.length() >= 4 || d->sending())  return;
+    d->imagePathList.append(path);
+    emit imagePathListChanged(d->imagePathList);
+}
+
+void TweetDialog::clearImagePath()
+{
+    d->imagePathList.clear();
+    emit imagePathListChanged(d->imagePathList);
+}
+
+void TweetDialog::removeImagePath(int i)
+{
+    if(i < 0 || i >= d->imagePathList.length())  return;
+    d->imagePathList.removeAt(i);
+    emit imagePathListChanged(d->imagePathList);
 }

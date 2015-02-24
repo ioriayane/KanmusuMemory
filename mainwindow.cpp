@@ -102,6 +102,7 @@ private:
     void setSplitWindowOrientation(Qt::Orientation orientation);
 
     MainWindow *q;
+    TweetDialog *m_tweetDialog;
     TimerDialog *m_timerDialog;
     UpdateInfoDialog *m_updateInfoDialog;
     FleetDetailDialog *m_fleetDetailDialog;
@@ -458,6 +459,23 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
         m_favorite.load(ui.favorite);
     });
 
+    ///////////////////////////////////////////////////////////////
+    /// ツイートダイアログ
+    /// ///////////////////////////////////////////////////////////
+    connect(m_tweetDialog, &TweetDialog::accepted, [this](){
+        //OK
+        settings.setValue(SETTING_GENERAL_TOKEN, m_tweetDialog->token());
+        settings.setValue(SETTING_GENERAL_TOKENSECRET, m_tweetDialog->tokenSecret());
+        settings.setValue(SETTING_GENERAL_USER_ID, m_tweetDialog->user_id());
+        settings.setValue(SETTING_GENERAL_SCREEN_NAME, m_tweetDialog->screen_name());
+    });
+    connect(m_tweetDialog, &TweetDialog::rejected, [this](){
+        //cancel
+        settings.setValue(SETTING_GENERAL_TOKEN, m_tweetDialog->token());
+        settings.setValue(SETTING_GENERAL_TOKENSECRET, m_tweetDialog->tokenSecret());
+        settings.setValue(SETTING_GENERAL_USER_ID, m_tweetDialog->user_id());
+        settings.setValue(SETTING_GENERAL_SCREEN_NAME, m_tweetDialog->screen_name());
+    });
 
     ///////////////////////////////////////////////////////////////
     /// アップデート
@@ -502,6 +520,7 @@ MainWindow::Private::~Private()
     delete m_fleetDetailDialog;
     delete m_updateInfoDialog;
     delete m_timerDialog;
+    delete m_tweetDialog;
 }
 //指定範囲をマスクする
 void MainWindow::Private::maskImage(QImage *img, const QRect &rect)
@@ -640,23 +659,13 @@ void MainWindow::Private::openTweetDialog(const QString &path, bool force)
                                  , tr("Kan Memo")
                                  , tr("saving to %1...").arg(path));
     }else{
-        //ダイアログを開く
-        TweetDialog dlg(q/*
-                        , settings.value(SETTING_GENERAL_TOKEN, "").toString()
-                        , settings.value(SETTING_GENERAL_TOKENSECRET, "").toString()
-                        , settings.value(SETTING_GENERAL_USER_ID, "").toString()
-                        , settings.value(SETTING_GENERAL_SCREEN_NAME, "").toString()
-                        */);
-        dlg.setImagePath(path);
-        dlg.setToken(settings.value(SETTING_GENERAL_TOKEN, "").toString());
-        dlg.setTokenSecret(settings.value(SETTING_GENERAL_TOKENSECRET, "").toString());
-        dlg.user_id(settings.value(SETTING_GENERAL_USER_ID, "").toString());
-        dlg.screen_name(settings.value(SETTING_GENERAL_SCREEN_NAME, "").toString());
-        dlg.exec();
-        settings.setValue(SETTING_GENERAL_TOKEN, dlg.token());
-        settings.setValue(SETTING_GENERAL_TOKENSECRET, dlg.tokenSecret());
-        settings.setValue(SETTING_GENERAL_USER_ID, dlg.user_id());
-        settings.setValue(SETTING_GENERAL_SCREEN_NAME, dlg.screen_name());
+        //画像を追加してダイアログを開く
+        m_tweetDialog->setToken(settings.value(SETTING_GENERAL_TOKEN, "").toString());
+        m_tweetDialog->setTokenSecret(settings.value(SETTING_GENERAL_TOKENSECRET, "").toString());
+        m_tweetDialog->user_id(settings.value(SETTING_GENERAL_USER_ID, "").toString());
+        m_tweetDialog->screen_name(settings.value(SETTING_GENERAL_SCREEN_NAME, "").toString());
+        m_tweetDialog->addImagePath(path);
+        m_tweetDialog->show();
     }
 }
 //画像リストダイアログを開く
@@ -1449,6 +1458,8 @@ void MainWindow::Private::setWebSettings()
 //ダイアログの作成をする
 void MainWindow::Private::makeDialog()
 {
+    //ツイートダイアログ作成
+    m_tweetDialog = new TweetDialog(q);
     //通知タイマーのダイアログ作成
     m_timerDialog = new TimerDialog(q, &trayIcon, &settings);
     //アップデート通知のダイアログ作成

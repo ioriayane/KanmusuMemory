@@ -29,6 +29,11 @@ public:
     const QString &tokenSecret() const;
     const QString &user_id() const;
     const QString &screen_name() const;
+    const QStringList &getImagePathList() const;
+
+    void addImagePath(const QString &path);
+    void clearImagePath();
+    void removeImagePath(int i);
 
 public slots:
     void setImagePath(const QString &imagePath);
@@ -36,6 +41,7 @@ public slots:
     void setTokenSecret(const QString &tokenSecret);
     void user_id(const QString &user_id);
     void screen_name(const QString &screen_name);
+    void setImagePathList(const QStringList &value);
 
 signals:
     void imagePathChanged(const QString &imagePath);
@@ -43,6 +49,7 @@ signals:
     void tokenSecretChanged(const QString &tokenSecret);
     void user_idChanged(const QString &user_id);
     void screen_nameChanged(const QString &screen_name);
+    void imagePathListChanged(const QStringList &imagePathList);
 
 protected:
     void showEvent(QShowEvent *event);
