@@ -147,15 +147,17 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     /// メニュー
     ///////////////////////////////////////////////////////////////
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
+    connect(m_tweetDialog, &TweetDialog::triggeredCapture, [this]() { captureGame(); });
     connect(ui.actionCaptureAndEdit, &QAction::triggered, [this]() { captureGame(true); });
+    connect(m_tweetDialog, &TweetDialog::triggeredCaptureAndEdit, [this]() { captureGame(true); });
 #ifndef DISABLE_CATALOG_AND_DETAIL_FLEET
     connect(ui.captureCatalog, &QAction::triggered, [this](){ captureCatalog(); });
     connect(ui.captureFleetDetail, &QAction::triggered, [this](){ captureFleetDetail(); });
 #else
     //艦隊詳細
-    connect(ui.captureFleetDetail, &QAction::triggered, [this](){
-        openManualCaptureFleetDetail();
-    });
+    connect(ui.captureFleetDetail, &QAction::triggered, [this](){ openManualCaptureFleetDetail(); });
+    connect(m_tweetDialog, &TweetDialog::triggeredCaptureFleetDetail, [this]() { openManualCaptureFleetDetail(); });
+
     connect(m_fleetDetailDialog, &FleetDetailDialog::finishedCaptureImages, [this](FleetDetailDialog::NextOperationType next, QStringList file_list, int item_width, int item_height, int columns){
         finishManualCaptureFleetDetail(next, file_list, item_width, item_height, columns);
     });
@@ -165,9 +167,9 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     });
 #endif
     //艦隊リスト
-    connect(ui.captureFleetList, &QAction::triggered, [this](){
-        openManualCaptureFleetList();
-    });
+    connect(ui.captureFleetList, &QAction::triggered, [this](){ openManualCaptureFleetList(); });
+    connect(m_tweetDialog, &TweetDialog::triggeredCaptureFleetList, [this]() { openManualCaptureFleetList(); });
+
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
     connect(ui.actionReturn_to_Kan_Colle, &QAction::triggered, [this]() {
@@ -180,8 +182,10 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     });
     //画像リスト
     connect(ui.viewMemory, &QAction::triggered, [this]() { openMemoryDialog(); });
+    connect(m_tweetDialog, &TweetDialog::triggeredViewMemories, [this]() { openMemoryDialog(); });
     //通知タイマー
     connect(ui.notificationTimer, &QAction::triggered, [this]() { m_timerDialog->show(); });
+    connect(m_tweetDialog, &TweetDialog::triggeredNotificationTimer, [this]() { m_timerDialog->show(); });
     //設定ダイアログ表示
     connect(ui.preferences, &QAction::triggered, [this]() { openSettingDialog(); });
     //アバウト

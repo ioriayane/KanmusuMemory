@@ -170,7 +170,7 @@
         <enum>QLayout::SetDefaultConstraint</enum>
        </property>
        <item row="0" column="0">
-        <widget class="ClickableLabel" name="screenshot">
+        <widget class="ClickableLabel" name="screenshot" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -195,19 +195,16 @@
            <height>150</height>
           </size>
          </property>
-         <property name="pixmap">
+         <property name="pixmap" stdset="0">
           <pixmap resource="KanmusuMemory.qrc">:/resources/KanmusuMemory80.png</pixmap>
          </property>
-         <property name="scaledContents">
+         <property name="scaledContents" stdset="0">
           <bool>false</bool>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="ClickableLabel" name="screenshot2">
+        <widget class="ClickableLabel" name="screenshot2" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -232,19 +229,16 @@
            <height>150</height>
           </size>
          </property>
-         <property name="pixmap">
+         <property name="pixmap" stdset="0">
           <pixmap resource="KanmusuMemory.qrc">:/resources/KanmusuMemory80.png</pixmap>
          </property>
-         <property name="scaledContents">
+         <property name="scaledContents" stdset="0">
           <bool>false</bool>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="ClickableLabel" name="screenshot4">
+        <widget class="ClickableLabel" name="screenshot4" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -269,19 +263,16 @@
            <height>150</height>
           </size>
          </property>
-         <property name="pixmap">
+         <property name="pixmap" stdset="0">
           <pixmap resource="KanmusuMemory.qrc">:/resources/KanmusuMemory80.png</pixmap>
          </property>
-         <property name="scaledContents">
+         <property name="scaledContents" stdset="0">
           <bool>false</bool>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="ClickableLabel" name="screenshot3">
+        <widget class="ClickableLabel" name="screenshot3" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -306,14 +297,11 @@
            <height>150</height>
           </size>
          </property>
-         <property name="pixmap">
+         <property name="pixmap" stdset="0">
           <pixmap resource="KanmusuMemory.qrc">:/resources/KanmusuMemory80.png</pixmap>
          </property>
-         <property name="scaledContents">
+         <property name="scaledContents" stdset="0">
           <bool>false</bool>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </item>
@@ -343,11 +331,59 @@
     <string>Ctrl+Return</string>
    </property>
   </action>
+  <action name="actionViewMemories">
+   <property name="text">
+    <string>View memories</string>
+   </property>
+   <property name="shortcut">
+    <string>F6</string>
+   </property>
+  </action>
+  <action name="actionNotificationTimer">
+   <property name="text">
+    <string>notificationTimer</string>
+   </property>
+   <property name="shortcut">
+    <string>F7</string>
+   </property>
+  </action>
+  <action name="actionCapture">
+   <property name="text">
+    <string>Capture</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
+   </property>
+  </action>
+  <action name="actionCaptureFleetDetail">
+   <property name="text">
+    <string>captureFleetDetail</string>
+   </property>
+   <property name="shortcut">
+    <string>F9</string>
+   </property>
+  </action>
+  <action name="actionCaptureFleetList">
+   <property name="text">
+    <string>captureFleetList</string>
+   </property>
+   <property name="shortcut">
+    <string>F10</string>
+   </property>
+  </action>
+  <action name="actionCaptureAndEdit">
+   <property name="text">
+    <string>captureAndEdit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F5</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
    <class>ClickableLabel</class>
-   <extends>QFrame</extends>
+   <extends>QWidget</extends>
    <header>clickablelabel.h</header>
    <container>1</container>
   </customwidget>

@@ -51,6 +51,13 @@ signals:
     void screen_nameChanged(const QString &screen_name);
     void imagePathListChanged(const QStringList &imagePathList);
 
+    void triggeredCapture();
+    void triggeredCaptureAndEdit();
+    void triggeredViewMemories();
+    void triggeredNotificationTimer();
+    void triggeredCaptureFleetDetail();
+    void triggeredCaptureFleetList();
+
 protected:
     void showEvent(QShowEvent *event);
 

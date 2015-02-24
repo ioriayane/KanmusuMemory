@@ -86,6 +86,21 @@ TweetDialog::Private::Private(TweetDialog *parent)
     ui.tweetTextEdit->addAction(ui.actionTweet);
     connect(ui.actionTweet, &QAction::triggered, ui.tweetButton, &QPushButton::animateClick);
 
+    //ファンクションキー
+    ui.tweetTextEdit->addAction(ui.actionCapture);              //f5
+    ui.tweetTextEdit->addAction(ui.actionCaptureAndEdit);       //ctrl + f5
+    ui.tweetTextEdit->addAction(ui.actionViewMemories);         //f6
+    ui.tweetTextEdit->addAction(ui.actionNotificationTimer);    //f7
+    ui.tweetTextEdit->addAction(ui.actionCaptureFleetDetail);   //f9
+    ui.tweetTextEdit->addAction(ui.actionCaptureFleetList);     //f10
+    connect(ui.actionCapture, &QAction::triggered, [this]{ emit q->triggeredCapture(); });
+    connect(ui.actionCaptureAndEdit, &QAction::triggered, [this]{ emit q->triggeredCaptureAndEdit(); });
+    connect(ui.actionViewMemories, &QAction::triggered, [this]{ emit q->triggeredViewMemories(); });
+    connect(ui.actionNotificationTimer, &QAction::triggered, [this]{ emit q->triggeredNotificationTimer(); });
+    connect(ui.actionCaptureFleetDetail, &QAction::triggered, [this]{ emit q->triggeredCaptureFleetDetail(); });
+    connect(ui.actionCaptureFleetList, &QAction::triggered, [this]{ emit q->triggeredCaptureFleetList(); });
+
+
     connect(ui.reauthButton, &QPushButton::clicked, [this]() {
         //認証開始
         oauth.unauthorize();
