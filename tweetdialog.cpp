@@ -29,7 +29,7 @@
 class TweetDialog::Private
 {
 public:
-    Private(TweetDialog *parent);
+    Private(TweetDialog *parent, QSettings *s);
 
     enum SendMethod {
         None
@@ -56,13 +56,22 @@ public:
     OAuth oauth;
     Status status;
     QStringList imagePathList;
+    QSettings *settings;
 };
 
-TweetDialog::Private::Private(TweetDialog *parent)
+TweetDialog::Private::Private(TweetDialog *parent, QSettings *s)
     : q(parent)
     , sendmethod(SendMethod::None)
+    , settings(s)
 {
     ui.setupUi(q);
+
+    //ウインドウの位置を復元
+    if(settings != NULL){
+        settings->beginGroup(QStringLiteral(SETTING_TWEETDIALOG));
+        q->restoreGeometry(settings->value(QStringLiteral(SETTING_WINDOW_GEO)).toByteArray());
+        settings->endGroup();
+    }
 
     //表示画像を変更
     connect(q, &TweetDialog::imagePathChanged, [this](const QString &imagePath) {
@@ -285,11 +294,16 @@ void TweetDialog::Private::updatePreviewImages(const QStringList &imagePathList)
     }
 }
 
-TweetDialog::TweetDialog(QWidget *parent)
+TweetDialog::TweetDialog(QWidget *parent, QSettings *settings)
     : QDialog(parent)
-    , d(new Private(this))
+    , d(new Private(this, settings))
 {
     connect(this, &QObject::destroyed, [this]() { delete d; });
+}
+
+TweetDialog::~TweetDialog()
+{
+    saveSettings();
 }
 
 void TweetDialog::showEvent(QShowEvent *event)
@@ -307,6 +321,13 @@ void TweetDialog::showEvent(QShowEvent *event)
 
     //最初は幅がとれないので
     d->updatePreviewImages(d->imagePathList);
+}
+
+void TweetDialog::closeEvent(QCloseEvent *event)
+{
+    Q_UNUSED(event);
+
+    saveSettings();
 }
 
 
@@ -384,4 +405,14 @@ void TweetDialog::removeImagePath(int i)
     if(i < 0 || i >= d->imagePathList.length())  return;
     d->imagePathList.removeAt(i);
     emit imagePathListChanged(d->imagePathList);
+}
+
+void TweetDialog::saveSettings()
+{
+    //ウインドウの位置を保存
+    if(d->settings != NULL){
+        d->settings->beginGroup(QStringLiteral(SETTING_TWEETDIALOG));
+        d->settings->setValue(QStringLiteral(SETTING_WINDOW_GEO), saveGeometry());
+        d->settings->endGroup();
+    }
 }

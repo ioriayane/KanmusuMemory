@@ -17,13 +17,15 @@
 #define TWEETDIALOG_H
 
 #include <QDialog>
+#include <QSettings>
 
 class TweetDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit TweetDialog(QWidget *parent = 0);
-    
+    explicit TweetDialog(QWidget *parent = 0, QSettings *settings = NULL);
+    ~TweetDialog();
+
     const QString &token() const;
     const QString &tokenSecret() const;
     const QString &user_id() const;
@@ -33,6 +35,8 @@ public:
     void addImagePath(const QString &path);
     void clearImagePath();
     void removeImagePath(int i);
+
+    void saveSettings();
 
 public slots:
     void setToken(const QString &token);
@@ -59,6 +63,7 @@ signals:
 protected:
     virtual void resizeEvent(QResizeEvent *event);
     virtual void showEvent(QShowEvent *event);
+    virtual void closeEvent(QCloseEvent *event);
 
 private:
     class Private;

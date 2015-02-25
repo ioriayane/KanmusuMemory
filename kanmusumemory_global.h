@@ -64,6 +64,7 @@
 #define SETTING_GENERAL_TIMER_AUTO_START    "timer_auto_start"
 //設定：ウインドウ位置
 #define SETTING_MAINWINDOW          "mainwindow"
+#define SETTING_TWEETDIALOG         "tweetdialog"
 #define SETTING_TIMERDIALOG         "timerdialog"
 #define SETTING_FLEETDETAILDIALOG   "fleetdetaildialog"
 #define SETTING_WINDOW_GEO          "geometry"

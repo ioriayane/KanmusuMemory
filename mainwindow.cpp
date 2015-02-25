@@ -1463,7 +1463,7 @@ void MainWindow::Private::setWebSettings()
 void MainWindow::Private::makeDialog()
 {
     //ツイートダイアログ作成
-    m_tweetDialog = new TweetDialog(q);
+    m_tweetDialog = new TweetDialog(q, &settings);
     //通知タイマーのダイアログ作成
     m_timerDialog = new TimerDialog(q, &trayIcon, &settings);
     //アップデート通知のダイアログ作成
