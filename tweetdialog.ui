@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>466</width>
-    <height>383</height>
+    <width>465</width>
+    <height>350</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -170,23 +170,23 @@
         <enum>QLayout::SetDefaultConstraint</enum>
        </property>
        <item row="0" column="0">
-        <widget class="ClickableLabel" name="screenshot" native="true">
+        <widget class="ImageLabel" name="screenshot" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>1</horstretch>
+           <verstretch>1</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
           <size>
-           <width>250</width>
-           <height>150</height>
+           <width>100</width>
+           <height>60</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>250</width>
-           <height>150</height>
+           <width>1000</width>
+           <height>600</height>
           </size>
          </property>
          <property name="baseSize">
@@ -201,82 +201,55 @@
          <property name="scaledContents" stdset="0">
           <bool>false</bool>
          </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="ClickableLabel" name="screenshot2" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>60</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>100</width>
-           <height>60</height>
-          </size>
-         </property>
-         <property name="baseSize">
-          <size>
-           <width>250</width>
-           <height>150</height>
-          </size>
-         </property>
-         <property name="pixmap" stdset="0">
-          <pixmap resource="KanmusuMemory.qrc">:/resources/KanmusuMemory80.png</pixmap>
-         </property>
-         <property name="scaledContents" stdset="0">
-          <bool>false</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="ClickableLabel" name="screenshot4" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>100</width>
-           <height>60</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>100</width>
-           <height>60</height>
-          </size>
-         </property>
-         <property name="baseSize">
-          <size>
-           <width>250</width>
-           <height>150</height>
-          </size>
-         </property>
-         <property name="pixmap" stdset="0">
-          <pixmap resource="KanmusuMemory.qrc">:/resources/KanmusuMemory80.png</pixmap>
-         </property>
-         <property name="scaledContents" stdset="0">
-          <bool>false</bool>
-         </property>
+         <widget class="QPushButton" name="screenshotRemove">
+          <property name="geometry">
+           <rect>
+            <x>130</x>
+            <y>10</y>
+            <width>24</width>
+            <height>24</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="KanmusuMemory.qrc">
+            <normaloff>:/resources/ImageRemoveButton.png</normaloff>:/resources/ImageRemoveButton.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+         </widget>
         </widget>
        </item>
        <item row="1" column="0">
-        <widget class="ClickableLabel" name="screenshot3" native="true">
+        <widget class="ImageLabel" name="screenshot3" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>1</horstretch>
+           <verstretch>1</verstretch>
           </sizepolicy>
          </property>
          <property name="minimumSize">
@@ -287,8 +260,8 @@
          </property>
          <property name="maximumSize">
           <size>
-           <width>100</width>
-           <height>60</height>
+           <width>1000</width>
+           <height>600</height>
           </size>
          </property>
          <property name="baseSize">
@@ -303,22 +276,200 @@
          <property name="scaledContents" stdset="0">
           <bool>false</bool>
          </property>
+         <widget class="QPushButton" name="screenshotRemove3">
+          <property name="geometry">
+           <rect>
+            <x>150</x>
+            <y>0</y>
+            <width>24</width>
+            <height>24</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="KanmusuMemory.qrc">
+            <normaloff>:/resources/ImageRemoveButton.png</normaloff>:/resources/ImageRemoveButton.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="ImageLabel" name="screenshot4" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>1</horstretch>
+           <verstretch>1</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>1000</width>
+           <height>600</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>250</width>
+           <height>150</height>
+          </size>
+         </property>
+         <property name="pixmap" stdset="0">
+          <pixmap resource="KanmusuMemory.qrc">:/resources/KanmusuMemory80.png</pixmap>
+         </property>
+         <property name="scaledContents" stdset="0">
+          <bool>false</bool>
+         </property>
+         <widget class="QPushButton" name="screenshotRemove4">
+          <property name="geometry">
+           <rect>
+            <x>150</x>
+            <y>0</y>
+            <width>24</width>
+            <height>24</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="KanmusuMemory.qrc">
+            <normaloff>:/resources/ImageRemoveButton.png</normaloff>:/resources/ImageRemoveButton.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+         </widget>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="ImageLabel" name="screenshot2" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>1</horstretch>
+           <verstretch>1</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>100</width>
+           <height>60</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>1000</width>
+           <height>600</height>
+          </size>
+         </property>
+         <property name="baseSize">
+          <size>
+           <width>250</width>
+           <height>150</height>
+          </size>
+         </property>
+         <property name="pixmap" stdset="0">
+          <pixmap resource="KanmusuMemory.qrc">:/resources/KanmusuMemory80.png</pixmap>
+         </property>
+         <property name="scaledContents" stdset="0">
+          <bool>false</bool>
+         </property>
+         <widget class="QPushButton" name="screenshotRemove2">
+          <property name="geometry">
+           <rect>
+            <x>150</x>
+            <y>0</y>
+            <width>24</width>
+            <height>24</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="KanmusuMemory.qrc">
+            <normaloff>:/resources/ImageRemoveButton.png</normaloff>:/resources/ImageRemoveButton.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>24</width>
+            <height>24</height>
+           </size>
+          </property>
+         </widget>
         </widget>
        </item>
       </layout>
-     </item>
-     <item>
-      <spacer name="verticalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Vertical</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>20</width>
-         <height>40</height>
-        </size>
-       </property>
-      </spacer>
      </item>
     </layout>
    </item>
@@ -382,9 +533,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ClickableLabel</class>
+   <class>ImageLabel</class>
    <extends>QWidget</extends>
-   <header>clickablelabel.h</header>
+   <header>imagelabel.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

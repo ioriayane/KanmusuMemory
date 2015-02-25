@@ -24,7 +24,6 @@ class TweetDialog : public QDialog
 public:
     explicit TweetDialog(QWidget *parent = 0);
     
-    const QString &imagePath() const;
     const QString &token() const;
     const QString &tokenSecret() const;
     const QString &user_id() const;
@@ -36,7 +35,6 @@ public:
     void removeImagePath(int i);
 
 public slots:
-    void setImagePath(const QString &imagePath);
     void setToken(const QString &token);
     void setTokenSecret(const QString &tokenSecret);
     void user_id(const QString &user_id);
@@ -59,7 +57,8 @@ signals:
     void triggeredCaptureFleetList();
 
 protected:
-    void showEvent(QShowEvent *event);
+    virtual void resizeEvent(QResizeEvent *event);
+    virtual void showEvent(QShowEvent *event);
 
 private:
     class Private;

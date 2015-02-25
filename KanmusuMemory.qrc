@@ -47,6 +47,7 @@
         <file>resources/RecordButton1.png</file>
         <file>resources/RecordButton2.png</file>
         <file>resources/RecordSettingButton.png</file>
-        <file>resources/ImageRemoveMark.png</file>
+        <file>resources/ImageRemoveButton.png</file>
+        <file>resources/ImageRemoveButton2.png</file>
     </qresource>
 </RCC>

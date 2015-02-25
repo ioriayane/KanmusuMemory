@@ -23,7 +23,7 @@
 #include <QtTwitterAPI/status.h>
 #include <QPainter>
 
-#include "clickablelabel.h"
+#include "imagelabel.h"
 #include "twitterinfo.h"
 
 class TweetDialog::Private
@@ -42,8 +42,7 @@ private:
     Ui::TweetDialog ui;
 
     bool existImages();
-    bool hitRemoveMark(const ClickableLabel *label, const QRect &rect, const QPoint &point);
-    void clickedRemoveMark(const ClickableLabel *label, int index, const QPoint &point);
+    void moveRemoveButton(const ImageLabel *label, QPushButton *button, const QRect &image);
 
     SendMethod sendmethod;
     QStringList mediaIds;
@@ -56,7 +55,6 @@ public:
     bool sending() {   return sendmethod != SendMethod::None;  }
     OAuth oauth;
     Status status;
-    QString imagePath;
     QStringList imagePathList;
 };
 
@@ -141,7 +139,7 @@ TweetDialog::Private::Private(TweetDialog *parent)
                     sendmethod = SendMethod::SinglePost;
                     QVariantMap map;
                     map.insert("status", ui.tweetTextEdit->toPlainText());
-                    map.insert("media_ids", mediaIds.join(','));
+                    map.insert("media_ids", mediaIds);
                     status.statusesUpdate(map);
                 }
             }else{
@@ -191,19 +189,18 @@ TweetDialog::Private::Private(TweetDialog *parent)
         q->reject();
     });
 
-    //プレビュー画像をクリック
-    connect(ui.screenshot, &ClickableLabel::released, [this](QMouseEvent *ev){
-        clickedRemoveMark(ui.screenshot, 0, ev->pos());
-    });
-    connect(ui.screenshot2, &ClickableLabel::released, [this](QMouseEvent *ev){
-        clickedRemoveMark(ui.screenshot2, 1, ev->pos());
-    });
-    connect(ui.screenshot3, &ClickableLabel::released, [this](QMouseEvent *ev){
-        clickedRemoveMark(ui.screenshot3, 2, ev->pos());
-    });
-    connect(ui.screenshot4, &ClickableLabel::released, [this](QMouseEvent *ev){
-        clickedRemoveMark(ui.screenshot4, 3, ev->pos());
-    });
+    //プレビュー画像削除をクリック
+    connect(ui.screenshotRemove, &QPushButton::clicked, [this](){   q->removeImagePath(0); });
+    connect(ui.screenshotRemove2, &QPushButton::clicked, [this](){  q->removeImagePath(1); });
+    connect(ui.screenshotRemove3, &QPushButton::clicked, [this](){  q->removeImagePath(2); });
+    connect(ui.screenshotRemove4, &QPushButton::clicked, [this](){  q->removeImagePath(3); });
+
+    //プレビュー画像の大きさが変化した
+    connect(ui.screenshot, &ImageLabel::imageRectChanged, [this](const QRect &rect){ moveRemoveButton(ui.screenshot, ui.screenshotRemove, rect); });
+    connect(ui.screenshot2, &ImageLabel::imageRectChanged, [this](const QRect &rect){ moveRemoveButton(ui.screenshot2, ui.screenshotRemove2, rect); });
+    connect(ui.screenshot3, &ImageLabel::imageRectChanged, [this](const QRect &rect){ moveRemoveButton(ui.screenshot3, ui.screenshotRemove3, rect); });
+    connect(ui.screenshot4, &ImageLabel::imageRectChanged, [this](const QRect &rect){ moveRemoveButton(ui.screenshot4, ui.screenshotRemove4, rect); });
+
 
     //OAuth
     connect(&oauth, &OAuth::stateChanged, [this](OAuth::State state) {
@@ -264,69 +261,24 @@ bool TweetDialog::Private::existImages()
     return ret;
 }
 
-bool TweetDialog::Private::hitRemoveMark(const ClickableLabel *label, const QRect &rect, const QPoint &point)
+void TweetDialog::Private::moveRemoveButton(const ImageLabel *label, QPushButton *button, const QRect &image)
 {
-    qDebug() << QString("hit? tw=%3,th=%4, iw=%5, ih=%6, x=%1, y=%2").arg(point.x()).arg(point.y())
-                .arg(label->width()).arg(label->height())
-                .arg(rect.width()).arg(rect.height());
     qreal wc = label->width() / 2;
-    qreal image_right = wc + rect.width() / 2;
-    qreal mark_left = image_right - 24;
+    int image_right = wc + image.width() / 2;
+    int mark_left = image_right - button->width();
     qreal hc = label->height() / 2;
-    qreal image_top = hc - rect.height() / 2;
-    qreal mark_bottom = image_top + 24;
-    qDebug() << QString("     wc=%1, image_right=%2, mark_left=%3, hc=%4, image_top=%5, mark_bottom=%6")
-                .arg(wc).arg(image_right).arg(mark_left).arg(hc).arg(image_top).arg(mark_bottom);
-    if(mark_left <= point.x() && point.x() <= image_right
-            && image_top <= point.y() && point.y() <= mark_bottom){
-        return true;
-    }else{
-        return false;
-    }
-}
+    int image_top = hc - image.height() / 2 + 1;
 
-void TweetDialog::Private::clickedRemoveMark(const ClickableLabel *label, int index, const QPoint &point)
-{
-    if(previewImageRect.length() > index){
-        if(hitRemoveMark(label, previewImageRect.at(index), point)){
-            q->removeImagePath(index);
-            qDebug() << "HIT " << index;
-        }
-    }
+    button->move(mark_left, image_top);
 }
 
 void TweetDialog::Private::updatePreviewImages(const QStringList &imagePathList)
 {
-    QLabel *screenshot[] = {ui.screenshot, ui.screenshot2, ui.screenshot3, ui.screenshot4};
-    QImage mark(":/resources/ImageRemoveMark.png");
-    qreal total_w = ui.gridLayout->contentsRect().width();
-    qreal total_h = ui.gridLayout->contentsRect().height();
-    qreal w;
-    qreal h;
-    previewImageRect.clear();
+    ImageLabel *screenshot[] = {ui.screenshot, ui.screenshot2, ui.screenshot3, ui.screenshot4};
     for(int i=0; i<4; i++){
-        if(imagePathList.length() > 1){
-            w = total_w / 2;
-        }else{
-            w = total_w;
-        }
-        if(imagePathList.length() == 2){
-            h = total_h;
-        }else{
-            h = w * 0.6;
-        }
         if(i < imagePathList.length()){
-            QImage img(imagePathList.at(i));
-            QImage img2(img.scaled(w, h, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-            QPainter painter(&img2);
-            painter.drawImage(img2.width() - mark.width() - 1, 1, mark);
-            screenshot[i]->setFixedWidth(static_cast<int>(w));
-            screenshot[i]->setFixedHeight(static_cast<int>(h));
-            screenshot[i]->setMaximumSize(w, h);
-            screenshot[i]->setPixmap(QPixmap::fromImage(img2));
+            screenshot[i]->setFileName(imagePathList.at(i));
             screenshot[i]->setVisible(true);
-            //ぺけマークの当たり判定用に保存しておく
-            previewImageRect.append(img2.rect());
         }else{
             screenshot[i]->setVisible(false);
         }
@@ -357,17 +309,6 @@ void TweetDialog::showEvent(QShowEvent *event)
     d->updatePreviewImages(d->imagePathList);
 }
 
-const QString &TweetDialog::imagePath() const
-{
-    return d->imagePath;
-}
-
-void TweetDialog::setImagePath(const QString &imagePath)
-{
-    if (d->imagePath == imagePath) return;
-    d->imagePath = imagePath;
-    emit imagePathChanged(imagePath);
-}
 
 const QString &TweetDialog::token() const
 {
@@ -418,6 +359,11 @@ void TweetDialog::setImagePathList(const QStringList &value)
 {
     d->imagePathList = value;
     emit imagePathListChanged(value);
+}
+
+void TweetDialog::resizeEvent(QResizeEvent *event)
+{
+    Q_UNUSED(event);
 }
 
 void TweetDialog::addImagePath(const QString &path)
