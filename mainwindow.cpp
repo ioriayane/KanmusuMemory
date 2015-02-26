@@ -678,15 +678,21 @@ void MainWindow::Private::openMemoryDialog()
     checkSavePath();
     MemoryDialog dlg(settings.value(QStringLiteral("path")).toString(), q);
     dlg.exec();
-    if(QFile::exists(dlg.imagePath())){
-        switch(dlg.nextOperation()){
-        case MemoryDialog::Tweet:
-            //つぶやく
-            openTweetDialog(dlg.imagePath(), true);
-            break;
-        case MemoryDialog::Edit:
-        {
-            //編集
+    switch(dlg.nextOperation()){
+    case MemoryDialog::Tweet:
+    {
+        //つぶやく
+        foreach (QString file, dlg.selectedFiles()) {
+            if(QFile::exists(file)){
+                openTweetDialog(file, true);
+            }
+        }
+        break;
+    }
+    case MemoryDialog::Edit:
+    {
+        //編集
+        if(QFile::exists(dlg.imagePath())){
             QString format;
             if(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool())
                 format = QStringLiteral("png");
@@ -695,11 +701,11 @@ void MainWindow::Private::openMemoryDialog()
             QString path = makeFileName(format);
             QString editPath = makeFileName(format);
             openImageEditDialog(path ,dlg.imagePath(), editPath);
-            break;
         }
-        default:
-            break;
-        }
+        break;
+    }
+    default:
+        break;
     }
 }
 //設定ダイアログを開く

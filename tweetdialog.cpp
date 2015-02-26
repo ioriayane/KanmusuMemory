@@ -25,6 +25,7 @@
 
 #include "imagelabel.h"
 #include "twitterinfo.h"
+#include "kanmusumemory_global.h"
 
 class TweetDialog::Private
 {
