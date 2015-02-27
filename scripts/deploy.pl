@@ -100,7 +100,7 @@ for ($i = 0; $i <= $#ARGV; $i++) {
 #	, "Qt5Svg"
 #	, "Qt5Test"
 #	, "Qt5V8"
-	, "Qt5WebKit", "Qt5WebKitWidgets"
+	, "Qt5WebKit", "Qt5WebKitWidgets", "Qt5WebChannel"
 	, "Qt5Widgets"
 #	, "Qt5Xml"
 #	, "Qt5XmlPatterns"
@@ -204,9 +204,9 @@ if($OS eq "win"){
 
 	# Qtのディレクトリ
 	if($PTRSIZE == 32){
-		$QTDIR="~/Qt5.3.1/5.3/gcc/";
+		$QTDIR="~/Qt5.4.1/5.4/gcc/";
 	}else{
-		$QTDIR="~/Qt5.3.1/5.3/gcc_64/";
+		$QTDIR="~/Qt5.4.1/5.4/gcc_64/";
 	}
 	# Qtのバイナリの場所
 	$QTBIN="bin/";
@@ -243,7 +243,7 @@ if($OS eq "win"){
 	@temp = ();
 	foreach $name (@QT_MODULE_LIBRARY){
 		push(@temp, "lib" . $name . ".so.5");
-		push(@temp, "lib" . $name . ".so.5.3.1");
+		push(@temp, "lib" . $name . ".so.5.4.1");
 	}
 	@QT_MODULE_LIBRARY = @temp;
     
@@ -251,14 +251,14 @@ if($OS eq "win"){
 	push(@QT_MODULE_PLUGIN, "platforminputcontexts");
 	push(@QT_MODULE_PLUGIN, "platformthemes");
 
-	push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0");
-	push(@QT_MODULE_LIBRARY, "libQt0TwitterAPI.so.0.1.0");
-	push(@QT_MODULE_LIBRARY, "libicudata.so.52");
-	push(@QT_MODULE_LIBRARY, "libicudata.so.52.1");
-	push(@QT_MODULE_LIBRARY, "libicui18n.so.52");
-	push(@QT_MODULE_LIBRARY, "libicui18n.so.52.1");
-	push(@QT_MODULE_LIBRARY, "libicuuc.so.52");
-	push(@QT_MODULE_LIBRARY, "libicuuc.so.52.1");
+	push(@QT_MODULE_LIBRARY, "libQt5TwitterAPI.so.0");
+	push(@QT_MODULE_LIBRARY, "libQt5TwitterAPI.so.0.1.0");
+	push(@QT_MODULE_LIBRARY, "libicudata.so.53");
+	push(@QT_MODULE_LIBRARY, "libicudata.so.53.1");
+	push(@QT_MODULE_LIBRARY, "libicui18n.so.53");
+	push(@QT_MODULE_LIBRARY, "libicui18n.so.53.1");
+	push(@QT_MODULE_LIBRARY, "libicuuc.so.53");
+	push(@QT_MODULE_LIBRARY, "libicuuc.so.53.1");
 	push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1");
 	push(@QT_MODULE_LIBRARY, "libqgsttools_p.so.1.0.0");
 
