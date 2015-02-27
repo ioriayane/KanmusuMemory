@@ -28,11 +28,37 @@ Rectangle {
 
     property int nextOperation: -1   // 0:tweet, 1:edit
     property string imagePath: ""
+    property bool multiSelectMode: false
+    property var selectedFiles: []
 
     OperatingSystem {
         id: os
     }
 
+    //複数選択のメッセージ
+    Text {
+        id: multiSelectMessage
+        anchors.top: control.top
+        anchors.left: parent.left
+        anchors.bottom: control.bottom
+        anchors.leftMargin: 20
+        verticalAlignment: Text.AlignVCenter
+        color: "darkgray"
+        text: qsTr("Select multiple images by Ctrl+Click.")
+
+        states: [
+            State {
+                when: root.multiSelectMode
+                PropertyChanges {
+                    target: multiSelectMessage
+                    color: "black"
+                    text: qsTr("Selected images %1/%2.").arg(root.selectedFiles.length).arg(4)
+                }
+            }
+        ]
+    }
+
+    //下のボタンとかエリア
     Row {
         id: control
         anchors.right: parent.right
@@ -44,6 +70,7 @@ Rectangle {
         Button {
             width: 81
             height: 31
+            enabled: view.visible || selectedFiles.length > 0
             text: qsTr("Select")
             onClicked: {
                 nextOperation = 0
@@ -53,6 +80,7 @@ Rectangle {
         Button {
             width: 81
             height: 31
+            enabled: view.visible
             text: qsTr("Edit")
             onClicked: {
                 nextOperation = 1
@@ -65,6 +93,7 @@ Rectangle {
             text: qsTr("Cancel")
             onClicked: {
                 root.imagePath = ""
+                root.selectedFiles = []
                 Qt.quit()
             }
         }
@@ -104,7 +133,7 @@ Rectangle {
                 Rectangle {
                     width: parent.width
                     height: text.paintedHeight * 2
-//                    color: root.color
+                    //                    color: root.color
                     Text {
                         id: text
                         anchors.verticalCenter: parent.verticalCenter
@@ -119,13 +148,46 @@ Rectangle {
                     contentWidth: parent.width
                     filter: [model.filter + ".png", model.filter + ".jpg"]
                     onFilterChanged: folder = memoryPath
+                    multiSelectMode: root.multiSelectMode
+                    selectedFiles: root.selectedFiles
                     onClicked: {
-                        root.imagePath = filePath
-                        viewImage.source = os.pathPrefix + filePath
-                        view.xScale = 1
+                        if(ctrl){
+                            //複数選択モード
+                            var temp = []
+                            var exist = false
+                            for(var i=0; i<root.selectedFiles.length; i++){
+                                if(root.selectedFiles[i] === filePath){
+                                    //既にある場合は消す
+                                    exist = true
+                                }else{
+                                    temp.push(root.selectedFiles[i])
+                                }
+                            }
+                            if(!exist && root.selectedFiles.length < 4){
+                                temp.push(filePath)
+                            }
+                            root.selectedFiles = temp
+                            //↑これしないと変更シグナルが飛ばないから
+                            if(root.selectedFiles.length > 0){
+                                root.imagePath = root.selectedFiles[0]
+                            }
+                            root.multiSelectMode = true
+                            //console.debug("selectedCount:%1".arg(root.selectedFiles.length))
+                        }else if(root.multiSelectMode){
+                            root.imagePath = ""
+                            root.selectedFiles = []
+                            root.multiSelectMode = false
+                        }else{
+                            root.imagePath = filePath
+                            root.selectedFiles = [filePath]
+                            viewImage.source = os.pathPrefix + filePath
+                            view.xScale = 1
+                            root.multiSelectMode = false
+                        }
                     }
                     onDoubleClicked: {
                         root.imagePath = filePath
+                        root.selectedFiles = [filePath]
                         root.nextOperation = 0
                         Qt.quit()
                     }
@@ -153,8 +215,10 @@ Rectangle {
             acceptedButtons: Qt.LeftButton | Qt.RightButton | Qt.MiddleButton
             onWheel: wheel.accepted = true
             onClicked: {
-                if(mouse.button == Qt.RightButton)
+                if(mouse.button == Qt.RightButton){
+                    root.selectedFiles = [] //クリア
                     view.xScale = 0
+                }
             }
             onDoubleClicked: {
                 nextOperation = 0

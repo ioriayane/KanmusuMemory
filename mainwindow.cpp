@@ -102,6 +102,7 @@ private:
     void setSplitWindowOrientation(Qt::Orientation orientation);
 
     MainWindow *q;
+    TweetDialog *m_tweetDialog;
     TimerDialog *m_timerDialog;
     UpdateInfoDialog *m_updateInfoDialog;
     FleetDetailDialog *m_fleetDetailDialog;
@@ -146,15 +147,17 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     /// メニュー
     ///////////////////////////////////////////////////////////////
     connect(ui.capture, &QAction::triggered, [this](){ captureGame(); });
+    connect(m_tweetDialog, &TweetDialog::triggeredCapture, [this]() { captureGame(); });
     connect(ui.actionCaptureAndEdit, &QAction::triggered, [this]() { captureGame(true); });
+    connect(m_tweetDialog, &TweetDialog::triggeredCaptureAndEdit, [this]() { captureGame(true); });
 #ifndef DISABLE_CATALOG_AND_DETAIL_FLEET
     connect(ui.captureCatalog, &QAction::triggered, [this](){ captureCatalog(); });
     connect(ui.captureFleetDetail, &QAction::triggered, [this](){ captureFleetDetail(); });
 #else
     //艦隊詳細
-    connect(ui.captureFleetDetail, &QAction::triggered, [this](){
-        openManualCaptureFleetDetail();
-    });
+    connect(ui.captureFleetDetail, &QAction::triggered, [this](){ openManualCaptureFleetDetail(); });
+    connect(m_tweetDialog, &TweetDialog::triggeredCaptureFleetDetail, [this]() { openManualCaptureFleetDetail(); });
+
     connect(m_fleetDetailDialog, &FleetDetailDialog::finishedCaptureImages, [this](FleetDetailDialog::NextOperationType next, QStringList file_list, int item_width, int item_height, int columns){
         finishManualCaptureFleetDetail(next, file_list, item_width, item_height, columns);
     });
@@ -164,9 +167,9 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     });
 #endif
     //艦隊リスト
-    connect(ui.captureFleetList, &QAction::triggered, [this](){
-        openManualCaptureFleetList();
-    });
+    connect(ui.captureFleetList, &QAction::triggered, [this](){ openManualCaptureFleetList(); });
+    connect(m_tweetDialog, &TweetDialog::triggeredCaptureFleetList, [this]() { openManualCaptureFleetList(); });
+
     connect(ui.reload, &QAction::triggered, ui.webView, &QWebView::reload);
     connect(ui.exit, &QAction::triggered, q, &MainWindow::close);
     connect(ui.actionReturn_to_Kan_Colle, &QAction::triggered, [this]() {
@@ -179,8 +182,10 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     });
     //画像リスト
     connect(ui.viewMemory, &QAction::triggered, [this]() { openMemoryDialog(); });
+    connect(m_tweetDialog, &TweetDialog::triggeredViewMemories, [this]() { openMemoryDialog(); });
     //通知タイマー
     connect(ui.notificationTimer, &QAction::triggered, [this]() { m_timerDialog->show(); });
+    connect(m_tweetDialog, &TweetDialog::triggeredNotificationTimer, [this]() { m_timerDialog->show(); });
     //設定ダイアログ表示
     connect(ui.preferences, &QAction::triggered, [this]() { openSettingDialog(); });
     //アバウト
@@ -295,6 +300,10 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     ///////////////////////////////////////////////////////////////
 
     //フルスクリーン
+#ifdef Q_OS_MAC
+    //Macではショートカット無効（tweetDialogをモードレスにしたらctrl+Enterがかぶって拾えなくなったから）
+    ui.actionFullScreen->setShortcut(QKeySequence());
+#endif
     q->addAction(ui.actionFullScreen);
     connect(ui.actionFullScreen, &QAction::triggered, [this]() {
         if(q->isFullScreen()){
@@ -458,6 +467,23 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
         m_favorite.load(ui.favorite);
     });
 
+    ///////////////////////////////////////////////////////////////
+    /// ツイートダイアログ
+    /// ///////////////////////////////////////////////////////////
+    connect(m_tweetDialog, &TweetDialog::accepted, [this](){
+        //OK
+        settings.setValue(SETTING_GENERAL_TOKEN, m_tweetDialog->token());
+        settings.setValue(SETTING_GENERAL_TOKENSECRET, m_tweetDialog->tokenSecret());
+        settings.setValue(SETTING_GENERAL_USER_ID, m_tweetDialog->user_id());
+        settings.setValue(SETTING_GENERAL_SCREEN_NAME, m_tweetDialog->screen_name());
+    });
+    connect(m_tweetDialog, &TweetDialog::rejected, [this](){
+        //cancel
+        settings.setValue(SETTING_GENERAL_TOKEN, m_tweetDialog->token());
+        settings.setValue(SETTING_GENERAL_TOKENSECRET, m_tweetDialog->tokenSecret());
+        settings.setValue(SETTING_GENERAL_USER_ID, m_tweetDialog->user_id());
+        settings.setValue(SETTING_GENERAL_SCREEN_NAME, m_tweetDialog->screen_name());
+    });
 
     ///////////////////////////////////////////////////////////////
     /// アップデート
@@ -502,6 +528,7 @@ MainWindow::Private::~Private()
     delete m_fleetDetailDialog;
     delete m_updateInfoDialog;
     delete m_timerDialog;
+    delete m_tweetDialog;
 }
 //指定範囲をマスクする
 void MainWindow::Private::maskImage(QImage *img, const QRect &rect)
@@ -640,23 +667,13 @@ void MainWindow::Private::openTweetDialog(const QString &path, bool force)
                                  , tr("Kan Memo")
                                  , tr("saving to %1...").arg(path));
     }else{
-        //ダイアログを開く
-        TweetDialog dlg(q/*
-                        , settings.value(SETTING_GENERAL_TOKEN, "").toString()
-                        , settings.value(SETTING_GENERAL_TOKENSECRET, "").toString()
-                        , settings.value(SETTING_GENERAL_USER_ID, "").toString()
-                        , settings.value(SETTING_GENERAL_SCREEN_NAME, "").toString()
-                        */);
-        dlg.setImagePath(path);
-        dlg.setToken(settings.value(SETTING_GENERAL_TOKEN, "").toString());
-        dlg.setTokenSecret(settings.value(SETTING_GENERAL_TOKENSECRET, "").toString());
-        dlg.user_id(settings.value(SETTING_GENERAL_USER_ID, "").toString());
-        dlg.screen_name(settings.value(SETTING_GENERAL_SCREEN_NAME, "").toString());
-        dlg.exec();
-        settings.setValue(SETTING_GENERAL_TOKEN, dlg.token());
-        settings.setValue(SETTING_GENERAL_TOKENSECRET, dlg.tokenSecret());
-        settings.setValue(SETTING_GENERAL_USER_ID, dlg.user_id());
-        settings.setValue(SETTING_GENERAL_SCREEN_NAME, dlg.screen_name());
+        //画像を追加してダイアログを開く
+        m_tweetDialog->setToken(settings.value(SETTING_GENERAL_TOKEN, "").toString());
+        m_tweetDialog->setTokenSecret(settings.value(SETTING_GENERAL_TOKENSECRET, "").toString());
+        m_tweetDialog->user_id(settings.value(SETTING_GENERAL_USER_ID, "").toString());
+        m_tweetDialog->screen_name(settings.value(SETTING_GENERAL_SCREEN_NAME, "").toString());
+        m_tweetDialog->addImagePath(path);
+        m_tweetDialog->show();
     }
 }
 //画像リストダイアログを開く
@@ -665,15 +682,21 @@ void MainWindow::Private::openMemoryDialog()
     checkSavePath();
     MemoryDialog dlg(settings.value(QStringLiteral("path")).toString(), q);
     dlg.exec();
-    if(QFile::exists(dlg.imagePath())){
-        switch(dlg.nextOperation()){
-        case MemoryDialog::Tweet:
-            //つぶやく
-            openTweetDialog(dlg.imagePath(), true);
-            break;
-        case MemoryDialog::Edit:
-        {
-            //編集
+    switch(dlg.nextOperation()){
+    case MemoryDialog::Tweet:
+    {
+        //つぶやく
+        foreach (QString file, dlg.selectedFiles()) {
+            if(QFile::exists(file)){
+                openTweetDialog(file, true);
+            }
+        }
+        break;
+    }
+    case MemoryDialog::Edit:
+    {
+        //編集
+        if(QFile::exists(dlg.imagePath())){
             QString format;
             if(settings.value(SETTING_GENERAL_SAVE_PNG, false).toBool())
                 format = QStringLiteral("png");
@@ -682,11 +705,11 @@ void MainWindow::Private::openMemoryDialog()
             QString path = makeFileName(format);
             QString editPath = makeFileName(format);
             openImageEditDialog(path ,dlg.imagePath(), editPath);
-            break;
         }
-        default:
-            break;
-        }
+        break;
+    }
+    default:
+        break;
     }
 }
 //設定ダイアログを開く
@@ -1449,6 +1472,8 @@ void MainWindow::Private::setWebSettings()
 //ダイアログの作成をする
 void MainWindow::Private::makeDialog()
 {
+    //ツイートダイアログ作成
+    m_tweetDialog = new TweetDialog(q, &settings);
     //通知タイマーのダイアログ作成
     m_timerDialog = new TimerDialog(q, &trayIcon, &settings);
     //アップデート通知のダイアログ作成

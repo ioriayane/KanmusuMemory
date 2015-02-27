@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0" language="ja_JP">
+<TS version="2.1" language="ja_JP">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -116,7 +116,7 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../mainwindow.cpp" line="+423"/>
+        <location filename="../mainwindow.cpp" line="+428"/>
         <source>complete</source>
         <translation>ページの読み込みが完了しました。</translation>
     </message>
@@ -130,7 +130,7 @@
         <translation type="obsolete">艦これが見つかりませんでした。</translation>
     </message>
     <message>
-        <location line="+127"/>
+        <location line="+148"/>
         <source>failed capture image</source>
         <translation>画像を取り込めませんでした。</translation>
     </message>
@@ -138,29 +138,29 @@
         <location line="+32"/>
         <location line="+13"/>
         <location line="+34"/>
-        <location line="+460"/>
+        <location line="+456"/>
         <location line="+71"/>
         <source>saving to %1...</source>
         <translation>%1を保存しました。</translation>
     </message>
     <message>
-        <location line="-573"/>
+        <location line="-569"/>
         <location line="+13"/>
-        <location line="+495"/>
+        <location line="+491"/>
         <location line="+71"/>
         <source>failed save image</source>
         <translation>思い出を保存できませんでした。</translation>
     </message>
     <message>
-        <location line="-555"/>
+        <location line="-551"/>
         <location line="+17"/>
-        <location line="+412"/>
+        <location line="+408"/>
         <location line="+86"/>
         <source>Kan Memo</source>
         <translation>艦メモ</translation>
     </message>
     <message>
-        <location line="-514"/>
+        <location line="-510"/>
         <source>Please select a folder to save the image of KanMusu.</source>
         <translation>艦娘の画像を保存するフォルダを選択してください。</translation>
     </message>
@@ -170,7 +170,7 @@
         <translation>キャンセルしました。</translation>
     </message>
     <message>
-        <location line="+238"/>
+        <location line="+234"/>
         <source>Fleet Detail</source>
         <translation>艦隊詳細</translation>
     </message>
@@ -224,12 +224,12 @@ Please wait while a cup of coffee.</source>
         <translation>編成画面で船の詳細画面を表示してキャプチャーしてください。</translation>
     </message>
     <message>
-        <location line="-617"/>
+        <location line="-635"/>
         <source>failed to started recording.</source>
         <translation>録画を開始できませんでした。</translation>
     </message>
     <message>
-        <location line="+618"/>
+        <location line="+636"/>
         <location line="+27"/>
         <source>The following buttons appear when you capture.</source>
         <translation>キャプチャーすると次のボタンが表示されます。</translation>
@@ -241,7 +241,7 @@ Please wait while a cup of coffee.</source>
         <translation>完了するとキャプチャーした画像を結合します。</translation>
     </message>
     <message>
-        <location line="+719"/>
+        <location line="+723"/>
         <source>Handle ssl errors.
 Do you want to continue on an understanding of the security risk?
 </source>
@@ -1148,15 +1148,15 @@ Do you want to continue on an understanding of the security risk?
     </message>
     <message>
         <source>It is time that Kanmusu is up from the %1 bath.</source>
-        <translation>%1ドックの艦娘さんがお風呂から上がる頃です。</translation>
+        <translation type="vanished">%1ドックの艦娘さんがお風呂から上がる頃です。</translation>
     </message>
     <message>
         <source>It is time the %1 Fleet is returned.</source>
-        <translation>%1艦隊が遠征から帰る頃です。</translation>
+        <translation type="vanished">%1艦隊が遠征から帰る頃です。</translation>
     </message>
     <message>
         <source>It is time the Kanmusu of %1 dock is completed.</source>
-        <translation>%1ドックでの建造が終わる頃です。</translation>
+        <translation type="vanished">%1ドックでの建造が終わる頃です。</translation>
     </message>
     <message>
         <location line="+83"/>
@@ -1228,9 +1228,10 @@ Do you want to continue on an understanding of the security risk?
     <name>TweetDialog</name>
     <message>
         <location filename="../tweetdialog.ui" line="+14"/>
-        <location line="+124"/>
-        <location filename="../ui_tweetdialog.h" line="+174"/>
-        <location line="+7"/>
+        <location line="+137"/>
+        <location filename="../tweetdialog.cpp" line="+161"/>
+        <location filename="../ui_tweetdialog.h" line="+290"/>
+        <location line="+19"/>
         <source>Tweet</source>
         <translation>つぶやく</translation>
     </message>
@@ -1263,7 +1264,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>140</translation>
     </message>
     <message>
-        <location line="-27"/>
+        <location line="-40"/>
         <location filename="../ui_tweetdialog.h" line="-1"/>
         <source>Reauthize</source>
         <translation>再認証</translation>
@@ -1281,8 +1282,8 @@ Do you want to continue on an understanding of the security risk?
         <translation></translation>
     </message>
     <message>
-        <location line="+120"/>
-        <location filename="../ui_tweetdialog.h" line="-3"/>
+        <location line="+403"/>
+        <location filename="../ui_tweetdialog.h" line="-15"/>
         <source>tweet</source>
         <translation>つぶやく</translation>
     </message>
@@ -1293,21 +1294,94 @@ Do you want to continue on an understanding of the security risk?
         <translation>Ctrl+Return</translation>
     </message>
     <message>
+        <location line="+5"/>
+        <location filename="../ui_tweetdialog.h" line="+1"/>
+        <source>View memories</source>
+        <translation>思い出を表示</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../ui_tweetdialog.h" line="+1"/>
+        <source>F6</source>
+        <translation>F6</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../ui_tweetdialog.h" line="+1"/>
+        <source>notificationTimer</source>
+        <translation>お知らせタイマー</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../ui_tweetdialog.h" line="+1"/>
+        <source>F7</source>
+        <translation>F7</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../ui_tweetdialog.h" line="+1"/>
+        <source>Capture</source>
+        <translation>思い出を残す</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../ui_tweetdialog.h" line="+1"/>
+        <source>F5</source>
+        <translation>F5</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../ui_tweetdialog.h" line="+1"/>
+        <source>captureFleetDetail</source>
+        <translation>艦隊詳細を作成(F9)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../ui_tweetdialog.h" line="+1"/>
+        <source>F9</source>
+        <translation>F9</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../ui_tweetdialog.h" line="+1"/>
+        <source>captureFleetList</source>
+        <translation>艦隊リストを作成(F10)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../ui_tweetdialog.h" line="+1"/>
+        <source>F10</source>
+        <translation>F10</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../ui_tweetdialog.h" line="+1"/>
+        <source>captureAndEdit</source>
+        <translation>思い出を編集して残す</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../ui_tweetdialog.h" line="+1"/>
+        <source>Ctrl+F5</source>
+        <translation>Ctrl+F5</translation>
+    </message>
+    <message>
         <source>Tweet by %1</source>
         <translation type="obsolete">%1で、つぶやく</translation>
     </message>
     <message>
-        <location filename="../tweetdialog.cpp" line="+70"/>
+        <location filename="../tweetdialog.cpp" line="-37"/>
+        <location line="+35"/>
         <source> #kancolle</source>
         <translation> #艦これ</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-29"/>
         <source>Sending</source>
         <translation>送信中</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+97"/>
         <source>Authorization</source>
         <translation>Twitter認証</translation>
     </message>
@@ -1317,7 +1391,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>まもなくブラウザにTwitterの認証画面が表示されます。取得したPinコードを入力してください。</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+88"/>
         <source>Information</source>
         <translation>艦メモ</translation>
     </message>
@@ -1472,11 +1546,21 @@ Do you want to continue on an understanding of the security risk?
     <name>memoryDialog</name>
     <message>
         <location filename="../qml/KanmusuMemory/memoryDialog.qml" line="+47"/>
+        <source>Select multiple images by Ctrl+Click.</source>
+        <translation>Ctrl+クリックで複数の画像を選択</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Selected images %1/%2.</source>
+        <translation>複数画像を選択中(%1/%2)</translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>Select</source>
         <translation>選択</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Edit</source>
         <translation>編集</translation>
     </message>
@@ -1486,7 +1570,7 @@ Do you want to continue on an understanding of the security risk?
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location line="+82"/>
+        <location line="+116"/>
         <source>close with right click</source>
         <translation>右クリックで戻る</translation>
     </message>

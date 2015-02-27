@@ -17,25 +17,33 @@
 #define TWEETDIALOG_H
 
 #include <QDialog>
+#include <QSettings>
 
 class TweetDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit TweetDialog(QWidget *parent = 0);
-    
-    const QString &imagePath() const;
+    explicit TweetDialog(QWidget *parent = 0, QSettings *settings = NULL);
+    ~TweetDialog();
+
     const QString &token() const;
     const QString &tokenSecret() const;
     const QString &user_id() const;
     const QString &screen_name() const;
+    const QStringList &getImagePathList() const;
+
+    void addImagePath(const QString &path);
+    void clearImagePath();
+    void removeImagePath(int i);
+
+    void saveSettings();
 
 public slots:
-    void setImagePath(const QString &imagePath);
     void setToken(const QString &token);
     void setTokenSecret(const QString &tokenSecret);
     void user_id(const QString &user_id);
     void screen_name(const QString &screen_name);
+    void setImagePathList(const QStringList &value);
 
 signals:
     void imagePathChanged(const QString &imagePath);
@@ -43,9 +51,19 @@ signals:
     void tokenSecretChanged(const QString &tokenSecret);
     void user_idChanged(const QString &user_id);
     void screen_nameChanged(const QString &screen_name);
+    void imagePathListChanged(const QStringList &imagePathList);
+
+    void triggeredCapture();
+    void triggeredCaptureAndEdit();
+    void triggeredViewMemories();
+    void triggeredNotificationTimer();
+    void triggeredCaptureFleetDetail();
+    void triggeredCaptureFleetList();
 
 protected:
-    void showEvent(QShowEvent *event);
+    virtual void resizeEvent(QResizeEvent *event);
+    virtual void showEvent(QShowEvent *event);
+    virtual void closeEvent(QCloseEvent *event);
 
 private:
     class Private;

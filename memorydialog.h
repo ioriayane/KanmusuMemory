@@ -31,6 +31,7 @@ public:
     explicit MemoryDialog(const QString &memoryPath, QWidget *parent = 0);
     
     const QString &imagePath();
+    const QStringList &selectedFiles();
     const NextOperationType &nextOperation();
 
 private:

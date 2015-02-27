@@ -34,6 +34,7 @@ private:
     QQuickView *view;
 public:
     QString imagePath;    //つぶやく対象の画像
+    QStringList selectedFiles;
     NextOperationType nextOperation;
 };
 
@@ -44,6 +45,7 @@ MemoryDialog::Private::Private(const QString &memoryPath, MemoryDialog *parent)
     ui.setupUi(q);
     connect(view->engine(), &QQmlEngine::quit, [this]() {
         imagePath = view->rootObject()->property("imagePath").toString();
+        selectedFiles = view->rootObject()->property("selectedFiles").toStringList();
         switch(view->rootObject()->property("nextOperation").toInt()){
         case 0:
             nextOperation = Tweet;
@@ -82,6 +84,11 @@ MemoryDialog::MemoryDialog(const QString &memoryPath, QWidget *parent)
 const QString &MemoryDialog::imagePath()
 {
     return d->imagePath;
+}
+
+const QStringList &MemoryDialog::selectedFiles()
+{
+    return d->selectedFiles;
 }
 
 const MemoryDialog::NextOperationType &MemoryDialog::nextOperation()
