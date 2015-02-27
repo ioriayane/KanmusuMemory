@@ -35,6 +35,30 @@ Rectangle {
         id: os
     }
 
+    //複数選択のメッセージ
+    Text {
+        id: multiSelectMessage
+        anchors.top: control.top
+        anchors.left: parent.left
+        anchors.bottom: control.bottom
+        anchors.leftMargin: 20
+        verticalAlignment: Text.AlignVCenter
+        color: "darkgray"
+        text: qsTr("Select multiple images by Ctrl+Click.")
+
+        states: [
+            State {
+                when: root.multiSelectMode
+                PropertyChanges {
+                    target: multiSelectMessage
+                    color: "black"
+                    text: qsTr("Selected images %1/%2.").arg(root.selectedFiles.length).arg(4)
+                }
+            }
+        ]
+    }
+
+    //下のボタンとかエリア
     Row {
         id: control
         anchors.right: parent.right
@@ -109,7 +133,7 @@ Rectangle {
                 Rectangle {
                     width: parent.width
                     height: text.paintedHeight * 2
-//                    color: root.color
+                    //                    color: root.color
                     Text {
                         id: text
                         anchors.verticalCenter: parent.verticalCenter
@@ -148,7 +172,11 @@ Rectangle {
                                 root.imagePath = root.selectedFiles[0]
                             }
                             root.multiSelectMode = true
-                            console.debug("selectedCount:%1".arg(root.selectedFiles.length))
+                            //console.debug("selectedCount:%1".arg(root.selectedFiles.length))
+                        }else if(root.multiSelectMode){
+                            root.imagePath = ""
+                            root.selectedFiles = []
+                            root.multiSelectMode = false
                         }else{
                             root.imagePath = filePath
                             root.selectedFiles = [filePath]

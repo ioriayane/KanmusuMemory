@@ -29,7 +29,33 @@ Grid {
             height: 120
             fillMode: Image.PreserveAspectFit
             source: model.filePath === undefined ? "" : "image://thumbnail/" + model.filePath
-            opacity: checkSelected(model.filePath) ? 1 : 0.5
+            property int selectedIndex: 0
+
+            //選択中
+            Rectangle {
+                anchors.fill: parent
+                color:"#00000000"
+                border.color: "#ff8844"
+                border.width: 5
+                visible: checkSelected(model.filePath) && multiSelectMode
+
+                Rectangle {
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    width: 18
+                    height: 18
+                    color: parent.border.color
+                    Text {
+                        anchors.fill: parent
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        color: "white"
+//                        font.pointSize: 12
+                        font.pixelSize: 15
+                        text: selectedIndex
+                    }
+                }
+            }
 
             //読み込み中
             Image {
@@ -69,10 +95,9 @@ Grid {
                     for(var i=0; i<selectedFiles.length; i++){
                         if(path === selectedFiles[i]){
                             ret = true;
+                            selectedIndex = i+1
                         }
                     }
-                }else{
-                    ret = true;
                 }
                 return ret;
             }
