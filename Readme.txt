@@ -4,7 +4,7 @@
 　　http://relog.xii.jp/
 　　https://github.com/ioriayane/KanmusuMemory
 
-　Copyright 2013-2014 KanMemo Project.
+　Copyright 2013-2015 KanMemo Project.
 ------------------------------------------------------------------------
 
 
@@ -34,7 +34,7 @@
 　　　　　別のバージョンのAdobe Flash Playerをインストール
 　　　　　　http://get2.adobe.com/jp/flashplayer/otherversions/
 　　　　　　手順１　あなたのOSを選択
-　　　　　　手順２　Flash Player 11 for Other Browsersを選択
+　　　　　　手順２　FP 16 for firefox - NPAPIを選択
 　　３．KanmusuMemory.exeを実行してください。
 
 　- Ubuntuの場合
@@ -51,8 +51,8 @@
 　　３．Flash Playerをインストールしてください。（普段使用しているブラウザを使用してください。）
 　　　　　別のバージョンのAdobe Flash Playerをインストール
 　　　　　　http://get2.adobe.com/jp/flashplayer/otherversions/
-　　　　　　手順１　Mac OS X 10.6 - 10.9
-　　　　　　手順２　Flash Player 11 for Mac OS X 10.6 - 10.9
+　　　　　　手順１　Mac OS X 10.6 - 10.10
+　　　　　　手順２　FP 16 Mac for Safari and Firefox - NPAPI
 　　４．KanmusuMemoryを実行してください。
 
 
@@ -63,7 +63,7 @@
 【動作確認環境】
 　・Windows 7(32bit)/8.1(64bit)
 　・Ubuntu 12.10(32bit)/14.04(64bit)
-　・Mac OS X 10.9.1
+　・Mac OS X 10.10.2
 
 
 【遊び方】
@@ -87,6 +87,8 @@
 　　クリックすると拡大表示します。
 　　一覧・拡大時に画像をダブルクリックするとつぶやくダイアログへ移動します。
 　　選択ボタンでもOKです。
+　　Ctrlキーを押しながらクリックすると複数の画像を選択できます（最大4つ）。
+　　複数の画像を選択した状態で選択ボタンを押するとそれらがつぶやくダイアログへ送られます。
 
 　・「お知らせタイマー」について
 　　入渠・遠征・建造の終了時間をツイッターの自己メンションでお知らせします。
@@ -133,6 +135,11 @@
 　　コマンドラインで、「/clearcache」を追加して起動するとキャッシュが全て削除して起動します。
 　　DMMへログイン後に画面が真っ白になってしまう場合に試して下さい。
 
+　・思い出を動画で残す機能について
+　　一部制限はありますが、艦娘の勇姿を録画できます。
+　　詳細は、「艦メモ(ver 0.15)に録画機能が追加されました」の記事を御覧ください。
+　　URL:http://relog.xii.jp/mt5r/2014/08/ver-015.html
+
 
 【使用上の注意・既知の問題など】
 　・艦隊名に日本語が入力できません。
@@ -143,6 +150,14 @@
 
 
 【更新履歴】
+　・Version 0.16 2015/2
+　　・複数画像の同時投稿に対応（最大4枚）
+　　・つぶやくダイアログで複数の画像をプレビューできるように変更。
+　　・つぶやくダイアログを表示した状態で他の操作をできるように変更。
+　　・思い出を表示ダイアログで複数の画像の選択に対応
+　　・複数のタブでセッションを共有できるように変更
+　　　タブ側で他のDMMのゲームができるはず。
+
 　・Version 0.15.1 2014/8/20
 　　・連合艦隊時の戦果報告のコピー（2つ目）がスクリーンショットに映り込む不具合の修正
 
@@ -268,10 +283,10 @@
 　@IoriAYANE
 　@task_jp
 　@nagakenjs
-  @androidsola
-  @tkhshmsy
-  @nowsprinting
-  @EnderAlice
+　@androidsola
+　@tkhshmsy
+　@nowsprinting
+　@EnderAlice
 　@hermit4
 　@Kaikias_lys
 
