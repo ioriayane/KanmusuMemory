@@ -133,12 +133,11 @@ if($OS eq "win"){
 	# 言語ファイルを保存しているディレクトリ
 	$I18N="i18n\\";
 
-
 	# Qtのディレクトリ
 	if($PTRSIZE_NAME eq "x86"){
-		$QTDIR="C:\\Qt\\Qt5.3.1vs13-32\\5.3\\msvc2013\\";
+		$QTDIR="C:\\Qt\\Qt5.4.1vs13-32\\5.4\\msvc2013\\";
 	}else{
-		$QTDIR="C:\\Qt\\Qt5.3.1vs13-64\\5.3\\msvc2013_64\\";
+		$QTDIR="C:\\Qt\\Qt5.4.1vs13-64\\5.4\\msvc2013_64\\";
 	}
 	# Qtのバイナリの場所
 	$QTBIN="bin\\";
@@ -160,9 +159,9 @@ if($OS eq "win"){
 
 	# 環境ごとのコマンドの設定
 	if($PTRSIZE_NAME eq "x86"){
-		$MAKE="c:\\qt\\Qt5.3.1vs13-32\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
+		$MAKE="c:\\qt\\Qt5.4.1vs13-32\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
 	}else{
-		$MAKE="c:\\qt\\Qt5.3.1vs13-64\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
+		$MAKE="c:\\qt\\Qt5.4.1vs13-64\\Tools\\QtCreator\\bin\\jom.exe";			# makeコマンド
 	}
 	$CP="copy";						# 単品コピー
 	$COPY="xcopy /S /E /I /Y";		# 複数コピー
@@ -184,7 +183,7 @@ if($OS eq "win"){
 	@QT_MODULE_LIBRARY = ();
 
 	# 追加（不足分）
-	push(@QT_MODULE_LIBRARY, "Qt0TwitterAPI.dll");
+	push(@QT_MODULE_LIBRARY, "Qt5TwitterAPI.dll");
 
 }elsif($OS eq "ubuntu"){
 	################################################
