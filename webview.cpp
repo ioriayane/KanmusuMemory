@@ -39,6 +39,8 @@ public:
     ViewMode viewMode;
     QRect defaultRect;
 
+    QWebFrame *searchGameFrame(QWebFrame *frame);
+
 private:
     QHash<QString, QString> naviApp;
     QHash<QString, QString> foot;
@@ -48,6 +50,8 @@ private:
     QHash<QString, QString> embed;
     QHash<QString, QString> sectionWrap;
     QHash<QString, QString> globalNavi;
+    QHash<QString, QString> dmmNtgnavi;
+    QHash<QString, QString> dmmNtgnaviInner;
 
     bool setElementProperty(QWebElement &element, QHash<QString, QString> &properties, QHash<QString, QString> &backup);
 };
@@ -103,16 +107,41 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
         properties.insert(QStringLiteral("min-width"), QString("%1px").arg(width+188));
     }
     if(!setElementProperty(element, properties, body)){
-        qDebug() << "failed find target";
+        qDebug() << "failed find target body";
         return;
     }
     properties.clear();
+
+
+    /////////////////////////////////////////
+    //上のバー消す
+    element = frame->findFirstElement(QStringLiteral("#main-ntg"));
+    if(!isfull){
+        properties.insert(QStringLiteral("position"), QStringLiteral("relative"));
+//        properties.insert(QStringLiteral("margin"), QStringLiteral("0 -12px 20px"));
+//        properties.insert(QStringLiteral("visibility"), QStringLiteral(""));
+        properties.insert(QStringLiteral("top"), QStringLiteral(""));
+        properties.insert(QStringLiteral("left"), QStringLiteral(""));
+    }else{
+        //フルスクリーンのみ
+        properties.insert(QStringLiteral("position"), QStringLiteral("absolute"));
+//        properties.insert(QStringLiteral("margin"), QStringLiteral("0"));
+//        properties.insert(QStringLiteral("visibility"), QStringLiteral("hidden"));
+        properties.insert(QStringLiteral("top"), QStringLiteral("0px"));
+        properties.insert(QStringLiteral("left"), QStringLiteral("0px"));
+    }
+    if(!setElementProperty(element, properties, dmmNtgnavi)){
+        qDebug() << "failed find target #dmm-ntgnavi";
+        return;
+    }
+    properties.clear();
+
 
     /////////////////////////////////////////
     //フレームを最大化
     element = frame->findFirstElement(QStringLiteral("#game_frame"));
     if (element.isNull()) {
-        qDebug() << "failed find target";
+        qDebug() << "failed find target #game_frame";
         //            ui.statusBar->showMessage(tr("failed find target"), STATUS_BAR_MSG_TIME);
         return;
     }
@@ -133,7 +162,7 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
         properties.insert(QStringLiteral("z-index"), QStringLiteral("10"));
     }
     if(!setElementProperty(element, properties, gameFrame)){
-        qDebug() << "failed find target";
+        qDebug() << "failed find target game_frame tag";
         return;
     }
     properties.clear();
@@ -141,7 +170,7 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
 
     /////////////////////////////////////////
     //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
-    frame = frame->childFrames().first();
+    frame = searchGameFrame(frame);
     element = frame->findFirstElement(QStringLiteral("#flashWrap"));
     if(!isfull){
         //フルスクリーンじゃない
@@ -158,7 +187,7 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
         properties.insert(QStringLiteral("height"), QString("%1px").arg(height));
     }
     if(!setElementProperty(element, properties, flashWrap)){
-        qDebug() << "failed find target";
+        qDebug() << "failed find target flashWrap";
         return;
     }
     properties.clear();
@@ -167,7 +196,7 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
     //embedタグを探す
     element = element.findFirst(QStringLiteral("embed"));
     if (element.isNull()) {
-        qDebug() << "failed find target";
+        qDebug() << "failed find target embed";
         return;
     }
     properties.insert(QStringLiteral("width"), QString::number(width));
@@ -197,22 +226,39 @@ void WebView::Private::showOptionalSize(int width, int height, bool isfull)
         properties.insert(QStringLiteral("visibility"), QStringLiteral("hidden"));
     }
     if(!setElementProperty(element, properties, sectionWrap)){
-        qDebug() << "failed find target";
+        qDebug() << "failed find target #sectionWrap";
         return;
     }
     properties.clear();
 
     /////////////////////////////////////////
-    //友達招待のバルーンを移動させるためにサイズ調整
-    element = frame->findFirstElement(QStringLiteral("#globalNavi"));
-    element = element.findFirst(QStringLiteral("p"));
-    properties.insert(QStringLiteral("right"), QString("%1px").arg((800-width)/2-43));
+    //フレームの中の上の隙間
+    element = frame->findFirstElement(QStringLiteral("#spacing_top"));
+    if(!isfull){
+        properties.insert(QStringLiteral("height"), QStringLiteral("16px"));
+    }else{
+        //フルスクリーンのみ
+        properties.insert(QStringLiteral("height"), QStringLiteral("0px"));
+    }
     if(!setElementProperty(element, properties, globalNavi)){
-        qDebug() << "failed find target";
+        qDebug() << "failed find target spacing_top";
         return;
     }
     properties.clear();
 
+}
+//ゲームフレームを検索する
+QWebFrame *WebView::Private::searchGameFrame(QWebFrame *frame)
+{
+    for(int i=0;i<frame->childFrames().count();i++){
+        qDebug() << "frame name:" << i << ":" << frame->childFrames().at(i)->frameName();
+        if(frame->childFrames().at(i)->frameName() == "game_frame"){
+            //発見
+            frame = frame->childFrames().at(i);
+            break;
+        }
+    }
+    return frame;
 }
 
 //エレメントにプロパティを設定する（初回はバックアップする）
@@ -272,7 +318,7 @@ void WebView::Private::showNormal()
 
     /////////////////////////////////////////
     //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
-    frame = frame->childFrames().first();
+    frame = searchGameFrame(frame);
     element = frame->findFirstElement(QStringLiteral("#flashWrap"));
     if (element.isNull()) {
         qDebug() << "failed find target";
@@ -400,19 +446,22 @@ QRect WebView::getGameRect() const
     if (frame->childFrames().isEmpty()) {
         return QRect();
     }
-    //フレームの子供からflashの入ったdivを探して、さらにその中のembedタグを調べる
-    frame = frame->childFrames().first();
+    //フレームの子供からflashの入ったdivを探す。さらにその中のembedタグを調べる
+    frame = d->searchGameFrame(frame);
     QWebElement element = frame->findFirstElement(QStringLiteral("#flashWrap"));
     if (element.isNull()) {
+        qDebug() << "not found #flashWrap";
         return QRect();
     }
     element = element.findFirst(QStringLiteral("embed"));
     if (element.isNull()) {
+        qDebug() << "not found embed";
         return QRect();
     }
     //見つけたタグの座標を取得
     QRect geometry = element.geometry();
     geometry.moveTopLeft(geometry.topLeft() + frame->geometry().topLeft());
+    qDebug() << "flash geo:" << geometry;
 
     return geometry;
 }

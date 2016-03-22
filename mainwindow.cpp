@@ -304,6 +304,7 @@ MainWindow::Private::Private(MainWindow *parent, bool not_use_cookie)
     //Macではショートカット無効（tweetDialogをモードレスにしたらctrl+Enterがかぶって拾えなくなったから）
     ui.actionFullScreen->setShortcut(QKeySequence());
 #endif
+    ui.actionFullScreen->setEnabled(false); //フルスクリーンすぐに直せないから
     q->addAction(ui.actionFullScreen);
     connect(ui.actionFullScreen, &QAction::triggered, [this]() {
         if(q->isFullScreen()){
